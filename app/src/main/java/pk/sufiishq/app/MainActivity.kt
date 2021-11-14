@@ -265,15 +265,14 @@ fun KalamItem(matColors: Colors, track: Track, gradientColors: List<Long>, kalam
                 .height(60.dp)
                 .fillMaxWidth()
                 .clip(backgroundShape)
-                .background(matColors.primaryVariant)
-                .padding(8.dp),
+                .background(matColors.primaryVariant),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            val boxShape = RoundedCornerShape(5.dp)
+            val boxShape = RoundedCornerShape(topStart = 6.dp, topEnd = 0.dp, bottomStart = 6.dp, bottomEnd = 0.dp)
             Box(modifier = Modifier
                 .fillMaxHeight()
-                .width(6.dp)
+                .width(8.dp)
                 .clip(boxShape)
                 .background(brush = Brush.verticalGradient(listOf(startColor, endColor))))
 
@@ -281,7 +280,7 @@ fun KalamItem(matColors: Colors, track: Track, gradientColors: List<Long>, kalam
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth()
-                    .padding(start = 12.dp),
+                    .padding(start = 12.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 // kalam title
