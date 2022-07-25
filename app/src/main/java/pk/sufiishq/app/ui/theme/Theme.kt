@@ -10,27 +10,20 @@ private val DarkColorPalette = darkColors(
     primary = DarkPrimary,
     primaryVariant = DarkPrimaryVariant,
     secondary = DarkSecondary,
-    background = DarkBackground
+    background = DarkBackground,
+    secondaryVariant = DarkSecondaryVariant
 )
 
 private val LightColorPalette = lightColors(
     primary = LightPrimary,
     primaryVariant = LightPrimaryVariant,
     secondary = LightSecondary,
-    background = LightBackground
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    background = LightBackground,
+    secondaryVariant = LightSecondaryVariant
 )
 
 @Composable
-fun SufiIshqTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun SufiIshqTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

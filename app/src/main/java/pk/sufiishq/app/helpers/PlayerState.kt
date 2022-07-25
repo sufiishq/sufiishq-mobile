@@ -1,4 +1,4 @@
-package pk.sufiishq.app
+package pk.sufiishq.app.helpers
 
 enum class PlayerState {
     IDLE, LOADING, PLAYING, PAUSE

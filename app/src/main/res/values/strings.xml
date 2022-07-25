@@ -1,3 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation" >
     <string name="app_name">Sufi Ishq</string>
+    <string name="all">All</string>
+    <string name="downloads">Downloads</string>
+    <string name="favorites">Favorites</string>
+    <string name="playlist">Playlist</string>
+    <string name="add_to_playlist">Add to Playlist</string>
+    <string name="mark_as_favorite">Mark as Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
+    <string name="download">Download</string>
+    <string name="delete">Delete</string>
+    <string name="split_kalam">Split Kalam</string>
 </resources>

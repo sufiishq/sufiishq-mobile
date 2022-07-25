@@ -2,9 +2,17 @@ package pk.sufiishq.app
 
 import android.app.Application
 import android.content.Intent
-import android.os.Build
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import dagger.hilt.android.HiltAndroidApp
+import pk.sufiishq.app.services.AudioPlayerService
+import pk.sufiishq.app.worker.CacheRemoveWorker
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
-class SufiIshqApp: Application() {
+@HiltAndroidApp
+class SufiIshqApp : Application() {
 
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -12,13 +20,21 @@ class SufiIshqApp: Application() {
         super.onCreate()
         instance = this
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(playerIntent)
-        }
-        else {
-            startService(playerIntent)
-        }*/
+        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
+
+        initCacheRemoveWorkRequest()
+
         startService(playerIntent)
+    }
+
+    private fun initCacheRemoveWorkRequest() {
+        val cacheRemoveWorkRequest =
+            PeriodicWorkRequestBuilder<CacheRemoveWorker>(24, TimeUnit.HOURS).build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            CacheRemoveWorker.TAG,
+            ExistingPeriodicWorkPolicy.KEEP,
+            cacheRemoveWorkRequest
+        )
     }
 
     companion object {
