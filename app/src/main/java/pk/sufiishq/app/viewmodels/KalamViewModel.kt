@@ -1,6 +1,7 @@
 package pk.sufiishq.app.viewmodels
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -26,10 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class KalamViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
-    val kalamRepository: KalamRepository
+    private val kalamRepository: KalamRepository
 ) : ViewModel(), KalamDataProvider {
-
-    //private var kalamSource = KalamSource(kalamRepository, Screen.Tracks.ALL)
 
     private var kalams: Flow<PagingData<Kalam>> = Pager(PagingConfig(pageSize = 10)) {
         kalamRepository.load()
@@ -39,11 +38,6 @@ class KalamViewModel @Inject constructor(
         kalamRepository.setTrackType(trackType)
         kalamRepository.setPlaylistId(playlistId)
         kalamRepository.setSearchKeyword("")
-        /*kalams = Pager(PagingConfig(pageSize = 10)) {
-
-            kalamRepository.loadAllKalam("")
-        }.flow*/
-        //kalamSource = KalamSource(kalamRepository, trackType, playlistId)
     }
 
     override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
@@ -51,7 +45,6 @@ class KalamViewModel @Inject constructor(
     }
 
     override fun searchKalam(keyword: String, trackType: String, playlistId: Int) {
-        //kalamSource = KalamSource(kalamRepository, trackType, playlistId, keyword)
         kalamRepository.setSearchKeyword(keyword)
         kalamRepository.setTrackType(trackType)
         kalamRepository.setPlaylistId(playlistId)
@@ -82,7 +75,7 @@ class KalamViewModel @Inject constructor(
 
     override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {
 
-        val fileName = KALAM_DIR + "/" + kalamTitle.lowercase().replace(" ", "_")
+        val fileName = "$KALAM_DIR/" + kalamTitle.lowercase().replace(" ", "_")
             .plus("_${System.currentTimeMillis()}.mp3")
 
         val kalam = sourceKalam.copyAsNew(
@@ -103,5 +96,17 @@ class KalamViewModel @Inject constructor(
             .subscribe()
 
         appContext.toast("$kalamTitle saved")
+    }
+
+    override fun countAll(): LiveData<Int> {
+        return kalamRepository.countAll()
+    }
+
+    override fun countFavorites(): LiveData<Int> {
+        return kalamRepository.countFavorites()
+    }
+
+    override fun countDownloads(): LiveData<Int> {
+        return kalamRepository.countDownloads()
     }
 }

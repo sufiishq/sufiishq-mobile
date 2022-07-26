@@ -36,7 +36,7 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 
     override fun doPlayOrPause() {}
 
-    override fun getActiveKalam(): LiveData<Kalam> {
+    override fun getActiveKalam(): LiveData<Kalam?> {
         return MutableLiveData(Kalam(0, "Kalam Title", 1, "1991", "Karachi", "", "", 0, 0))
     }
 
@@ -75,6 +75,12 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     override fun delete(kalam: Kalam, trackType: String) {}
 
     override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {}
+
+    override fun countAll(): LiveData<Int> = MutableLiveData(0)
+
+    override fun countFavorites(): LiveData<Int> = MutableLiveData(0)
+
+    override fun countDownloads(): LiveData<Int> = MutableLiveData(0)
 }
 
 fun dummyTrack() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
@@ -85,16 +91,19 @@ fun dummyTrack() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
 
 fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 
-    override fun getAll() = listOf(
-        Playlist(1, "Karachi"),
-        Playlist(2, "Lahore")
+    override fun getAll(): LiveData<List<Playlist>> = MutableLiveData(
+        listOf(
+            Playlist(1, "Karachi"),
+            Playlist(2, "Lahore")
+        )
     )
 
-    override fun get(id: Int) = Playlist(1, "Karachi")
+    override fun get(id: Int) = MutableLiveData(Playlist(1, "Karachi"))
 
     override fun add(playlist: Playlist) {}
     override fun update(playlist: Playlist) {}
     override fun delete(playlist: Playlist) {}
+    override fun countAll(): LiveData<Int> = MutableLiveData(0)
 }
 
 fun dummyPlaylist() = Playlist(1, "Karachi")

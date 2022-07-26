@@ -10,4 +10,5 @@ interface PlaylistDataProvider {
     fun add(playlist: Playlist)
     fun update(playlist: Playlist)
     fun delete(playlist: Playlist)
+    fun countAll(): LiveData<Int>
 }

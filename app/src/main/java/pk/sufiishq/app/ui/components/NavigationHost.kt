@@ -30,7 +30,11 @@ fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHos
 
             // dashboard screen
             composable(Screen.Dashboard.route) {
-                DashboardView(navController = navController)
+
+                val kalamViewModel = hiltViewModel<KalamViewModel>()
+                val playlistViewModel = hiltViewModel<PlaylistViewModel>()
+
+                DashboardView(navController = navController, kalamViewModel, playlistViewModel)
             }
 
             // tracks screen

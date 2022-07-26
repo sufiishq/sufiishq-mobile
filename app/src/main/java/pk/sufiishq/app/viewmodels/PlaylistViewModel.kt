@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
-    val playlistRepository: PlaylistRepository,
-    val kalamRepository: KalamRepository
+    private val playlistRepository: PlaylistRepository,
+    private val kalamRepository: KalamRepository
 ) : ViewModel(), PlaylistDataProvider {
 
     override fun getAll(): LiveData<List<Playlist>> = playlistRepository.loadAll()
@@ -47,5 +47,9 @@ class PlaylistViewModel @Inject constructor(
             // delete playlist from playlist table
             viewModelScope.launch { playlistRepository.delete(playlist) }
         }
+    }
+
+    override fun countAll(): LiveData<Int> {
+        return playlistRepository.countAll()
     }
 }
