@@ -1,20 +1,21 @@
 package pk.sufiishq.app.data.repository
 
+import androidx.lifecycle.LiveData
 import pk.sufiishq.app.data.dao.PlaylistDao
 import pk.sufiishq.app.models.Playlist
 import javax.inject.Inject
 
 class PlaylistRepository @Inject constructor(private val playlistDao: PlaylistDao) {
 
-    fun loadAll() = playlistDao.getAll()
+    fun loadAll(): LiveData<List<Playlist>> = playlistDao.getAll()
 
-    fun load(id: Int) = playlistDao.get(id)
+    fun load(id: Int): LiveData<Playlist> = playlistDao.get(id)
 
-    fun add(playlist: Playlist) = playlistDao.add(playlist)
+    suspend fun add(playlist: Playlist) = playlistDao.add(playlist)
 
-    fun update(playlist: Playlist) = playlistDao.update(playlist)
+    suspend fun update(playlist: Playlist) = playlistDao.update(playlist)
 
-    fun delete(playlist: Playlist) = playlistDao.delete(playlist)
+    suspend fun delete(playlist: Playlist) = playlistDao.delete(playlist)
 
-    fun countAll() = playlistDao.countAll()
+    fun countAll(): LiveData<Int> = playlistDao.countAll()
 }

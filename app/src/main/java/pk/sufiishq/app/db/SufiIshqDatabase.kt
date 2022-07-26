@@ -9,7 +9,7 @@ import pk.sufiishq.app.data.dao.PlaylistDao
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
 
-@Database(entities = [Kalam::class, Playlist::class], version = 1)
+@Database(entities = [Kalam::class, Playlist::class], version = 1, exportSchema = false)
 abstract class SufiIshqDatabase : RoomDatabase() {
 
     abstract fun kalamDao(): KalamDao
@@ -25,7 +25,6 @@ abstract class SufiIshqDatabase : RoomDatabase() {
                 synchronized(this) {
                     INSTANCE = Room
                         .databaseBuilder(context, SufiIshqDatabase::class.java, "sufiishq")
-                        .allowMainThreadQueries()
                         .build()
                 }
             }

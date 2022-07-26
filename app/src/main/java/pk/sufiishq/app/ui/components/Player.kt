@@ -91,7 +91,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
                 Text(
                     color = matColors.primary,
                     fontSize = 14.sp,
-                    text = "${activeKalam?.location} ${activeKalam?.year}"
+                    text = "${activeKalam?.location ?: ""} ${activeKalam?.year ?: ""}"
                 )
             }
         }

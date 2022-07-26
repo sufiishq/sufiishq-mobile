@@ -14,15 +14,14 @@ import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.apache.commons.io.FilenameUtils
-import pk.sufiishq.app.services.AudioPlayerService
-import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.services.PlayerController
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.providers.PlayerDataProvider
-import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.FileDownloader
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.services.AudioPlayerService
+import pk.sufiishq.app.services.PlayerController
+import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.moveTo
 import timber.log.Timber
 import java.io.File
@@ -35,13 +34,12 @@ import kotlin.math.min
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     @ApplicationContext val appContext: Context,
-    kalamRepository: KalamRepository,
     private val fileDownloader: FileDownloader
 ) : ViewModel(), PlayerDataProvider, AudioPlayerService.Listener {
 
     private val seekbarValue = MutableLiveData(0f)
     private val seekbarAccess = MutableLiveData(false)
-    private val activeKalam = MutableLiveData(kalamRepository.getDefaultKalam())
+    private val activeKalam = MutableLiveData<Kalam?>()
     private val playerState = MutableLiveData(PlayerState.IDLE)
     private var playerController: PlayerController? = null
 
@@ -92,12 +90,11 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    override fun getActiveKalam(): LiveData<Kalam> {
+    override fun getActiveKalam(): LiveData<Kalam?> {
         return activeKalam
     }
 
     override fun changeTrack(kalam: Kalam) {
-        //activeKalam.value = kalam
         playerController?.setActiveTrack(kalam)
     }
 

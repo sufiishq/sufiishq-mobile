@@ -10,8 +10,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +36,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.flowOf
 import org.apache.commons.io.FilenameUtils
-import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
@@ -41,12 +43,8 @@ import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.toast
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.dummyKalamDataProvider
-import pk.sufiishq.app.utils.dummyPlayerDataProvider
-import pk.sufiishq.app.utils.dummyPlaylistDataProvider
-import pk.sufiishq.app.utils.dummyTrack
+import pk.sufiishq.app.utils.*
 
 @Composable
 fun KalamItem(
@@ -292,10 +290,8 @@ fun KalamItem(
         }
     }
 
+    val playlistItems = playlistDataProvider.getAll().observeAsState().optValue(listOf())
     if (showPlaylistDialog.value) {
-
-        val context = LocalContext.current
-        val playlistItems = remember { playlistDataProvider.getAll().toMutableStateList() }
 
         if (playlistItems.isNotEmpty()) {
             SufiIshqDialog(onDismissRequest = { showPlaylistDialog.value = false }) {
