@@ -1,5 +1,7 @@
 package pk.sufiishq.app.data.dao
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import pk.sufiishq.app.models.Kalam
 
@@ -7,61 +9,57 @@ import pk.sufiishq.app.models.Kalam
 interface KalamDao {
 
     @Query("SELECT * FROM kalam ORDER BY id LIMIT 1 offset 0")
-    fun getFirstKalam(): Kalam
+    fun getFirstKalam(): LiveData<Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
                 "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword)" +
-                "ORDER BY id DESC " +
-                "LIMIT 10 OFFSET :offset"
+                "ORDER BY id DESC"
     )
-    fun getAllKalam(searchKeyword: String, offset: Int): List<Kalam>
+    fun getAllKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
                 "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND offline_src != ''" +
-                "ORDER BY id DESC " +
-                "LIMIT 10 OFFSET :offset"
+                "ORDER BY id DESC"
     )
-    fun getDownloadsKalam(searchKeyword: String, offset: Int): List<Kalam>
+    fun getDownloadsKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
                 "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND is_favorite = 1 " +
-                "ORDER BY id DESC " +
-                "LIMIT 10 OFFSET :offset"
+                "ORDER BY id DESC"
     )
-    fun getFavoritesKalam(searchKeyword: String, offset: Int): List<Kalam>
+    fun getFavoritesKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
                 "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND playlist_id = :playlistId " +
-                "ORDER BY id DESC " +
-                "LIMIT 10 OFFSET :offset"
+                "ORDER BY id DESC"
     )
-    fun getPlaylistKalam(playlistId: Int, searchKeyword: String, offset: Int): List<Kalam>
+    fun getPlaylistKalam(playlistId: Int, searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query("SELECT * FROM kalam WHERE playlist_id = :playlistId")
-    fun getAllPlaylistKalam(playlistId: Int): List<Kalam>
+    fun getAllPlaylistKalam(playlistId: Int): LiveData<List<Kalam>>
 
     @Insert
     fun insert(kalam: Kalam)
 
     @Insert
-    fun insertAll(allKalams: List<Kalam>)
+    suspend fun insertAll(allKalams: List<Kalam>)
 
     @Query("SELECT COUNT(*) FROM kalam")
-    fun countAll(): Int
+    fun countAll(): LiveData<Int>
 
     @Query("SELECT COUNT(*) FROM kalam WHERE offline_src != ''")
-    fun countDownloads(): Int
+    fun countDownloads(): LiveData<Int>
 
     @Query("SELECT COUNT(*) FROM kalam WHERE is_favorite = 1")
-    fun countFavorites(): Int
+    fun countFavorites(): LiveData<Int>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(kalam: Kalam)
+    suspend fun update(kalam: Kalam)
 
     @Delete
-    fun delete(kalam: Kalam)
+    suspend fun delete(kalam: Kalam)
 }

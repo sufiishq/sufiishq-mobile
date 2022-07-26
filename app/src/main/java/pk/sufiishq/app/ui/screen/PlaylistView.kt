@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
@@ -34,13 +35,14 @@ import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.components.PlaylistItem
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dummyPlaylistDataProvider
+import pk.sufiishq.app.utils.optValue
 
 @Composable
 fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavController) {
     val matColors = MaterialTheme.colors
     val openDialog = remember { mutableStateOf(false) }
     val playlist = remember { mutableStateOf(Playlist(0, "")) }
-    val allPlaylist = playlistDataProvider.getAll().toMutableStateList()
+    val allPlaylist = playlistDataProvider.getAll().observeAsState().optValue(listOf())
 
     Surface {
         Scaffold(
@@ -59,9 +61,11 @@ fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavC
             floatingActionButtonPosition = FabPosition.End
         ) {
 
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .background(matColors.secondaryVariant)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(matColors.secondaryVariant)
+            ) {
                 if (allPlaylist.isNotEmpty()) {
                     LazyColumn(
                         modifier = Modifier
@@ -72,7 +76,7 @@ fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavC
                             PlaylistItem(
                                 matColors,
                                 pl,
-                                allPlaylist,
+                                allPlaylist.toMutableStateList(),
                                 playlistDataProvider,
                                 navController
                             ) {

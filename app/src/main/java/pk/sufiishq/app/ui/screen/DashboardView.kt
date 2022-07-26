@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlaylistViewModel
 
@@ -69,7 +71,7 @@ fun DashboardView(navController: NavController) {
 
                     TrackButton(
                         title = all,
-                        count = kalamRepository.countAll(),
+                        count = kalamRepository.countAll().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_check_circle_24,
                         bgColor = Color(226, 83, 72, 255)
                     ) {
@@ -78,7 +80,7 @@ fun DashboardView(navController: NavController) {
 
                     TrackButton(
                         title = favorites,
-                        count = kalamRepository.countFavorites(),
+                        count = kalamRepository.countFavorites().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_favorite_border_24,
                         bgColor = Color(226, 182, 72, 255)
                     ) {
@@ -99,7 +101,7 @@ fun DashboardView(navController: NavController) {
 
                     TrackButton(
                         title = downloads,
-                        count = kalamRepository.countDownloads(),
+                        count = kalamRepository.countDownloads().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_cloud_download_24,
                         bgColor = Color(154, 226, 72, 255)
                     ) {
@@ -114,7 +116,7 @@ fun DashboardView(navController: NavController) {
 
                     TrackButton(
                         title = playlist,
-                        count = playlistRepository.countAll(),
+                        count = playlistRepository.countAll().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_playlist_play_24,
                         bgColor = Color(72, 190, 226, 255)
                     ) {

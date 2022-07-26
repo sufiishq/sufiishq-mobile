@@ -12,7 +12,7 @@ interface PlayerDataProvider {
     fun onSeekbarChanged(value: Float)
     fun getPlayerState(): LiveData<PlayerState>
     fun doPlayOrPause()
-    fun getActiveKalam(): LiveData<Kalam>
+    fun getActiveKalam(): LiveData<Kalam?>
     fun changeTrack(kalam: Kalam)
 
     fun getDownloadProgress(): LiveData<Float>
