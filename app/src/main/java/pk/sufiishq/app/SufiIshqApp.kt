@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.services.PlayerController
@@ -21,6 +22,9 @@ class SufiIshqApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        // enable crashlytics only in release build
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 
