@@ -3,11 +3,11 @@ package pk.sufiishq.app.helpers
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.arthenica.mobileffmpeg.Config
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
+import pk.sufiishq.app.utils.SPLIT_SUCCESS
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.app.utils.split
 import java.io.File
@@ -60,7 +60,7 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
                 (splitEnd.value!! - splitStart.value!!).formatTime
             ) { returnCode ->
 
-                if (returnCode == Config.RETURN_CODE_SUCCESS) {
+                if (returnCode == SPLIT_SUCCESS) {
                     val duration = mediaPlayer.getDuration(outFile.absolutePath)
                     kalamPreviewLength.value = duration
                 }

@@ -17,16 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import com.arthenica.mobileffmpeg.Config
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.SplitCompleted
 import pk.sufiishq.app.helpers.SplitDone
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.formatTime
-import pk.sufiishq.app.utils.optValue
-import pk.sufiishq.app.utils.toast
+import pk.sufiishq.app.utils.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -59,7 +56,7 @@ fun KalamSplitter(
 
         val status = splitStatus.value
         if (status is SplitCompleted) {
-            if (status.returnCode == Config.RETURN_CODE_SUCCESS) {
+            if (status.returnCode == SPLIT_SUCCESS) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
@@ -108,7 +105,7 @@ fun KalamSplitter(
 
             } else {
 
-                if (status.returnCode != Config.RETURN_CODE_CANCEL) {
+                if (status.returnCode != SPLIT_CANCEL) {
                     LocalContext.current.toast("Execution failed with ${status.returnCode}")
                 }
 
@@ -171,7 +168,13 @@ fun KalamSplitter(
                     horizontalArrangement = Arrangement.End
                 ) {
 
-                    TextButton(onClick = { kalamSplitManager.setSplitStatus(SplitCompleted(Config.RETURN_CODE_SUCCESS)) }) {
+                    TextButton(onClick = {
+                        kalamSplitManager.setSplitStatus(
+                            SplitCompleted(
+                                SPLIT_SUCCESS
+                            )
+                        )
+                    }) {
                         Text(text = "Back")
                     }
                     TextButton(onClick = {
