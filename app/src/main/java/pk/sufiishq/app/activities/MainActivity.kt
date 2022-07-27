@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.ui.screen.MainView
@@ -67,6 +68,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as AudioPlayerService.AudioPlayerBinder
         val playerController = binder.getService()
+        SufiIshqApp.getInstance().setPlayerController(playerController)
 
         if (playerController.getActiveTrack() == null) {
             kalamRepository.getDefaultKalam().observeOnce(this@MainActivity) { kalam ->
@@ -82,5 +84,6 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
     override fun onServiceDisconnected(name: ComponentName?) {
         playerViewModel.setPlayerService(null)
+        SufiIshqApp.getInstance().setPlayerController(null)
     }
 }

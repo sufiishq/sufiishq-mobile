@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arthenica.mobileffmpeg.Config
 import dagger.hilt.android.qualifiers.ApplicationContext
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
 import pk.sufiishq.app.utils.formatTime
@@ -70,6 +71,11 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
     }
 
     fun playPreview() {
+
+        SufiIshqApp.getInstance().getPlayerController()?.let { playerController ->
+            if (playerController.isPlaying()) playerController.doPause()
+        }
+
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
             previewPlayStart.value = false

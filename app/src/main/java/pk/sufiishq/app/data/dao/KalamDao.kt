@@ -43,7 +43,7 @@ interface KalamDao {
     fun getAllPlaylistKalam(playlistId: Int): LiveData<List<Kalam>>
 
     @Insert
-    fun insert(kalam: Kalam)
+    suspend fun insert(kalam: Kalam)
 
     @Insert
     suspend fun insertAll(allKalams: List<Kalam>)

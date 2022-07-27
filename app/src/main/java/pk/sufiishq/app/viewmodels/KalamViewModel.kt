@@ -13,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.Screen
@@ -62,15 +63,29 @@ class KalamViewModel @Inject constructor(
                 kalam.playlistId = 0
                 kalamRepository.update(kalam)
             } else {
-                val downloadedFile =
-                    File("${appContext.filesDir.absolutePath}/${kalam.offlineSource}")
-                downloadedFile.delete()
-                kalam.offlineSource = ""
-                if (kalam.onlineSource.isEmpty()) kalamRepository.delete(kalam) else kalamRepository.update(
-                    kalam
-                )
+                if (canDelete(kalam)) {
+                    val downloadedFile =
+                        File("${appContext.filesDir.absolutePath}/${kalam.offlineSource}")
+                    downloadedFile.delete()
+                    kalam.offlineSource = ""
+                    if (kalam.onlineSource.isEmpty()) kalamRepository.delete(kalam) else kalamRepository.update(
+                        kalam
+                    )
+                } else {
+                    appContext.toast("${kalam.title} is playing. Can't be deleted")
+                }
             }
         }
+    }
+
+    private fun canDelete(kalam: Kalam): Boolean {
+
+        // stop playing kalam if it match with deleted kalam
+        return SufiIshqApp.getInstance().getPlayerController()?.let { playerController ->
+            playerController.getActiveTrack()?.let { activeTrack ->
+                activeTrack.id != kalam.id
+            } ?: true
+        } ?: true
     }
 
     override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {
@@ -87,7 +102,9 @@ class KalamViewModel @Inject constructor(
             playlistId = 0
         )
 
-        kalamRepository.insert(kalam)
+        viewModelScope.launch {
+            kalamRepository.insert(kalam)
+        }
 
         val destination = File(appContext.filesDir, fileName)
         splitFile.moveTo(destination)

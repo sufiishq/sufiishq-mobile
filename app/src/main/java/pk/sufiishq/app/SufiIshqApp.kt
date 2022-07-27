@@ -7,6 +7,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import pk.sufiishq.app.services.AudioPlayerService
+import pk.sufiishq.app.services.PlayerController
 import pk.sufiishq.app.worker.CacheRemoveWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit
 class SufiIshqApp : Application() {
 
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
+    private var playerController: PlayerController? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -36,6 +38,12 @@ class SufiIshqApp : Application() {
             cacheRemoveWorkRequest
         )
     }
+
+    fun setPlayerController(playerController: PlayerController?) {
+        this.playerController = playerController
+    }
+
+    fun getPlayerController() = playerController
 
     companion object {
         private lateinit var instance: SufiIshqApp

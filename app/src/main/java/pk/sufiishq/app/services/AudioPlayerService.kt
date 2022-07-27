@@ -3,17 +3,14 @@
 package pk.sufiishq.app.services
 
 import android.app.*
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.*
 import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.helpers.SufiishqMediaPlayer
-import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.utils.toast
 import timber.log.Timber
 
@@ -30,7 +27,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun onCreate() {
         super.onCreate()
-        registerReceiver()
         initMusicPlayer()
     }
 
@@ -43,7 +39,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         handler.removeCallbacks(runnable)
         player.stop()
         player.release()
-        unregisterReceiver(actionReceiver)
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
@@ -163,16 +158,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     // PRIVATE METHODS
     // ============================================
 
-    private val actionReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-
-        }
-    }
-
-    private fun registerReceiver() {
-        registerReceiver(actionReceiver, IntentFilter(PLAYER_ACTION))
-    }
-
     private fun initMusicPlayer() {
         player.setOnPreparedListener(this)
         player.setOnErrorListener(this)
@@ -257,7 +242,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     companion object {
         const val NOTIFY_ID = 1
         const val CHANNEL_ID = "SufiIshq"
-        const val PLAYER_ACTION = "pk.sufiishq.app.PLAYER_ACTION"
     }
 
     inner class AudioPlayerBinder : Binder() {

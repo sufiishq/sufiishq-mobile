@@ -23,7 +23,7 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
     private var playlistId = 0
     private var searchKeyword = ""
 
-    fun insert(kalam: Kalam) = kalamDao.insert(kalam)
+    suspend fun insert(kalam: Kalam) = kalamDao.insert(kalam)
 
     suspend fun insertAll(allKalams: List<Kalam>) = kalamDao.insertAll(allKalams)
 
