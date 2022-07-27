@@ -145,7 +145,7 @@ fun KalamItem(
                         kalamMenuItems
                             .filter {
                                 when (it) {
-                                    labelDownload -> kalam.offlineSource?.isEmpty() ?: true
+                                    labelDownload -> kalam.offlineSource.isEmpty() ?: true
                                     labelMarkAsFavorite -> kalam.isFavorite == 0
                                     labelDelete -> {
                                         if (trackType == Screen.Tracks.ALL) {

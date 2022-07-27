@@ -14,7 +14,7 @@ fun Kalam.copyAsNew(
     year: String = this.year,
     location: String = this.location,
     onlineSource: String = this.onlineSource,
-    offlineSource: String? = this.offlineSource,
+    offlineSource: String = this.offlineSource,
     isFavorite: Int = this.isFavorite,
     playlistId: Int = this.playlistId
 ) = Kalam(id, title, code, year, location, onlineSource, offlineSource, isFavorite, playlistId)

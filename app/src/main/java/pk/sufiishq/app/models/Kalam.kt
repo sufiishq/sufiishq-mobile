@@ -19,7 +19,7 @@ data class Kalam(
     val onlineSource: String,
 
     @ColumnInfo(name = "offline_src")
-    var offlineSource: String?,
+    var offlineSource: String = "",
 
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Int,

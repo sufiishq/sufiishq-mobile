@@ -99,18 +99,20 @@ fun TracksView(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(lazyKalamItems) { track ->
-                    KalamItem(
-                        matColors = matColors,
-                        kalam = track!!,
-                        kalamMenuItems,
-                        playerDataProvider,
-                        kalamDataProvider,
-                        playlistDataProvider,
-                        lazyKalamItems,
-                        searchText,
-                        trackType,
-                        playlistId
-                    )
+                    track?.run {
+                        KalamItem(
+                            matColors = matColors,
+                            kalam = track,
+                            kalamMenuItems,
+                            playerDataProvider,
+                            kalamDataProvider,
+                            playlistDataProvider,
+                            lazyKalamItems,
+                            searchText,
+                            trackType,
+                            playlistId
+                        )
+                    }
                 }
             }
         } else {
