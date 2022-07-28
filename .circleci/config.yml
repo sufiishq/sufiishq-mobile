@@ -19,8 +19,8 @@ jobs:
       - run:
           name: Analyze on SonarCloud
           command: |
-            - sonar.projectKey=sufiishq_sufiishq-mobile
-            - sonar.organizatio=sufiishq
+            -Dsonar.projectKey=sufiishq_sufiishq-mobile
+            -Dsonar.organizatio=sufiishq
       - checkout
       - sonarcloud/scan
 
