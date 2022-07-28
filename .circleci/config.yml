@@ -16,6 +16,11 @@ jobs:
     docker:
       - image: 'node:latest'
     steps:
+      - run:
+          name: Analyze on SonarCloud
+          command: |
+            - sonar.projectKey=sufiishq_sufiishq-mobile
+            - sonar.organizatio=sufiishq
       - checkout
       - sonarcloud/scan
 
