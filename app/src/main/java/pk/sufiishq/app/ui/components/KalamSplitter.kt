@@ -42,8 +42,7 @@ fun KalamSplitter(
             is SplitCompleted -> SplitCompletedView(
                 status,
                 showDialog,
-                kalamSplitManager,
-                kalamItemParam
+                kalamSplitManager
             )
             is SplitDone -> SplitDoneView(kalamSplitManager, showDialog, kalamItemParam)
             else -> SplitInProgressView()
@@ -55,8 +54,7 @@ fun KalamSplitter(
 private fun SplitCompletedView(
     status: SplitCompleted,
     showDialog: MutableState<Boolean>,
-    kalamSplitManager: KalamSplitManager,
-    kalamItemParam: KalamItemParam
+    kalamSplitManager: KalamSplitManager
 ) {
     if (status.returnCode == SPLIT_SUCCESS) {
         SplitSuccessView(kalamSplitManager = kalamSplitManager)

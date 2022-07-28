@@ -1,10 +1,12 @@
 package pk.sufiishq.app.utils
 
+import android.content.Context
 import androidx.compose.runtime.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import pk.sufiishq.app.models.Kalam
+import timber.log.Timber
 
 fun <T> State<T?>.optValue(default: T) = value ?: default
 
@@ -31,6 +33,16 @@ fun String?.ifNotEmpty(run: (text: String) -> Unit) {
     this?.let {
         if (it.trim().isNotEmpty()) run(it.trim())
     }
+}
+
+fun Kalam?.hasOfflineSource() = this?.offlineSource?.isNotEmpty() ?: false
+
+fun Kalam?.canPlay(context: Context): Boolean {
+    return if (!this.hasOfflineSource() && !context.isNetworkAvailable()) {
+        context.toast("Network not available")
+        Timber.e("Track Error: Network not available")
+        false
+    } else true
 }
 
 @Composable

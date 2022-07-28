@@ -10,8 +10,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.helpers.SufiishqMediaPlayer
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.isNetworkAvailable
-import pk.sufiishq.app.utils.toast
+import pk.sufiishq.app.utils.canPlay
 import timber.log.Timber
 
 class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -88,8 +87,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun setActiveTrack(kalam: Kalam) {
 
-        if (!canPlay(kalam)) return
-
         handler.removeCallbacks(runnable)
         this.activeKalam = kalam
         currentTrackLength = 0
@@ -103,7 +100,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun doPlay() {
 
-        if (!canPlay(getActiveTrack())) return
+        if (!getActiveTrack().canPlay(this)) return
 
         activeKalam?.let {
 
@@ -175,14 +172,6 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         log("Track Loading: id = ${kalam.id}, title = ${kalam.title}")
     }
 
-    private fun canPlay(kalam: Kalam?): Boolean {
-        return if (!player.canPlayOffline(kalam) && !isNetworkAvailable()) {
-            toast("Network not available")
-            log("Track Error: Network not available")
-            false
-        } else true
-    }
-
     private fun showNotification() {
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -251,17 +240,38 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     }
 
     interface Listener {
-        fun initService(kalam: Kalam) { /* optional */ }
-        fun onTrackUpdated(kalam: Kalam) { /* optional */ }
-        fun onTrackLoading() { /* optional */ }
-        fun onTrackLoaded() { /* optional */ }
-        fun onPlayStart() { /* optional */ }
-        fun onPause() { /* optional */ }
-        fun onResume() { /* optional */ }
-        fun onProgressChanged(progress: Float) { /* optional */ }
-        fun onCompleted(kalam: Kalam) { /* optional */ }
-        fun onStopped() { /* optional */ }
-        fun onError(ex: Exception) { /* optional */ }
+        fun initService(kalam: Kalam) { /* optional */
+        }
+
+        fun onTrackUpdated(kalam: Kalam) { /* optional */
+        }
+
+        fun onTrackLoading() { /* optional */
+        }
+
+        fun onTrackLoaded() { /* optional */
+        }
+
+        fun onPlayStart() { /* optional */
+        }
+
+        fun onPause() { /* optional */
+        }
+
+        fun onResume() { /* optional */
+        }
+
+        fun onProgressChanged(progress: Float) { /* optional */
+        }
+
+        fun onCompleted(kalam: Kalam) { /* optional */
+        }
+
+        fun onStopped() { /* optional */
+        }
+
+        fun onError(ex: Exception) { /* optional */
+        }
     }
 }
 
