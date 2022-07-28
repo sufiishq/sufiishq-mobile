@@ -251,17 +251,17 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     }
 
     interface Listener {
-        fun initService(kalam: Kalam) {}
-        fun onTrackUpdated(kalam: Kalam) {}
-        fun onTrackLoading() {}
-        fun onTrackLoaded() {}
-        fun onPlayStart() {}
-        fun onPause() {}
-        fun onResume() {}
-        fun onProgressChanged(progress: Float) {}
-        fun onCompleted(kalam: Kalam) {}
-        fun onStopped() {}
-        fun onError(ex: Exception) {}
+        fun initService(kalam: Kalam) { /* optional */ }
+        fun onTrackUpdated(kalam: Kalam) { /* optional */ }
+        fun onTrackLoading() { /* optional */ }
+        fun onTrackLoaded() { /* optional */ }
+        fun onPlayStart() { /* optional */ }
+        fun onPause() { /* optional */ }
+        fun onResume() { /* optional */ }
+        fun onProgressChanged(progress: Float) { /* optional */ }
+        fun onCompleted(kalam: Kalam) { /* optional */ }
+        fun onStopped() { /* optional */ }
+        fun onError(ex: Exception) { /* optional */ }
     }
 }
 

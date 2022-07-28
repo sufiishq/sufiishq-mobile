@@ -7,15 +7,12 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -25,19 +22,17 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.components.KalamItem
 import pk.sufiishq.app.ui.components.SearchTextField
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.dummyKalamDataProvider
-import pk.sufiishq.app.utils.dummyPlayerDataProvider
-import pk.sufiishq.app.utils.dummyPlaylistDataProvider
+import pk.sufiishq.app.utils.*
 
 @Composable
 fun TracksView(
     playerDataProvider: PlayerDataProvider,
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
-    navController: NavController,
     trackType: String,
     title: String,
     playlistId: Int
@@ -47,8 +42,9 @@ fun TracksView(
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
-    val searchText = remember { mutableStateOf("") }
+    val searchText = rem("")
     val matColors = MaterialTheme.colors
+    val playlistItems = playlistDataProvider.getAll().observeAsState().optValue(listOf())
 
     val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
     val labelMarkAsFavorite = stringResource(id = R.string.mark_as_favorite)
@@ -101,16 +97,18 @@ fun TracksView(
                 items(lazyKalamItems) { track ->
                     track?.run {
                         KalamItem(
-                            matColors = matColors,
-                            kalam = track,
-                            kalamMenuItems,
-                            playerDataProvider,
-                            kalamDataProvider,
-                            playlistDataProvider,
-                            lazyKalamItems,
-                            searchText,
-                            trackType,
-                            playlistId
+                            KalamItemParam(
+                                kalam = track,
+                                kalamMenuItems,
+                                playerDataProvider,
+                                kalamDataProvider,
+                                playlistDataProvider,
+                                lazyKalamItems,
+                                playlistItems,
+                                searchText,
+                                trackType,
+                                playlistId
+                            )
                         )
                     }
                 }
@@ -133,7 +131,6 @@ fun TracksPreviewLight() {
             playerDataProvider = dummyPlayerDataProvider(),
             kalamDataProvider = dummyKalamDataProvider(),
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController(),
             trackType = "all",
             "All",
             0
@@ -149,7 +146,6 @@ fun TracksPreviewDark() {
             playerDataProvider = dummyPlayerDataProvider(),
             kalamDataProvider = dummyKalamDataProvider(),
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController(),
             trackType = "all",
             "All",
             0

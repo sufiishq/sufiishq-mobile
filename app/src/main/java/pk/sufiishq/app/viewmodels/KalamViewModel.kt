@@ -18,6 +18,7 @@ import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.copyAsNew
 import pk.sufiishq.app.utils.moveTo
@@ -96,11 +97,9 @@ class KalamViewModel @Inject constructor(
         val kalam = sourceKalam.copyAsNew(
             id = 0,
             title = kalamTitle,
-            onlineSource = "",
-            offlineSource = fileName,
-            isFavorite = 0,
-            playlistId = 0
+            onlineSource = ""
         )
+        kalam.offlineSource = fileName
 
         viewModelScope.launch {
             kalamRepository.insert(kalam)
@@ -125,5 +124,23 @@ class KalamViewModel @Inject constructor(
 
     override fun countDownloads(): LiveData<Int> {
         return kalamRepository.countDownloads()
+    }
+
+    override fun markAsFavorite(kalam: Kalam) {
+        appContext.toast("${kalam.title} added in favorite")
+        kalam.isFavorite = 1
+        update(kalam)
+    }
+
+    override fun removeFavorite(kalamItemParam: KalamItemParam) {
+        appContext.toast("${kalamItemParam.kalam.title} removed in favorite")
+        kalamItemParam.kalam.isFavorite = 0
+        update(kalamItemParam.kalam)
+        searchKalam(
+            kalamItemParam.searchText.value,
+            kalamItemParam.trackType,
+            kalamItemParam.playlistId
+        )
+        kalamItemParam.lazyKalamItems.refresh()
     }
 }

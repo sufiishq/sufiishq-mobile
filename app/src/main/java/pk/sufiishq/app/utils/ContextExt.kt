@@ -3,6 +3,7 @@ package pk.sufiishq.app.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.NetworkCapabilities.*
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -12,32 +13,33 @@ fun Context.isNetworkAvailable(): Boolean {
 
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                    return true
-                }
-            }
-        }
+        capabilities?.hasAnyOneTransport(TRANSPORT_CELLULAR, TRANSPORT_WIFI, TRANSPORT_ETHERNET)
+            ?: false
+
     } else {
         try {
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                return true
-            }
+            activeNetworkInfo != null && activeNetworkInfo.isConnected
         } catch (e: Exception) {
+            false
         }
     }
-    return false
+}
+
+fun NetworkCapabilities.hasAnyOneTransport(vararg transport: Int): Boolean {
+    var value = false
+    run lit@{
+        transport.forEach {
+            if (hasTransport(it)) {
+                value = true
+                return@lit
+            }
+        }
+    }
+    return value
 }
 
 fun Context.getColorCompat(@ColorRes colorResId: Int): Int =
