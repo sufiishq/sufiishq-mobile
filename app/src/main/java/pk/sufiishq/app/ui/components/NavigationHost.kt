@@ -68,7 +68,6 @@ fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHos
                     playerDataProvider = playerDataProvider,
                     kalamDataProvider = kalamViewModel,
                     playlistDataProvider = playlistViewModel,
-                    navController = navController,
                     trackType = trackType,
                     title = title,
                     playlistId = playlistId,

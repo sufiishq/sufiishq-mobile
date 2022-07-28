@@ -10,6 +10,7 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.models.Playlist
 import java.io.File
 
@@ -22,25 +23,25 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
         return MutableLiveData(0f)
     }
 
-    override fun updateSeekbarValue(value: Float) {}
+    override fun updateSeekbarValue(value: Float) { /* no comment */ }
 
     override fun getSeekbarAccess(): LiveData<Boolean> {
         return MutableLiveData(true)
     }
 
-    override fun onSeekbarChanged(value: Float) {}
+    override fun onSeekbarChanged(value: Float) { /* no comment */ }
 
     override fun getPlayerState(): LiveData<PlayerState> {
         return MutableLiveData(PlayerState.IDLE)
     }
 
-    override fun doPlayOrPause() {}
+    override fun doPlayOrPause() { /* no comment */ }
 
     override fun getActiveKalam(): LiveData<Kalam?> {
         return MutableLiveData(Kalam(0, "Kalam Title", 1, "1991", "Karachi", "", "", 0, 0))
     }
 
-    override fun changeTrack(kalam: Kalam) {}
+    override fun changeTrack(kalam: Kalam) { /* no comment */ }
 
     override fun getDownloadProgress(): LiveData<Float> {
         return MutableLiveData(0f)
@@ -50,11 +51,11 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
         return MutableLiveData("")
     }
 
-    override fun setDownloadError(error: String) {}
+    override fun setDownloadError(error: String) { /* no comment */ }
 
-    override fun startDownload(kalam: Kalam) {}
+    override fun startDownload(kalam: Kalam) { /* no comment */ }
 
-    override fun disposeDownload() {}
+    override fun disposeDownload() { /* no comment */ }
 }
 
 // ----------------------------------------- //
@@ -62,25 +63,29 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 // ----------------------------------------- //
 fun dummyKalamDataProvider() = object : KalamDataProvider {
 
-    override fun init(trackType: String, playlistId: Int) {}
+    override fun init(trackType: String, playlistId: Int) { /* no comment */ }
 
     override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
         return emptyFlow()
     }
 
-    override fun searchKalam(keyword: String, trackType: String, playlistId: Int) {}
+    override fun searchKalam(keyword: String, trackType: String, playlistId: Int) { /* no comment */ }
 
-    override fun update(kalam: Kalam) {}
+    override fun update(kalam: Kalam) { /* no comment */ }
 
-    override fun delete(kalam: Kalam, trackType: String) {}
+    override fun delete(kalam: Kalam, trackType: String) { /* no comment */ }
 
-    override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {}
+    override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) { /* no comment */ }
 
     override fun countAll(): LiveData<Int> = MutableLiveData(0)
 
     override fun countFavorites(): LiveData<Int> = MutableLiveData(0)
 
     override fun countDownloads(): LiveData<Int> = MutableLiveData(0)
+
+    override fun markAsFavorite(kalam: Kalam) { /* no comment */ }
+
+    override fun removeFavorite(kalamItemParam: KalamItemParam) { /* no comment */ }
 }
 
 fun dummyTrack() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
@@ -100,9 +105,9 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 
     override fun get(id: Int) = MutableLiveData(Playlist(1, "Karachi"))
 
-    override fun add(playlist: Playlist) {}
-    override fun update(playlist: Playlist) {}
-    override fun delete(playlist: Playlist) {}
+    override fun add(playlist: Playlist) { /* no comment */ }
+    override fun update(playlist: Playlist) { /* no comment */ }
+    override fun delete(playlist: Playlist) { /* no comment */ }
     override fun countAll(): LiveData<Int> = MutableLiveData(0)
 }
 

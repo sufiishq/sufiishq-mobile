@@ -22,9 +22,9 @@ data class Kalam(
     var offlineSource: String = "",
 
     @ColumnInfo(name = "is_favorite")
-    var isFavorite: Int,
+    var isFavorite: Int = 0,
 
     @ColumnInfo(name = "playlist_id")
-    var playlistId: Int
+    var playlistId: Int = 0
 
 )

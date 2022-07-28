@@ -19,7 +19,7 @@ fun File.moveTo(destination: File): Completable {
 
 fun File.deleteContent() {
 
-    list { dir, name ->
+    list { _, name ->
         name.endsWith("mp3")
     }?.forEach {
         try {
@@ -53,7 +53,7 @@ fun File.split(
                 }
             }
 
-            override fun onProgress(progress: Float) {}
+            override fun onProgress(progress: Float) { /* no comment */ }
         }
     )
 }

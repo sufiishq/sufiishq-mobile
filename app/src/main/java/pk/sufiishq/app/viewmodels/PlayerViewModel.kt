@@ -98,6 +98,11 @@ class PlayerViewModel @Inject constructor(
         playerController?.setActiveTrack(kalam)
     }
 
+    private fun playStart() {
+        playerState.value = PlayerState.PLAYING
+        seekbarAccess.value = true
+    }
+
     /*=======================================*/
     // KALAM DOWNLOAD
     /*=======================================*/
@@ -193,8 +198,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     override fun onPlayStart() {
-        playerState.value = PlayerState.PLAYING
-        seekbarAccess.value = true
+        playStart()
     }
 
     override fun onPause() {
@@ -202,8 +206,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        playerState.value = PlayerState.PLAYING
-        seekbarAccess.value = true
+        playStart()
     }
 
     override fun onError(ex: Exception) {
