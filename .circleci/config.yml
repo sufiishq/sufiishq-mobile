@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: Analyze on Sonarcloud
-          command: gradlew build sonarqube
+          command: gradle build sonarqube --stacktrace
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
