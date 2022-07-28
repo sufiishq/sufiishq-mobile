@@ -14,7 +14,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.apache.commons.io.FilenameUtils
+import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
+import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.KALAM_DIR
 
@@ -42,60 +45,85 @@ fun KalamItemDownloadDialog(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
 
-                    if (progress < 100) {
-                        Text(text = kalam.title)
-                    }
+                    ShowTitle(progress = progress, title = kalam.title)
 
-                    if (progress > 0 && progress < 100) {
-                        LinearProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            progress = playerDataProvider.getDownloadProgress()
-                                .observeAsState().value
-                                ?: 0f,
-                        )
-                    } else if (progress >= 100) {
-                        kalam.offlineSource =
-                            "$KALAM_DIR/${FilenameUtils.getName(kalam.onlineSource)}"
-                        kalamDataProvider.update(kalam)
-
-                        Text(
-                            buildAnnotatedString {
-                                append("Kalam ")
-                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                    append(kalam.title)
-                                }
-                                append(" successfully downloaded")
-                            }
-                        )
-                    } else {
-                        LinearProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp)
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-
-                        if (progress < 100) {
-                            TextButton(onClick = {
-                                playerDataProvider.disposeDownload()
-                                showDownloadDialog.value = false
-                            }) {
-                                Text(text = "Cancel")
-                            }
-                        } else {
-                            TextButton(onClick = { showDownloadDialog.value = false }) {
-                                Text(text = "OK")
-                            }
+                    when {
+                        (progress > 0 && progress < 100) -> ShowDownloadProgress(playerDataProvider)
+                        (progress >= 100) -> ShowDownloadSuccessfully(kalam, kalamDataProvider)
+                        else -> {
+                            LinearProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp)
+                            )
                         }
                     }
+
+                    DownloadBottomButton(progress, playerDataProvider, showDownloadDialog)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ShowTitle(progress: Float, title: String) {
+    if (progress < 100) Text(text = title)
+}
+
+@Composable
+private fun ShowDownloadProgress(playerDataProvider: PlayerDataProvider) {
+    LinearProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        progress = playerDataProvider.getDownloadProgress()
+            .observeAsState().value
+            ?: 0f,
+    )
+}
+
+@Composable
+private fun ShowDownloadSuccessfully(
+    kalam: Kalam,
+    kalamDataProvider: KalamDataProvider
+) {
+    kalam.offlineSource =
+        "$KALAM_DIR/${FilenameUtils.getName(kalam.onlineSource)}"
+    kalamDataProvider.update(kalam)
+
+    Text(
+        buildAnnotatedString {
+            append("Kalam ")
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                append(kalam.title)
+            }
+            append(" successfully downloaded")
+        }
+    )
+}
+
+@Composable
+private fun DownloadBottomButton(
+    progress: Float,
+    playerDataProvider: PlayerDataProvider,
+    showDownloadDialog: MutableState<Boolean>
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+
+        if (progress < 100) {
+            TextButton(onClick = {
+                playerDataProvider.disposeDownload()
+                showDownloadDialog.value = false
+            }) {
+                Text(text = "Cancel")
+            }
+        } else {
+            TextButton(onClick = { showDownloadDialog.value = false }) {
+                Text(text = "OK")
             }
         }
     }

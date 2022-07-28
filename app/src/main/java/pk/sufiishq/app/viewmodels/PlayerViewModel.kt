@@ -22,6 +22,7 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.services.PlayerController
 import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.canPlay
 import pk.sufiishq.app.utils.moveTo
 import timber.log.Timber
 import java.io.File
@@ -95,7 +96,10 @@ class PlayerViewModel @Inject constructor(
     }
 
     override fun changeTrack(kalam: Kalam) {
-        playerController?.setActiveTrack(kalam)
+        if (kalam.canPlay(appContext)) {
+            playerController?.setActiveTrack(kalam)
+            playerController?.doPlay()
+        }
     }
 
     private fun playStart() {
@@ -189,7 +193,6 @@ class PlayerViewModel @Inject constructor(
 
     override fun onTrackUpdated(kalam: Kalam) {
         activeKalam.value = kalam
-        playerController?.doPlay()
     }
 
     override fun onTrackLoading() {
