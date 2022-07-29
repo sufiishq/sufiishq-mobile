@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
-
 jobs:
   build:
 
@@ -29,13 +26,11 @@ jobs:
         GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICE_JSON }}
       run: echo $GOOGLE_SERVICES > app/google-services.json
 
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
     - name: Build and analyze
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
       run: ./gradlew build sonarqube --stacktrace
