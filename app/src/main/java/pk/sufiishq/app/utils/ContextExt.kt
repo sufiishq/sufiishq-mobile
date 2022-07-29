@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.*
-import android.os.Build
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -12,21 +11,9 @@ import androidx.core.content.ContextCompat
 fun Context.isNetworkAvailable(): Boolean {
 
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val capabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        capabilities?.hasAnyOneTransport(TRANSPORT_CELLULAR, TRANSPORT_WIFI, TRANSPORT_ETHERNET)
-            ?: false
-
-    } else {
-        try {
-            val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            activeNetworkInfo != null && activeNetworkInfo.isConnected
-        } catch (e: Exception) {
-            false
-        }
-    }
+    val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+    return capabilities?.hasAnyOneTransport(TRANSPORT_CELLULAR, TRANSPORT_WIFI, TRANSPORT_ETHERNET)
+        ?: false
 }
 
 fun NetworkCapabilities.hasAnyOneTransport(vararg transport: Int): Boolean {

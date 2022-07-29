@@ -2,12 +2,14 @@
 
 package pk.sufiishq.app.services
 
-import android.app.*
+import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
-import android.os.*
-import pk.sufiishq.app.R
-import pk.sufiishq.app.activities.MainActivity
+import android.os.Binder
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
+import pk.sufiishq.app.helpers.PlayerNotification
 import pk.sufiishq.app.helpers.SufiishqMediaPlayer
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.canPlay
@@ -20,6 +22,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     private val player by lazy { SufiishqMediaPlayer() }
     private val binder by lazy { AudioPlayerBinder() }
     private val handler by lazy { Handler(Looper.getMainLooper()) }
+    private val playerNotification by lazy { PlayerNotification(this) }
     private var activeKalam: Kalam? = null
     private var listener: Listener? = null
     private var currentTrackLength = 0
@@ -173,35 +176,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     }
 
     private fun showNotification() {
-        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            val notificationChannel =
-                NotificationChannel(CHANNEL_ID, "Sufi Ishq", NotificationManager.IMPORTANCE_MIN)
-            notificationChannel.enableLights(false)
-            notificationChannel.setShowBadge(false)
-            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_SECRET
-            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(notificationChannel)
-
-            Notification.Builder(this, CHANNEL_ID)
-        } else {
-            Notification.Builder(this)
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        builder.setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.ic_start_logo)
-            .setTicker(activeKalam?.title)
-            .setOngoing(true)
-            .setContentTitle(activeKalam?.title)
-            .setContentText("${activeKalam?.location} ${activeKalam?.year}")
-
-        startForeground(NOTIFY_ID, builder.build())
+        playerNotification.buildNotification(activeKalam, this)
     }
 
     private fun normalizeLengthToPercent(): Float {

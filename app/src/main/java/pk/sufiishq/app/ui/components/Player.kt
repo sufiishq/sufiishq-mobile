@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,11 +22,12 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dummyPlayerDataProvider
+import pk.sufiishq.app.utils.optValue
 
 @Composable
 fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
 
-    val sliderValue by playerDataProvider.getSeekbarValue().observeAsState()
+    val sliderValue = playerDataProvider.getSeekbarValue().observeAsState()
 
     Box(Modifier.background(matColors.primaryVariant)) {
 
@@ -38,12 +38,12 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
             colors = SliderDefaults.colors(
                 thumbColor = matColors.secondary
             ),
-            value = sliderValue!!,
+            value = sliderValue.optValue(0f),
             valueRange = 0f..100f,
             enabled = playerDataProvider.getSeekbarAccess().observeAsState().value!!,
             onValueChange = { playerDataProvider.updateSeekbarValue(it) },
             onValueChangeFinished = {
-                playerDataProvider.onSeekbarChanged(sliderValue!!)
+                playerDataProvider.onSeekbarChanged(sliderValue.optValue(0f))
             })
 
         Row(
@@ -72,7 +72,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
                 )
             }
 
-            val activeKalam by playerDataProvider.getActiveKalam().observeAsState()
+            val activeKalam = playerDataProvider.getActiveKalam().observeAsState()
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(start = 12.dp)
@@ -82,7 +82,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
                 Text(
                     color = matColors.primary,
                     fontSize = 18.sp,
-                    text = activeKalam?.title ?: "",
+                    text = activeKalam.optValue(null)?.title ?: "",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -91,7 +91,11 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider) {
                 Text(
                     color = matColors.primary,
                     fontSize = 14.sp,
-                    text = "${activeKalam?.location ?: ""} ${activeKalam?.year ?: ""}"
+                    text = "${activeKalam.optValue(null)?.location ?: ""} ${
+                        activeKalam.optValue(
+                            null
+                        )?.year ?: ""
+                    }"
                 )
             }
         }
