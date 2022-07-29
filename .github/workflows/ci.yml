@@ -27,7 +27,7 @@ jobs:
     - name: Write compile time google-services.json file
       env:
         GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICE_JSON }}
-      run: echo $GOOGLE_SERVICES > app/google-services.json
+      run: echo "{\"project_info\":{\"project_number\":\"916715166068\",\"project_id\":\"sufi-ishq-sma\",\"storage_bucket\":\"sufi-ishq-sma.appspot.com\"},\"client\":[{\"client_info\":{\"mobilesdk_app_id\":\"1:916715166068:android:aba3f98704ca1138b07421\",\"android_client_info\":{\"package_name\":\"pk.sufiishq.app\"}},\"oauth_client\":[{\"client_id\":\"916715166068-cq8ska713a33qbi11ud1h9hiokgtld7j.apps.googleusercontent.com\",\"client_type\":3}],\"api_key\":[{\"current_key\":\"AIzaSyBZVHRGF91418W2JTxKyxoSlxZWFmuYgpg\"}],\"services\":{\"appinvite_service\":{\"other_platform_oauth_client\":[{\"client_id\":\"916715166068-cq8ska713a33qbi11ud1h9hiokgtld7j.apps.googleusercontent.com\",\"client_type\":3}]}}}],\"configuration_version\":\"1\"}" > app/google-services.json
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
