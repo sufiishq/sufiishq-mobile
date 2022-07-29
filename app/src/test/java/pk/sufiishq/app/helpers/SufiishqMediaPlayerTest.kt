@@ -1,6 +1,7 @@
 package pk.sufiishq.app.helpers
 
 import android.content.Context
+import android.net.Uri
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -23,13 +24,33 @@ class SufiishqMediaPlayerTest : SufiIshqTest() {
     }
 
     @Test
-    fun testSetDataSource_shouldSetOfflineDataSource() {
+    fun testSetDataSource_should_setOfflineDataSource() {
+
+        every { sufiishqMediaPlayer.setDataSource(any<String>()) } returns Unit
 
         val kalam = mockk<Kalam> {
             every { offlineSource } returns "kalam/mock_kalam.mp3"
         }
+
         sufiishqMediaPlayer.setDataSource(appContext, kalam)
 
-        verify(exactly = 1) { sufiishqMediaPlayer.setDataSource(appContext.filesDir.absolutePath + "/" + kalam.offlineSource) }
+        val path = appContext.filesDir.absolutePath + "/" + kalam.offlineSource
+        verify(exactly = 1) { sufiishqMediaPlayer.setDataSource(path) }
+    }
+
+    @Test
+    fun testSetDataSource_should_setOnlineDataSource() {
+
+        every { sufiishqMediaPlayer.setDataSource(any(), any<Uri>()) } returns Unit
+
+        val kalam = mockk<Kalam> {
+            every { offlineSource } returns ""
+            every { onlineSource } returns "https://sufiishq.pk/media/kalam/dehli/dehli_02.mp3"
+        }
+
+        sufiishqMediaPlayer.setDataSource(appContext, kalam)
+
+        val uri = Uri.parse(kalam.onlineSource)
+        verify(exactly = 1) { sufiishqMediaPlayer.setDataSource(appContext, uri) }
     }
 }
