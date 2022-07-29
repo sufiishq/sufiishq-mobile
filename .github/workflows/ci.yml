@@ -29,12 +29,6 @@ jobs:
         GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICE_JSON }}
       run: echo $GOOGLE_SERVICES > app/google-services.json
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew build --stacktrace
-
     # Sonar integration
     - name: Analyze with SonarCloud
 
@@ -59,3 +53,9 @@ jobs:
           #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
         # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
         #-Dsonar.verbose= # optional, default is false
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build sonarqube --stacktrace
