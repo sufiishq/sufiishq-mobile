@@ -16,7 +16,7 @@ fun File.moveTo(destination: File): Completable {
 
 fun File.deleteContent() {
 
-    list { s, name ->
+    list { _, name ->
         name.endsWith("mp3")
     }?.forEach {
         try {
