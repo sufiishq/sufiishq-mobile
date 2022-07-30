@@ -6,16 +6,12 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id "org.sonarqube" version "3.4.0.2513"
+    id 'jacoco'
+    id 'org.sonarqube' version '3.4.0.2513'
 }
 
-sonarqube {
-    properties {
-        property "sonar.projectKey", "sufiishq_sufiishq-mobile"
-        property "sonar.organization", "sufiishq"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
-}
+apply from: './jacoco.gradle'
+apply from: './sonarqube.gradle'
 
 android {
     compileSdk 31
@@ -38,6 +34,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled true
             shrinkResources true

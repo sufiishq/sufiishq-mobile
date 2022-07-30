@@ -118,7 +118,7 @@ private fun filterLabels(
 ): (label: String) -> Boolean {
     return {
         when (it) {
-            labelDownload -> kalam.offlineSource.isEmpty() ?: true
+            labelDownload -> kalam.offlineSource.isEmpty()
             labelMarkAsFavorite -> kalam.isFavorite == 0
             labelDelete -> {
                 if (trackType == Screen.Tracks.ALL) {
