@@ -20,7 +20,7 @@ import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.utils.copyAsNew
+import pk.sufiishq.app.utils.copyWithDefaults
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
 import java.io.File
@@ -94,12 +94,14 @@ class KalamViewModel @Inject constructor(
         val fileName = "$KALAM_DIR/" + kalamTitle.lowercase().replace(" ", "_")
             .plus("_${System.currentTimeMillis()}.mp3")
 
-        val kalam = sourceKalam.copyAsNew(
+        val kalam = sourceKalam.copyWithDefaults(
             id = 0,
             title = kalamTitle,
-            onlineSource = ""
+            onlineSource = "",
+            offlineSource = fileName,
+            isFavorite = 0,
+            playlistId = 0
         )
-        kalam.offlineSource = fileName
 
         viewModelScope.launch {
             kalamRepository.insert(kalam)
