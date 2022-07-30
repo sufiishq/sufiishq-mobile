@@ -24,7 +24,7 @@ class SufiishqMediaPlayerTest : SufiIshqTest() {
     }
 
     @Test
-    fun testSetDataSource_should_setOfflineDataSource() {
+    fun testSetDataSource_shouldSet_offlineDataSource() {
 
         every { sufiishqMediaPlayer.setDataSource(any<String>()) } returns Unit
 
@@ -39,7 +39,7 @@ class SufiishqMediaPlayerTest : SufiIshqTest() {
     }
 
     @Test
-    fun testSetDataSource_should_setOnlineDataSource() {
+    fun testSetDataSource_shouldSet_onlineDataSource() {
 
         every { sufiishqMediaPlayer.setDataSource(any(), any<Uri>()) } returns Unit
 
