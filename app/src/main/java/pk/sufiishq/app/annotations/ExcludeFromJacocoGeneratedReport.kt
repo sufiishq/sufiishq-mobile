@@ -1,4 +1,4 @@
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.annotations
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS, AnnotationTarget.ANNOTATION_CLASS)

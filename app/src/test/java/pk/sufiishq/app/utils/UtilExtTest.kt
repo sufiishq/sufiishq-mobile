@@ -161,16 +161,4 @@ class UtilExtTest : SufiIshqTest() {
             assertNotEquals(expectedKalam.playlistId, actualKalam.playlistId)
         }
     }
-
-    private fun sampleKalam() = Kalam(
-        1,
-        "kalam-title",
-        1,
-        "1990",
-        "Karachi",
-        "kalam-online-src",
-        "kalam-offline-src",
-        1,
-        1
-    )
 }
