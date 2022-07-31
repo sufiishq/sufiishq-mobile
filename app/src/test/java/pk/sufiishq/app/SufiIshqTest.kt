@@ -40,7 +40,7 @@ abstract class SufiIshqTest {
             val coroutineScope = mockk<CoroutineScope>()
             every {
                 coroutineScope.launch(
-                    context = Dispatchers.Main,
+                    context = any(),
                     block = capture(slot)
                 )
             } returns mockk()
@@ -49,6 +49,7 @@ abstract class SufiIshqTest {
         }
     }
 
+    // WARNING - do not change or remove any property in this method
     protected fun sampleKalam() = Kalam(
         1,
         "kalam-title",

@@ -1,8 +1,10 @@
 package pk.sufiishq.app.viewmodels
 
 import androidx.lifecycle.MutableLiveData
-import io.mockk.*
-import kotlinx.coroutines.Dispatchers
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -22,7 +24,7 @@ class PlaylistViewModelTest : SufiIshqTest() {
     fun setUp() {
         playlistRepository = mockk()
         kalamRepository = mockk()
-        playlistViewModel = PlaylistViewModel(playlistRepository, kalamRepository, Dispatchers.Main)
+        playlistViewModel = PlaylistViewModel(playlistRepository, kalamRepository)
     }
 
     @Test
