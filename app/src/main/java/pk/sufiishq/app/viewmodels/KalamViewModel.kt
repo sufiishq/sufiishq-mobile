@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,9 +35,24 @@ class KalamViewModel @Inject constructor(
     private val kalamRepository: KalamRepository
 ) : ViewModel(), KalamDataProvider {
 
-    private var kalams: Flow<PagingData<Kalam>> = Pager(PagingConfig(pageSize = 10)) {
-        kalamRepository.load()
-    }.flow
+    private var kalams: Flow<PagingData<Kalam>> =
+        Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
+
+    fun pagingSource(): () -> PagingSource<Int, Kalam> {
+        return {
+            kalamRepository.load()
+        }
+    }
+
+    fun canDelete(kalam: Kalam): Boolean {
+
+        // stop playing kalam if it match with deleted kalam
+        return SufiIshqApp.getInstance().getPlayerController()?.let { playerController ->
+            playerController.getActiveTrack()?.let { activeTrack ->
+                activeTrack.id != kalam.id
+            } ?: true
+        } ?: true
+    }
 
     override fun init(trackType: String, playlistId: Int) {
         kalamRepository.setTrackType(trackType)
@@ -82,16 +98,6 @@ class KalamViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun canDelete(kalam: Kalam): Boolean {
-
-        // stop playing kalam if it match with deleted kalam
-        return SufiIshqApp.getInstance().getPlayerController()?.let { playerController ->
-            playerController.getActiveTrack()?.let { activeTrack ->
-                activeTrack.id != kalam.id
-            } ?: true
-        } ?: true
     }
 
     override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {

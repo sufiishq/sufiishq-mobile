@@ -48,6 +48,13 @@ class KalamViewModelTest : SufiIshqTest() {
     }
 
     @Test
+    fun testLoad_shouldLoad_pagingSource() {
+        every { kalamRepository.load() } returns mockk()
+        kalamViewModel.pagingSource().invoke()
+        verify(exactly = 1) { kalamRepository.load() }
+    }
+
+    @Test
     fun testInit_shouldSet_givenParamInKalamRepository() {
 
         kalamViewModel.init(Screen.Tracks.ALL, 1)
@@ -164,6 +171,23 @@ class KalamViewModelTest : SufiIshqTest() {
                 textSlot.captured
             )
         }
+    }
+
+    @Test
+    fun testCanDelete_shouldReturnFalse_whenActiveTrackEqualToGiveTrack() {
+        mockkObject(SufiIshqApp)
+
+        every { SufiIshqApp.getInstance() } returns mockk {
+            every { getPlayerController() } returns mockk {
+                every { getActiveTrack() } returns sampleKalam().copyWithDefaults(
+                    id = 10
+                )
+            }
+        }
+
+        val kalam = sampleKalam().copyWithDefaults(id = 10)
+
+        assertFalse(kalamViewModel.canDelete(kalam))
     }
 
     @Test
