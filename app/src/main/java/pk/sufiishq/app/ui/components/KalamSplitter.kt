@@ -83,8 +83,17 @@ private fun SplitView(
         RangeSlider(
             values = splitStart.optValue(0).toFloat()..splitEnd.optValue(0).toFloat(),
             onValueChange = {
-                kalamSplitManager.setSplitStart(it.start.toInt())
-                kalamSplitManager.setSplitEnd(it.endInclusive.toInt())
+                var start = it.start.toInt()
+                var end = it.endInclusive.toInt()
+
+                when {
+                    (start == kalamLength.optValue(0)) -> start = end.minus(1000)
+                    (end == 0) -> end = 1000
+                    (start == end) -> end = end.plus(1000)
+                }
+
+                kalamSplitManager.setSplitStart(start)
+                kalamSplitManager.setSplitEnd(end)
             },
             valueRange = 0f..kalamLength.optValue(0).toFloat()
         )

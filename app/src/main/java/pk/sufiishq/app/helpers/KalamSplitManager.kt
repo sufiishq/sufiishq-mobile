@@ -8,6 +8,7 @@ import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.*
 import java.io.File
+import java.lang.Integer.max
 import javax.inject.Inject
 
 class KalamSplitManager @Inject constructor(
@@ -54,8 +55,8 @@ class KalamSplitManager @Inject constructor(
             val outFile = File(appContext.cacheDir, CACHE_SPLIT_FILENAME)
             sourceFile.split(
                 outFile,
-                splitStart.value!!.formatTime,
-                (splitEnd.value!! - splitStart.value!!).formatTime
+                splitStart.optValue(0).formatTime,
+                (splitEnd.optValue(0) - splitStart.optValue(0)).formatTime
             ) { returnCode ->
 
                 if (returnCode == SPLIT_IN_PROGRESS) return@split

@@ -49,6 +49,10 @@ fun Kalam?.canPlay(context: Context): Boolean {
     } else true
 }
 
+fun <T> LiveData<T>.optValue(default: T): T {
+    return value ?: default
+}
+
 @Composable
 fun <T> rem(value: T): MutableState<T> {
     return remember { mutableStateOf(value) }

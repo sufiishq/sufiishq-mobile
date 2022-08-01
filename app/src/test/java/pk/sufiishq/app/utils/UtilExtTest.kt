@@ -134,6 +134,18 @@ class UtilExtTest : SufiIshqTest() {
         assertFalse(kalam.canPlay(context))
     }
 
+    @Test
+    fun testOptValue_shouldReturn_actualValueFromLiveData() {
+        val testData = MutableLiveData(10)
+        assertEquals(10, testData.optValue(5))
+    }
+
+    @Test
+    fun testOptValue_shouldReturn_defaultValueFromLiveData() {
+        val testData = MutableLiveData<Int>(null)
+        assertEquals(5, testData.optValue(5))
+    }
+
     private fun verifyKalamAssertion(
         expectedKalam: Kalam,
         actualKalam: Kalam,

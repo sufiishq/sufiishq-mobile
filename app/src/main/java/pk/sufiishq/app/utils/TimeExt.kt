@@ -2,7 +2,7 @@ package pk.sufiishq.app.utils
 
 val Int.formatTime: String
     get() {
-        return if (this > 0) {
+        return if (this > 999) {
             val totalSeconds = this / 1000
             val hours = totalSeconds / 3600
             val minutes = (totalSeconds % 3600) / 60
