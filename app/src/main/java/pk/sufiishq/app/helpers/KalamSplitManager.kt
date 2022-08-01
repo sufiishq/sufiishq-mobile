@@ -8,7 +8,6 @@ import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.*
 import java.io.File
-import java.lang.Integer.max
 import javax.inject.Inject
 
 class KalamSplitManager @Inject constructor(
