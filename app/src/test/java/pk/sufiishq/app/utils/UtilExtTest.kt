@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import org.junit.Assert.*
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
@@ -115,9 +114,6 @@ class UtilExtTest : SufiIshqTest() {
         }
 
         assertTrue(kalam.canPlay(context))
-
-        unmockkStatic(Context::isNetworkAvailable)
-        unmockkStatic(Kalam::hasOfflineSource)
     }
 
     @Test
@@ -136,10 +132,18 @@ class UtilExtTest : SufiIshqTest() {
         }
 
         assertFalse(kalam.canPlay(context))
+    }
 
-        unmockkStatic(Context::isNetworkAvailable)
-        mockkStatic(Context::toast)
-        unmockkStatic(Kalam::hasOfflineSource)
+    @Test
+    fun testOptValue_shouldReturn_actualValueFromLiveData() {
+        val testData = MutableLiveData(10)
+        assertEquals(10, testData.optValue(5))
+    }
+
+    @Test
+    fun testOptValue_shouldReturn_defaultValueFromLiveData() {
+        val testData = MutableLiveData<Int>(null)
+        assertEquals(5, testData.optValue(5))
     }
 
     private fun verifyKalamAssertion(
@@ -169,16 +173,4 @@ class UtilExtTest : SufiIshqTest() {
             assertNotEquals(expectedKalam.playlistId, actualKalam.playlistId)
         }
     }
-
-    private fun sampleKalam() = Kalam(
-        1,
-        "kalam-title",
-        1,
-        "1990",
-        "Karachi",
-        "kalam-online-src",
-        "kalam-offline-src",
-        1,
-        1
-    )
 }

@@ -9,15 +9,14 @@ import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.ui.screen.MainView
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.observeOnce
+import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import javax.inject.Inject
 
@@ -28,6 +27,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     lateinit var kalamRepository: KalamRepository
 
     private val playerViewModel: PlayerViewModel by viewModels()
+    private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,29 +39,20 @@ class MainActivity : ComponentActivity(), ServiceConnection {
             }
         }
 
-        init {
-            bindService(playerIntent, this, Context.BIND_AUTO_CREATE)
-        }
-    }
-
-    private fun init(initiated: () -> Unit) {
-        kalamRepository.countAll().observe(this) { count ->
-            if (count <= 0) {
-                kalamRepository.loadAllFromAssets(this).observe(this) { allKalams ->
-                    lifecycleScope.launch {
-                        kalamRepository.insertAll(allKalams)
-                        initiated()
-                    }
+        with(assetKalamLoaderViewModel) {
+            this.countAll().observe(this@MainActivity) { count ->
+                this.loadAllKalam(count) {
+                    bindService(playerIntent, this@MainActivity, Context.BIND_AUTO_CREATE)
                 }
-            } else {
-                initiated()
             }
         }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         playerViewModel.disposeDownload()
+        assetKalamLoaderViewModel.release()
         unbindService(this)
     }
 

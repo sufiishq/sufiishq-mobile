@@ -3,6 +3,7 @@ package pk.sufiishq.app.data.providers
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import java.io.File
@@ -20,4 +21,5 @@ interface KalamDataProvider {
     fun countDownloads(): LiveData<Int>
     fun markAsFavorite(kalam: Kalam)
     fun removeFavorite(kalamItemParam: KalamItemParam)
+    fun getKalamSplitManager(): KalamSplitManager
 }

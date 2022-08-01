@@ -10,4 +10,8 @@
     <string name="download">Download</string>
     <string name="delete">Delete</string>
     <string name="split_kalam">Split Kalam</string>
+    <string name="error_kalam_delete_on_playing">%s is playing. Can\'t be deleted</string>
+    <string name="kalam_saved_label">%s saved</string>
+    <string name="add_to_favorite">%s added in favorites</string>
+    <string name="remove_from_favorite">%s removed in favorites</string>
 </resources>

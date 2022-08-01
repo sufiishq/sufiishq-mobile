@@ -3,11 +3,8 @@ package pk.sufiishq.app.data.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import io.reactivex.Observable
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
@@ -79,7 +76,6 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
         return kalamDao.countAll()
     }
 
-
     fun countDownloads(): LiveData<Int> {
         return kalamDao.countDownloads()
     }
@@ -96,13 +92,10 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
         kalamDao.delete(kalam)
     }
 
-    fun loadAllFromAssets(context: Context): LiveData<List<Kalam>> {
+    fun loadAllFromAssets(context: Context): Observable<List<Kalam>> {
 
-        val allKalam = MutableLiveData<List<Kalam>>()
-
-        CoroutineScope(Dispatchers.IO).launch {
+        return Observable.create { emitter ->
             val list = mutableListOf<Kalam>()
-
             val fileContent =
                 context.assets.open("kalam.json").bufferedReader().use { it.readText() }
             val jsonArray = JSONArray(fileContent)
@@ -110,11 +103,8 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
                 val jsonObject = jsonArray.getJSONObject(it)
                 list.add(parseKalam(jsonObject))
             }
-
-            allKalam.postValue(list)
+            emitter.onNext(list)
         }
-
-        return allKalam
     }
 
     @SuppressLint("Range")

@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
-import pk.sufiishq.app.utils.SPLIT_SUCCESS
-import pk.sufiishq.app.utils.formatTime
-import pk.sufiishq.app.utils.split
+import pk.sufiishq.app.utils.*
 import java.io.File
 import javax.inject.Inject
 
-class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: Context) {
+class KalamSplitManager @Inject constructor(
+    @ApplicationContext val appContext: Context,
+    private val previewAudioPlayer: PreviewAudioPlayer
+) {
 
     private val splitStatus = MutableLiveData<SplitStatus>(SplitCompleted())
     private val splitStart = MutableLiveData(0)
@@ -23,26 +23,24 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
     private val kalamPreviewLength = MutableLiveData(0)
     private val previewPlayStart = MutableLiveData(false)
     private val previewKalamProgress = MutableLiveData(0)
+    private var kalam: Kalam? = null
 
-    private val mediaPlayer = PreviewAudioPlayer().apply {
-
-        setOnCompletionListener {
-            releaseProgressListener()
+    init {
+        previewAudioPlayer.setOnCompletionListener {
+            previewAudioPlayer.releaseProgressListener()
             previewKalamProgress.value = 0
             previewPlayStart.value = false
         }
 
-        setOnProgressListener {
+        previewAudioPlayer.setOnProgressListener {
             previewKalamProgress.value = it
         }
     }
 
-    private var kalam: Kalam? = null
-
     fun setKalam(kalam: Kalam) {
         this.kalam = kalam
         val duration =
-            mediaPlayer.getDuration(appContext.filesDir.absolutePath + "/" + kalam.offlineSource)
+            previewAudioPlayer.getDuration(appContext.filesDir.absolutePath + "/" + kalam.offlineSource)
         setSplitEnd(duration)
         kalamLength.value = duration
 
@@ -56,13 +54,15 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
             val outFile = File(appContext.cacheDir, CACHE_SPLIT_FILENAME)
             sourceFile.split(
                 outFile,
-                splitStart.value!!.formatTime,
-                (splitEnd.value!! - splitStart.value!!).formatTime
+                splitStart.optValue(0).formatTime,
+                (splitEnd.optValue(0) - splitStart.optValue(0)).formatTime
             ) { returnCode ->
 
+                if (returnCode == SPLIT_IN_PROGRESS) return@split
+
                 if (returnCode == SPLIT_SUCCESS) {
-                    val duration = mediaPlayer.getDuration(outFile.absolutePath)
-                    kalamPreviewLength.value = duration
+                    val duration = previewAudioPlayer.getDuration(outFile.absolutePath)
+                    kalamPreviewLength.postValue(duration)
                 }
 
                 setSplitStatus(SplitCompleted(returnCode))
@@ -76,11 +76,11 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
             if (playerController.isPlaying()) playerController.doPause()
         }
 
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
+        if (previewAudioPlayer.isPlaying()) {
+            previewAudioPlayer.pause()
             previewPlayStart.value = false
         } else {
-            mediaPlayer.start()
+            previewAudioPlayer.start()
             previewPlayStart.value = true
         }
     }
@@ -94,21 +94,32 @@ class KalamSplitManager @Inject constructor(@ApplicationContext val appContext: 
     }
 
     fun setSplitStatus(status: SplitStatus) {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
+        if (previewAudioPlayer.isPlaying()) {
+            previewAudioPlayer.pause()
             previewPlayStart.value = false
         }
-        splitStatus.value = status
+        splitStatus.postValue(status)
     }
 
     fun updateSeekbarValue(value: Float) {
         previewKalamProgress.value = value.toInt()
-        mediaPlayer.seekTo(value.toInt())
+        previewAudioPlayer.seekTo(value.toInt())
+    }
+
+    fun reset() {
+        splitStatus.value = SplitCompleted()
+        splitStart.value = 0
+        splitEnd.value = 0
+
+        kalamLength.value = 0
+        kalamPreviewLength.value = 0
+        previewPlayStart.value = false
+        previewKalamProgress.value = 0
+        kalam = null
     }
 
     fun getKalam() = kalam!!
     fun getSplitFile() = File(appContext.cacheDir, CACHE_SPLIT_FILENAME)
-    fun newInstance(context: Context) = KalamSplitManager(context)
     fun getSplitStatus(): LiveData<SplitStatus> = splitStatus
     fun getSplitStart(): LiveData<Int> = splitStart
     fun getSplitEnd(): LiveData<Int> = splitEnd
