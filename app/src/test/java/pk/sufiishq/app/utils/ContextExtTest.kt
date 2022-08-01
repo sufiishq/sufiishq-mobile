@@ -32,6 +32,19 @@ class ContextExtTest : SufiIshqTest() {
     }
 
     @Test
+    fun testIsNetworkAvailable_shouldReturn_falseWhenGetNullCapabilities() {
+
+        val context = mockk<Context>()
+
+        every { context.getSystemService(any()) } returns mockk<ConnectivityManager> {
+            every { activeNetwork } returns mockk()
+            every { getNetworkCapabilities(any()) } returns null
+        }
+
+        assertFalse(context.isNetworkAvailable())
+    }
+
+    @Test
     fun testHasAnyOneTransport_shouldReturn_true() {
         val capabilities = mockNetworkCapabilities()
 
