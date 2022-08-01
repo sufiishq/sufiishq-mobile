@@ -18,6 +18,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
@@ -32,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class KalamViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
-    private val kalamRepository: KalamRepository
+    private val kalamRepository: KalamRepository,
+    private val kalamSplitManager: KalamSplitManager
 ) : ViewModel(), KalamDataProvider {
 
     private var kalams: Flow<PagingData<Kalam>> =
@@ -157,5 +159,9 @@ class KalamViewModel @Inject constructor(
             kalamItemParam.playlistId
         )
         kalamItemParam.lazyKalamItems.refresh()
+    }
+
+    override fun getKalamSplitManager(): KalamSplitManager {
+        return kalamSplitManager
     }
 }

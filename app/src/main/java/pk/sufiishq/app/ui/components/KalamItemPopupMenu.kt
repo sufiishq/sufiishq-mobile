@@ -6,10 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import pk.sufiishq.app.R
-import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
@@ -23,12 +21,11 @@ fun KalamItemPopupMenu(
 
     val (kalam, kalamMenuItems, playerDataProvider, kalamDataProvider, _, _, _, _, trackType, _) = kalamItemParam
 
-    val context = LocalContext.current
     val showDownloadDialog = rem(false)
     val showDeleteKalamConfirmDialog = rem(false)
     val showPlaylistDialog = rem(false)
     val showSplitterDialog = rem(false)
-    val kalamSplitManager = rem(KalamSplitManager(context))
+    val kalamSplitManager = rem(kalamDataProvider.getKalamSplitManager())
     val downloadError = playerDataProvider.getDownloadError().observeAsState()
 
     DropdownMenu(
@@ -64,7 +61,7 @@ fun KalamItemPopupMenu(
                         }
                         labelDelete -> showDeleteKalamConfirmDialog.value = true
                         labelSplitKalam -> {
-                            kalamSplitManager.value = kalamSplitManager.value.newInstance(context)
+                            kalamSplitManager.value.reset()
                             kalamSplitManager.value.setKalam(kalam)
                             showSplitterDialog.value = true
                         }

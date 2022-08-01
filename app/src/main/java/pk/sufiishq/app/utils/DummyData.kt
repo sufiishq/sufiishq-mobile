@@ -1,15 +1,21 @@
 package pk.sufiishq.app.utils
 
+import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.PlayerState
+import pk.sufiishq.app.helpers.PreviewAudioPlayer
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.models.Playlist
@@ -104,6 +110,13 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     }
 
     override fun removeFavorite(kalamItemParam: KalamItemParam) { /* no comment */
+    }
+
+    override fun getKalamSplitManager(): KalamSplitManager {
+        return KalamSplitManager(
+            SufiIshqApp.getInstance(),
+            PreviewAudioPlayer(Handler(Looper.getMainLooper()), MediaPlayer())
+        )
     }
 }
 

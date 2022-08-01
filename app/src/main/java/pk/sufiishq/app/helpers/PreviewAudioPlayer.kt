@@ -2,39 +2,42 @@ package pk.sufiishq.app.helpers
 
 import android.media.MediaPlayer
 import android.os.Handler
-import android.os.Looper
+import javax.inject.Inject
 
-class PreviewAudioPlayer : MediaPlayer() {
+class PreviewAudioPlayer @Inject constructor(
+    private val handler: Handler,
+    private val sourcePlayer: MediaPlayer
+) {
 
     private var onProgressChange: (progress: Int) -> Unit = {}
-    private val handler = Handler(Looper.getMainLooper())
+
     private val runnable = object : Runnable {
         override fun run() {
-            onProgressChange(currentPosition)
-            handler.postDelayed(this, 1000)
+            getProgressListener().invoke(sourcePlayer.currentPosition)
+            handler.postDelayed(this, UPDATE_DELAY)
         }
     }
 
-    override fun start() {
-        super.start()
+    fun start() {
+        sourcePlayer.start()
         handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, 1000)
+        handler.postDelayed(runnable, UPDATE_DELAY)
     }
 
-    override fun pause() {
-        super.pause()
+    fun pause() {
+        sourcePlayer.pause()
         handler.removeCallbacks(runnable)
     }
 
     fun getDuration(path: String): Int {
-        reset()
-        setDataSource(path)
-        prepare()
-        return duration
+        sourcePlayer.reset()
+        sourcePlayer.setDataSource(path)
+        sourcePlayer.prepare()
+        return sourcePlayer.duration
     }
 
-    override fun stop() {
-        super.stop()
+    fun stop() {
+        sourcePlayer.stop()
         handler.removeCallbacks(runnable)
     }
 
@@ -42,7 +45,27 @@ class PreviewAudioPlayer : MediaPlayer() {
         this.onProgressChange = onProgressChange
     }
 
+    fun getProgressListener(): (progress: Int) -> Unit {
+        return onProgressChange
+    }
+
     fun releaseProgressListener() {
         handler.removeCallbacks(runnable)
+    }
+
+    fun isPlaying(): Boolean {
+        return sourcePlayer.isPlaying
+    }
+
+    fun seekTo(msec: Int) {
+        sourcePlayer.seekTo(msec)
+    }
+
+    fun setOnCompletionListener(listener: MediaPlayer.OnCompletionListener) {
+        sourcePlayer.setOnCompletionListener(listener)
+    }
+
+    companion object {
+        private const val UPDATE_DELAY = 1000L
     }
 }

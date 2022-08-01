@@ -10,8 +10,8 @@ import pk.sufiishq.app.di.qualifier.DefaultDispatcher
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.di.qualifier.MainDispatcher
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 class DispatcherModule {
 
     @DefaultDispatcher
