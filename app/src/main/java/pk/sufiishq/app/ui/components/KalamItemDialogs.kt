@@ -20,6 +20,7 @@ import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.isOfflineFileExists
 
 @Composable
 fun KalamItemDownloadDialog(
@@ -90,7 +91,12 @@ private fun ShowDownloadSuccessfully(
 ) {
     kalam.offlineSource =
         "$KALAM_DIR/${FilenameUtils.getName(kalam.onlineSource)}"
-    kalamDataProvider.update(kalam)
+
+    if (kalam.isOfflineFileExists()) {
+        kalamDataProvider.update(kalam)
+    } else {
+        kalam.offlineSource = ""
+    }
 
     Text(
         buildAnnotatedString {

@@ -153,6 +153,8 @@ class KalamViewModel @Inject constructor(
         )
         kalamItemParam.kalam.isFavorite = 0
         update(kalamItemParam.kalam)
+
+        // refresh list in case you are on favorites screen
         searchKalam(
             kalamItemParam.searchText.value,
             kalamItemParam.trackType,
@@ -163,5 +165,17 @@ class KalamViewModel @Inject constructor(
 
     override fun getKalamSplitManager(): KalamSplitManager {
         return kalamSplitManager
+    }
+
+    override fun getActiveTrackType(): String {
+        return kalamRepository.getTrackType()
+    }
+
+    override fun getActivePlaylistId(): Int {
+        return kalamRepository.getPlaylistId()
+    }
+
+    override fun getActiveSearchKeyword(): String {
+        return kalamRepository.getSearchKeyword()
     }
 }

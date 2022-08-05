@@ -5,8 +5,12 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.models.Kalam
 import timber.log.Timber
+import java.io.File
+
+val app: SufiIshqApp = SufiIshqApp.getInstance()
 
 fun <T> State<T?>.optValue(default: T) = value ?: default
 
@@ -51,6 +55,10 @@ fun Kalam?.canPlay(context: Context): Boolean {
 
 fun <T> LiveData<T>.optValue(default: T): T {
     return value ?: default
+}
+
+fun Kalam.isOfflineFileExists(): Boolean {
+    return File(app.filesDir.absolutePath + File.separator + offlineSource).exists()
 }
 
 @Composable

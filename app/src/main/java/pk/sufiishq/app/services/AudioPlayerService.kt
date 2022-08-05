@@ -2,20 +2,29 @@
 
 package pk.sufiishq.app.services
 
-import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import androidx.lifecycle.LifecycleService
+import dagger.hilt.android.AndroidEntryPoint
+import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.helpers.PlayerNotification
+import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.helpers.SufiishqMediaPlayer
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.storage.KeyValueStorage
+import pk.sufiishq.app.utils.IS_SHUFFLE_ON
 import pk.sufiishq.app.utils.canPlay
 import timber.log.Timber
+import javax.inject.Inject
 
-class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
+@AndroidEntryPoint
+class AudioPlayerService : LifecycleService(), MediaPlayer.OnPreparedListener,
+    MediaPlayer.OnErrorListener,
     MediaPlayer.OnCompletionListener,
     PlayerController {
 
@@ -25,14 +34,24 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     private val playerNotification by lazy { PlayerNotification(this) }
     private var activeKalam: Kalam? = null
     private var listener: Listener? = null
-    private var currentTrackLength = 0
+    private var currentTrackPosition = 0
+    private var trackType = Screen.Tracks.ALL
+    private var playlistId = 0
+
+    @Inject
+    lateinit var kalamRepository: KalamRepository
+
+    @Inject
+    @SecureSharedPreferences
+    lateinit var keyValueStorage: KeyValueStorage
 
     override fun onCreate() {
         super.onCreate()
         initMusicPlayer()
     }
 
-    override fun onBind(p0: Intent?): IBinder {
+    override fun onBind(intent: Intent): IBinder {
+        super.onBind(intent)
         return binder
     }
 
@@ -45,10 +64,10 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun onPrepared(p0: MediaPlayer?) {
 
-        listener?.onTrackLoaded()
+        listener?.onTrackLoaded(player.duration)
         log("Track Loaded: id = ${activeKalam?.id}, title = ${activeKalam?.title}")
 
-        player.seekTo(currentTrackLength)
+        player.seekTo(currentTrackPosition)
         player.start()
 
         showNotification()
@@ -60,18 +79,25 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun onError(mediaPlayer: MediaPlayer?, what: Int, extra: Int): Boolean {
         handler.removeCallbacks(runnable)
-        currentTrackLength = 0
+        currentTrackPosition = 0
         listener?.onError(RuntimeException("Something went wrong"))
         log("Track Error: id = ${activeKalam?.id}, title = ${activeKalam?.title}, src = ${activeKalam?.onlineSource} | what $what - extra $extra")
         return true
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
-        handler.removeCallbacks(runnable)
-        player.stop()
-        currentTrackLength = 0
-        listener?.onCompleted(activeKalam!!)
-        log("Track Completed: id = ${activeKalam?.id}, title = ${activeKalam?.title}")
+        kalamRepository.getNextKalam(getActiveTrack()!!.id, trackType, playlistId, false)
+            .observe(this) { nextKalam ->
+                if (nextKalam == null) {
+                    allTrackCompleted()
+                    return@observe
+                }
+
+                if (nextKalam.canPlay(this)) {
+                    setActiveTrack(nextKalam, trackType, playlistId)
+                    doPlay()
+                }
+            }
     }
 
     // ============================================
@@ -88,11 +114,13 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         return activeKalam
     }
 
-    override fun setActiveTrack(kalam: Kalam) {
+    override fun setActiveTrack(kalam: Kalam, trackType: String, playlistId: Int) {
+        this.trackType = trackType
+        this.playlistId = playlistId
 
         handler.removeCallbacks(runnable)
         this.activeKalam = kalam
-        currentTrackLength = 0
+        currentTrackPosition = 0
         listener?.onTrackUpdated(kalam)
         log("Track Updated: id = ${kalam.id}, title = ${kalam.title}")
     }
@@ -108,9 +136,9 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         activeKalam?.let {
 
             // resume current track
-            if (currentTrackLength > 0) {
+            if (currentTrackPosition > 0) {
 
-                player.seekTo(currentTrackLength)
+                player.seekTo(currentTrackPosition)
                 player.start()
 
                 showNotification()
@@ -129,7 +157,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     override fun doPause() {
         if (isPlaying()) {
             player.pause()
-            currentTrackLength = player.currentPosition
+            currentTrackPosition = player.currentPosition
             stopForeground(true)
             handler.removeCallbacks(runnable)
             listener?.onPause()
@@ -139,18 +167,36 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun seekTo(value: Float) {
         activeKalam?.let {
-            currentTrackLength = normalizePercentToLength(value)
-            log("seekTo: value = $value, currentLength = $currentTrackLength")
+            currentTrackPosition = normalizePercentToLength(value)
+            log("seekTo: value = $value, currentLength = $currentTrackPosition")
             handler.removeCallbacks(runnable)
             newPlay(it)
         }
     }
 
     override fun getCurrentProgress(): Float {
-        return if (currentTrackLength > 0) {
+        return if (currentTrackPosition > 0) {
             normalizeLengthToPercent()
         } else {
             0f
+        }
+    }
+
+    override fun playNext() {
+        getActiveTrack()?.let { kalam ->
+            kalamRepository.getNextKalam(kalam.id, trackType, playlistId, keyValueStorage.get(IS_SHUFFLE_ON, false))
+                .observe(this) { nextKalam ->
+                    playNextOrPrevious(nextKalam)
+                }
+        }
+    }
+
+    override fun playPrevious() {
+        getActiveTrack()?.let { kalam ->
+            kalamRepository.getPreviousKalam(kalam.id, trackType, playlistId, keyValueStorage.get(IS_SHUFFLE_ON, false))
+                .observe(this) { previousKalam ->
+                    playNextOrPrevious(previousKalam)
+                }
         }
     }
 
@@ -191,13 +237,32 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         return (value / 100f * player.duration.toFloat()).toInt()
     }
 
+    private fun playNextOrPrevious(kalam: Kalam?) {
+        kalam?.let {
+            if (kalam.canPlay(this)) {
+                setActiveTrack(kalam, trackType, playlistId)
+                if (isPlaying()) {
+                    doPlay()
+                }
+            }
+        }
+    }
+
+    private fun allTrackCompleted() {
+        handler.removeCallbacks(runnable)
+        player.stop()
+        currentTrackPosition = 0
+        listener?.onCompleted(activeKalam!!)
+        log("Track Completed: id = ${activeKalam?.id}, title = ${activeKalam?.title}")
+    }
+
     private fun log(message: String) {
         Timber.v(message)
     }
 
     private val runnable = object : Runnable {
         override fun run() {
-            listener?.onProgressChanged(normalizeLengthToPercent())
+            listener?.onProgressChanged(player.currentPosition, normalizeLengthToPercent())
             log("On Progress Changed: ${normalizeLengthToPercent()}")
             handler.postDelayed(this, 1000)
         }
@@ -224,7 +289,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         fun onTrackLoading() { /* optional */
         }
 
-        fun onTrackLoaded() { /* optional */
+        fun onTrackLoaded(totalDuration: Int) { /* optional */
         }
 
         fun onPlayStart() { /* optional */
@@ -236,7 +301,7 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         fun onResume() { /* optional */
         }
 
-        fun onProgressChanged(progress: Float) { /* optional */
+        fun onProgressChanged(currentPosition: Int, progress: Float) { /* optional */
         }
 
         fun onCompleted(kalam: Kalam) { /* optional */
@@ -253,10 +318,12 @@ class AudioPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 interface PlayerController {
     fun setPlayerListener(listener: AudioPlayerService.Listener?)
     fun getActiveTrack(): Kalam?
-    fun setActiveTrack(kalam: Kalam)
+    fun setActiveTrack(kalam: Kalam, trackType: String, playlistId: Int)
     fun isPlaying(): Boolean
     fun doPlay()
     fun doPause()
     fun seekTo(value: Float)
     fun getCurrentProgress(): Float
+    fun playNext()
+    fun playPrevious()
 }

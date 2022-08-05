@@ -3,8 +3,10 @@ package pk.sufiishq.app.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -93,7 +95,7 @@ fun DashboardView(
                         title = all,
                         count = kalamDataProvider.countAll().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_check_circle_24,
-                        bgColor = Color(226, 83, 72, 255)
+                        iconColor = Color(226, 182, 72, 255)
                     ) {
                         navController.navigate(Screen.Tracks.withArgs(Screen.Tracks.ALL, all, "0"))
                     }
@@ -102,7 +104,7 @@ fun DashboardView(
                         title = favorites,
                         count = kalamDataProvider.countFavorites().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_favorite_border_24,
-                        bgColor = Color(226, 182, 72, 255)
+                        iconColor = Color(226, 83, 72, 255)
                     ) {
                         navController.navigate(
                             Screen.Tracks.withArgs(
@@ -123,7 +125,7 @@ fun DashboardView(
                         title = downloads,
                         count = kalamDataProvider.countDownloads().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_cloud_download_24,
-                        bgColor = Color(154, 226, 72, 255)
+                        iconColor = Color(154, 226, 72, 255)
                     ) {
                         navController.navigate(
                             Screen.Tracks.withArgs(
@@ -138,7 +140,7 @@ fun DashboardView(
                         title = playlist,
                         count = playlistDataProvider.countAll().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_playlist_play_24,
-                        bgColor = Color(72, 190, 226, 255)
+                        iconColor = Color(72, 190, 226, 255)
                     ) {
                         navController.navigate(Screen.Playlist.route)
                     }
@@ -149,7 +151,22 @@ fun DashboardView(
 }
 
 @Composable
-fun TrackButton(title: String, count: Int, icon: Int, bgColor: Color, navigate: () -> Unit) {
+fun TrackButton(
+    title: String,
+    count: Int,
+    icon: Int,
+    iconColor: Color,
+    navigate: () -> Unit
+) {
+
+    var bgColor = Color(233, 233, 233, 255)
+    var textColor = Color(24, 24, 24, 255)
+
+    if (isSystemInDarkTheme()) {
+        bgColor = Color(34, 34, 34, 255)
+        textColor = Color(247, 247, 247, 255)
+    }
+
     Box(modifier = Modifier
         .padding(6.dp)
         .clip(RoundedCornerShape(5.dp))
@@ -170,10 +187,11 @@ fun TrackButton(title: String, count: Int, icon: Int, bgColor: Color, navigate: 
                     .fillMaxWidth()
             ) {
 
-                Image(
+                Icon(
                     modifier = Modifier.padding(10.dp),
                     painter = painterResource(id = icon),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = iconColor
                 )
 
                 Column(
@@ -182,13 +200,13 @@ fun TrackButton(title: String, count: Int, icon: Int, bgColor: Color, navigate: 
                     Text(
                         text = "$count",
                         fontSize = 30.sp,
-                        color = Color.White,
-                        fontFamily = FontFamily.Serif
+                        color = textColor,
+                        fontFamily = FontFamily.Serif,
                     )
                     Text(
                         modifier = Modifier.padding(start = 2.dp),
                         text = title,
-                        color = Color.White
+                        color = textColor,
                     )
                 }
             }

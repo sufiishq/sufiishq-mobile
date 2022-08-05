@@ -21,7 +21,7 @@ data class Kalam(
     @ColumnInfo(name = "offline_src")
     var offlineSource: String = "",
 
-    @ColumnInfo(name = "is_favorite")
+    @ColumnInfo(name = "favorite")
     var isFavorite: Int = 0,
 
     @ColumnInfo(name = "playlist_id")

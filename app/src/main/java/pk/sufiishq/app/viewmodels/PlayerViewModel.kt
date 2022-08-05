@@ -14,6 +14,7 @@ import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.apache.commons.io.FilenameUtils
+import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.helpers.FileDownloader
@@ -21,9 +22,7 @@ import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.services.PlayerController
-import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.utils.canPlay
-import pk.sufiishq.app.utils.moveTo
+import pk.sufiishq.app.utils.*
 import timber.log.Timber
 import java.io.File
 import java.net.SocketException
@@ -40,8 +39,11 @@ class PlayerViewModel @Inject constructor(
 
     private val seekbarValue = MutableLiveData(0f)
     private val seekbarAccess = MutableLiveData(false)
+    private val currentPosition = MutableLiveData(0)
+    private val totalDuration = MutableLiveData(0)
     private val activeKalam = MutableLiveData<Kalam?>()
     private val playerState = MutableLiveData(PlayerState.IDLE)
+    private val shuffleState = MutableLiveData(IS_SHUFFLE_ON.getFromStorage(false))
     private var playerController: PlayerController? = null
 
     private val downloadProgress = MutableLiveData(0f)
@@ -67,6 +69,9 @@ class PlayerViewModel @Inject constructor(
 
     override fun updateSeekbarValue(value: Float) {
         seekbarValue.value = value
+        totalDuration.value?.let {
+            currentPosition.value = (value / 100f * it.toFloat()).toInt()
+        }
     }
 
     override fun getSeekbarAccess(): LiveData<Boolean> {
@@ -95,16 +100,62 @@ class PlayerViewModel @Inject constructor(
         return activeKalam
     }
 
-    override fun changeTrack(kalam: Kalam) {
+    override fun changeTrack(kalam: Kalam, trackType: String, playlistId: Int) {
         if (kalam.canPlay(appContext)) {
-            playerController?.setActiveTrack(kalam)
+            currentPosition.value = 0
+            playerController?.setActiveTrack(kalam, trackType, playlistId)
             playerController?.doPlay()
+        }
+    }
+
+    override fun playNext() {
+        getPlayerState().value?.let {
+            if (it != PlayerState.LOADING) {
+                currentPosition.value = 0
+                playerController?.playNext()
+            }
+        }
+
+    }
+
+    override fun playPrevious() {
+        getPlayerState().value?.let {
+            if (it != PlayerState.LOADING) {
+                currentPosition.value = 0
+                playerController?.playPrevious()
+            }
         }
     }
 
     private fun playStart() {
         playerState.value = PlayerState.PLAYING
         seekbarAccess.value = true
+    }
+
+    override fun getShuffleState(): LiveData<Boolean> {
+        return shuffleState
+    }
+
+    override fun setShuffleState(shuffle: Boolean) {
+        IS_SHUFFLE_ON.putInStorage(shuffle)
+        shuffleState.postValue(IS_SHUFFLE_ON.getFromStorage(false))
+    }
+
+    override fun getCurrentPosition(): LiveData<Int> {
+        return currentPosition
+    }
+
+    override fun getTotalDuration(): LiveData<Int> {
+        return totalDuration
+    }
+
+    override fun getMenuItems(): List<String> {
+        return listOf(
+            appContext.getString(R.string.mark_as_favorite),
+            appContext.getString(R.string.remove_favorite),
+            appContext.getString(R.string.download),
+            appContext.getString(R.string.add_to_playlist),
+        )
     }
 
     /*=======================================*/
@@ -193,6 +244,7 @@ class PlayerViewModel @Inject constructor(
 
     override fun onTrackUpdated(kalam: Kalam) {
         activeKalam.value = kalam
+        seekbarValue.value = 0f
     }
 
     override fun onTrackLoading() {
@@ -226,8 +278,13 @@ class PlayerViewModel @Inject constructor(
         seekbarAccess.value = false
     }
 
-    override fun onProgressChanged(progress: Float) {
-        super.onProgressChanged(progress)
+    override fun onProgressChanged(currentPosition: Int, progress: Float) {
         seekbarValue.value = progress
+        this.currentPosition.value = currentPosition
+    }
+
+    override fun onTrackLoaded(totalDuration: Int) {
+        this.totalDuration.value = totalDuration
+        playerState.value = PlayerState.IDLE
     }
 }
