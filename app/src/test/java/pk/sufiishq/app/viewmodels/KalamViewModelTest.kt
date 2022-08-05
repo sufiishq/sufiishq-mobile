@@ -326,7 +326,7 @@ class KalamViewModelTest : SufiIshqTest() {
         kalamViewModelSpy.markAsFavorite(sourceKalam)
 
         assertEquals(
-            context.getString(R.string.add_to_favorite).format(sourceKalam.title),
+            context.getString(R.string.favorite_added).format(sourceKalam.title),
             textSlot.captured
         )
         assertEquals(1, kalamSlot.captured.isFavorite)
@@ -374,7 +374,7 @@ class KalamViewModelTest : SufiIshqTest() {
         kalamViewModelSpy.removeFavorite(kalamItemParam)
 
         assertEquals(
-            context.getString(R.string.remove_from_favorite).format(kalamItemParam.kalam.title),
+            context.getString(R.string.favorite_removed).format(kalamItemParam.kalam.title),
             textSlot.captured
         )
         assertEquals(0, kalamSlot.captured.isFavorite)

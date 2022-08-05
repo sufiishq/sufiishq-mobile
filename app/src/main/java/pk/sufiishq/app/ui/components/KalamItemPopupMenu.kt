@@ -35,9 +35,9 @@ fun KalamItemPopupMenu(
         val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
         val labelMarkAsFavorite = stringResource(id = R.string.mark_as_favorite)
         val labelRemoveFavorite = stringResource(id = R.string.remove_favorite)
-        val labelDownload = stringResource(id = R.string.download)
+        val labelDownload = stringResource(id = R.string.download_label)
         val labelSplitKalam = stringResource(id = R.string.split_kalam)
-        val labelDelete = stringResource(id = R.string.delete)
+        val labelDelete = stringResource(id = R.string.delete_label)
 
         kalamMenuItems
             .filter(
@@ -68,7 +68,7 @@ fun KalamItemPopupMenu(
                     }
                     isExpanded.value = false
                 }) {
-                    Text(text = label)
+                    PopupMenuLabel(label = label)
                 }
             }
     }
