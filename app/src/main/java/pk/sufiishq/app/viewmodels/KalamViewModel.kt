@@ -142,14 +142,14 @@ class KalamViewModel @Inject constructor(
     }
 
     override fun markAsFavorite(kalam: Kalam) {
-        appContext.toast(appContext.getString(R.string.add_to_favorite).format(kalam.title))
+        appContext.toast(appContext.getString(R.string.favorite_added).format(kalam.title))
         kalam.isFavorite = 1
         update(kalam)
     }
 
     override fun removeFavorite(kalamItemParam: KalamItemParam) {
         appContext.toast(
-            appContext.getString(R.string.remove_from_favorite).format(kalamItemParam.kalam.title)
+            appContext.getString(R.string.favorite_removed).format(kalamItemParam.kalam.title)
         )
         kalamItemParam.kalam.isFavorite = 0
         update(kalamItemParam.kalam)

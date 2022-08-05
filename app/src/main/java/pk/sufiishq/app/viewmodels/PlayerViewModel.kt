@@ -153,7 +153,7 @@ class PlayerViewModel @Inject constructor(
         return listOf(
             appContext.getString(R.string.mark_as_favorite),
             appContext.getString(R.string.remove_favorite),
-            appContext.getString(R.string.download),
+            appContext.getString(R.string.download_label),
             appContext.getString(R.string.add_to_playlist),
         )
     }

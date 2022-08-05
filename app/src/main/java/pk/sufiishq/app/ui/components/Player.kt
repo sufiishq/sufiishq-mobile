@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -204,7 +203,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
                     )
                 }
 
-                Box() {
+                Box {
 
                     IconButton(onClick = {
                         showMenu.value = !showMenu.value
@@ -222,7 +221,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
 
                         val labelMarkAsFavorite = stringResource(id = R.string.mark_as_favorite)
                         val labelRemoveFavorite = stringResource(id = R.string.remove_favorite)
-                        val labelDownload = stringResource(id = R.string.download)
+                        val labelDownload = stringResource(id = R.string.download_label)
                         val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
 
                         menu.value
@@ -243,6 +242,7 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
                             }
                             .forEach { label ->
                                 DropdownMenuItem(onClick = {
+                                    showMenu.value = false
                                     when (label) {
                                         labelAddToPlaylist -> showPlaylistDialog.value = true
                                         labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(activeKalam.value!!)
@@ -252,9 +252,8 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
                                             playerDataProvider.startDownload(activeKalam.value!!)
                                         }
                                     }
-                                    showMenu.value = false
                                 }) {
-                                    Text(text = label)
+                                    PopupMenuLabel(label = label)
                                 }
                             }
                     }
@@ -267,32 +266,6 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
                 )
             }
 
-
-            /*Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(start = 12.dp)
-            ) {
-
-                // kalam title
-                Text(
-                    color = matColors.primary,
-                    fontSize = 18.sp,
-                    text = activeKalam.optValue(null)?.title ?: "",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                // kalam meta info
-                Text(
-                    color = matColors.primary,
-                    fontSize = 14.sp,
-                    text = "${activeKalam.optValue(null)?.location ?: ""} ${
-                        activeKalam.optValue(
-                            null
-                        )?.year ?: ""
-                    }"
-                )
-            }*/
         }
     }
 
