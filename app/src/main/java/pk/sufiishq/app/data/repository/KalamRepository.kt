@@ -4,12 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
+import androidx.sqlite.db.SimpleSQLiteQuery
 import io.reactivex.Observable
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.CODE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.FAVORITE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.ID
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.LOCATION
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.OFFLINE_SRC
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.ONLINE_SRC
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.PLAYLIST_ID
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.TITLE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.YEAR
 import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.Screen.Tracks.DOWNLOADS
+import pk.sufiishq.app.helpers.Screen.Tracks.FAVORITES
+import pk.sufiishq.app.helpers.Screen.Tracks.PLAYLIST
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.utils.KALAM_TABLE_NAME
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,6 +49,12 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
     fun setSearchKeyword(searchKeyword: String) {
         this.searchKeyword = searchKeyword
     }
+
+    fun getTrackType() = trackType
+
+    fun getPlaylistId() = playlistId
+
+    fun getSearchKeyword() = searchKeyword
 
     fun load(): PagingSource<Int, Kalam> {
         return when (trackType) {
@@ -70,6 +90,75 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     fun getDefaultKalam(): LiveData<Kalam> {
         return kalamDao.getFirstKalam()
+    }
+
+    fun getNextKalam(
+        id: Int,
+        trackType: String,
+        playlistId: Int,
+        shuffle: Boolean
+    ): LiveData<Kalam?> {
+
+        if (shuffle) return getRandomKalam(trackType, playlistId)
+
+        val query = buildString {
+            append("SELECT * FROM kalam ")
+            append("WHERE $ID < $id ")
+
+            when (trackType) {
+                DOWNLOADS -> append("AND $OFFLINE_SRC != '' ")
+                FAVORITES -> append("AND $FAVORITE = 1 ")
+                PLAYLIST -> append("AND $PLAYLIST_ID = $playlistId ")
+            }
+
+            append("ORDER BY $ID DESC ")
+            append("LIMIT 1")
+        }
+
+        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
+    }
+
+    fun getPreviousKalam(
+        id: Int,
+        trackType: String,
+        playlistId: Int,
+        shuffle: Boolean
+    ): LiveData<Kalam?> {
+
+        if (shuffle) return getRandomKalam(trackType, playlistId)
+
+        val query = buildString {
+            append("SELECT * FROM kalam ")
+            append("WHERE $ID > $id ")
+
+            when (trackType) {
+                DOWNLOADS -> append("AND $OFFLINE_SRC != '' ")
+                FAVORITES -> append("AND $FAVORITE = 1 ")
+                PLAYLIST -> append("AND $PLAYLIST_ID = $playlistId ")
+            }
+
+            append("ORDER BY $ID ASC ")
+            append("LIMIT 1")
+        }
+
+        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
+    }
+
+    fun getRandomKalam(trackType: String, playlistId: Int): LiveData<Kalam?> {
+        val query = buildString {
+            append("SELECT * FROM $KALAM_TABLE_NAME ")
+
+            when (trackType) {
+                DOWNLOADS -> append("WHERE $OFFLINE_SRC != '' ")
+                FAVORITES -> append("WHERE $FAVORITE = 1 ")
+                PLAYLIST -> append("WHERE $PLAYLIST_ID = $playlistId ")
+            }
+
+            append("ORDER BY random() ")
+            append("LIMIT 1")
+        }
+
+        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
     }
 
     fun countAll(): LiveData<Int> {
@@ -111,24 +200,24 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
     private fun parseKalam(jsonObject: JSONObject): Kalam {
         return Kalam(
             id = 0,
-            title = jsonObject.getString(KalamTableInfo.COLUMN_TITLE),
-            code = jsonObject.getInt(KalamTableInfo.COLUMN_CODE),
-            year = jsonObject.getString(KalamTableInfo.COLUMN_YEAR),
-            location = jsonObject.getString(KalamTableInfo.COLUMN_LOCATION),
-            onlineSource = jsonObject.getString(KalamTableInfo.ONLINE_SRC),
-            offlineSource = jsonObject.getString(KalamTableInfo.OFFLINE_SRC),
-            isFavorite = jsonObject.getInt(KalamTableInfo.FAVORITE),
-            playlistId = jsonObject.getInt(KalamTableInfo.PLAYLIST_ID)
+            title = jsonObject.getString(TITLE),
+            code = jsonObject.getInt(CODE),
+            year = jsonObject.getString(YEAR),
+            location = jsonObject.getString(LOCATION),
+            onlineSource = jsonObject.getString(ONLINE_SRC),
+            offlineSource = jsonObject.getString(OFFLINE_SRC),
+            isFavorite = jsonObject.getInt(FAVORITE),
+            playlistId = jsonObject.getInt(PLAYLIST_ID)
         )
     }
 
     private class KalamTableInfo {
         companion object {
-            const val COLUMN_ID = "id"
-            const val COLUMN_TITLE = "title"
-            const val COLUMN_CODE = "code"
-            const val COLUMN_YEAR = "year"
-            const val COLUMN_LOCATION = "location"
+            const val ID = "id"
+            const val TITLE = "title"
+            const val CODE = "code"
+            const val YEAR = "year"
+            const val LOCATION = "location"
             const val ONLINE_SRC = "online_src"
             const val OFFLINE_SRC = "offline_src"
             const val FAVORITE = "favorite"

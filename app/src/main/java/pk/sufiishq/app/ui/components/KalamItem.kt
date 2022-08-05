@@ -33,14 +33,14 @@ import pk.sufiishq.app.utils.*
 @Composable
 fun KalamItem(kalamItemParam: KalamItemParam) {
 
-    val (kalam, _, playerDataProvider, _, _, _, _, _, _, _) = kalamItemParam
+    val (kalam, _, playerDataProvider, _, _, _, _, _, trackType, playlistId) = kalamItemParam
 
     val matColors = MaterialTheme.colors
 
     val isExpanded = rem(false)
 
     Column(Modifier.clickable {
-        playerDataProvider.changeTrack(kalam)
+        playerDataProvider.changeTrack(kalam, trackType, playlistId)
     }) {
         Row(
             modifier = Modifier

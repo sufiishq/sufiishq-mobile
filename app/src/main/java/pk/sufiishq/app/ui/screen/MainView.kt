@@ -11,12 +11,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
+import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.Player
 
 @Composable
-fun MainView(playerDataProvider: PlayerDataProvider) {
+fun MainView(
+    playerDataProvider: PlayerDataProvider,
+    kalamDataProvider: KalamDataProvider,
+    playlistDataProvider: PlaylistDataProvider
+) {
     val matColors = MaterialTheme.colors
     val navController = rememberNavController()
 
@@ -41,11 +47,21 @@ fun MainView(playerDataProvider: PlayerDataProvider) {
                 )
             },
             bottomBar = {
-                Player(matColors = matColors, playerDataProvider = playerDataProvider)
+                Player(
+                    matColors = matColors,
+                    playerDataProvider = playerDataProvider,
+                    kalamDataProvider,
+                    playlistDataProvider
+                )
             },
             content = { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
-                    NavigationHost(playerDataProvider, navController)
+                    NavigationHost(
+                        playerDataProvider,
+                        kalamDataProvider,
+                        playlistDataProvider,
+                        navController
+                    )
                 }
             }
         )

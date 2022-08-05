@@ -5,23 +5,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
+import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.ui.screen.DashboardView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
-import pk.sufiishq.app.viewmodels.KalamViewModel
-import pk.sufiishq.app.viewmodels.PlaylistViewModel
 
 @Composable
-fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHostController) {
+fun NavigationHost(
+    playerDataProvider: PlayerDataProvider,
+    kalamDataProvider: KalamDataProvider,
+    playlistDataProvider: PlaylistDataProvider,
+    navController: NavHostController
+) {
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -31,10 +35,11 @@ fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHos
             // dashboard screen
             composable(Screen.Dashboard.route) {
 
-                val kalamViewModel = hiltViewModel<KalamViewModel>()
-                val playlistViewModel = hiltViewModel<PlaylistViewModel>()
-
-                DashboardView(navController = navController, kalamViewModel, playlistViewModel)
+                DashboardView(
+                    navController = navController,
+                    kalamDataProvider,
+                    playlistDataProvider
+                )
             }
 
             // tracks screen
@@ -61,13 +66,10 @@ fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHos
                 val playlistId =
                     backStackEntry.arguments?.getInt(Screen.Tracks.PARAM_PLAYLIST_ID) ?: 0
 
-                val kalamViewModel = hiltViewModel<KalamViewModel>()
-                val playlistViewModel = hiltViewModel<PlaylistViewModel>()
-
                 TracksView(
                     playerDataProvider = playerDataProvider,
-                    kalamDataProvider = kalamViewModel,
-                    playlistDataProvider = playlistViewModel,
+                    kalamDataProvider = kalamDataProvider,
+                    playlistDataProvider = playlistDataProvider,
                     trackType = trackType,
                     title = title,
                     playlistId = playlistId,
@@ -76,9 +78,8 @@ fun NavigationHost(playerDataProvider: PlayerDataProvider, navController: NavHos
 
             // playlist screen
             composable(Screen.Playlist.route) {
-                val playlistViewModel = hiltViewModel<PlaylistViewModel>()
                 PlaylistView(
-                    playlistDataProvider = playlistViewModel,
+                    playlistDataProvider = playlistDataProvider,
                     navController = navController
                 )
             }

@@ -22,4 +22,7 @@ interface KalamDataProvider {
     fun markAsFavorite(kalam: Kalam)
     fun removeFavorite(kalamItemParam: KalamItemParam)
     fun getKalamSplitManager(): KalamSplitManager
+    fun getActiveTrackType(): String
+    fun getActivePlaylistId(): Int
+    fun getActiveSearchKeyword(): String
 }

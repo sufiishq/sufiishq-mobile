@@ -16,6 +16,7 @@ import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.PreviewAudioPlayer
+import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.models.Playlist
@@ -53,7 +54,8 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
         return MutableLiveData(Kalam(0, "Kalam Title", 1, "1991", "Karachi", "", "", 0, 0))
     }
 
-    override fun changeTrack(kalam: Kalam) { /* no comment */
+    override fun changeTrack(kalam: Kalam, trackType: String, playlistId: Int) {
+        /* no comment */
     }
 
     override fun getDownloadProgress(): LiveData<Float> {
@@ -71,6 +73,34 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
     }
 
     override fun disposeDownload() { /* no comment */
+    }
+
+    override fun playNext() {
+        /* no comment */
+    }
+
+    override fun playPrevious() {
+        /* no comment */
+    }
+
+    override fun getShuffleState(): LiveData<Boolean> {
+        return MutableLiveData(false)
+    }
+
+    override fun setShuffleState(shuffle: Boolean) {
+        /* no comment */
+    }
+
+    override fun getCurrentPosition(): LiveData<Int> {
+        return MutableLiveData(0)
+    }
+
+    override fun getTotalDuration(): LiveData<Int> {
+        return MutableLiveData(0)
+    }
+
+    override fun getMenuItems(): List<String> {
+        return listOf()
     }
 }
 
@@ -117,6 +147,18 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
             SufiIshqApp.getInstance(),
             PreviewAudioPlayer(Handler(Looper.getMainLooper()), MediaPlayer())
         )
+    }
+
+    override fun getActiveTrackType(): String {
+        return Screen.Tracks.ALL
+    }
+
+    override fun getActivePlaylistId(): Int {
+        return 0
+    }
+
+    override fun getActiveSearchKeyword(): String {
+        return ""
     }
 }
 

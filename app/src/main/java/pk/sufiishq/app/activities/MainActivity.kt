@@ -12,12 +12,16 @@ import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.ui.screen.MainView
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.observeOnce
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
+import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
+import pk.sufiishq.app.viewmodels.PlaylistViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,6 +31,8 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     lateinit var kalamRepository: KalamRepository
 
     private val playerViewModel: PlayerViewModel by viewModels()
+    private val kalamViewModel: KalamViewModel by viewModels()
+    private val playlistDataProvider: PlaylistViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -35,7 +41,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
         setContent {
             SufiIshqTheme {
-                MainView(playerViewModel)
+                MainView(playerViewModel, kalamViewModel, playlistDataProvider)
             }
         }
 
@@ -63,7 +69,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
         if (playerController.getActiveTrack() == null) {
             kalamRepository.getDefaultKalam().observeOnce(this@MainActivity) { kalam ->
-                playerController.setActiveTrack(kalam)
+                playerController.setActiveTrack(kalam, Screen.Tracks.ALL, 0)
                 playerViewModel.setPlayerService(playerController)
                 playerController.setPlayerListener(playerViewModel)
             }

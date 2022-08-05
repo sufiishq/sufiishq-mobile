@@ -7,14 +7,21 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
+import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.services.PlayerController
+import pk.sufiishq.app.storage.KeyValueStorage
 import pk.sufiishq.app.worker.CacheRemoveWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltAndroidApp
 class SufiIshqApp : Application() {
+
+    @Inject
+    @SecureSharedPreferences
+    lateinit var keyValueStorage: KeyValueStorage
 
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
     private var playerController: PlayerController? = null
