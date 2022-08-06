@@ -1,7 +1,6 @@
 package pk.sufiishq.app.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,12 +27,17 @@ import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
 
 @Composable
-fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataProvider: KalamDataProvider, playlistDataProvider: PlaylistDataProvider) {
+fun Player(
+    matColors: Colors,
+    playerDataProvider: PlayerDataProvider,
+    kalamDataProvider: KalamDataProvider,
+    playlistDataProvider: PlaylistDataProvider
+) {
 
     var backgroundColor = Color(219, 219, 219, 255)
     var contentColor = Color(43, 43, 43, 255)
 
-    if (isSystemInDarkTheme()) {
+    if (isDarkThem()) {
         backgroundColor = Color(34, 34, 34, 255)
         contentColor = Color.White
     }
@@ -245,8 +249,12 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
                                     showMenu.value = false
                                     when (label) {
                                         labelAddToPlaylist -> showPlaylistDialog.value = true
-                                        labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(activeKalam.value!!)
-                                        labelRemoveFavorite -> kalamDataProvider.removeFavorite(kalamItemParam.value!!)
+                                        labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(
+                                            activeKalam.value!!
+                                        )
+                                        labelRemoveFavorite -> kalamDataProvider.removeFavorite(
+                                            kalamItemParam.value!!
+                                        )
                                         labelDownload -> {
                                             showDownloadDialog.value = true
                                             playerDataProvider.startDownload(activeKalam.value!!)
@@ -296,7 +304,12 @@ fun Player(matColors: Colors, playerDataProvider: PlayerDataProvider, kalamDataP
 @Composable
 fun PlayerPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
-        Player(matColors = MaterialTheme.colors, playerDataProvider = dummyPlayerDataProvider(), kalamDataProvider = dummyKalamDataProvider(), playlistDataProvider = dummyPlaylistDataProvider())
+        Player(
+            matColors = MaterialTheme.colors,
+            playerDataProvider = dummyPlayerDataProvider(),
+            kalamDataProvider = dummyKalamDataProvider(),
+            playlistDataProvider = dummyPlaylistDataProvider()
+        )
     }
 }
 
@@ -304,6 +317,11 @@ fun PlayerPreviewLight() {
 @Composable
 fun PlayerPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
-        Player(matColors = MaterialTheme.colors, playerDataProvider = dummyPlayerDataProvider(), kalamDataProvider = dummyKalamDataProvider(), playlistDataProvider = dummyPlaylistDataProvider())
+        Player(
+            matColors = MaterialTheme.colors,
+            playerDataProvider = dummyPlayerDataProvider(),
+            kalamDataProvider = dummyKalamDataProvider(),
+            playlistDataProvider = dummyPlaylistDataProvider()
+        )
     }
 }

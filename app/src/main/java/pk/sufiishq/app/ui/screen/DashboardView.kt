@@ -3,8 +3,8 @@ package pk.sufiishq.app.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -31,11 +31,9 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.ui.components.ThemeChangeButton
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.MenuIconColors
-import pk.sufiishq.app.utils.dummyKalamDataProvider
-import pk.sufiishq.app.utils.dummyPlaylistDataProvider
-import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.*
 
 @Composable
 fun DashboardView(
@@ -56,7 +54,7 @@ fun DashboardView(
             .background(matColors.secondaryVariant)
     ) {
 
-        val (logo, buttonBox) = createRefs()
+        val (logo, themeChangeButton, buttonBox) = createRefs()
 
         Image(
             modifier = Modifier.constrainAs(logo) {
@@ -72,6 +70,17 @@ fun DashboardView(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null
         )
+
+        Box(
+            modifier = Modifier.constrainAs(themeChangeButton) {
+                start.linkTo(parent.start, 12.dp)
+                bottom.linkTo(buttonBox.top, 6.dp)
+            }
+                .clip(CircleShape)
+                .background(matColors.primaryVariant),
+        ) {
+            ThemeChangeButton()
+        }
 
         Box(
             modifier = Modifier
@@ -159,7 +168,7 @@ fun TrackButton(
     var bgColor = Color(233, 233, 233, 255)
     var textColor = Color(24, 24, 24, 255)
 
-    if (isSystemInDarkTheme()) {
+    if (isDarkThem()) {
         bgColor = Color(34, 34, 34, 255)
         textColor = Color(247, 247, 247, 255)
     }

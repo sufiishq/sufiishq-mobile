@@ -1,11 +1,14 @@
 package pk.sufiishq.app.utils
 
 import android.content.Context
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import pk.sufiishq.app.SufiIshqApp
+import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.models.Kalam
 import timber.log.Timber
 import java.io.File
@@ -61,8 +64,21 @@ fun Kalam.isOfflineFileExists(): Boolean {
     return File(app.filesDir.absolutePath + File.separator + offlineSource).exists()
 }
 
+fun isDeviceSupportDarkMode(): Boolean {
+    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+}
+
 @Composable
 fun <T> rem(value: T): MutableState<T> {
     return remember { mutableStateOf(value) }
+}
+
+@Composable
+fun isDarkThem(): Boolean {
+    return if (isDeviceSupportDarkMode()) {
+        isSystemInDarkTheme()
+    } else {
+        MainActivity.IS_DARK_THEME
+    }
 }
 
