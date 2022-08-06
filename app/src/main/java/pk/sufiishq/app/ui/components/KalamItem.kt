@@ -31,7 +31,7 @@ import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
 
 @Composable
-fun KalamItem(kalamItemParam: KalamItemParam) {
+fun KalamItem(kalamItemParam: KalamItemParam, onMenuItemClicked: (kalam: Kalam, label: String) -> Unit) {
 
     val (kalam, _, playerDataProvider, _, _, _, _, _, trackType, playlistId) = kalamItemParam
 
@@ -99,7 +99,7 @@ fun KalamItem(kalamItemParam: KalamItemParam) {
                         contentDescription = null
                     )
 
-                    KalamItemPopupMenu(isExpanded = isExpanded, kalamItemParam = kalamItemParam)
+                    KalamItemPopupMenu(isExpanded = isExpanded, kalamItemParam = kalamItemParam, onMenuItemClicked = onMenuItemClicked)
                 }
             }
         }
@@ -123,7 +123,7 @@ fun KalamItemPreviewLight() {
                 Screen.Tracks.ALL,
                 0
             )
-        )
+        ) { _, _ -> }
     }
 }
 
@@ -144,6 +144,6 @@ fun KalamItemPreviewDark() {
                 Screen.Tracks.ALL,
                 0
             )
-        )
+        ) { _, _ -> }
     }
 }

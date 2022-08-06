@@ -116,7 +116,8 @@ fun Player(
                     },
                     color = contentColor,
                     fontSize = 18.sp,
-                    text = (activeKalam.value?.title ?: "")
+                    text = (activeKalam.value?.title ?: ""),
+                    gradientEdgeColor = backgroundColor
                 )
 
                 Text(

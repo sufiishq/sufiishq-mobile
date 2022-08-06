@@ -2,7 +2,6 @@ package pk.sufiishq.app.ui.components
 
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,7 +15,8 @@ import pk.sufiishq.app.utils.rem
 @Composable
 fun KalamItemPopupMenu(
     isExpanded: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam
+    kalamItemParam: KalamItemParam,
+    onMenuItemClicked: (kalam: Kalam, label: String) -> Unit
 ) {
 
     val (kalam, kalamMenuItems, playerDataProvider, kalamDataProvider, _, _, _, _, trackType, _) = kalamItemParam
@@ -37,6 +37,7 @@ fun KalamItemPopupMenu(
         val labelRemoveFavorite = stringResource(id = R.string.remove_favorite)
         val labelDownload = stringResource(id = R.string.download_label)
         val labelSplitKalam = stringResource(id = R.string.split_kalam)
+        val labelRename = stringResource(id = R.string.rename_label)
         val labelDelete = stringResource(id = R.string.delete_label)
 
         kalamMenuItems
@@ -65,6 +66,7 @@ fun KalamItemPopupMenu(
                             kalamSplitManager.value.setKalam(kalam)
                             showSplitterDialog.value = true
                         }
+                        labelRename -> onMenuItemClicked(kalam, labelRename)
                     }
                     isExpanded.value = false
                 }) {

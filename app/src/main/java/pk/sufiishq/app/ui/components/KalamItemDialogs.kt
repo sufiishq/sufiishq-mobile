@@ -1,6 +1,7 @@
 package pk.sufiishq.app.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -19,8 +20,7 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
-import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.utils.isOfflineFileExists
+import pk.sufiishq.app.utils.*
 
 @Composable
 fun KalamItemDownloadDialog(
@@ -250,6 +250,61 @@ fun KalamItemSplitDialog(
                 kalamSplitManager = kalamSplitManager.value,
                 kalamItemParam = kalamItemParam
             )
+        }
+    }
+}
+
+@Composable
+fun KalamRenameDialog(
+    showKalamRenameDialog: MutableState<Boolean>,
+    kalam: Kalam,
+    onKalamRename: (title: String) -> Unit
+) {
+    if (showKalamRenameDialog.value) {
+        val kalamTitle = rem(kalam.title)
+        val error = rem(kalam.title.checkValue("", "Title cannot be empty"))
+
+        SufiIshqDialog {
+
+            Text(text = "Rename Kalam", style = MaterialTheme.typography.subtitle1)
+
+            OutlinedTextFieldValidation(
+                value = kalamTitle.value,
+                onValueChange = {
+                    kalamTitle.value = it
+                    error.value = kalamTitle.value.checkValue("", "Title cannot be empty")
+                },
+                keyboardActions = KeyboardActions(onDone = {
+                    kalamTitle.value.ifNotEmpty {
+                        showKalamRenameDialog.value = false
+                        onKalamRename(it)
+                    }
+                }),
+                modifier = Modifier.padding(top = 8.dp),
+                label = {
+                    Text(text = "Title")
+                },
+                error = error.value,
+                maxLength = KALAM_TITLE_LENGTH
+            )
+
+            // BUTTONS
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showKalamRenameDialog.value = false }) {
+                    Text(text = "Cancel")
+                }
+                TextButton(onClick = {
+                    kalamTitle.value.ifNotEmpty {
+                        showKalamRenameDialog.value = false
+                        onKalamRename(it)
+                    }
+                }) {
+                    Text(text = "Rename")
+                }
+            }
         }
     }
 }

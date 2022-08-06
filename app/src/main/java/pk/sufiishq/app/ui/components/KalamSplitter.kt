@@ -210,7 +210,7 @@ private fun SplitDoneView(
             },
             label = "Kalam Title",
             isError = kalamTitleError.value,
-            maxLength = 30
+            maxLength = KALAM_TITLE_LENGTH
         )
 
         Row(

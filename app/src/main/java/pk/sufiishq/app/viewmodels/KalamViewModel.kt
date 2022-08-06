@@ -2,6 +2,7 @@ package pk.sufiishq.app.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -37,6 +38,7 @@ class KalamViewModel @Inject constructor(
     private val kalamSplitManager: KalamSplitManager
 ) : ViewModel(), KalamDataProvider {
 
+    private val showKalamRenameDialog = MutableLiveData(false)
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
 
@@ -177,5 +179,13 @@ class KalamViewModel @Inject constructor(
 
     override fun getActiveSearchKeyword(): String {
         return kalamRepository.getSearchKeyword()
+    }
+
+    override fun getShowKalamRenameDialog(): LiveData<Boolean> {
+        return showKalamRenameDialog
+    }
+
+    override fun setShowKalamRenameDialog(value: Boolean) {
+        showKalamRenameDialog.postValue(value)
     }
 }

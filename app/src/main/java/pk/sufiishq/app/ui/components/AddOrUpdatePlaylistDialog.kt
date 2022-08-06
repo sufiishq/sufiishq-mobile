@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
 import pk.sufiishq.app.utils.ifNotEmpty
 import pk.sufiishq.app.utils.rem
@@ -63,7 +64,8 @@ fun AddOrUpdatePlaylistDialog(
                             label = {
                                 Text(text = "Title")
                             },
-                            error = error.value
+                            error = error.value,
+                            maxLength = PLAYLIST_TITLE_LENGTH
                         )
                     }
 
