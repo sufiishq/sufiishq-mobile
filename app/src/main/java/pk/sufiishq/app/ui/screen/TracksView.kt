@@ -1,5 +1,7 @@
 package pk.sufiishq.app.ui.screen
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +26,7 @@ import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.components.KalamItem
+import pk.sufiishq.app.ui.components.KalamRenameDialog
 import pk.sufiishq.app.ui.components.SearchTextField
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
@@ -45,6 +48,8 @@ fun TracksView(
     val searchText = rem("")
     val matColors = MaterialTheme.colors
     val playlistItems = playlistDataProvider.getAll().observeAsState().optValue(listOf())
+    val showKalamRenameDialog = rem(false)
+    val selectedKalam = rem<Kalam?>(null)
 
     val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
     val labelMarkAsFavorite = stringResource(id = R.string.mark_as_favorite)
@@ -52,22 +57,25 @@ fun TracksView(
     val labelDownload = stringResource(id = R.string.download_label)
     val labelSplitKalam = stringResource(id = R.string.split_kalam)
     val labelDelete = stringResource(id = R.string.delete_label)
+    val labelRename = stringResource(id = R.string.rename_label)
 
     val kalamMenuItems = when (trackType) {
         Screen.Tracks.ALL -> listOf(
             labelAddToPlaylist,
             labelMarkAsFavorite,
             labelDownload,
+            labelRename,
             labelDelete
         )
         Screen.Tracks.DOWNLOADS -> listOf(
             labelAddToPlaylist,
             labelMarkAsFavorite,
-            labelDelete,
-            labelSplitKalam
+            labelRename,
+            labelSplitKalam,
+            labelDelete
         )
-        Screen.Tracks.FAVORITES -> listOf(labelAddToPlaylist, labelRemoveFavorite, labelDownload)
-        Screen.Tracks.PLAYLIST -> listOf(labelMarkAsFavorite, labelDelete)
+        Screen.Tracks.FAVORITES -> listOf(labelAddToPlaylist, labelRemoveFavorite, labelDownload, labelRename)
+        Screen.Tracks.PLAYLIST -> listOf(labelMarkAsFavorite, labelRename, labelDelete)
         else -> listOf("")
     }
 
@@ -109,7 +117,14 @@ fun TracksView(
                                 trackType,
                                 playlistId
                             )
-                        )
+                        ) { kalam, label ->
+                            when(label) {
+                                labelRename -> {
+                                    selectedKalam.value = kalam
+                                    showKalamRenameDialog.value = true
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -118,6 +133,23 @@ fun TracksView(
                 Text(
                     text = "No items found in $title"
                 )
+            }
+        }
+    }
+
+    // kalam rename dialog
+    selectedKalam.value?.let { kalam ->
+        KalamRenameDialog(
+            showKalamRenameDialog = showKalamRenameDialog,
+            kalam = kalam,
+        ) {
+            kalam.title = it
+            kalamDataProvider.update(kalam)
+            kalamDataProvider.searchKalam("*", trackType, playlistId)
+            lazyKalamItems.refresh()
+            100.runWithDelay {
+                kalamDataProvider.searchKalam(searchText.value, trackType, playlistId)
+                lazyKalamItems.refresh()
             }
         }
     }

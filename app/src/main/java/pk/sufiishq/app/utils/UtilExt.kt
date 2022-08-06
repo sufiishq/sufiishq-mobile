@@ -2,6 +2,8 @@ package pk.sufiishq.app.utils
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
 import androidx.lifecycle.LifecycleOwner
@@ -79,6 +81,10 @@ fun String.formatDateAs(format: String = "d MMM, yyyy", prefix: String = ""): St
             prefix + SimpleDateFormat(format, Locale.getDefault()).format(date!!)
         }
     }
+}
+
+fun Number.runWithDelay(block: () -> Unit) {
+    Handler(Looper.myLooper()!!).postDelayed(block, this.toLong())
 }
 
 @Composable

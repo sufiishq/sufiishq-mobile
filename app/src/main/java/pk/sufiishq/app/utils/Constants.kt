@@ -8,3 +8,5 @@ const val SPLIT_CANCEL = 255
 const val SPLIT_IN_PROGRESS = -1
 const val IS_SHUFFLE_ON = "is_shuffle_on"
 const val DARK_THEME = "dark_theme"
+const val KALAM_TITLE_LENGTH = 50
+const val PLAYLIST_TITLE_LENGTH = 30

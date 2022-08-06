@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 
 
 @Composable
@@ -26,6 +27,7 @@ fun OutlinedTextFieldValidation(
     modifier: Modifier = Modifier,
     label: @Composable (() -> Unit)? = null,
     error: String = "",
+    maxLength: Int = Int.MAX_VALUE
 ) {
 
     Column {
@@ -33,7 +35,9 @@ fun OutlinedTextFieldValidation(
             enabled = true,
             readOnly = false,
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                            if (it.length <= maxLength) onValueChange(it)
+            },
             modifier = modifier.fillMaxWidth(),
             singleLine = true,
             textStyle = LocalTextStyle.current,

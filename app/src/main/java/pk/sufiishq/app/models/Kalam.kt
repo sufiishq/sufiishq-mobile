@@ -10,7 +10,7 @@ data class Kalam(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
-    val title: String,
+    var title: String,
     val code: Int,
 
     @ColumnInfo(name = "recorded_date")
