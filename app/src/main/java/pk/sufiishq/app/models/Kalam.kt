@@ -12,7 +12,10 @@ data class Kalam(
 
     val title: String,
     val code: Int,
-    val year: String,
+
+    @ColumnInfo(name = "recorded_date")
+    val recordeDate: String,
+
     val location: String,
 
     @ColumnInfo(name = "online_src")

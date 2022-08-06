@@ -43,7 +43,7 @@ class UtilExtTest : SufiIshqTest() {
             id = 2,
             title = "new-title",
             code = 2,
-            year = "1999",
+            recordedDate = "1999",
             location = "Lahore",
             onlineSource = "online-src",
             offlineSource = "offline-src",
@@ -155,7 +155,7 @@ class UtilExtTest : SufiIshqTest() {
             assertEquals(expectedKalam.id, actualKalam.id)
             assertEquals(expectedKalam.title, actualKalam.title)
             assertEquals(expectedKalam.code, actualKalam.code)
-            assertEquals(expectedKalam.year, actualKalam.year)
+            assertEquals(expectedKalam.recordeDate, actualKalam.recordeDate)
             assertEquals(expectedKalam.location, actualKalam.location)
             assertEquals(expectedKalam.onlineSource, actualKalam.onlineSource)
             assertEquals(expectedKalam.offlineSource, actualKalam.offlineSource)
@@ -165,7 +165,7 @@ class UtilExtTest : SufiIshqTest() {
             assertNotEquals(expectedKalam.id, actualKalam.id)
             assertNotEquals(expectedKalam.title, actualKalam.title)
             assertNotEquals(expectedKalam.code, actualKalam.code)
-            assertNotEquals(expectedKalam.year, actualKalam.year)
+            assertNotEquals(expectedKalam.recordeDate, actualKalam.recordeDate)
             assertNotEquals(expectedKalam.location, actualKalam.location)
             assertNotEquals(expectedKalam.onlineSource, actualKalam.onlineSource)
             assertNotEquals(expectedKalam.offlineSource, actualKalam.offlineSource)

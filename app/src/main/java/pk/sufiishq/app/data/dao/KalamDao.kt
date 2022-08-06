@@ -14,28 +14,28 @@ interface KalamDao {
 
     @Query(
         "SELECT * FROM kalam " +
-                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword)" +
+                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR recorded_date LIKE :searchKeyword)" +
                 "ORDER BY id DESC"
     )
     fun getAllKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
-                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND offline_src != ''" +
+                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR recorded_date LIKE :searchKeyword) AND offline_src != ''" +
                 "ORDER BY id DESC"
     )
     fun getDownloadsKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
-                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND favorite = 1 " +
+                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR recorded_date LIKE :searchKeyword) AND favorite = 1 " +
                 "ORDER BY id DESC"
     )
     fun getFavoritesKalam(searchKeyword: String): PagingSource<Int, Kalam>
 
     @Query(
         "SELECT * FROM kalam " +
-                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR year LIKE :searchKeyword) AND playlist_id = :playlistId " +
+                "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR recorded_date LIKE :searchKeyword) AND playlist_id = :playlistId " +
                 "ORDER BY id DESC"
     )
     fun getPlaylistKalam(playlistId: Int, searchKeyword: String): PagingSource<Int, Kalam>

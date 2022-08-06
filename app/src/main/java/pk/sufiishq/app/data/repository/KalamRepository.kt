@@ -16,8 +16,8 @@ import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.OFFLINE_SRC
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.ONLINE_SRC
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.PLAYLIST_ID
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.RECORDED_DATE
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.TITLE
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.YEAR
 import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.helpers.Screen.Tracks.DOWNLOADS
 import pk.sufiishq.app.helpers.Screen.Tracks.FAVORITES
@@ -58,9 +58,9 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     fun load(): PagingSource<Int, Kalam> {
         return when (trackType) {
-            Screen.Tracks.DOWNLOADS -> loadDownloadsKalam(searchKeyword)
-            Screen.Tracks.FAVORITES -> loadFavoritesKalam(searchKeyword)
-            Screen.Tracks.PLAYLIST -> loadPlaylistKalam(playlistId, searchKeyword)
+            DOWNLOADS -> loadDownloadsKalam(searchKeyword)
+            FAVORITES -> loadFavoritesKalam(searchKeyword)
+            PLAYLIST -> loadPlaylistKalam(playlistId, searchKeyword)
             else -> loadAllKalam(searchKeyword)
         }
     }
@@ -202,7 +202,7 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
             id = 0,
             title = jsonObject.getString(TITLE),
             code = jsonObject.getInt(CODE),
-            year = jsonObject.getString(YEAR),
+            recordeDate = jsonObject.getString(RECORDED_DATE),
             location = jsonObject.getString(LOCATION),
             onlineSource = jsonObject.getString(ONLINE_SRC),
             offlineSource = jsonObject.getString(OFFLINE_SRC),
@@ -216,7 +216,7 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
             const val ID = "id"
             const val TITLE = "title"
             const val CODE = "code"
-            const val YEAR = "year"
+            const val RECORDED_DATE = "recorded_date"
             const val LOCATION = "location"
             const val ONLINE_SRC = "online_src"
             const val OFFLINE_SRC = "offline_src"
