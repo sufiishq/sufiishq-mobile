@@ -25,6 +25,4 @@ interface KalamDataProvider {
     fun getActiveTrackType(): String
     fun getActivePlaylistId(): Int
     fun getActiveSearchKeyword(): String
-    fun getShowKalamRenameDialog(): LiveData<Boolean>
-    fun setShowKalamRenameDialog(value: Boolean)
 }
