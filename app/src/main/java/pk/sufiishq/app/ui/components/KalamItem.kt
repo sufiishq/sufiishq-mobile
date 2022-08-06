@@ -84,7 +84,7 @@ fun KalamItem(kalamItemParam: KalamItemParam) {
                     Text(
                         color = matColors.primary,
                         fontSize = 14.sp,
-                        text = "${kalam.location} ${kalam.year}"
+                        text = "${kalam.location} ${kalam.recordeDate.formatDateAs(prefix = "- ")}"
                     )
                 }
 

@@ -10,6 +10,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.services.AudioPlayerService
+import pk.sufiishq.app.utils.formatDateAs
 
 @SuppressLint("UnspecifiedImmutableFlag")
 class PlayerNotification(private val context: Context) {
@@ -53,7 +54,7 @@ class PlayerNotification(private val context: Context) {
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)
-                .setContentText("${activeKalam?.location} ${activeKalam?.year}")
+                .setContentText("${activeKalam?.location} ${activeKalam?.recordeDate?.formatDateAs(prefix = "- ")}")
 
             service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
         } else {
@@ -64,7 +65,7 @@ class PlayerNotification(private val context: Context) {
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)
-                .setContentText("${activeKalam?.location} ${activeKalam?.year}")
+                .setContentText("${activeKalam?.location} ${activeKalam?.recordeDate?.formatDateAs(prefix = "- ")}")
 
             service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
         }

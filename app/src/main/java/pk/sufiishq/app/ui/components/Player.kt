@@ -125,7 +125,7 @@ fun Player(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
                     },
-                    text = (activeKalam.value?.location ?: "") + " " + (activeKalam.value?.year
+                    text = (activeKalam.value?.location ?: "") + (activeKalam.value?.recordeDate?.formatDateAs(prefix = " - ")
                         ?: ""),
                     fontSize = 13.sp,
                     color = contentColor

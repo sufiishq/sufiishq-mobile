@@ -12,6 +12,8 @@ import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.models.Kalam
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 val app: SufiIshqApp = SufiIshqApp.getInstance()
 
@@ -21,13 +23,13 @@ fun Kalam.copyWithDefaults(
     id: Int = this.id,
     title: String = this.title,
     code: Int = this.code,
-    year: String = this.year,
+    recordedDate: String = this.recordeDate,
     location: String = this.location,
     onlineSource: String = this.onlineSource,
     offlineSource: String = this.offlineSource,
     isFavorite: Int = this.isFavorite,
     playlistId: Int = this.playlistId
-) = Kalam(id, title, code, year, location, onlineSource, offlineSource, isFavorite, playlistId)
+) = Kalam(id, title, code, recordedDate, location, onlineSource, offlineSource, isFavorite, playlistId)
 
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     observe(lifecycleOwner, object : Observer<T> {
@@ -66,6 +68,17 @@ fun Kalam.isOfflineFileExists(): Boolean {
 
 fun isDeviceSupportDarkMode(): Boolean {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+}
+
+fun String.formatDateAs(format: String = "d MMM, yyyy", prefix: String = ""): String {
+    return when {
+        this.isEmpty() -> ""
+        this.length == 4 -> prefix + this
+        else -> {
+            val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(this)
+            prefix + SimpleDateFormat(format, Locale.getDefault()).format(date!!)
+        }
+    }
 }
 
 @Composable
