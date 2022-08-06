@@ -13,11 +13,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.Screen
-import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.ui.screen.MainView
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.observeOnce
+import pk.sufiishq.app.utils.*
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
@@ -38,6 +37,8 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setTheme()
 
         setContent {
             SufiIshqTheme {
@@ -82,5 +83,15 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     override fun onServiceDisconnected(name: ComponentName?) {
         playerViewModel.setPlayerService(null)
         SufiIshqApp.getInstance().setPlayerController(null)
+    }
+
+    private fun setTheme() {
+        if (!isDeviceSupportDarkMode()) {
+            IS_DARK_THEME = DARK_THEME.getFromStorage(false)
+        }
+    }
+
+    companion object {
+        var IS_DARK_THEME = false
     }
 }

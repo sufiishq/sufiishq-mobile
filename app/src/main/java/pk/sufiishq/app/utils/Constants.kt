@@ -7,3 +7,4 @@ const val SPLIT_SUCCESS = 0
 const val SPLIT_CANCEL = 255
 const val SPLIT_IN_PROGRESS = -1
 const val IS_SHUFFLE_ON = "is_shuffle_on"
+const val DARK_THEME = "dark_theme"
