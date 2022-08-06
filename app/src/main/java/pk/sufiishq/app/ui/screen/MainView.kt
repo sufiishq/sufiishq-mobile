@@ -16,6 +16,7 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.Player
+import pk.sufiishq.app.ui.components.ShareIconButton
 
 @Composable
 fun MainView(
@@ -43,6 +44,9 @@ fun MainView(
                                 contentDescription = null
                             )
                         }
+                    },
+                    actions = {
+                        ShareIconButton()
                     }
                 )
             },
