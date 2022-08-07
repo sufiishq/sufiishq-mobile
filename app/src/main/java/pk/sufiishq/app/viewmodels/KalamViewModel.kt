@@ -72,6 +72,10 @@ class KalamViewModel @Inject constructor(
         kalamRepository.setPlaylistId(playlistId)
     }
 
+    override fun getKalam(id: Int): LiveData<Kalam?> {
+        return kalamRepository.getKalam(id)
+    }
+
     override fun update(kalam: Kalam) {
         viewModelScope.launch {
             kalamRepository.update(kalam)

@@ -13,6 +13,7 @@ interface KalamDataProvider {
     fun init(trackType: String, playlistId: Int = 0)
     fun getKalamDataFlow(): Flow<PagingData<Kalam>>
     fun searchKalam(keyword: String, trackType: String, playlistId: Int)
+    fun getKalam(id: Int): LiveData<Kalam?>
     fun update(kalam: Kalam)
     fun delete(kalam: Kalam, trackType: String)
     fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String)

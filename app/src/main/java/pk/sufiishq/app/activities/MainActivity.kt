@@ -4,11 +4,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.data.repository.KalamRepository
@@ -16,7 +18,10 @@ import pk.sufiishq.app.helpers.Screen
 import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.ui.screen.MainView
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.DARK_THEME
+import pk.sufiishq.app.utils.getFromStorage
+import pk.sufiishq.app.utils.isDeviceSupportDarkMode
+import pk.sufiishq.app.utils.observeOnce
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
@@ -78,6 +83,45 @@ class MainActivity : ComponentActivity(), ServiceConnection {
             playerViewModel.setPlayerService(playerController)
             playerController.setPlayerListener(playerViewModel)
         }
+
+        handleDeeplink(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleDeeplink(intent)
+    }
+
+    private fun handleDeeplink(intent: Intent?) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener { pendingDynamicLinkData ->
+
+                var deepLink: Uri? = null
+
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+
+                deepLink?.let { uri ->
+
+                    uri.pathSegments?.let { pathSegments ->
+                        if (pathSegments.size == 2) {
+                            val kalamId = pathSegments[pathSegments.size.minus(1)]
+                            kalamViewModel.getKalam(kalamId.toInt())
+                                .observe(this@MainActivity) { kalam ->
+                                    kalam?.let {
+                                        playerViewModel.changeTrack(
+                                            kalam,
+                                            kalamViewModel.getActiveTrackType(),
+                                            kalamViewModel.getActivePlaylistId()
+                                        )
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

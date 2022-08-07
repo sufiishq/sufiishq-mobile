@@ -12,6 +12,9 @@ interface KalamDao {
     @Query("SELECT * FROM kalam ORDER BY id DESC LIMIT 1")
     fun getFirstKalam(): LiveData<Kalam>
 
+    @Query("SELECT * FROM kalam WHERE id = :id")
+    fun getKalam(id: Int): LiveData<Kalam?>
+
     @Query(
         "SELECT * FROM kalam " +
                 "WHERE (LOWER(title) LIKE :searchKeyword OR LOWER(location) LIKE :searchKeyword OR recorded_date LIKE :searchKeyword)" +

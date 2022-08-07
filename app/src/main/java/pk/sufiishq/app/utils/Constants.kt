@@ -10,3 +10,4 @@ const val IS_SHUFFLE_ON = "is_shuffle_on"
 const val DARK_THEME = "dark_theme"
 const val KALAM_TITLE_LENGTH = 50
 const val PLAYLIST_TITLE_LENGTH = 30
+const val DEEPLINK_HOST = "https://sufiishq.page.link"

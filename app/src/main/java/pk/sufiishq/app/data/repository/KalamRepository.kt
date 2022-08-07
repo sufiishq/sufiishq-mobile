@@ -38,6 +38,10 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     suspend fun insertAll(allKalams: List<Kalam>) = kalamDao.insertAll(allKalams)
 
+    fun getKalam(id: Int): LiveData<Kalam?> {
+        return kalamDao.getKalam(id)
+    }
+
     fun setTrackType(trackType: String) {
         this.trackType = trackType
     }

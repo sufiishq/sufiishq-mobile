@@ -121,6 +121,10 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     override fun searchKalam(keyword: String, trackType: String, playlistId: Int) { /* no comment */
     }
 
+    override fun getKalam(id: Int): LiveData<Kalam?> {
+        return MutableLiveData(null)
+    }
+
     override fun update(kalam: Kalam) { /* no comment */
     }
 
