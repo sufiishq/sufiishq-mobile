@@ -18,4 +18,5 @@
     <string name="favorite_removed">%s removed in favorites</string>
     <string name="no_network_connection">No network connection</string>
     <string name="unknown_error">Something went wrong</string>
+    <string name="about_title">About</string>
 </resources>

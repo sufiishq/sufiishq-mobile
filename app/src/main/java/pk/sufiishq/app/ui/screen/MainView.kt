@@ -14,6 +14,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.ui.components.AboutIconButton
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.Player
 import pk.sufiishq.app.ui.components.ShareIconButton
@@ -44,6 +45,9 @@ fun MainView(
                                 contentDescription = null
                             )
                         }
+                    },
+                    navigationIcon = {
+                        AboutIconButton()
                     },
                     actions = {
                         ShareIconButton()
