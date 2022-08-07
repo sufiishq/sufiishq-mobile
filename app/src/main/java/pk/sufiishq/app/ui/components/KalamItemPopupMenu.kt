@@ -38,6 +38,7 @@ fun KalamItemPopupMenu(
         val labelDownload = stringResource(id = R.string.download_label)
         val labelSplitKalam = stringResource(id = R.string.split_kalam)
         val labelRename = stringResource(id = R.string.rename_label)
+        val labelShare = stringResource(id = R.string.share_label)
         val labelDelete = stringResource(id = R.string.delete_label)
 
         kalamMenuItems
@@ -46,6 +47,7 @@ fun KalamItemPopupMenu(
                     labelDownload,
                     labelMarkAsFavorite,
                     labelDelete,
+                    labelShare,
                     trackType,
                     kalam
                 )
@@ -67,6 +69,7 @@ fun KalamItemPopupMenu(
                             showSplitterDialog.value = true
                         }
                         labelRename -> onMenuItemClicked(kalam, labelRename)
+                        labelShare -> onMenuItemClicked(kalam, labelShare)
                     }
                     isExpanded.value = false
                 }) {
@@ -112,6 +115,7 @@ private fun filterLabels(
     labelDownload: String,
     labelMarkAsFavorite: String,
     labelDelete: String,
+    labelShare: String,
     trackType: String,
     kalam: Kalam
 ): (label: String) -> Boolean {
@@ -119,6 +123,7 @@ private fun filterLabels(
         when (it) {
             labelDownload -> kalam.offlineSource.isEmpty()
             labelMarkAsFavorite -> kalam.isFavorite == 0
+            labelShare -> kalam.onlineSource.isNotEmpty()
             labelDelete -> {
                 if (trackType == Screen.Tracks.ALL) {
                     kalam.onlineSource.isEmpty()

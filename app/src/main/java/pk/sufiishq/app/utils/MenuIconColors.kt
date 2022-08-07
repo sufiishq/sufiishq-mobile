@@ -10,4 +10,5 @@ object MenuIconColors {
     val DELETE = Color(213, 13, 13, 255)
     val SPLIT_KALAM = Color(72, 80, 226, 255)
     val RENAME = Color(126, 72, 226, 255)
+    val SHARE = Color(226, 72, 175, 255)
 }

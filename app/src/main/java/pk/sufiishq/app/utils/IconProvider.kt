@@ -52,6 +52,12 @@ object IconProvider {
                     color = MenuIconColors.RENAME
                 )
             )
+            put(
+                context.getString(R.string.share_label), MenuIcon(
+                    drawableId = R.drawable.ic_round_share_24,
+                    color = MenuIconColors.SHARE
+                )
+            )
         }
     }
 
