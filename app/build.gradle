@@ -19,7 +19,7 @@ android {
         applicationId "pk.sufiishq.app"
         minSdk 24
         targetSdk 31
-        versionCode 2
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,6 +37,11 @@ android {
             testCoverageEnabled true
         }
         release {
+
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
