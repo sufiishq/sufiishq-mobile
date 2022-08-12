@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pk.sufiishq.app.SufiIshqApp
+import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.*
 import java.io.File
@@ -12,8 +12,10 @@ import javax.inject.Inject
 
 class KalamSplitManager @Inject constructor(
     @ApplicationContext val appContext: Context,
-    private val previewAudioPlayer: PreviewAudioPlayer
+    private val previewAudioPlayer: PreviewAudioPlayer,
+    private val player: AudioPlayer
 ) {
+
 
     private val splitStatus = MutableLiveData<SplitStatus>(SplitCompleted())
     private val splitStart = MutableLiveData(0)
@@ -72,9 +74,7 @@ class KalamSplitManager @Inject constructor(
 
     fun playPreview() {
 
-        SufiIshqApp.getInstance().getPlayerController()?.let { playerController ->
-            if (playerController.isPlaying()) playerController.doPause()
-        }
+        if (player.isPlaying()) player.doPlayOrPause()
 
         if (previewAudioPlayer.isPlaying()) {
             previewAudioPlayer.pause()

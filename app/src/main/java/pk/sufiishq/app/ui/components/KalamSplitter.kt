@@ -197,8 +197,7 @@ private fun SplitDoneView(
         lazyKalamItems,
         _,
         searchText,
-        trackType,
-        playlistId) = kalamItemParam
+        trackListType) = kalamItemParam
 
     Column {
 
@@ -234,12 +233,12 @@ private fun SplitDoneView(
                     kalamTitleError.value = true
                     context.toast("Kalam Title cannot be empty.")
                 } else {
-                    kalamDataProvider.save(
+                    kalamDataProvider.saveSplitKalam(
                         kalamSplitManager.getKalam(),
                         kalamSplitManager.getSplitFile(),
                         kalamTitle.value.trim()
                     )
-                    kalamDataProvider.searchKalam(searchText.value, trackType, playlistId)
+                    kalamDataProvider.searchKalam(searchText.value, trackListType)
                     lazyKalamItems.refresh()
                     showDialog.value = false
 

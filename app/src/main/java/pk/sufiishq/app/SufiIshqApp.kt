@@ -1,16 +1,14 @@
 package pk.sufiishq.app
 
 import android.app.Application
-import android.content.Intent
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
+import pk.sufiishq.app.configs.AppConfig
+import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
-import pk.sufiishq.app.services.AudioPlayerService
-import pk.sufiishq.app.services.PlayerController
-import pk.sufiishq.app.storage.KeyValueStorage
 import pk.sufiishq.app.worker.CacheRemoveWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -23,8 +21,8 @@ class SufiIshqApp : Application() {
     @SecureSharedPreferences
     lateinit var keyValueStorage: KeyValueStorage
 
-    private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
-    private var playerController: PlayerController? = null
+    @Inject
+    lateinit var appConfig: AppConfig
 
     override fun onCreate() {
         super.onCreate()
@@ -37,7 +35,6 @@ class SufiIshqApp : Application() {
 
         initCacheRemoveWorkRequest()
 
-        startService(playerIntent)
     }
 
     private fun initCacheRemoveWorkRequest() {
@@ -49,12 +46,6 @@ class SufiIshqApp : Application() {
             cacheRemoveWorkRequest
         )
     }
-
-    fun setPlayerController(playerController: PlayerController?) {
-        this.playerController = playerController
-    }
-
-    fun getPlayerController() = playerController
 
     companion object {
         private lateinit var instance: SufiIshqApp

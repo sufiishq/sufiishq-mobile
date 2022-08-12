@@ -5,28 +5,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlayerDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.ui.components.AboutIconButton
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.Player
 import pk.sufiishq.app.ui.components.ShareIconButton
+import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.viewmodels.HomeViewModel
+import pk.sufiishq.app.viewmodels.KalamViewModel
+import pk.sufiishq.app.viewmodels.PlayerViewModel
+import pk.sufiishq.app.viewmodels.PlaylistViewModel
 
 @Composable
-fun MainView(
-    playerDataProvider: PlayerDataProvider,
-    kalamDataProvider: KalamDataProvider,
-    playlistDataProvider: PlaylistDataProvider
-) {
+fun MainView() {
     val matColors = MaterialTheme.colors
     val navController = rememberNavController()
+    val homeDataProvider by rem(hiltViewModel<HomeViewModel>())
+    val kalamDataProvider by rem(hiltViewModel<KalamViewModel>())
+    val playlistDataProvider by rem(hiltViewModel<PlaylistViewModel>())
+    val playerDataProvider by rem(hiltViewModel<PlayerViewModel>())
 
     Surface(color = matColors.background) {
         Scaffold(
@@ -68,6 +72,7 @@ fun MainView(
                         playerDataProvider,
                         kalamDataProvider,
                         playlistDataProvider,
+                        homeDataProvider,
                         navController
                     )
                 }

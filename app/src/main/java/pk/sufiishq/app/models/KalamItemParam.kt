@@ -5,6 +5,7 @@ import androidx.paging.compose.LazyPagingItems
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.helpers.TrackListType
 
 data class KalamItemParam(
     val kalam: Kalam,
@@ -15,6 +16,5 @@ data class KalamItemParam(
     val lazyKalamItems: LazyPagingItems<Kalam>,
     val playlistItems: List<Playlist>,
     val searchText: MutableState<String>,
-    val trackType: String,
-    val playlistId: Int
+    val trackListType: TrackListType
 )

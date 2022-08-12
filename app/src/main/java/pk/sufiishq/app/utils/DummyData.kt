@@ -10,15 +10,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
+import pk.sufiishq.app.core.player.SufiishqMediaPlayer
+import pk.sufiishq.app.core.player.helpers.AppMediaPlayer
+import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
-import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.PreviewAudioPlayer
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamItemParam
+import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.models.Playlist
 import java.io.File
 
@@ -29,32 +31,13 @@ import java.io.File
 @ExcludeFromJacocoGeneratedReport
 fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 
-    override fun getSeekbarValue(): LiveData<Float> {
-        return MutableLiveData(0f)
-    }
-
     override fun updateSeekbarValue(value: Float) { /* no comment */
-    }
-
-    override fun getSeekbarAccess(): LiveData<Boolean> {
-        return MutableLiveData(true)
-    }
-
-    override fun onSeekbarChanged(value: Float) { /* no comment */
-    }
-
-    override fun getPlayerState(): LiveData<PlayerState> {
-        return MutableLiveData(PlayerState.IDLE)
     }
 
     override fun doPlayOrPause() { /* no comment */
     }
 
-    override fun getActiveKalam(): LiveData<Kalam?> {
-        return MutableLiveData(Kalam(0, "Kalam Title", 1, "1991", "Karachi", "", "", 0, 0))
-    }
-
-    override fun changeTrack(kalam: Kalam, trackType: String, playlistId: Int) {
+    override fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
         /* no comment */
     }
 
@@ -91,16 +74,16 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
         /* no comment */
     }
 
-    override fun getCurrentPosition(): LiveData<Int> {
-        return MutableLiveData(0)
-    }
-
-    override fun getTotalDuration(): LiveData<Int> {
-        return MutableLiveData(0)
-    }
-
     override fun getMenuItems(): List<String> {
         return listOf()
+    }
+
+    override fun getKalamInfo(): LiveData<KalamInfo?> {
+        return MutableLiveData(null)
+    }
+
+    override fun onSeekbarChanged(value: Int) {
+        /* no comment */
     }
 }
 
@@ -111,18 +94,14 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 @ExcludeFromJacocoGeneratedReport
 fun dummyKalamDataProvider() = object : KalamDataProvider {
 
-    override fun init(trackType: String, playlistId: Int) { /* no comment */
+    override fun init(trackListType: TrackListType) { /* no comment */
     }
 
     override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
         return emptyFlow()
     }
 
-    override fun searchKalam(keyword: String, trackType: String, playlistId: Int) { /* no comment */
-    }
-
-    override fun getKalam(id: Int): LiveData<Kalam?> {
-        return MutableLiveData(null)
+    override fun searchKalam(keyword: String, trackListType: TrackListType) { /* no comment */
     }
 
     override fun update(kalam: Kalam) { /* no comment */
@@ -131,34 +110,29 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     override fun delete(kalam: Kalam, trackType: String) { /* no comment */
     }
 
-    override fun save(sourceKalam: Kalam, splitFile: File, kalamTitle: String) { /* no comment */
+    override fun saveSplitKalam(
+        sourceKalam: Kalam,
+        splitFile: File,
+        kalamTitle: String
+    ) { /* no comment */
     }
-
-    override fun countAll(): LiveData<Int> = MutableLiveData(0)
-
-    override fun countFavorites(): LiveData<Int> = MutableLiveData(0)
-
-    override fun countDownloads(): LiveData<Int> = MutableLiveData(0)
 
     override fun markAsFavorite(kalam: Kalam) { /* no comment */
     }
 
-    override fun removeFavorite(kalamItemParam: KalamItemParam) { /* no comment */
+    override fun removeFavorite(kalam: Kalam) {
+        /* no comment */
     }
 
     override fun getKalamSplitManager(): KalamSplitManager {
         return KalamSplitManager(
             SufiIshqApp.getInstance(),
-            PreviewAudioPlayer(Handler(Looper.getMainLooper()), MediaPlayer())
+            PreviewAudioPlayer(Handler(Looper.getMainLooper()), MediaPlayer()),
+            SufiishqMediaPlayer(
+                app,
+                AppMediaPlayer(Handler(Looper.getMainLooper()))
+            )
         )
-    }
-
-    override fun getActiveTrackType(): String {
-        return Screen.Tracks.ALL
-    }
-
-    override fun getActivePlaylistId(): Int {
-        return 0
     }
 
     override fun getActiveSearchKeyword(): String {
@@ -193,9 +167,41 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 
     override fun delete(playlist: Playlist) { /* no comment */
     }
-
-    override fun countAll(): LiveData<Int> = MutableLiveData(0)
 }
 
 @ExcludeFromJacocoGeneratedReport
 fun dummyPlaylist() = Playlist(1, "Karachi")
+
+// ----------------------------------------- //
+// HOME DATA PROVIDER
+// ----------------------------------------- //
+
+fun dummyHomeDataProvider() = object : HomeDataProvider {
+    override fun setShowUpdateDialog(value: Boolean) {
+        /* no comment */
+    }
+
+    override fun getShowUpdateDialog(): LiveData<Boolean> {
+        return MutableLiveData(true)
+    }
+
+    override fun getKalam(id: Int): LiveData<Kalam?> {
+        return MutableLiveData(null)
+    }
+
+    override fun countAll(): LiveData<Int> {
+        return MutableLiveData(150)
+    }
+
+    override fun countFavorites(): LiveData<Int> {
+        return MutableLiveData(15)
+    }
+
+    override fun countDownloads(): LiveData<Int> {
+        return MutableLiveData(35)
+    }
+
+    override fun countPlaylist(): LiveData<Int> {
+        return MutableLiveData(5)
+    }
+}

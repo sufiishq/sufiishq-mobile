@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,20 +27,22 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.data.providers.HomeDataProvider
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.ui.components.ThemeChangeButton
+import pk.sufiishq.app.ui.components.UpdateButton
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
 
 @Composable
 fun DashboardView(
     navController: NavController,
-    kalamDataProvider: KalamDataProvider,
-    playlistDataProvider: PlaylistDataProvider
+    homeDataProvider: HomeDataProvider
 ) {
+
     val matColors = MaterialTheme.colors
+    val appConfig = app.appConfig
 
     val all = stringResource(R.string.all)
     val favorites = stringResource(R.string.favorites)
@@ -54,7 +55,7 @@ fun DashboardView(
             .background(matColors.secondaryVariant)
     ) {
 
-        val (logo, themeChangeButton, buttonBox) = createRefs()
+        val (logo, themeChangeButton, btnUpdate, buttonBox) = createRefs()
 
         Image(
             modifier = Modifier.constrainAs(logo) {
@@ -71,16 +72,23 @@ fun DashboardView(
             contentDescription = null
         )
 
-        Box(
-            modifier = Modifier.constrainAs(themeChangeButton) {
-                start.linkTo(parent.start, 12.dp)
-                bottom.linkTo(buttonBox.top, 6.dp)
-            }
-                .clip(CircleShape)
-                .background(matColors.primaryVariant),
-        ) {
-            ThemeChangeButton()
-        }
+        // theme change button app only when android version less or equal from Android 9
+        ThemeChangeButton(
+            modifier = Modifier
+                .constrainAs(themeChangeButton) {
+                    start.linkTo(parent.start, 12.dp)
+                    bottom.linkTo(buttonBox.top, 6.dp)
+                }
+        )
+
+        UpdateButton(
+            show = homeDataProvider.getShowUpdateDialog().observeAsState(),
+            modifier = Modifier
+                .constrainAs(btnUpdate) {
+                    start.linkTo(parent.start, 12.dp)
+                    top.linkTo(parent.top, 12.dp)
+                }
+        )
 
         Box(
             modifier = Modifier
@@ -99,22 +107,30 @@ fun DashboardView(
 
                     TrackButton(
                         title = all,
-                        count = kalamDataProvider.countAll().observeAsState().optValue(0),
+                        count = homeDataProvider.countAll().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_check_circle_24,
                         iconColor = MenuIconColors.ALL_KALAM
                     ) {
-                        navController.navigate(Screen.Tracks.withArgs(Screen.Tracks.ALL, all, "0"))
+                        appConfig.trackListType = TrackListType.All()
+                        navController.navigate(
+                            ScreenType.Tracks.withArgs(
+                                ScreenType.Tracks.ALL,
+                                all,
+                                "0"
+                            )
+                        )
                     }
 
                     TrackButton(
                         title = favorites,
-                        count = kalamDataProvider.countFavorites().observeAsState().optValue(0),
+                        count = homeDataProvider.countFavorites().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_favorite_border_24,
                         iconColor = MenuIconColors.FAVORITE
                     ) {
+                        appConfig.trackListType = TrackListType.Favorites()
                         navController.navigate(
-                            Screen.Tracks.withArgs(
-                                Screen.Tracks.FAVORITES,
+                            ScreenType.Tracks.withArgs(
+                                ScreenType.Tracks.FAVORITES,
                                 favorites,
                                 "0"
                             )
@@ -129,13 +145,14 @@ fun DashboardView(
 
                     TrackButton(
                         title = downloads,
-                        count = kalamDataProvider.countDownloads().observeAsState().optValue(0),
+                        count = homeDataProvider.countDownloads().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_cloud_download_24,
                         iconColor = MenuIconColors.DOWNLOADS
                     ) {
+                        appConfig.trackListType = TrackListType.Downloads()
                         navController.navigate(
-                            Screen.Tracks.withArgs(
-                                Screen.Tracks.DOWNLOADS,
+                            ScreenType.Tracks.withArgs(
+                                ScreenType.Tracks.DOWNLOADS,
                                 downloads,
                                 "0"
                             )
@@ -144,11 +161,11 @@ fun DashboardView(
 
                     TrackButton(
                         title = playlist,
-                        count = playlistDataProvider.countAll().observeAsState().optValue(0),
+                        count = homeDataProvider.countPlaylist().observeAsState().optValue(0),
                         icon = R.drawable.ic_outline_playlist_play_24,
                         iconColor = MenuIconColors.PLAYLIST
                     ) {
-                        navController.navigate(Screen.Playlist.route)
+                        navController.navigate(ScreenType.Playlist.route)
                     }
                 }
             }
@@ -226,8 +243,7 @@ fun DashboardPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         DashboardView(
             navController = rememberNavController(),
-            dummyKalamDataProvider(),
-            dummyPlaylistDataProvider()
+            homeDataProvider = dummyHomeDataProvider()
         )
     }
 }

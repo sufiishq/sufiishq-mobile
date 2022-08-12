@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dummyKalamDataProvider
@@ -26,9 +27,7 @@ fun SearchTextField(
     kalamDataProvider: KalamDataProvider,
     matColors: Colors,
     lazyKalamItems: LazyPagingItems<Kalam>,
-    trackType: String,
-    title: String,
-    playlistId: Int
+    trackListType: TrackListType
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -37,11 +36,11 @@ fun SearchTextField(
         value = searchText.value,
         onValueChange = {
             searchText.value = it
-            kalamDataProvider.searchKalam(it, trackType, playlistId)
+            kalamDataProvider.searchKalam(it, trackListType)
             lazyKalamItems.refresh()
         },
         placeholder = {
-            Text("Search in $title", color = matColors.primary)
+            Text("Search in ${trackListType.title}", color = matColors.primary)
         },
         singleLine = true,
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
@@ -70,9 +69,7 @@ fun SearchTextFieldPreviewLight() {
             data,
             MaterialTheme.colors,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
-            trackType = "all",
-            "All",
-            0
+            TrackListType.All()
         )
     }
 }

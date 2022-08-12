@@ -4,6 +4,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pk.sufiishq.app.utils.isDarkThem
 
 private val DarkColorPalette = darkColors(
@@ -30,10 +32,25 @@ fun SufiIshqTheme(darkTheme: Boolean = isDarkThem(), content: @Composable () -> 
         LightColorPalette
     }
 
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        // Update all of the system bar colors to be transparent, and use
+        // dark icons if we're in light theme
+        systemUiController.setSystemBarsColor(
+            color = colors.background,
+            darkIcons = !darkTheme
+        )
+
+        // setStatusBarColor() and setNavigationBarColor() also exist
+    }
+
     MaterialTheme(
         colors = colors,
         typography = Typography,
         shapes = Shapes,
         content = content
     )
+
+
 }

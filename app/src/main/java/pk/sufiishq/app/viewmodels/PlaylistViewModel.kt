@@ -49,7 +49,4 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    override fun countAll(): LiveData<Int> {
-        return playlistRepository.countAll()
-    }
 }

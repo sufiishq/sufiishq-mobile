@@ -6,8 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -25,9 +28,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.dummyPlaylist
 import pk.sufiishq.app.utils.dummyPlaylistDataProvider
 
@@ -41,12 +46,14 @@ fun PlaylistItem(
     onPlaylistRename: (playlist: Playlist) -> Unit
 ) {
 
+    val appConfig = app.appConfig
     val isExpanded = remember { mutableStateOf(false) }
     val showPlaylistDeleteConfirmDialog = remember { mutableStateOf(false) }
 
     Column(Modifier.clickable {
+        appConfig.trackListType = TrackListType.Playlist(playlist.title, playlist.id)
         navController.navigate(
-            Screen.Tracks.withArgs(
+            ScreenType.Tracks.withArgs(
                 "playlist",
                 "${playlist.title} Playlist",
                 "${playlist.id}"
@@ -127,7 +134,7 @@ fun PlaylistItem(
                                 }
                                 isExpanded.value = false
                             }) {
-                                Text(text = label)
+                                PopupMenuLabel(label = label)
                             }
                         }
                     }

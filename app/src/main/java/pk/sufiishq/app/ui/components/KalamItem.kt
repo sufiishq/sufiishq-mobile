@@ -24,23 +24,26 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.flowOf
 import pk.sufiishq.app.R
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
 
 @Composable
-fun KalamItem(kalamItemParam: KalamItemParam, onMenuItemClicked: (kalam: Kalam, label: String) -> Unit) {
+fun KalamItem(
+    kalamItemParam: KalamItemParam,
+    onMenuItemClicked: (kalam: Kalam, label: String) -> Unit
+) {
 
-    val (kalam, _, playerDataProvider, _, _, _, _, _, trackType, playlistId) = kalamItemParam
+    val (kalam, _, playerDataProvider, _, _, _, _, _, trackListType) = kalamItemParam
 
     val matColors = MaterialTheme.colors
 
     val isExpanded = rem(false)
 
     Column(Modifier.clickable {
-        playerDataProvider.changeTrack(kalam, trackType, playlistId)
+        playerDataProvider.changeTrack(kalam, trackListType)
     }) {
         Row(
             modifier = Modifier
@@ -99,7 +102,11 @@ fun KalamItem(kalamItemParam: KalamItemParam, onMenuItemClicked: (kalam: Kalam, 
                         contentDescription = null
                     )
 
-                    KalamItemPopupMenu(isExpanded = isExpanded, kalamItemParam = kalamItemParam, onMenuItemClicked = onMenuItemClicked)
+                    KalamItemPopupMenu(
+                        isExpanded = isExpanded,
+                        kalamItemParam = kalamItemParam,
+                        onMenuItemClicked = onMenuItemClicked
+                    )
                 }
             }
         }
@@ -120,8 +127,7 @@ fun KalamItemPreviewLight() {
                 flowOf<PagingData<Kalam>>().collectAsLazyPagingItems(),
                 listOf(),
                 remember { mutableStateOf("") },
-                Screen.Tracks.ALL,
-                0
+                TrackListType.All()
             )
         ) { _, _ -> }
     }
@@ -141,8 +147,7 @@ fun KalamItemPreviewDark() {
                 flowOf<PagingData<Kalam>>().collectAsLazyPagingItems(),
                 listOf(),
                 remember { mutableStateOf("") },
-                Screen.Tracks.ALL,
-                0
+                TrackListType.All()
             )
         ) { _, _ -> }
     }

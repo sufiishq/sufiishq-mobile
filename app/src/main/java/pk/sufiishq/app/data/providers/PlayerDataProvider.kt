@@ -1,19 +1,16 @@
 package pk.sufiishq.app.data.providers
 
 import androidx.lifecycle.LiveData
-import pk.sufiishq.app.helpers.PlayerState
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamInfo
 
 interface PlayerDataProvider {
 
-    fun getSeekbarValue(): LiveData<Float>
     fun updateSeekbarValue(value: Float)
-    fun getSeekbarAccess(): LiveData<Boolean>
-    fun onSeekbarChanged(value: Float)
-    fun getPlayerState(): LiveData<PlayerState>
+    fun onSeekbarChanged(value: Int)
     fun doPlayOrPause()
-    fun getActiveKalam(): LiveData<Kalam?>
-    fun changeTrack(kalam: Kalam, trackType: String, playlistId: Int)
+    fun changeTrack(kalam: Kalam, trackListType: TrackListType)
     fun playNext()
     fun playPrevious()
     fun getDownloadProgress(): LiveData<Float>
@@ -23,7 +20,6 @@ interface PlayerDataProvider {
     fun disposeDownload()
     fun getShuffleState(): LiveData<Boolean>
     fun setShuffleState(shuffle: Boolean)
-    fun getCurrentPosition(): LiveData<Int>
-    fun getTotalDuration(): LiveData<Int>
     fun getMenuItems(): List<String>
+    fun getKalamInfo(): LiveData<KalamInfo?>
 }

@@ -22,7 +22,8 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.components.KalamItem
@@ -37,13 +38,11 @@ fun TracksView(
     playerDataProvider: PlayerDataProvider,
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
-    trackType: String,
-    title: String,
-    playlistId: Int
+    trackListType: TrackListType
 ) {
 
     val context = LocalContext.current
-    kalamDataProvider.init(trackType, playlistId)
+    kalamDataProvider.init(trackListType)
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
@@ -63,8 +62,8 @@ fun TracksView(
     val labelRename = stringResource(id = R.string.rename_label)
     val labelShare = stringResource(id = R.string.share_label)
 
-    val kalamMenuItems = when (trackType) {
-        Screen.Tracks.ALL -> listOf(
+    val kalamMenuItems = when (trackListType.type) {
+        ScreenType.Tracks.ALL -> listOf(
             labelAddToPlaylist,
             labelMarkAsFavorite,
             labelDownload,
@@ -72,7 +71,7 @@ fun TracksView(
             labelShare,
             labelDelete
         )
-        Screen.Tracks.DOWNLOADS -> listOf(
+        ScreenType.Tracks.DOWNLOADS -> listOf(
             labelAddToPlaylist,
             labelMarkAsFavorite,
             labelRename,
@@ -80,14 +79,14 @@ fun TracksView(
             labelSplitKalam,
             labelDelete
         )
-        Screen.Tracks.FAVORITES -> listOf(
+        ScreenType.Tracks.FAVORITES -> listOf(
             labelAddToPlaylist,
             labelRemoveFavorite,
             labelDownload,
             labelRename,
             labelShare
         )
-        Screen.Tracks.PLAYLIST -> listOf(labelMarkAsFavorite, labelRename, labelShare, labelDelete)
+        ScreenType.Tracks.PLAYLIST -> listOf(labelMarkAsFavorite, labelRename, labelShare, labelDelete)
         else -> listOf("")
     }
 
@@ -101,9 +100,7 @@ fun TracksView(
             kalamDataProvider,
             matColors,
             lazyKalamItems,
-            trackType,
-            title,
-            playlistId
+            trackListType
         )
         Divider(color = matColors.secondary)
 
@@ -126,8 +123,7 @@ fun TracksView(
                                 lazyKalamItems,
                                 playlistItems,
                                 searchText,
-                                trackType,
-                                playlistId
+                                trackListType
                             )
                         ) { kalam, label ->
                             when (label) {
@@ -149,7 +145,7 @@ fun TracksView(
         } else {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    text = "No items found in $title"
+                    text = "No items found in ${trackListType.title}"
                 )
             }
         }
@@ -163,10 +159,10 @@ fun TracksView(
         ) {
             kalam.title = it
             kalamDataProvider.update(kalam)
-            kalamDataProvider.searchKalam("*", trackType, playlistId)
+            kalamDataProvider.searchKalam("*", trackListType)
             lazyKalamItems.refresh()
             100.runWithDelay {
-                kalamDataProvider.searchKalam(searchText.value, trackType, playlistId)
+                kalamDataProvider.searchKalam(searchText.value, trackListType)
                 lazyKalamItems.refresh()
             }
         }
@@ -187,9 +183,7 @@ fun TracksPreviewLight() {
             playerDataProvider = dummyPlayerDataProvider(),
             kalamDataProvider = dummyKalamDataProvider(),
             playlistDataProvider = dummyPlaylistDataProvider(),
-            trackType = "all",
-            "All",
-            0
+            TrackListType.All()
         )
     }
 }
@@ -202,9 +196,7 @@ fun TracksPreviewDark() {
             playerDataProvider = dummyPlayerDataProvider(),
             kalamDataProvider = dummyKalamDataProvider(),
             playlistDataProvider = dummyPlaylistDataProvider(),
-            trackType = "all",
-            "All",
-            0
+            TrackListType.All()
         )
     }
 }

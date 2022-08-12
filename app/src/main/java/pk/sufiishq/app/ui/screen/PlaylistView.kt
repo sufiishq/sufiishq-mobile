@@ -1,7 +1,9 @@
 package pk.sufiishq.app.ui.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
@@ -21,7 +23,9 @@ import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.components.AddOrUpdatePlaylistDialog
 import pk.sufiishq.app.ui.components.PlaylistItem
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.dummyPlaylistDataProvider
+import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.rem
 
 @Composable
 fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavController) {

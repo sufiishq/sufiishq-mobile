@@ -14,7 +14,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.KALAM_DIR
@@ -54,10 +54,10 @@ class KalamViewModelTest : SufiIshqTest() {
     @Test
     fun testInit_shouldSet_givenParamInKalamRepository() {
 
-        kalamViewModel.init(Screen.Tracks.ALL, 1)
+        kalamViewModel.init(ScreenType.Tracks.ALL, 1)
 
         kalamRepository.run {
-            verify(exactly = 1) { setTrackType(Screen.Tracks.ALL) }
+            verify(exactly = 1) { setTrackType(ScreenType.Tracks.ALL) }
             verify(exactly = 1) { setPlaylistId(1) }
             verify(exactly = 1) { setSearchKeyword("") }
         }
@@ -71,10 +71,10 @@ class KalamViewModelTest : SufiIshqTest() {
     @Test
     fun testSearchKalam_shouldSet_givenParamInKalamRepository() {
 
-        kalamViewModel.searchKalam("Karachi", Screen.Tracks.DOWNLOADS, 2)
+        kalamViewModel.searchKalam("Karachi", ScreenType.Tracks.DOWNLOADS, 2)
 
         kalamRepository.run {
-            verify(exactly = 1) { setTrackType(Screen.Tracks.DOWNLOADS) }
+            verify(exactly = 1) { setTrackType(ScreenType.Tracks.DOWNLOADS) }
             verify(exactly = 1) { setPlaylistId(2) }
             verify(exactly = 1) { setSearchKeyword("Karachi") }
         }
@@ -96,7 +96,7 @@ class KalamViewModelTest : SufiIshqTest() {
             val kalamSlot = slot<Kalam>()
             coEvery { kalamRepository.update(capture(kalamSlot)) } returns Unit
             val kalam = sampleKalam().copyWithDefaults(playlistId = 10)
-            val trackType = Screen.Tracks.PLAYLIST
+            val trackType = ScreenType.Tracks.PLAYLIST
             kalamViewModel.delete(kalam, trackType)
             slot.invoke()
             assertEquals(0, kalamSlot.captured.playlistId)
@@ -116,7 +116,7 @@ class KalamViewModelTest : SufiIshqTest() {
             every { kalamViewModelSpy.canDelete(any()) } returns true
             val kalam = sampleKalam().copyWithDefaults()
             coEvery { kalamRepository.update(any()) } returns Unit
-            kalamViewModelSpy.delete(kalam, Screen.Tracks.ALL)
+            kalamViewModelSpy.delete(kalam, ScreenType.Tracks.ALL)
             slot.invoke()
             coVerify(exactly = 1) { kalamRepository.update(any()) }
         }
@@ -136,7 +136,7 @@ class KalamViewModelTest : SufiIshqTest() {
                 onlineSource = ""
             )
             coEvery { kalamRepository.delete(any()) } returns Unit
-            kalamViewModelSpy.delete(kalam, Screen.Tracks.ALL)
+            kalamViewModelSpy.delete(kalam, ScreenType.Tracks.ALL)
             slot.invoke()
             coVerify(exactly = 1) { kalamRepository.delete(any()) }
         }
@@ -161,7 +161,7 @@ class KalamViewModelTest : SufiIshqTest() {
                 title = "test kalam"
             )
 
-            kalamViewModelSpy.delete(kalam, Screen.Tracks.ALL)
+            kalamViewModelSpy.delete(kalam, ScreenType.Tracks.ALL)
             slot.invoke()
             assertEquals(
                 realContext.getString(R.string.error_kalam_delete_on_playing).format("test kalam"),
@@ -256,7 +256,7 @@ class KalamViewModelTest : SufiIshqTest() {
             every { completable.observeOn(any()) } returns completable
             every { completable.subscribe() } returns mockk()
 
-            kalamViewModel.save(sourceKalam, splitFile, "Kalam Title")
+            kalamViewModel.saveSplitKalam(sourceKalam, splitFile, "Kalam Title")
             slot.invoke()
 
             val updatedKalam = kalamSlot.captured
@@ -353,7 +353,7 @@ class KalamViewModelTest : SufiIshqTest() {
             lazyPagingItems,
             mockk(),
             mutableStateOf("new"),
-            Screen.Tracks.ALL,
+            ScreenType.Tracks.ALL,
             0
         )
 

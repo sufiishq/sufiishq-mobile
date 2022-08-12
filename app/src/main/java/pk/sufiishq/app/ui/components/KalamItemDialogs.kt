@@ -25,13 +25,11 @@ import pk.sufiishq.app.utils.*
 @Composable
 fun KalamItemDownloadDialog(
     showDownloadDialog: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam
+    kalam: Kalam,
+    playerDataProvider: PlayerDataProvider,
+    kalamDataProvider: KalamDataProvider
 ) {
     if (showDownloadDialog.value) {
-
-        val kalam = kalamItemParam.kalam
-        val playerDataProvider = kalamItemParam.playerDataProvider
-        val kalamDataProvider = kalamItemParam.kalamDataProvider
 
         val progress = playerDataProvider.getDownloadProgress().observeAsState().value ?: 0f
 
@@ -151,8 +149,7 @@ fun KalamItemConfirmDeleteDialog(
             lazyKalamItems,
             _,
             searchText,
-            trackType,
-            playlistId) = kalamItemParam
+            trackListType) = kalamItemParam
 
         Dialog(
             onDismissRequest = {
@@ -185,8 +182,8 @@ fun KalamItemConfirmDeleteDialog(
                         }
                         TextButton(onClick = {
                             showDeleteKalamConfirmDialog.value = false
-                            kalamDataProvider.delete(kalam, trackType)
-                            kalamDataProvider.searchKalam(searchText.value, trackType, playlistId)
+                            kalamDataProvider.delete(kalam, trackListType.type)
+                            kalamDataProvider.searchKalam(searchText.value, trackListType)
                             lazyKalamItems.refresh()
                         }) {
                             Text(text = "YES")
@@ -202,11 +199,11 @@ fun KalamItemConfirmDeleteDialog(
 fun KalamDownloadErrorDialog(
     downloadError: State<String?>,
     showDownloadDialog: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam
+    playerDataProvider: PlayerDataProvider
 ) {
     downloadError.value?.let { error ->
         if (error.isNotEmpty()) {
-            val playerDataProvider = kalamItemParam.playerDataProvider
+
             playerDataProvider.disposeDownload()
             showDownloadDialog.value = false
             AlertDialog(

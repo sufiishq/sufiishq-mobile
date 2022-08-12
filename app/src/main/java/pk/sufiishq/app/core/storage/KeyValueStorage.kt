@@ -1,4 +1,4 @@
-package pk.sufiishq.app.storage
+package pk.sufiishq.app.core.storage
 
 
 interface KeyValueStorage {

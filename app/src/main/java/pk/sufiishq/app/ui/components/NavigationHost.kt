@@ -11,10 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
+import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.ui.screen.DashboardView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
@@ -24,60 +26,65 @@ fun NavigationHost(
     playerDataProvider: PlayerDataProvider,
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
+    homeDataProvider: HomeDataProvider,
     navController: NavHostController
 ) {
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
+        NavHost(navController = navController, startDestination = ScreenType.Dashboard.route) {
 
             // dashboard screen
-            composable(Screen.Dashboard.route) {
+            composable(ScreenType.Dashboard.route) {
 
                 DashboardView(
-                    navController = navController,
-                    kalamDataProvider,
-                    playlistDataProvider
+                    navController,
+                    homeDataProvider
                 )
             }
 
             // tracks screen
             composable(
-                Screen.Tracks.route + "/{${Screen.Tracks.PARAM_TRACK_TYPE}}/{${Screen.Tracks.PARAM_TITLE}}/{${Screen.Tracks.PARAM_PLAYLIST_ID}}",
+                ScreenType.Tracks.route + "/{${ScreenType.Tracks.PARAM_TRACK_TYPE}}/{${ScreenType.Tracks.PARAM_TITLE}}/{${ScreenType.Tracks.PARAM_PLAYLIST_ID}}",
                 arguments = listOf(
-                    navArgument(Screen.Tracks.PARAM_TRACK_TYPE) {
+                    navArgument(ScreenType.Tracks.PARAM_TRACK_TYPE) {
                         type = NavType.StringType
                     },
-                    navArgument(Screen.Tracks.PARAM_TITLE) {
+                    navArgument(ScreenType.Tracks.PARAM_TITLE) {
                         type = NavType.StringType
                     },
-                    navArgument(Screen.Tracks.PARAM_PLAYLIST_ID) {
+                    navArgument(ScreenType.Tracks.PARAM_PLAYLIST_ID) {
                         type = NavType.IntType
                         defaultValue = 0
                     }
                 )
             ) { backStackEntry ->
 
-                val trackType = backStackEntry.arguments?.getString(Screen.Tracks.PARAM_TRACK_TYPE)
-                    ?: Screen.Tracks.ALL
-                val title = backStackEntry.arguments?.getString(Screen.Tracks.PARAM_TITLE)
+                val trackType = backStackEntry.arguments?.getString(ScreenType.Tracks.PARAM_TRACK_TYPE)
+                    ?: ScreenType.Tracks.ALL
+                val title = backStackEntry.arguments?.getString(ScreenType.Tracks.PARAM_TITLE)
                     ?: stringResource(id = R.string.all)
                 val playlistId =
-                    backStackEntry.arguments?.getInt(Screen.Tracks.PARAM_PLAYLIST_ID) ?: 0
+                    backStackEntry.arguments?.getInt(ScreenType.Tracks.PARAM_PLAYLIST_ID) ?: 0
+
+                val trackListType = when(trackType) {
+                    ScreenType.Tracks.DOWNLOADS -> TrackListType.Downloads()
+                    ScreenType.Tracks.FAVORITES -> TrackListType.Favorites()
+                    ScreenType.Tracks.PLAYLIST -> TrackListType.Playlist(title, playlistId)
+                    else -> TrackListType.All()
+                }
 
                 TracksView(
                     playerDataProvider = playerDataProvider,
                     kalamDataProvider = kalamDataProvider,
                     playlistDataProvider = playlistDataProvider,
-                    trackType = trackType,
-                    title = title,
-                    playlistId = playlistId,
+                    trackListType = trackListType,
                 )
             }
 
             // playlist screen
-            composable(Screen.Playlist.route) {
+            composable(ScreenType.Playlist.route) {
                 PlaylistView(
                     playlistDataProvider = playlistDataProvider,
                     navController = navController

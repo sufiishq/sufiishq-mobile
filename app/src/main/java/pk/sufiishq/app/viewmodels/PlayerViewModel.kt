@@ -1,10 +1,11 @@
 package pk.sufiishq.app.viewmodels
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.BackpressureStrategy
@@ -13,15 +14,22 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
 import pk.sufiishq.app.R
-import pk.sufiishq.app.SufiIshqApp
+import pk.sufiishq.app.configs.AppConfig
+import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.core.player.listener.PlayerStateListener
+import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.helpers.FileDownloader
 import pk.sufiishq.app.helpers.PlayerState
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.services.AudioPlayerService
-import pk.sufiishq.app.services.PlayerController
+import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.*
 import timber.log.Timber
 import java.io.File
@@ -32,19 +40,18 @@ import javax.inject.Inject
 import kotlin.math.min
 
 @HiltViewModel
+@SuppressLint("StaticFieldLeak")
 class PlayerViewModel @Inject constructor(
     @ApplicationContext val appContext: Context,
-    private val fileDownloader: FileDownloader
-) : ViewModel(), PlayerDataProvider, AudioPlayerService.Listener {
+    @AndroidMediaPlayer private val player: AudioPlayer,
+    private val fileDownloader: FileDownloader,
+    private val kalamRepository: KalamRepository,
+    private val appConfig: AppConfig
+) : ViewModel(), PlayerDataProvider, PlayerStateListener {
 
-    private val seekbarValue = MutableLiveData(0f)
-    private val seekbarAccess = MutableLiveData(false)
-    private val currentPosition = MutableLiveData(0)
-    private val totalDuration = MutableLiveData(0)
-    private val activeKalam = MutableLiveData<Kalam?>()
-    private val playerState = MutableLiveData(PlayerState.IDLE)
+    private val kalamInfo = MutableLiveData<KalamInfo?>(null)
+    private var seekbarEnableOnPlaying = true
     private val shuffleState = MutableLiveData(IS_SHUFFLE_ON.getFromStorage(false))
-    private var playerController: PlayerController? = null
 
     private val downloadProgress = MutableLiveData(0f)
     private val downloadError = MutableLiveData("")
@@ -52,6 +59,7 @@ class PlayerViewModel @Inject constructor(
     private var fileMoveDisposables = Disposables.disposed()
 
     init {
+        player.registerListener(this)
         RxJavaPlugins.setErrorHandler { e ->
             if (e is UndeliverableException) {
                 Timber.e(e)
@@ -59,77 +67,55 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    fun setPlayerService(playerService: PlayerController?) {
-        this.playerController = playerService
-    }
-
-    override fun getSeekbarValue(): LiveData<Float> {
-        return seekbarValue
-    }
-
     override fun updateSeekbarValue(value: Float) {
-        seekbarValue.value = value
-        totalDuration.value?.let {
-            currentPosition.value = (value / 100f * it.toFloat()).toInt()
+        seekbarEnableOnPlaying = false
+        kalamInfo.value?.let { info ->
+            info.currentProgress = value.toInt()
         }
     }
 
-    override fun getSeekbarAccess(): LiveData<Boolean> {
-        return seekbarAccess
-    }
-
-    override fun onSeekbarChanged(value: Float) {
-        playerController?.seekTo(value)
-    }
-
-    override fun getPlayerState(): LiveData<PlayerState> {
-        return playerState
+    override fun onSeekbarChanged(value: Int) {
+        seekbarEnableOnPlaying = true
+        player.seekTo(value)
     }
 
     override fun doPlayOrPause() {
-        playerController?.let {
-            if (it.isPlaying()) {
-                it.doPause()
-            } else {
-                it.doPlay()
-            }
-        }
+        player.doPlayOrPause()
     }
 
-    override fun getActiveKalam(): LiveData<Kalam?> {
-        return activeKalam
-    }
-
-    override fun changeTrack(kalam: Kalam, trackType: String, playlistId: Int) {
+    override fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
         if (kalam.canPlay(appContext)) {
-            currentPosition.value = 0
-            playerController?.setActiveTrack(kalam, trackType, playlistId)
-            playerController?.doPlay()
+            player.setSource(kalam, trackListType)
+            player.doPlayOrPause()
         }
     }
 
     override fun playNext() {
-        getPlayerState().value?.let {
-            if (it != PlayerState.LOADING) {
-                currentPosition.value = 0
-                playerController?.playNext()
+        viewModelScope.launch {
+            kalamRepository.getNextKalam(
+                player.getActiveTrack().id,
+                player.getTrackListType(),
+                appConfig.isShuffle()
+            ).asFlow().collectLatest { nextKalam ->
+                nextKalam?.let {
+                    changeTrack(nextKalam, player.getTrackListType())
+                }
             }
         }
-
     }
 
     override fun playPrevious() {
-        getPlayerState().value?.let {
-            if (it != PlayerState.LOADING) {
-                currentPosition.value = 0
-                playerController?.playPrevious()
+        viewModelScope.launch {
+            kalamRepository.getPreviousKalam(
+                player.getActiveTrack().id,
+                player.getTrackListType(),
+                appConfig.isShuffle()
+            ).asFlow().collectLatest { previousKalam ->
+                previousKalam?.let {
+                    changeTrack(previousKalam, player.getTrackListType())
+                }
             }
         }
-    }
-
-    private fun playStart() {
-        playerState.value = PlayerState.PLAYING
-        seekbarAccess.value = true
     }
 
     override fun getShuffleState(): LiveData<Boolean> {
@@ -141,14 +127,6 @@ class PlayerViewModel @Inject constructor(
         shuffleState.postValue(IS_SHUFFLE_ON.getFromStorage(false))
     }
 
-    override fun getCurrentPosition(): LiveData<Int> {
-        return currentPosition
-    }
-
-    override fun getTotalDuration(): LiveData<Int> {
-        return totalDuration
-    }
-
     override fun getMenuItems(): List<String> {
         return listOf(
             appContext.getString(R.string.mark_as_favorite),
@@ -156,6 +134,10 @@ class PlayerViewModel @Inject constructor(
             appContext.getString(R.string.download_label),
             appContext.getString(R.string.add_to_playlist),
         )
+    }
+
+    override fun getKalamInfo(): LiveData<KalamInfo?> {
+        return kalamInfo
     }
 
     /*=======================================*/
@@ -231,60 +213,72 @@ class PlayerViewModel @Inject constructor(
     // PLAYER LISTENER
     /*=======================================*/
 
-    override fun initService(kalam: Kalam) {
-        activeKalam.value = kalam
-        playerController?.let {
-            seekbarValue.value = it.getCurrentProgress()
-            if (it.isPlaying()) {
-                playerState.value = PlayerState.PLAYING
-                seekbarAccess.value = true
+    override fun onStateChange(mediaState: MediaState) {
+
+        val newKalamInfo = when (mediaState) {
+
+            is MediaState.Idle, is MediaState.Complete, is MediaState.Error -> {
+
+                if (mediaState is MediaState.Error) {
+                    appContext.toast(mediaState.message)
+                }
+
+                KalamInfo(PlayerState.IDLE, mediaState.kalam, 0, 0, false)
+            }
+
+            is MediaState.Loading -> {
+                kalamInfo.value?.let {
+                    KalamInfo(
+                        PlayerState.LOADING,
+                        mediaState.kalam,
+                        it.currentProgress,
+                        it.totalDuration,
+                        false
+                    )
+                } ?: run {
+                    kalamInfo.value
+                }
+            }
+
+            is MediaState.Playing -> {
+                if (seekbarEnableOnPlaying) {
+                    KalamInfo(
+                        PlayerState.PLAYING,
+                        mediaState.kalam,
+                        mediaState.currentProgress,
+                        mediaState.totalDuration,
+                        true
+                    )
+                } else {
+                    kalamInfo.value
+                }
+            }
+
+            is MediaState.Pause -> {
+                KalamInfo(
+                    PlayerState.PAUSE,
+                    mediaState.kalam,
+                    mediaState.currentProgress,
+                    mediaState.totalDuration,
+                    false
+                )
+            }
+
+            is MediaState.Resume -> {
+                KalamInfo(
+                    PlayerState.PLAYING,
+                    mediaState.kalam,
+                    mediaState.currentProgress,
+                    mediaState.totalDuration,
+                    true
+                )
+            }
+
+            else -> {
+                kalamInfo.value
             }
         }
-    }
 
-    override fun onTrackUpdated(kalam: Kalam) {
-        activeKalam.value = kalam
-        seekbarValue.value = 0f
-    }
-
-    override fun onTrackLoading() {
-        playerState.value = PlayerState.LOADING
-        seekbarAccess.value = false
-    }
-
-    override fun onPlayStart() {
-        playStart()
-    }
-
-    override fun onPause() {
-        playerState.value = PlayerState.PAUSE
-    }
-
-    override fun onResume() {
-        playStart()
-    }
-
-    override fun onError(ex: Exception) {
-        Toast.makeText(SufiIshqApp.getInstance(), ex.message, Toast.LENGTH_LONG).show()
-        playerState.value = PlayerState.IDLE
-        seekbarValue.value = 0f
-        seekbarAccess.value = false
-    }
-
-    override fun onCompleted(kalam: Kalam) {
-        super.onCompleted(kalam)
-        playerState.value = PlayerState.IDLE
-        seekbarValue.value = 0f
-        seekbarAccess.value = false
-    }
-
-    override fun onProgressChanged(currentPosition: Int, progress: Float) {
-        seekbarValue.value = progress
-        this.currentPosition.value = currentPosition
-    }
-
-    override fun onTrackLoaded(totalDuration: Int) {
-        this.totalDuration.value = totalDuration
-        playerState.value = PlayerState.IDLE
+        kalamInfo.postValue(newKalamInfo)
     }
 }

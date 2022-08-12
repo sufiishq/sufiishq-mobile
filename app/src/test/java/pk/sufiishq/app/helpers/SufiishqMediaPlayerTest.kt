@@ -10,6 +10,7 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
+import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.models.Kalam
 
 class SufiishqMediaPlayerTest : SufiIshqTest() {

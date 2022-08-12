@@ -13,7 +13,7 @@ import org.junit.Test
 import org.robolectric.util.ReflectionHelpers.getField
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.data.dao.KalamDao
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
 
 class KalamRepositoryTest : SufiIshqTest() {
@@ -51,8 +51,8 @@ class KalamRepositoryTest : SufiIshqTest() {
 
     @Test
     fun testSetTrackType_shouldUpdate_withGiveTrackType() {
-        kalamRepository.setTrackType(Screen.Tracks.DOWNLOADS)
-        assertEquals(Screen.Tracks.DOWNLOADS, getField<String>("trackType"))
+        kalamRepository.setTrackType(ScreenType.Tracks.DOWNLOADS)
+        assertEquals(ScreenType.Tracks.DOWNLOADS, getField<String>("trackType"))
     }
 
     @Test
@@ -73,7 +73,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         every { kalamDao.getAllKalam(capture(searchSlot)) } returns mockk()
 
         kalamRepository.setSearchKeyword("Pakpattan")
-        kalamRepository.setTrackType(Screen.Tracks.ALL)
+        kalamRepository.setTrackType(ScreenType.Tracks.ALL)
         kalamRepository.load()
 
         verify(exactly = 1) { kalamDao.getAllKalam(searchSlot.captured) }
@@ -86,7 +86,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         every { kalamDao.getDownloadsKalam(capture(searchSlot)) } returns mockk()
 
         kalamRepository.setSearchKeyword("Jhang")
-        kalamRepository.setTrackType(Screen.Tracks.DOWNLOADS)
+        kalamRepository.setTrackType(ScreenType.Tracks.DOWNLOADS)
         kalamRepository.load()
 
         verify(exactly = 1) { kalamDao.getDownloadsKalam(searchSlot.captured) }
@@ -99,7 +99,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         every { kalamDao.getFavoritesKalam(capture(searchSlot)) } returns mockk()
 
         kalamRepository.setSearchKeyword("Lahore")
-        kalamRepository.setTrackType(Screen.Tracks.FAVORITES)
+        kalamRepository.setTrackType(ScreenType.Tracks.FAVORITES)
         kalamRepository.load()
 
         verify(exactly = 1) { kalamDao.getFavoritesKalam(searchSlot.captured) }
@@ -118,7 +118,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         } returns mockk()
 
         kalamRepository.setSearchKeyword("Dehli")
-        kalamRepository.setTrackType(Screen.Tracks.PLAYLIST)
+        kalamRepository.setTrackType(ScreenType.Tracks.PLAYLIST)
         kalamRepository.setPlaylistId(3)
         kalamRepository.load()
 

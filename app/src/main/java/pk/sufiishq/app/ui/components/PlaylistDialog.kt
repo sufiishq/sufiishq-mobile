@@ -17,17 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.models.KalamItemParam
+import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.Playlist
 
 @Composable
 fun PlaylistDialog(
     showPlaylistDialog: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam
+    kalam: Kalam,
+    playlistItems: List<Playlist>,
+    kalamDataProvider: KalamDataProvider
 ) {
 
     if (showPlaylistDialog.value) {
-
-        val (kalam, _, _, kalamDataProvider, _, _, playlistItems, _, _, _) = kalamItemParam
 
         val matColors = MaterialTheme.colors
         val context = LocalContext.current

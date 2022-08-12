@@ -1,17 +1,17 @@
 package pk.sufiishq.app.helpers
 
-sealed class Screen(val route: String) {
+sealed class ScreenType(val route: String) {
 
-    object Dashboard : Screen("screen_dashboard")
-    object Playlist : Screen("screen_playlist")
-    object Tracks : Screen("screen_tracks") {
+    object Dashboard : ScreenType("screen_dashboard")
+    object Playlist : ScreenType("screen_playlist")
+    object Tracks : ScreenType("screen_tracks") {
 
         // params
         const val PARAM_TRACK_TYPE = "trackType"
         const val PARAM_TITLE = "title"
         const val PARAM_PLAYLIST_ID = "playlistId"
 
-        // track types
+        // track list types
         const val ALL = "all"
         const val DOWNLOADS = "downloads"
         const val FAVORITES = "favorites"

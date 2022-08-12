@@ -1,4 +1,4 @@
-package pk.sufiishq.app.helpers
+package pk.sufiishq.app.core.player.util
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -8,8 +8,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
+import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.services.AudioPlayerService
 import pk.sufiishq.app.utils.formatDateAs
 
 @SuppressLint("UnspecifiedImmutableFlag")
@@ -43,7 +43,7 @@ class PlayerNotification(private val context: Context) {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    fun buildNotification(activeKalam: Kalam?, service: AudioPlayerService) {
+    fun buildNotification(activeKalam: Kalam?, service: Service) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -54,7 +54,13 @@ class PlayerNotification(private val context: Context) {
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)
-                .setContentText("${activeKalam?.location} ${activeKalam?.recordeDate?.formatDateAs(prefix = "- ")}")
+                .setContentText(
+                    "${activeKalam?.location} ${
+                        activeKalam?.recordeDate?.formatDateAs(
+                            prefix = "- "
+                        )
+                    }"
+                )
 
             service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
         } else {
@@ -65,7 +71,13 @@ class PlayerNotification(private val context: Context) {
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)
-                .setContentText("${activeKalam?.location} ${activeKalam?.recordeDate?.formatDateAs(prefix = "- ")}")
+                .setContentText(
+                    "${activeKalam?.location} ${
+                        activeKalam?.recordeDate?.formatDateAs(
+                            prefix = "- "
+                        )
+                    }"
+                )
 
             service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
         }

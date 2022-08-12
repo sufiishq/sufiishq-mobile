@@ -15,7 +15,7 @@
     <string name="error_kalam_delete_on_playing">%s is playing. Can\'t be deleted</string>
     <string name="kalam_saved_label">%s saved</string>
     <string name="favorite_added">%s added in favorites</string>
-    <string name="favorite_removed">%s removed in favorites</string>
+    <string name="favorite_removed">%s removed from favorites</string>
     <string name="no_network_connection">No network connection</string>
     <string name="unknown_error">Something went wrong</string>
     <string name="about_title">About</string>

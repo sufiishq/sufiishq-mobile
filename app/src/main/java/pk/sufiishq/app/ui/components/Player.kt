@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,6 @@ import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.PlayerState
-import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.*
 
@@ -42,12 +40,9 @@ fun Player(
         contentColor = Color.White
     }
 
-    val sliderValue = playerDataProvider.getSeekbarValue().observeAsState()
-    val playerState = playerDataProvider.getPlayerState().observeAsState().value
-    val activeKalam = playerDataProvider.getActiveKalam().observeAsState()
+    val appConfig = app.appConfig
+    val kalamInfo = playerDataProvider.getKalamInfo().observeAsState()
     val shuffleState = playerDataProvider.getShuffleState().observeAsState()
-    val currentPosition = playerDataProvider.getCurrentPosition().observeAsState()
-    val totalDuration = playerDataProvider.getTotalDuration().observeAsState()
     val playlistItems = playlistDataProvider.getAll().observeAsState().optValue(listOf())
     val menu = rem(playerDataProvider.getMenuItems())
     val showMenu = rem(false)
@@ -55,22 +50,7 @@ fun Player(
     val showDownloadDialog = rem(false)
     val showPlaylistDialog = rem(false)
     val downloadError = playerDataProvider.getDownloadError().observeAsState()
-
-    var kalamItemParam = rem<KalamItemParam?>(null)
-    activeKalam.value?.let {
-        kalamItemParam.value = KalamItemParam(
-            kalam = it,
-            kalamMenuItems = menu.value,
-            playerDataProvider = playerDataProvider,
-            kalamDataProvider = kalamDataProvider,
-            playlistDataProvider = playlistDataProvider,
-            lazyKalamItems = kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems(),
-            playlistItems = playlistItems,
-            searchText = mutableStateOf(kalamDataProvider.getActiveSearchKeyword()),
-            trackType = kalamDataProvider.getActiveTrackType(),
-            playlistId = kalamDataProvider.getActivePlaylistId()
-        )
-    }
+    val lazyPagingItems = kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
 
     Box(
         Modifier
@@ -85,12 +65,12 @@ fun Player(
             colors = SliderDefaults.colors(
                 thumbColor = matColors.secondary
             ),
-            value = sliderValue.optValue(0f),
-            valueRange = 0f..100f,
-            enabled = playerDataProvider.getSeekbarAccess().observeAsState().value!!,
+            value = kalamInfo.value?.currentProgress?.toFloat() ?: 0f,
+            valueRange = 0f..(kalamInfo.value?.totalDuration?.toFloat() ?: 0f),
+            enabled = kalamInfo.value?.enableSeekbar ?: false,
             onValueChange = { playerDataProvider.updateSeekbarValue(it) },
             onValueChangeFinished = {
-                playerDataProvider.onSeekbarChanged(sliderValue.optValue(0f))
+                playerDataProvider.onSeekbarChanged(kalamInfo.value?.currentProgress ?: 0)
             })
 
         Column(
@@ -116,7 +96,7 @@ fun Player(
                     },
                     color = contentColor,
                     fontSize = 18.sp,
-                    text = (activeKalam.value?.title ?: ""),
+                    text = (kalamInfo.value?.kalam?.title ?: ""),
                     gradientEdgeColor = backgroundColor
                 )
 
@@ -126,7 +106,8 @@ fun Player(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
                     },
-                    text = (activeKalam.value?.location ?: "") + (activeKalam.value?.recordeDate?.formatDateAs(prefix = " - ")
+                    text = (kalamInfo.value?.kalam?.location
+                        ?: "") + (kalamInfo.value?.kalam?.recordeDate?.formatDateAs(prefix = " - ")
                         ?: ""),
                     fontSize = 13.sp,
                     color = contentColor
@@ -141,9 +122,9 @@ fun Player(
             ) {
 
                 Text(
-                    text = currentPosition.optValue(0).plus(999).formatTime,
+                    text = kalamInfo.value?.currentProgress?.formatTime ?: 0.formatTime,
                     color = contentColor,
-                    fontSize = 13.sp
+                    fontSize = 12.sp
                 )
 
                 IconButton(onClick = {
@@ -175,11 +156,11 @@ fun Player(
 
                 Box(
                     modifier = Modifier
-                        .width(45.dp)
+                        .width(25.dp)
                         .height(25.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (playerState == PlayerState.LOADING) {
+                    if (kalamInfo.value?.playerState == PlayerState.LOADING) {
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .height(25.dp)
@@ -190,7 +171,7 @@ fun Player(
                         IconButton(onClick = { playerDataProvider.doPlayOrPause() }) {
                             Icon(
                                 modifier = Modifier.size(25.dp),
-                                painter = painterResource(id = if (playerState == PlayerState.PAUSE || playerState == PlayerState.IDLE) R.drawable.ic_play else R.drawable.ic_pause),
+                                painter = painterResource(id = if (kalamInfo.value?.playerState == PlayerState.PAUSE || kalamInfo.value?.playerState == PlayerState.IDLE) R.drawable.ic_play else R.drawable.ic_pause),
                                 tint = contentColor,
                                 contentDescription = null
                             )
@@ -228,19 +209,19 @@ fun Player(
                         val labelRemoveFavorite = stringResource(id = R.string.remove_favorite)
                         val labelDownload = stringResource(id = R.string.download_label)
                         val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
-
+                        val activeKalam = kalamInfo.value?.kalam
                         menu.value
                             .filter { label ->
 
                                 when (label) {
                                     labelMarkAsFavorite -> {
-                                        activeKalam.value!!.isFavorite == 0
+                                        activeKalam?.isFavorite == 0
                                     }
                                     labelRemoveFavorite -> {
-                                        activeKalam.value!!.isFavorite == 1
+                                        activeKalam?.isFavorite == 1
                                     }
                                     labelDownload -> {
-                                        activeKalam.value!!.offlineSource.isEmpty()
+                                        activeKalam?.offlineSource?.isEmpty() ?: true
                                     }
                                     else -> true
                                 }
@@ -251,14 +232,14 @@ fun Player(
                                     when (label) {
                                         labelAddToPlaylist -> showPlaylistDialog.value = true
                                         labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(
-                                            activeKalam.value!!
+                                            activeKalam!!
                                         )
                                         labelRemoveFavorite -> kalamDataProvider.removeFavorite(
-                                            kalamItemParam.value!!
+                                            activeKalam!!
                                         )
                                         labelDownload -> {
                                             showDownloadDialog.value = true
-                                            playerDataProvider.startDownload(activeKalam.value!!)
+                                            playerDataProvider.startDownload(activeKalam!!)
                                         }
                                     }
                                 }) {
@@ -269,35 +250,40 @@ fun Player(
                 }
 
                 Text(
-                    text = totalDuration.optValue(0).plus(999).formatTime,
+                    text = kalamInfo.value?.totalDuration?.formatTime ?: 0.formatTime,
                     color = contentColor,
-                    fontSize = 13.sp
+                    fontSize = 12.sp
                 )
             }
 
         }
     }
 
-    kalamItemParam.value?.let {
+    kalamInfo.value?.kalam?.let {
+
         // kalam download dialog
         KalamItemDownloadDialog(
             showDownloadDialog = showDownloadDialog,
-            kalamItemParam = it
-        )
-
-        // kalam download error dialog
-        KalamDownloadErrorDialog(
-            downloadError = downloadError,
-            showDownloadDialog = showDownloadDialog,
-            kalamItemParam = it
+            kalam = it,
+            playerDataProvider = playerDataProvider,
+            kalamDataProvider = kalamDataProvider
         )
 
         // playlist dialog
         PlaylistDialog(
             showPlaylistDialog = showPlaylistDialog,
-            kalamItemParam = it
+            kalam = it,
+            playlistItems = playlistItems,
+            kalamDataProvider = kalamDataProvider
         )
     }
+
+    // kalam download error dialog
+    KalamDownloadErrorDialog(
+        downloadError = downloadError,
+        showDownloadDialog = showDownloadDialog,
+        playerDataProvider = playerDataProvider
+    )
 
 }
 

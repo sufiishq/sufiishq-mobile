@@ -7,7 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
 import pk.sufiishq.app.R
-import pk.sufiishq.app.helpers.Screen
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.utils.rem
@@ -19,7 +19,7 @@ fun KalamItemPopupMenu(
     onMenuItemClicked: (kalam: Kalam, label: String) -> Unit
 ) {
 
-    val (kalam, kalamMenuItems, playerDataProvider, kalamDataProvider, _, _, _, _, trackType, _) = kalamItemParam
+    val (kalam, kalamMenuItems, playerDataProvider, kalamDataProvider, _, _, _, _, trackListType) = kalamItemParam
 
     val showDownloadDialog = rem(false)
     val showDeleteKalamConfirmDialog = rem(false)
@@ -48,7 +48,7 @@ fun KalamItemPopupMenu(
                     labelMarkAsFavorite,
                     labelDelete,
                     labelShare,
-                    trackType,
+                    trackListType.type,
                     kalam
                 )
             )
@@ -57,7 +57,7 @@ fun KalamItemPopupMenu(
                     when (label) {
                         labelAddToPlaylist -> showPlaylistDialog.value = true
                         labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(kalam)
-                        labelRemoveFavorite -> kalamDataProvider.removeFavorite(kalamItemParam)
+                        labelRemoveFavorite -> kalamDataProvider.removeFavorite(kalamItemParam.kalam)
                         labelDownload -> {
                             showDownloadDialog.value = true
                             playerDataProvider.startDownload(kalam)
@@ -81,13 +81,17 @@ fun KalamItemPopupMenu(
     // kalam download dialog
     KalamItemDownloadDialog(
         showDownloadDialog = showDownloadDialog,
-        kalamItemParam = kalamItemParam
+        kalam = kalamItemParam.kalam,
+        playerDataProvider = kalamItemParam.playerDataProvider,
+        kalamDataProvider = kalamItemParam.kalamDataProvider
     )
 
     // playlist dialog
     PlaylistDialog(
         showPlaylistDialog = showPlaylistDialog,
-        kalamItemParam = kalamItemParam
+        kalam = kalamItemParam.kalam,
+        playlistItems = kalamItemParam.playlistItems,
+        kalamDataProvider = kalamItemParam.kalamDataProvider
     )
 
     // kalam confirm delete dialog
@@ -100,7 +104,7 @@ fun KalamItemPopupMenu(
     KalamDownloadErrorDialog(
         downloadError = downloadError,
         showDownloadDialog = showDownloadDialog,
-        kalamItemParam = kalamItemParam
+        playerDataProvider = kalamItemParam.playerDataProvider
     )
 
     // kalam split dialog
@@ -125,7 +129,7 @@ private fun filterLabels(
             labelMarkAsFavorite -> kalam.isFavorite == 0
             labelShare -> kalam.onlineSource.isNotEmpty()
             labelDelete -> {
-                if (trackType == Screen.Tracks.ALL) {
+                if (trackType == ScreenType.Tracks.ALL) {
                     kalam.onlineSource.isEmpty()
                 } else true
             }

@@ -18,20 +18,17 @@ import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.PLAYLIST_ID
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.RECORDED_DATE
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.TITLE
-import pk.sufiishq.app.helpers.Screen
-import pk.sufiishq.app.helpers.Screen.Tracks.DOWNLOADS
-import pk.sufiishq.app.helpers.Screen.Tracks.FAVORITES
-import pk.sufiishq.app.helpers.Screen.Tracks.PLAYLIST
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
-    private var trackType = Screen.Tracks.ALL
-    private var playlistId = 0
+    private var trackListType: TrackListType = TrackListType.All()
     private var searchKeyword = ""
 
     suspend fun insert(kalam: Kalam) = kalamDao.insert(kalam)
@@ -42,29 +39,25 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
         return kalamDao.getKalam(id)
     }
 
-    fun setTrackType(trackType: String) {
-        this.trackType = trackType
+    fun setTrackListType(trackListType: TrackListType) {
+        this.trackListType = trackListType
     }
 
-    fun setPlaylistId(playlistId: Int) {
-        this.playlistId = playlistId
+    fun getTrackListType(): TrackListType {
+        return trackListType
     }
 
     fun setSearchKeyword(searchKeyword: String) {
         this.searchKeyword = searchKeyword
     }
 
-    fun getTrackType() = trackType
-
-    fun getPlaylistId() = playlistId
-
     fun getSearchKeyword() = searchKeyword
 
     fun load(): PagingSource<Int, Kalam> {
-        return when (trackType) {
-            DOWNLOADS -> loadDownloadsKalam(searchKeyword)
-            FAVORITES -> loadFavoritesKalam(searchKeyword)
-            PLAYLIST -> loadPlaylistKalam(playlistId, searchKeyword)
+        return when (val type = trackListType) {
+            is TrackListType.Downloads -> loadDownloadsKalam(searchKeyword)
+            is TrackListType.Favorites -> loadFavoritesKalam(searchKeyword)
+            is TrackListType.Playlist -> loadPlaylistKalam(type.playlistId, searchKeyword)
             else -> loadAllKalam(searchKeyword)
         }
     }
@@ -98,21 +91,21 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     fun getNextKalam(
         id: Int,
-        trackType: String,
-        playlistId: Int,
+        trackListType: TrackListType,
         shuffle: Boolean
     ): LiveData<Kalam?> {
 
-        if (shuffle) return getRandomKalam(trackType, playlistId)
+        if (shuffle) return getRandomKalam(trackListType)
 
         val query = buildString {
             append("SELECT * FROM kalam ")
             append("WHERE $ID < $id ")
 
-            when (trackType) {
-                DOWNLOADS -> append("AND $OFFLINE_SRC != '' ")
-                FAVORITES -> append("AND $FAVORITE = 1 ")
-                PLAYLIST -> append("AND $PLAYLIST_ID = $playlistId ")
+            when (trackListType) {
+                is TrackListType.Downloads -> append("AND $OFFLINE_SRC != '' ")
+                is TrackListType.Favorites -> append("AND $FAVORITE = 1 ")
+                is TrackListType.Playlist -> append("AND $PLAYLIST_ID = ${trackListType.playlistId} ")
+                else -> Timber.d("default track list type is $trackListType")
             }
 
             append("ORDER BY $ID DESC ")
@@ -124,21 +117,21 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     fun getPreviousKalam(
         id: Int,
-        trackType: String,
-        playlistId: Int,
+        trackListType: TrackListType,
         shuffle: Boolean
     ): LiveData<Kalam?> {
 
-        if (shuffle) return getRandomKalam(trackType, playlistId)
+        if (shuffle) return getRandomKalam(trackListType)
 
         val query = buildString {
             append("SELECT * FROM kalam ")
             append("WHERE $ID > $id ")
 
-            when (trackType) {
-                DOWNLOADS -> append("AND $OFFLINE_SRC != '' ")
-                FAVORITES -> append("AND $FAVORITE = 1 ")
-                PLAYLIST -> append("AND $PLAYLIST_ID = $playlistId ")
+            when (trackListType) {
+                is TrackListType.Downloads -> append("AND $OFFLINE_SRC != '' ")
+                is TrackListType.Favorites -> append("AND $FAVORITE = 1 ")
+                is TrackListType.Playlist -> append("AND $PLAYLIST_ID = ${trackListType.playlistId} ")
+                else -> Timber.d("default track list type is $trackListType")
             }
 
             append("ORDER BY $ID ASC ")
@@ -148,14 +141,15 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
         return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
     }
 
-    fun getRandomKalam(trackType: String, playlistId: Int): LiveData<Kalam?> {
+    fun getRandomKalam(trackListType: TrackListType): LiveData<Kalam?> {
         val query = buildString {
             append("SELECT * FROM $KALAM_TABLE_NAME ")
 
-            when (trackType) {
-                DOWNLOADS -> append("WHERE $OFFLINE_SRC != '' ")
-                FAVORITES -> append("WHERE $FAVORITE = 1 ")
-                PLAYLIST -> append("WHERE $PLAYLIST_ID = $playlistId ")
+            when (trackListType) {
+                is TrackListType.Downloads -> append("WHERE $OFFLINE_SRC != '' ")
+                is TrackListType.Favorites -> append("WHERE $FAVORITE = 1 ")
+                is TrackListType.Playlist -> append("WHERE $PLAYLIST_ID = ${trackListType.playlistId} ")
+                else -> Timber.d("default track list type is $trackListType")
             }
 
             append("ORDER BY random() ")

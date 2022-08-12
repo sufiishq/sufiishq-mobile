@@ -16,7 +16,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 
 
 @Composable
@@ -36,7 +35,7 @@ fun OutlinedTextFieldValidation(
             readOnly = false,
             value = value,
             onValueChange = {
-                            if (it.length <= maxLength) onValueChange(it)
+                if (it.length <= maxLength) onValueChange(it)
             },
             modifier = modifier.fillMaxWidth(),
             singleLine = true,

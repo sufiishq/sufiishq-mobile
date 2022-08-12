@@ -13,9 +13,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
+import pk.sufiishq.app.activities.BaseActivity
 import pk.sufiishq.app.activities.MainActivity
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
 import timber.log.Timber
 import java.io.File
@@ -102,6 +109,14 @@ fun Number.runWithDelay(block: () -> Unit) {
     Handler(Looper.myLooper()!!).postDelayed(block, this.toLong())
 }
 
+fun <T> LiveData<T>.asFlow(): Flow<T> = callbackFlow {
+    val observer = Observer<T> { value -> this.trySend(value).isSuccess }
+    observeForever(observer)
+    awaitClose {
+        removeObserver(observer)
+    }
+}.flowOn(Dispatchers.Main.immediate)
+
 fun Kalam.share(context: Context, linkCreated: (status: Boolean) -> Unit) {
     if (context is MainActivity) {
 
@@ -134,6 +149,23 @@ fun Kalam.share(context: Context, linkCreated: (status: Boolean) -> Unit) {
     }
 }
 
+fun Kalam.offlineFile(): File? {
+    return takeIf { offlineSource.isNotEmpty() }?.let {
+        File(
+            buildString {
+                append(app.filesDir)
+                append(File.separator)
+                append(it.offlineSource)
+            }
+        )
+    }
+}
+
+fun String.isAllType() = this == ScreenType.Tracks.ALL
+fun String.isDownloadsType() = this == ScreenType.Tracks.DOWNLOADS
+fun String.isFavoritesType() = this == ScreenType.Tracks.FAVORITES
+fun String.isPlaylistType() = this == ScreenType.Tracks.PLAYLIST
+
 @Composable
 fun <T> rem(value: T): MutableState<T> {
     return remember { mutableStateOf(value) }
@@ -144,7 +176,7 @@ fun isDarkThem(): Boolean {
     return if (isDeviceSupportDarkMode()) {
         isSystemInDarkTheme()
     } else {
-        MainActivity.IS_DARK_THEME
+        BaseActivity.IS_DARK_THEME
     }
 }
 

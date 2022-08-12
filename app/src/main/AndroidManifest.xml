@@ -48,7 +48,7 @@
         </activity>
 
         <service
-            android:name=".services.AudioPlayerService"
+            android:name=".core.player.service.AudioPlayerService"
             android:enabled="true"
             android:exported="false" />
     </application>
