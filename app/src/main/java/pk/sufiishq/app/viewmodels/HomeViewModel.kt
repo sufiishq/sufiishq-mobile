@@ -7,16 +7,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
+import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.models.Kalam
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val kalamRepository: KalamRepository,
-    private val playlistRepository: PlaylistRepository
+    private val playlistRepository: PlaylistRepository,
+    private val inAppUpdateManager: InAppUpdateManager
 ) : ViewModel(), HomeDataProvider {
 
-    private val showUpdateDialog = MutableLiveData(true)
+    private val showUpdateDialog = MutableLiveData(false)
 
     override fun setShowUpdateDialog(value: Boolean) {
         showUpdateDialog.postValue(value)
@@ -24,6 +26,10 @@ class HomeViewModel @Inject constructor(
 
     override fun getShowUpdateDialog(): LiveData<Boolean> {
         return showUpdateDialog
+    }
+
+    override fun handleUpdate() {
+        inAppUpdateManager.startUpdateFlow()
     }
 
     override fun getKalam(id: Int): LiveData<Kalam?> {

@@ -13,21 +13,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
+import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.ui.components.AboutIconButton
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.Player
 import pk.sufiishq.app.ui.components.ShareIconButton
 import pk.sufiishq.app.utils.rem
-import pk.sufiishq.app.viewmodels.HomeViewModel
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import pk.sufiishq.app.viewmodels.PlaylistViewModel
 
 @Composable
-fun MainView() {
+fun MainView(
+    homeDataProvider: HomeDataProvider
+) {
     val matColors = MaterialTheme.colors
     val navController = rememberNavController()
-    val homeDataProvider by rem(hiltViewModel<HomeViewModel>())
     val kalamDataProvider by rem(hiltViewModel<KalamViewModel>())
     val playlistDataProvider by rem(hiltViewModel<PlaylistViewModel>())
     val playerDataProvider by rem(hiltViewModel<PlayerViewModel>())

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -11,16 +12,22 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import pk.sufiishq.app.R
+import pk.sufiishq.app.data.providers.HomeDataProvider
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class InAppUpdateManager @Inject constructor() {
 
     private lateinit var listener: Listener
+    private lateinit var activity: ComponentActivity
+    private lateinit var appUpdateInfo: AppUpdateInfo
 
-    fun checkInAppUpdate(activity: ComponentActivity) {
+    fun checkInAppUpdate(activity: ComponentActivity, homeDataProvider: HomeDataProvider) {
 
         val appUpdateManager = AppUpdateManagerFactory.create(activity)
 
+        this.activity = activity
         listener = Listener(activity)
         appUpdateManager.registerListener(listener)
 
@@ -29,18 +36,27 @@ class InAppUpdateManager @Inject constructor() {
 
         appUpdateInfoTask
             .addOnSuccessListener { appUpdateInfo ->
+                this.appUpdateInfo = appUpdateInfo
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.FLEXIBLE,
-                        activity,
-                        99
-                    )
+                    homeDataProvider.setShowUpdateDialog(true)
                 } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                     popupSnackbarForCompleteUpdate(activity)
                 }
             }
+    }
+
+    fun startUpdateFlow() {
+        val appUpdateManager = AppUpdateManagerFactory.create(activity)
+
+        if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+            appUpdateManager.startUpdateFlowForResult(
+                appUpdateInfo,
+                AppUpdateType.FLEXIBLE,
+                activity,
+                99
+            )
+        }
     }
 
     fun unregisterListener(activity: ComponentActivity) {

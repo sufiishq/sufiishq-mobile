@@ -20,7 +20,8 @@ import pk.sufiishq.app.utils.rem
 @Composable
 fun UpdateButton(
     show: State<Boolean?>,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: () -> Unit
 ) {
 
     if (show.value == true) {
@@ -59,7 +60,7 @@ fun UpdateButton(
                     shape = RoundedCornerShape(6.dp)
                 )
                 .clickable {
-
+                    onClick()
                 },
 
             ) {

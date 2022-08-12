@@ -20,6 +20,7 @@ import pk.sufiishq.app.utils.DARK_THEME
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.isDeviceSupportDarkMode
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
+import pk.sufiishq.app.viewmodels.HomeViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import javax.inject.Inject
 
@@ -44,6 +45,7 @@ open class BaseActivity : ComponentActivity() {
 
     private val playerViewModel: PlayerViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
+    protected val homeViewModel: HomeViewModel by viewModels()
 
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -66,7 +68,7 @@ open class BaseActivity : ComponentActivity() {
         }
 
         handleDeeplink(intent)
-        inAppUpdateManager.checkInAppUpdate(this)
+        inAppUpdateManager.checkInAppUpdate(this, homeViewModel)
     }
 
     override fun onDestroy() {
@@ -108,7 +110,7 @@ open class BaseActivity : ComponentActivity() {
                     uri.pathSegments?.let { pathSegments ->
                         if (pathSegments.size == 2) {
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
-                            kalamRepository.getKalam(kalamId.toInt())
+                            homeViewModel.getKalam(kalamId.toInt())
                                 .observe(this@BaseActivity) { kalam ->
                                     kalam?.let {
                                         playerViewModel.changeTrack(

@@ -88,7 +88,9 @@ fun DashboardView(
                     start.linkTo(parent.start, 12.dp)
                     top.linkTo(parent.top, 12.dp)
                 }
-        )
+        ) {
+            homeDataProvider.handleUpdate()
+        }
 
         Box(
             modifier = Modifier

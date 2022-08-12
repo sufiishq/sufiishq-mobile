@@ -185,6 +185,10 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
         return MutableLiveData(true)
     }
 
+    override fun handleUpdate() {
+        /* no comment */
+    }
+
     override fun getKalam(id: Int): LiveData<Kalam?> {
         return MutableLiveData(null)
     }
