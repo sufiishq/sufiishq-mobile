@@ -1,13 +1,11 @@
 package pk.sufiishq.app.viewmodels
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
@@ -18,14 +16,19 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
 import pk.sufiishq.app.R
-import pk.sufiishq.app.configs.AppConfig
+import pk.sufiishq.app.core.downloader.FileDownloader
+import pk.sufiishq.app.core.downloader.KalamDownloadState
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.Event
+import pk.sufiishq.app.core.event.events.PlayerEvents
+import pk.sufiishq.app.core.event.exception.UnhandledEventException
+import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.helpers.FileDownloader
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
@@ -37,29 +40,29 @@ import java.net.SocketException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.math.min
 
 @HiltViewModel
 @SuppressLint("StaticFieldLeak")
 class PlayerViewModel @Inject constructor(
-    @ApplicationContext val appContext: Context,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val fileDownloader: FileDownloader,
     private val kalamRepository: KalamRepository,
-    private val appConfig: AppConfig
-) : ViewModel(), PlayerDataProvider, PlayerStateListener {
+    eventDispatcher: EventDispatcher
+) : ViewModel(), PlayerDataProvider, PlayerStateListener, EventHandler {
 
-    private val kalamInfo = MutableLiveData<KalamInfo?>(null)
     private var seekbarEnableOnPlaying = true
+    private val kalamInfo = MutableLiveData<KalamInfo?>(null)
     private val shuffleState = MutableLiveData(IS_SHUFFLE_ON.getFromStorage(false))
+    private val kalamDownloadState = MutableLiveData<KalamDownloadState>(KalamDownloadState.Idle)
 
-    private val downloadProgress = MutableLiveData(0f)
-    private val downloadError = MutableLiveData("")
     private var fileDownloaderDisposable = Disposables.disposed()
     private var fileMoveDisposables = Disposables.disposed()
 
+    private val appContext = app
+
     init {
         player.registerListener(this)
+        eventDispatcher.registerEventHandler(this)
         RxJavaPlugins.setErrorHandler { e ->
             if (e is UndeliverableException) {
                 Timber.e(e)
@@ -67,64 +70,8 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    override fun updateSeekbarValue(value: Float) {
-        seekbarEnableOnPlaying = false
-        kalamInfo.value?.let { info ->
-            info.currentProgress = value.toInt()
-        }
-    }
-
-    override fun onSeekbarChanged(value: Int) {
-        seekbarEnableOnPlaying = true
-        player.seekTo(value)
-    }
-
-    override fun doPlayOrPause() {
-        player.doPlayOrPause()
-    }
-
-    override fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
-        if (kalam.canPlay(appContext)) {
-            player.setSource(kalam, trackListType)
-            player.doPlayOrPause()
-        }
-    }
-
-    override fun playNext() {
-        viewModelScope.launch {
-            kalamRepository.getNextKalam(
-                player.getActiveTrack().id,
-                player.getTrackListType(),
-                appConfig.isShuffle()
-            ).asFlow().collectLatest { nextKalam ->
-                nextKalam?.let {
-                    changeTrack(nextKalam, player.getTrackListType())
-                }
-            }
-        }
-    }
-
-    override fun playPrevious() {
-        viewModelScope.launch {
-            kalamRepository.getPreviousKalam(
-                player.getActiveTrack().id,
-                player.getTrackListType(),
-                appConfig.isShuffle()
-            ).asFlow().collectLatest { previousKalam ->
-                previousKalam?.let {
-                    changeTrack(previousKalam, player.getTrackListType())
-                }
-            }
-        }
-    }
-
     override fun getShuffleState(): LiveData<Boolean> {
         return shuffleState
-    }
-
-    override fun setShuffleState(shuffle: Boolean) {
-        IS_SHUFFLE_ON.putInStorage(shuffle)
-        shuffleState.postValue(IS_SHUFFLE_ON.getFromStorage(false))
     }
 
     override fun getMenuItems(): List<String> {
@@ -140,26 +87,105 @@ class PlayerViewModel @Inject constructor(
         return kalamInfo
     }
 
+    private fun playNext() {
+        viewModelScope.launch {
+            kalamRepository.getNextKalam(
+                player.getActiveTrack().id,
+                player.getTrackListType(),
+                appContext.appConfig.isShuffle()
+            ).asFlow().collectLatest { nextKalam ->
+                nextKalam?.let {
+                    changeTrack(nextKalam, player.getTrackListType())
+                }
+            }
+        }
+    }
+
+    private fun playPrevious() {
+        viewModelScope.launch {
+            kalamRepository.getPreviousKalam(
+                player.getActiveTrack().id,
+                player.getTrackListType(),
+                appContext.appConfig.isShuffle()
+            ).asFlow().collectLatest { previousKalam ->
+                previousKalam?.let {
+                    changeTrack(previousKalam, player.getTrackListType())
+                }
+            }
+        }
+    }
+
+    private fun updateSeekbarValue(value: Float) {
+        seekbarEnableOnPlaying = false
+
+        kalamInfo.value?.let {
+            kalamInfo.value = KalamInfo(
+                it.playerState,
+                it.kalam,
+                value.toInt(),
+                it.totalDuration,
+                it.enableSeekbar
+            )
+        }
+    }
+
+    private fun onSeekbarChanged(value: Int) {
+        seekbarEnableOnPlaying = true
+        player.seekTo(value)
+    }
+
+    private fun setShuffleState(shuffle: Boolean) {
+        IS_SHUFFLE_ON.putInStorage(shuffle)
+        shuffleState.postValue(IS_SHUFFLE_ON.getFromStorage(false))
+    }
+
+    private fun doPlayOrPause() {
+        player.doPlayOrPause()
+    }
+
+    private fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
+        if (kalam.canPlay(appContext)) {
+            player.setSource(kalam, trackListType)
+            player.doPlayOrPause()
+        }
+    }
+
+    /*=======================================*/
+    // HANDLE PLAYER EVENTS
+    /*=======================================*/
+
+    override fun onEvent(event: Event) {
+
+        when (event) {
+            is PlayerEvents.PlayPauseEvent -> doPlayOrPause()
+            is PlayerEvents.PlayNext -> playNext()
+            is PlayerEvents.PlayPrevious -> playPrevious()
+            is PlayerEvents.ChangeShuffle -> setShuffleState(!getShuffleState().optValue(false))
+            is PlayerEvents.SeekbarChanged -> onSeekbarChanged(event.value)
+            is PlayerEvents.UpdateSeekbar -> updateSeekbarValue(event.value)
+            is PlayerEvents.ChangeTrack -> changeTrack(event.kalam, event.trackListType)
+            is PlayerEvents.StartDownload -> startDownload(event.kalam)
+            is PlayerEvents.DisposeDownload -> disposeDownload()
+            is PlayerEvents.ChangeDownloadState -> setKalamDownloadState(event.downloadState)
+            else -> throw UnhandledEventException(event, this)
+        }
+    }
+
     /*=======================================*/
     // KALAM DOWNLOAD
     /*=======================================*/
 
-    override fun getDownloadProgress(): LiveData<Float> {
-        return downloadProgress
+    override fun getKalamDownloadState(): LiveData<KalamDownloadState> {
+        return kalamDownloadState
     }
 
-    override fun getDownloadError(): LiveData<String> {
-        return downloadError
+    private fun setKalamDownloadState(kalamDownloadState: KalamDownloadState) {
+        this.kalamDownloadState.postValue(kalamDownloadState)
     }
 
-    override fun setDownloadError(error: String) {
-        downloadError.postValue(error)
-    }
+    private fun startDownload(kalam: Kalam) {
 
-    override fun startDownload(kalam: Kalam) {
-
-        setDownloadError("")
-        downloadProgress.postValue(0f)
+        setKalamDownloadState(KalamDownloadState.Started(kalam))
 
         val fileName = FilenameUtils.getName(kalam.onlineSource)
         fileDownloaderDisposable = fileDownloader.download(kalam.onlineSource, cacheDir(fileName))
@@ -167,34 +193,59 @@ class PlayerViewModel @Inject constructor(
             .toFlowable(BackpressureStrategy.LATEST)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Timber.d("kalam: ${kalam.title}, download progress: $it")
-                downloadProgress.postValue(min(it, 99).toFloat() / 100f * 1f)
-            }, {
-                Timber.e(it)
-                if (it is SocketException || it is UnknownHostException) {
-                    setDownloadError("Internet connection failed")
-                } else {
-                    setDownloadError(it.localizedMessage ?: it.message ?: "Unknown error")
-                }
-            }, {
-                Timber.d("download completed")
+            .subscribe(
 
-                val source = cacheDir(fileName)
-                val destination = kalamDir(fileName)
+                // onNext ->
+                {
+                    val progress = it.toFloat() / 100f * 1f
+                    Timber.d("kalam: ${kalam.title}, download progress: $it")
+                    setKalamDownloadState(KalamDownloadState.InProgress(progress, kalam))
+                },
 
-                Timber.d("file moving from ${source.absolutePath} to ${destination.absolutePath}")
+                // onError ->
+                {
+                    Timber.e(it)
 
-                fileMoveDisposables = source.moveTo(destination)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        downloadProgress.postValue(100f)
+                    val error = if (it is SocketException || it is UnknownHostException) {
+                        "Internet connection failed"
+                    } else {
+                        it.localizedMessage ?: it.message ?: "Unknown error"
                     }
-            })
+
+                    setKalamDownloadState(KalamDownloadState.Error(error, kalam))
+                },
+
+                // onComplete ->
+                {
+                    Timber.d("download completed")
+
+                    val source = cacheDir(fileName)
+                    val destination = kalamDir(fileName)
+
+                    Timber.d("file moving from ${source.absolutePath} to ${destination.absolutePath}")
+
+                    fileMoveDisposables = source.moveTo(destination)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+
+                            kalam.offlineSource = KALAM_DIR + File.separator + fileName
+
+                            if (kalam.isOfflineFileExists()) {
+                                viewModelScope.launch {
+                                    kalamRepository.update(kalam)
+                                }
+                            } else {
+                                kalam.offlineSource = ""
+                            }
+
+                            setKalamDownloadState(KalamDownloadState.Completed(kalam))
+                        }
+                }
+            )
     }
 
-    override fun disposeDownload() {
+    private fun disposeDownload() {
         fileDownloaderDisposable.dispose()
         fileMoveDisposables.dispose()
     }
@@ -210,73 +261,86 @@ class PlayerViewModel @Inject constructor(
     }
 
     /*=======================================*/
-    // PLAYER LISTENER
+    // HANDLE PLAYER STATES
     /*=======================================*/
+
+    private fun setIdleState(mediaState: MediaState): KalamInfo {
+
+        if (mediaState is MediaState.Error) {
+            appContext.toast(mediaState.message)
+        }
+
+        return KalamInfo(
+            PlayerState.IDLE,
+            mediaState.kalam,
+            0,
+            0,
+            false
+        )
+    }
+
+    private fun setLoadingState(
+        mediaState: MediaState.Loading
+    ): KalamInfo? {
+        return kalamInfo.value?.let {
+            KalamInfo(
+                PlayerState.LOADING,
+                mediaState.kalam,
+                it.currentProgress,
+                it.totalDuration,
+                false
+            )
+        } ?: run {
+            kalamInfo.value
+        }
+    }
+
+    private fun setPlayingState(mediaState: MediaState.Playing): KalamInfo? {
+        return if (seekbarEnableOnPlaying) {
+            KalamInfo(
+                PlayerState.PLAYING,
+                mediaState.kalam,
+                mediaState.currentProgress,
+                mediaState.totalDuration,
+                true
+            )
+        } else {
+            kalamInfo.value
+        }
+    }
+
+    private fun setPauseState(mediaState: MediaState.Pause): KalamInfo {
+        return KalamInfo(
+            PlayerState.PAUSE,
+            mediaState.kalam,
+            mediaState.currentProgress,
+            mediaState.totalDuration,
+            false
+        )
+    }
+
+    private fun setResumeState(mediaState: MediaState.Resume): KalamInfo {
+        return KalamInfo(
+            PlayerState.PLAYING,
+            mediaState.kalam,
+            mediaState.currentProgress,
+            mediaState.totalDuration,
+            true
+        )
+    }
 
     override fun onStateChange(mediaState: MediaState) {
 
         val newKalamInfo = when (mediaState) {
 
-            is MediaState.Idle, is MediaState.Complete, is MediaState.Error -> {
-
-                if (mediaState is MediaState.Error) {
-                    appContext.toast(mediaState.message)
-                }
-
-                KalamInfo(PlayerState.IDLE, mediaState.kalam, 0, 0, false)
-            }
-
-            is MediaState.Loading -> {
-                kalamInfo.value?.let {
-                    KalamInfo(
-                        PlayerState.LOADING,
-                        mediaState.kalam,
-                        it.currentProgress,
-                        it.totalDuration,
-                        false
-                    )
-                } ?: run {
-                    kalamInfo.value
-                }
-            }
-
-            is MediaState.Playing -> {
-                if (seekbarEnableOnPlaying) {
-                    KalamInfo(
-                        PlayerState.PLAYING,
-                        mediaState.kalam,
-                        mediaState.currentProgress,
-                        mediaState.totalDuration,
-                        true
-                    )
-                } else {
-                    kalamInfo.value
-                }
-            }
-
-            is MediaState.Pause -> {
-                KalamInfo(
-                    PlayerState.PAUSE,
-                    mediaState.kalam,
-                    mediaState.currentProgress,
-                    mediaState.totalDuration,
-                    false
-                )
-            }
-
-            is MediaState.Resume -> {
-                KalamInfo(
-                    PlayerState.PLAYING,
-                    mediaState.kalam,
-                    mediaState.currentProgress,
-                    mediaState.totalDuration,
-                    true
-                )
-            }
-
-            else -> {
-                kalamInfo.value
-            }
+            is MediaState.Loading -> setLoadingState(mediaState)
+            is MediaState.Playing -> setPlayingState(mediaState)
+            is MediaState.Pause -> setPauseState(mediaState)
+            is MediaState.Resume -> setResumeState(mediaState)
+            is MediaState.Idle, is MediaState.Complete, is MediaState.Error -> setIdleState(
+                mediaState
+            )
+            else -> kalamInfo.value
         }
 
         kalamInfo.postValue(newKalamInfo)

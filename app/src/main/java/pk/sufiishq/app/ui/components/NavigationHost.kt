@@ -11,10 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.ui.screen.DashboardView
@@ -23,10 +24,11 @@ import pk.sufiishq.app.ui.screen.TracksView
 
 @Composable
 fun NavigationHost(
-    playerDataProvider: PlayerDataProvider,
+    eventDispatcher: EventDispatcher,
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
     homeDataProvider: HomeDataProvider,
+    globalEventHandler: GlobalEventHandler,
     navController: NavHostController
 ) {
 
@@ -40,7 +42,9 @@ fun NavigationHost(
 
                 DashboardView(
                     navController,
-                    homeDataProvider
+                    homeDataProvider,
+                    globalEventHandler,
+                    eventDispatcher
                 )
             }
 
@@ -61,14 +65,15 @@ fun NavigationHost(
                 )
             ) { backStackEntry ->
 
-                val trackType = backStackEntry.arguments?.getString(ScreenType.Tracks.PARAM_TRACK_TYPE)
-                    ?: ScreenType.Tracks.ALL
+                val trackType =
+                    backStackEntry.arguments?.getString(ScreenType.Tracks.PARAM_TRACK_TYPE)
+                        ?: ScreenType.Tracks.ALL
                 val title = backStackEntry.arguments?.getString(ScreenType.Tracks.PARAM_TITLE)
                     ?: stringResource(id = R.string.all)
                 val playlistId =
                     backStackEntry.arguments?.getInt(ScreenType.Tracks.PARAM_PLAYLIST_ID) ?: 0
 
-                val trackListType = when(trackType) {
+                val trackListType = when (trackType) {
                     ScreenType.Tracks.DOWNLOADS -> TrackListType.Downloads()
                     ScreenType.Tracks.FAVORITES -> TrackListType.Favorites()
                     ScreenType.Tracks.PLAYLIST -> TrackListType.Playlist(title, playlistId)
@@ -76,9 +81,8 @@ fun NavigationHost(
                 }
 
                 TracksView(
-                    playerDataProvider = playerDataProvider,
+                    eventDispatcher = eventDispatcher,
                     kalamDataProvider = kalamDataProvider,
-                    playlistDataProvider = playlistDataProvider,
                     trackListType = trackListType,
                 )
             }

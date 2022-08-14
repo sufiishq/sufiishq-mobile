@@ -1,11 +1,11 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,17 +15,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.KalamEvents
+import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.SplitCompleted
 import pk.sufiishq.app.helpers.SplitDone
-import pk.sufiishq.app.models.KalamItemParam
+import pk.sufiishq.app.ui.components.SingleOutlinedTextField
+import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.utils.*
 
 @Composable
-fun KalamSplitter(
-    showDialog: MutableState<Boolean>,
+fun KalamItemSplitDialog(
+    kalamSplitManager: State<KalamSplitManager?>,
+    eventDispatcher: EventDispatcher
+) {
+    kalamSplitManager.value?.apply {
+        SufiIshqDialog {
+            KalamSplitter(
+                kalamSplitManager = this,
+                eventDispatcher = eventDispatcher
+            )
+        }
+    }
+}
+
+@Composable
+private fun KalamSplitter(
     kalamSplitManager: KalamSplitManager,
-    kalamItemParam: KalamItemParam
+    eventDispatcher: EventDispatcher
 ) {
 
     val splitStatus = kalamSplitManager.getSplitStatus().observeAsState()
@@ -41,10 +59,13 @@ fun KalamSplitter(
         when (val status = splitStatus.value) {
             is SplitCompleted -> SplitCompletedView(
                 status,
-                showDialog,
+                eventDispatcher,
                 kalamSplitManager
             )
-            is SplitDone -> SplitDoneView(kalamSplitManager, showDialog, kalamItemParam)
+            is SplitDone -> SplitDoneView(
+                kalamSplitManager,
+                eventDispatcher
+            )
             else -> SplitInProgressView()
         }
     }
@@ -53,25 +74,28 @@ fun KalamSplitter(
 @Composable
 private fun SplitCompletedView(
     status: SplitCompleted,
-    showDialog: MutableState<Boolean>,
+    eventDispatcher: EventDispatcher,
     kalamSplitManager: KalamSplitManager
 ) {
     if (status.returnCode == SPLIT_SUCCESS) {
-        SplitSuccessView(kalamSplitManager = kalamSplitManager)
+        SplitSuccessView(
+            kalamSplitManager = kalamSplitManager,
+            eventDispatcher = eventDispatcher
+        )
     } else {
 
         if (status.returnCode != SPLIT_CANCEL) {
             LocalContext.current.toast("Execution failed with ${status.returnCode}")
         }
 
-        SplitView(showDialog = showDialog, kalamSplitManager = kalamSplitManager)
+        SplitView(eventDispatcher = eventDispatcher, kalamSplitManager = kalamSplitManager)
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SplitView(
-    showDialog: MutableState<Boolean>,
+    eventDispatcher: EventDispatcher,
     kalamSplitManager: KalamSplitManager
 ) {
 
@@ -92,8 +116,14 @@ private fun SplitView(
                     (start == end) -> end = end.plus(1000)
                 }
 
-                kalamSplitManager.setSplitStart(start)
-                kalamSplitManager.setSplitEnd(end)
+                eventDispatcher.dispatch(
+
+                    // start position
+                    KalamSplitManagerEvents.SetSplitStart(start),
+
+                    // end position
+                    KalamSplitManagerEvents.SetSplitEnd(end)
+                )
             },
             valueRange = 0f..kalamLength.optValue(0).toFloat()
         )
@@ -114,17 +144,20 @@ private fun SplitView(
         horizontalArrangement = Arrangement.End
     ) {
 
-        TextButton(onClick = { showDialog.value = false }) {
+        TextButton(onClick = { eventDispatcher.dispatch(KalamEvents.ShowKalamSplitManagerDialog(null)) }) {
             Text(text = "Cancel")
         }
-        TextButton(onClick = { kalamSplitManager.startPreview() }) {
+        TextButton(onClick = { eventDispatcher.dispatch(KalamSplitManagerEvents.StartPreview) }) {
             Text(text = "Preview")
         }
     }
 }
 
 @Composable
-private fun SplitSuccessView(kalamSplitManager: KalamSplitManager) {
+private fun SplitSuccessView(
+    kalamSplitManager: KalamSplitManager,
+    eventDispatcher: EventDispatcher
+) {
 
     val previewPlayStart = kalamSplitManager.getPreviewPlayStart().observeAsState()
     val previewKalamProgress = kalamSplitManager.getPreviewKalamProgress().observeAsState()
@@ -136,7 +169,7 @@ private fun SplitSuccessView(kalamSplitManager: KalamSplitManager) {
                 modifier = Modifier
                     .width(35.dp)
                     .clickable {
-                        kalamSplitManager.playPreview()
+                        eventDispatcher.dispatch(KalamSplitManagerEvents.PlayPreview)
                     },
                 painter = painterResource(id = if (previewPlayStart.optValue(false)) R.drawable.ic_pause else R.drawable.ic_play),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
@@ -148,7 +181,7 @@ private fun SplitSuccessView(kalamSplitManager: KalamSplitManager) {
                 valueRange = 0f..kalamPreviewLength.optValue(0).toFloat(),
                 enabled = true,
                 onValueChange = {
-                    kalamSplitManager.updateSeekbarValue(it)
+                    eventDispatcher.dispatch(KalamSplitManagerEvents.UpdateSeekbar(it))
                 })
         }
     }
@@ -168,10 +201,15 @@ private fun SplitSuccessView(kalamSplitManager: KalamSplitManager) {
         horizontalArrangement = Arrangement.End
     ) {
 
-        TextButton(onClick = { kalamSplitManager.setSplitStatus(SplitCompleted()) }) {
+        TextButton(onClick = {
+            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitCompleted()))
+        }) {
             Text(text = "Back")
         }
-        TextButton(onClick = { kalamSplitManager.setSplitStatus(SplitDone) }) {
+
+        TextButton(onClick = {
+            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitDone))
+        }) {
             Text(text = "Done")
         }
     }
@@ -180,24 +218,12 @@ private fun SplitSuccessView(kalamSplitManager: KalamSplitManager) {
 @Composable
 private fun SplitDoneView(
     kalamSplitManager: KalamSplitManager,
-    showDialog: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam
+    eventDispatcher: EventDispatcher
 ) {
 
     val context = LocalContext.current
     val kalamTitle = rem("")
     val kalamTitleError = rem(false)
-
-    val (
-        _,
-        _,
-        _,
-        kalamDataProvider,
-        _,
-        lazyKalamItems,
-        _,
-        searchText,
-        trackListType) = kalamItemParam
 
     Column {
 
@@ -220,9 +246,11 @@ private fun SplitDoneView(
         ) {
 
             TextButton(onClick = {
-                kalamSplitManager.setSplitStatus(
-                    SplitCompleted(
-                        SPLIT_SUCCESS
+                eventDispatcher.dispatch(
+                    KalamSplitManagerEvents.SetSplitStatus(
+                        SplitCompleted(
+                            SPLIT_SUCCESS
+                        )
                     )
                 )
             }) {
@@ -233,14 +261,19 @@ private fun SplitDoneView(
                     kalamTitleError.value = true
                     context.toast("Kalam Title cannot be empty.")
                 } else {
-                    kalamDataProvider.saveSplitKalam(
-                        kalamSplitManager.getKalam(),
-                        kalamSplitManager.getSplitFile(),
-                        kalamTitle.value.trim()
+
+                    eventDispatcher.dispatch(
+
+                        // save split kalam
+                        KalamEvents.SaveSplitKalam(
+                            kalamSplitManager.getKalam(),
+                            kalamSplitManager.getSplitFile(),
+                            kalamTitle.value.trim()
+                        ),
+
+                        // hide split dialog
+                        KalamEvents.ShowKalamSplitManagerDialog(null)
                     )
-                    kalamDataProvider.searchKalam(searchText.value, trackListType)
-                    lazyKalamItems.refresh()
-                    showDialog.value = false
 
                 }
             }) {

@@ -4,29 +4,29 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.core.event.events.KalamEvents
+import pk.sufiishq.app.core.event.events.PlayerEvents
+import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamItemParam
-import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.models.KalamDeleteItem
 
 @Composable
 fun KalamItemPopupMenu(
+    eventDispatcher: EventDispatcher,
     isExpanded: MutableState<Boolean>,
-    kalamItemParam: KalamItemParam,
-    onMenuItemClicked: (kalam: Kalam, label: String) -> Unit
+    kalam: Kalam,
+    kalamMenuItems: List<String>,
+    trackListType: TrackListType
 ) {
 
-    val (kalam, kalamMenuItems, playerDataProvider, kalamDataProvider, _, _, _, _, trackListType) = kalamItemParam
-
-    val showDownloadDialog = rem(false)
-    val showDeleteKalamConfirmDialog = rem(false)
-    val showPlaylistDialog = rem(false)
-    val showSplitterDialog = rem(false)
-    val kalamSplitManager = rem(kalamDataProvider.getKalamSplitManager())
-    val downloadError = playerDataProvider.getDownloadError().observeAsState()
+    val context = LocalContext.current
 
     DropdownMenu(
         expanded = isExpanded.value,
@@ -55,21 +55,41 @@ fun KalamItemPopupMenu(
             .forEach { label ->
                 DropdownMenuItem(onClick = {
                     when (label) {
-                        labelAddToPlaylist -> showPlaylistDialog.value = true
-                        labelMarkAsFavorite -> kalamDataProvider.markAsFavorite(kalam)
-                        labelRemoveFavorite -> kalamDataProvider.removeFavorite(kalamItemParam.kalam)
-                        labelDownload -> {
-                            showDownloadDialog.value = true
-                            playerDataProvider.startDownload(kalam)
-                        }
-                        labelDelete -> showDeleteKalamConfirmDialog.value = true
+                        labelAddToPlaylist -> eventDispatcher.dispatch(
+                            PlaylistEvents.ShowPlaylistDialog(
+                                kalam
+                            )
+                        )
+                        labelMarkAsFavorite -> eventDispatcher.dispatch(
+                            KalamEvents.MarkAsFavoriteKalam(
+                                kalam
+                            )
+                        )
+                        labelRemoveFavorite -> eventDispatcher.dispatch(
+                            KalamEvents.RemoveFavoriteKalam(
+                                kalam
+                            )
+                        )
+                        labelDownload -> eventDispatcher.dispatch(PlayerEvents.StartDownload(kalam))
+                        labelDelete -> eventDispatcher.dispatch(
+                            KalamEvents.ShowKalamConfirmDeleteDialog(
+                                KalamDeleteItem(kalam, trackListType)
+                            )
+                        )
                         labelSplitKalam -> {
-                            kalamSplitManager.value.reset()
-                            kalamSplitManager.value.setKalam(kalam)
-                            showSplitterDialog.value = true
+                            eventDispatcher.dispatch(KalamEvents.ShowKalamSplitManagerDialog(kalam))
                         }
-                        labelRename -> onMenuItemClicked(kalam, labelRename)
-                        labelShare -> onMenuItemClicked(kalam, labelShare)
+                        labelRename -> eventDispatcher.dispatch(
+                            KalamEvents.ShowKalamRenameDialog(
+                                kalam
+                            )
+                        )
+                        labelShare -> eventDispatcher.dispatch(
+                            GlobalEvents.ShareKalam(
+                                kalam,
+                                context
+                            )
+                        )
                     }
                     isExpanded.value = false
                 }) {
@@ -77,42 +97,6 @@ fun KalamItemPopupMenu(
                 }
             }
     }
-
-    // kalam download dialog
-    KalamItemDownloadDialog(
-        showDownloadDialog = showDownloadDialog,
-        kalam = kalamItemParam.kalam,
-        playerDataProvider = kalamItemParam.playerDataProvider,
-        kalamDataProvider = kalamItemParam.kalamDataProvider
-    )
-
-    // playlist dialog
-    PlaylistDialog(
-        showPlaylistDialog = showPlaylistDialog,
-        kalam = kalamItemParam.kalam,
-        playlistItems = kalamItemParam.playlistItems,
-        kalamDataProvider = kalamItemParam.kalamDataProvider
-    )
-
-    // kalam confirm delete dialog
-    KalamItemConfirmDeleteDialog(
-        showDeleteKalamConfirmDialog = showDeleteKalamConfirmDialog,
-        kalamItemParam = kalamItemParam
-    )
-
-    // kalam download error dialog
-    KalamDownloadErrorDialog(
-        downloadError = downloadError,
-        showDownloadDialog = showDownloadDialog,
-        playerDataProvider = kalamItemParam.playerDataProvider
-    )
-
-    // kalam split dialog
-    KalamItemSplitDialog(
-        showSplitterDialog = showSplitterDialog,
-        kalamSplitManager = kalamSplitManager,
-        kalamItemParam = kalamItemParam
-    )
 }
 
 private fun filterLabels(

@@ -1,4 +1,4 @@
-package pk.sufiishq.app.helpers
+package pk.sufiishq.app.core.downloader
 
 import io.reactivex.Observable
 import okhttp3.OkHttpClient

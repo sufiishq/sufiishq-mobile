@@ -1,4 +1,4 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.buttons
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*

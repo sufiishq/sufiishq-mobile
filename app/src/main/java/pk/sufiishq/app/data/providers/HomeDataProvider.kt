@@ -5,9 +5,6 @@ import pk.sufiishq.app.models.Kalam
 
 interface HomeDataProvider {
 
-    fun setShowUpdateDialog(value: Boolean)
-    fun getShowUpdateDialog(): LiveData<Boolean>
-    fun handleUpdate()
     fun getKalam(id: Int): LiveData<Kalam?>
     fun countAll(): LiveData<Int>
     fun countFavorites(): LiveData<Int>

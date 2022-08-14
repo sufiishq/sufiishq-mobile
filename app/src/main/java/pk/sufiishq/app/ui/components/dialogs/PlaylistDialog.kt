@@ -1,6 +1,5 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.dialogs
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,31 +11,38 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.ui.components.SufiIshqDialog
+import pk.sufiishq.app.utils.toast
 
 @Composable
 fun PlaylistDialog(
-    showPlaylistDialog: MutableState<Boolean>,
-    kalam: Kalam,
-    playlistItems: List<Playlist>,
-    kalamDataProvider: KalamDataProvider
+    eventDispatcher: EventDispatcher,
+    playlistState: State<List<Playlist>?>,
+    showPlaylistDialog: State<Kalam?>
 ) {
 
-    if (showPlaylistDialog.value) {
+    if (showPlaylistDialog.value != null) {
 
-        val matColors = MaterialTheme.colors
         val context = LocalContext.current
+        val kalam = showPlaylistDialog.value!!
 
-        if (playlistItems.isNotEmpty()) {
+        if (playlistState.value?.isNotEmpty() == true) {
 
-            SufiIshqDialog(onDismissRequest = { showPlaylistDialog.value = false }) {
+            val matColors = MaterialTheme.colors
+            val playlistItems = playlistState.value!!
+
+            SufiIshqDialog(onDismissRequest = {
+                eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
+            }) {
 
                 Text(
                     text = "Playlist",
@@ -56,16 +62,13 @@ fun PlaylistDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    kalam.playlistId = item.id
-                                    kalamDataProvider.update(kalam)
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "${kalam.title} added in ${item.title} Playlist",
-                                            Toast.LENGTH_LONG
+                                    eventDispatcher.dispatch(
+                                        PlaylistEvents.AddToPlaylist(
+                                            kalam,
+                                            item
                                         )
-                                        .show()
-                                    showPlaylistDialog.value = false
+                                    )
+                                    eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
                                 },
                         ) {
 
@@ -82,8 +85,8 @@ fun PlaylistDialog(
                 }
             }
         } else {
-            Toast.makeText(context, "No playlist found", Toast.LENGTH_LONG).show()
-            showPlaylistDialog.value = false
+            context.toast("No playlist found")
+            eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
         }
     }
 }

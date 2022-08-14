@@ -19,26 +19,31 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.data.providers.HomeDataProvider
+import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.ui.components.ThemeChangeButton
-import pk.sufiishq.app.ui.components.UpdateButton
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.ui.components.buttons.UpdateButton
+import pk.sufiishq.app.utils.MenuIconColors
+import pk.sufiishq.app.utils.app
+import pk.sufiishq.app.utils.isDarkThem
+import pk.sufiishq.app.utils.optValue
 
 @Composable
 fun DashboardView(
     navController: NavController,
-    homeDataProvider: HomeDataProvider
+    homeDataProvider: HomeDataProvider,
+    globalEventHandler: GlobalEventHandler,
+    eventDispatcher: EventDispatcher
 ) {
 
     val matColors = MaterialTheme.colors
@@ -82,14 +87,14 @@ fun DashboardView(
         )
 
         UpdateButton(
-            show = homeDataProvider.getShowUpdateDialog().observeAsState(),
+            show = globalEventHandler.getShowUpdateButton().observeAsState(),
             modifier = Modifier
                 .constrainAs(btnUpdate) {
                     start.linkTo(parent.start, 12.dp)
                     top.linkTo(parent.top, 12.dp)
                 }
         ) {
-            homeDataProvider.handleUpdate()
+            eventDispatcher.dispatch(GlobalEvents.StartUpdateFlow)
         }
 
         Box(
@@ -236,16 +241,5 @@ fun TrackButton(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DashboardPreviewLight() {
-    SufiIshqTheme(darkTheme = false) {
-        DashboardView(
-            navController = rememberNavController(),
-            homeDataProvider = dummyHomeDataProvider()
-        )
     }
 }

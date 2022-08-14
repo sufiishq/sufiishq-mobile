@@ -25,7 +25,7 @@ class SufiishqMediaPlayer @Inject constructor(
     AudioManager.OnAudioFocusChangeListener {
 
     private var activeKalam: Kalam? = null
-    private var listeners = mutableMapOf<Int, PlayerStateListener>()
+    private var listeners = mutableSetOf<PlayerStateListener>()
     private var activeState: MediaState? = null
     private var trackListType: TrackListType = TrackListType.All()
 
@@ -70,8 +70,8 @@ class SufiishqMediaPlayer @Inject constructor(
 
     private fun changeState(state: MediaState) {
         activeState = state
-        listeners.forEach { entry ->
-            entry.value.onStateChange(activeState!!)
+        listeners.forEach { listener ->
+            listener.onStateChange(activeState!!)
         }
     }
 
@@ -160,13 +160,9 @@ class SufiishqMediaPlayer @Inject constructor(
         return trackListType
     }
 
-    override fun registerListener(listener: PlayerStateListener) {
+    override fun registerListener(listener: PlayerStateListener): Boolean {
         activeState?.let { listener.onStateChange(it) }
-        listeners[listener.hashCode()] = listener
-    }
-
-    override fun unregisterListener(listener: PlayerStateListener) {
-        listeners.remove(listener.hashCode())
+        return listeners.add(listener)
     }
 
     override fun onProgressChanged(progress: Int) {

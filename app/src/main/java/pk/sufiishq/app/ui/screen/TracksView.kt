@@ -3,15 +3,12 @@ package pk.sufiishq.app.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,39 +16,31 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlayerDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.components.KalamItem
-import pk.sufiishq.app.ui.components.KalamRenameDialog
 import pk.sufiishq.app.ui.components.SearchTextField
-import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.rem
 
 @Composable
 fun TracksView(
-    playerDataProvider: PlayerDataProvider,
+    eventDispatcher: EventDispatcher,
     kalamDataProvider: KalamDataProvider,
-    playlistDataProvider: PlaylistDataProvider,
     trackListType: TrackListType
 ) {
 
-    val context = LocalContext.current
-    kalamDataProvider.init(trackListType)
+    eventDispatcher.dispatch(KalamEvents.UpdateTrackListType(trackListType))
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
     val searchText = rem("")
     val matColors = MaterialTheme.colors
-    val playlistItems = playlistDataProvider.getAll().observeAsState().optValue(listOf())
-    val showKalamRenameDialog = rem(false)
-    val selectedKalam = rem<Kalam?>(null)
-    val kalamShareLoadingDialog = rem(false)
 
     val labelAddToPlaylist = stringResource(id = R.string.add_to_playlist)
     val labelMarkAsFavorite = stringResource(id = R.string.mark_as_favorite)
@@ -86,7 +75,12 @@ fun TracksView(
             labelRename,
             labelShare
         )
-        ScreenType.Tracks.PLAYLIST -> listOf(labelMarkAsFavorite, labelRename, labelShare, labelDelete)
+        ScreenType.Tracks.PLAYLIST -> listOf(
+            labelMarkAsFavorite,
+            labelRename,
+            labelShare,
+            labelDelete
+        )
         else -> listOf("")
     }
 
@@ -97,7 +91,7 @@ fun TracksView(
     ) {
         SearchTextField(
             searchText,
-            kalamDataProvider,
+            eventDispatcher,
             matColors,
             lazyKalamItems,
             trackListType
@@ -114,31 +108,11 @@ fun TracksView(
                 items(lazyKalamItems) { track ->
                     track?.run {
                         KalamItem(
-                            KalamItemParam(
-                                kalam = track,
-                                kalamMenuItems,
-                                playerDataProvider,
-                                kalamDataProvider,
-                                playlistDataProvider,
-                                lazyKalamItems,
-                                playlistItems,
-                                searchText,
-                                trackListType
-                            )
-                        ) { kalam, label ->
-                            when (label) {
-                                labelRename -> {
-                                    selectedKalam.value = kalam
-                                    showKalamRenameDialog.value = true
-                                }
-                                labelShare -> {
-                                    kalamShareLoadingDialog.value = true
-                                    kalam.share(context) {
-                                        kalamShareLoadingDialog.value = false
-                                    }
-                                }
-                            }
-                        }
+                            kalam = track,
+                            trackListType = trackListType,
+                            kalamMenuItems = kalamMenuItems,
+                            eventDispatcher = eventDispatcher
+                        )
                     }
                 }
             }
@@ -150,29 +124,6 @@ fun TracksView(
             }
         }
     }
-
-    // kalam rename dialog
-    selectedKalam.value?.let { kalam ->
-        KalamRenameDialog(
-            showKalamRenameDialog = showKalamRenameDialog,
-            kalam = kalam,
-        ) {
-            kalam.title = it
-            kalamDataProvider.update(kalam)
-            kalamDataProvider.searchKalam("*", trackListType)
-            lazyKalamItems.refresh()
-            100.runWithDelay {
-                kalamDataProvider.searchKalam(searchText.value, trackListType)
-                lazyKalamItems.refresh()
-            }
-        }
-    }
-
-    if (kalamShareLoadingDialog.value) {
-        SufiIshqDialog {
-            CircularProgressIndicator()
-        }
-    }
 }
 
 @Preview(showBackground = true)
@@ -180,10 +131,9 @@ fun TracksView(
 fun TracksPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         TracksView(
-            playerDataProvider = dummyPlayerDataProvider(),
+            eventDispatcher = EventDispatcher(),
             kalamDataProvider = dummyKalamDataProvider(),
-            playlistDataProvider = dummyPlaylistDataProvider(),
-            TrackListType.All()
+            trackListType = TrackListType.All()
         )
     }
 }
@@ -193,10 +143,9 @@ fun TracksPreviewLight() {
 fun TracksPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         TracksView(
-            playerDataProvider = dummyPlayerDataProvider(),
+            eventDispatcher = EventDispatcher(),
             kalamDataProvider = dummyKalamDataProvider(),
-            playlistDataProvider = dummyPlaylistDataProvider(),
-            TrackListType.All()
+            trackListType = TrackListType.All()
         )
     }
 }

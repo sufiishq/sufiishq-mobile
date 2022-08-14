@@ -4,23 +4,31 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.Event
+import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
+import pk.sufiishq.app.core.event.exception.UnhandledEventException
+import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.*
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class KalamSplitManager @Inject constructor(
     @ApplicationContext val appContext: Context,
     private val previewAudioPlayer: PreviewAudioPlayer,
-    private val player: AudioPlayer
-) {
-
+    @AndroidMediaPlayer private val player: AudioPlayer,
+    eventDispatcher: EventDispatcher
+) : EventHandler {
 
     private val splitStatus = MutableLiveData<SplitStatus>(SplitCompleted())
+
     private val splitStart = MutableLiveData(0)
     private val splitEnd = MutableLiveData(0)
-
     private val kalamLength = MutableLiveData(0)
     private val kalamPreviewLength = MutableLiveData(0)
     private val previewPlayStart = MutableLiveData(false)
@@ -28,6 +36,9 @@ class KalamSplitManager @Inject constructor(
     private var kalam: Kalam? = null
 
     init {
+
+        eventDispatcher.registerEventHandler(this)
+
         previewAudioPlayer.setOnCompletionListener {
             previewAudioPlayer.releaseProgressListener()
             previewKalamProgress.value = 0
@@ -39,7 +50,13 @@ class KalamSplitManager @Inject constructor(
         }
     }
 
-    fun setKalam(kalam: Kalam) {
+    /*=======================================*/
+    // PRIVATE METHODS
+    /*=======================================*/
+
+    private fun setKalam(kalam: Kalam) {
+        reset()
+
         this.kalam = kalam
         val duration =
             previewAudioPlayer.getDuration(appContext.filesDir.absolutePath + "/" + kalam.offlineSource)
@@ -48,7 +65,7 @@ class KalamSplitManager @Inject constructor(
 
     }
 
-    fun startPreview() {
+    private fun startPreview() {
         previewKalamProgress.value = 0
         setSplitStatus(SplitInProgress)
         kalam?.let {
@@ -72,7 +89,7 @@ class KalamSplitManager @Inject constructor(
         }
     }
 
-    fun playPreview() {
+    private fun playPreview() {
 
         if (player.isPlaying()) player.doPlayOrPause()
 
@@ -85,15 +102,15 @@ class KalamSplitManager @Inject constructor(
         }
     }
 
-    fun setSplitStart(start: Int) {
+    private fun setSplitStart(start: Int) {
         splitStart.value = start
     }
 
-    fun setSplitEnd(end: Int) {
+    private fun setSplitEnd(end: Int) {
         splitEnd.value = end
     }
 
-    fun setSplitStatus(status: SplitStatus) {
+    private fun setSplitStatus(status: SplitStatus) {
         if (previewAudioPlayer.isPlaying()) {
             previewAudioPlayer.pause()
             previewPlayStart.value = false
@@ -101,12 +118,12 @@ class KalamSplitManager @Inject constructor(
         splitStatus.postValue(status)
     }
 
-    fun updateSeekbarValue(value: Float) {
+    private fun updateSeekbarValue(value: Float) {
         previewKalamProgress.value = value.toInt()
         previewAudioPlayer.seekTo(value.toInt())
     }
 
-    fun reset() {
+    private fun reset() {
         splitStatus.value = SplitCompleted()
         splitStart.value = 0
         splitEnd.value = 0
@@ -118,6 +135,10 @@ class KalamSplitManager @Inject constructor(
         kalam = null
     }
 
+    /*=======================================*/
+    // PUBLIC METHODS
+    /*=======================================*/
+
     fun getKalam() = kalam!!
     fun getSplitFile() = File(appContext.cacheDir, CACHE_SPLIT_FILENAME)
     fun getSplitStatus(): LiveData<SplitStatus> = splitStatus
@@ -127,4 +148,22 @@ class KalamSplitManager @Inject constructor(
     fun getKalamPreviewLength(): LiveData<Int> = kalamPreviewLength
     fun getPreviewPlayStart(): LiveData<Boolean> = previewPlayStart
     fun getPreviewKalamProgress(): LiveData<Int> = previewKalamProgress
+
+    /*=======================================*/
+    // HANDLE KALAM SPLIT MANAGER EVENTS
+    /*=======================================*/
+
+    override fun onEvent(event: Event) {
+
+        when (event) {
+            is KalamSplitManagerEvents.SetKalam -> setKalam(event.kalam)
+            is KalamSplitManagerEvents.StartPreview -> startPreview()
+            is KalamSplitManagerEvents.PlayPreview -> playPreview()
+            is KalamSplitManagerEvents.SetSplitStart -> setSplitStart(event.position)
+            is KalamSplitManagerEvents.SetSplitEnd -> setSplitEnd(event.position)
+            is KalamSplitManagerEvents.SetSplitStatus -> setSplitStatus(event.status)
+            is KalamSplitManagerEvents.UpdateSeekbar -> updateSeekbarValue(event.value)
+            else -> throw UnhandledEventException(event, this)
+        }
+    }
 }

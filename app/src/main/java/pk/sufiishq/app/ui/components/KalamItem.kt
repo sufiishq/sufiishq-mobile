@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,30 +19,29 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import kotlinx.coroutines.flow.flowOf
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamItemParam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.dummyKalam
+import pk.sufiishq.app.utils.formatDateAs
+import pk.sufiishq.app.utils.rem
 
 @Composable
 fun KalamItem(
-    kalamItemParam: KalamItemParam,
-    onMenuItemClicked: (kalam: Kalam, label: String) -> Unit
+    kalam: Kalam,
+    trackListType: TrackListType,
+    kalamMenuItems: List<String>,
+    eventDispatcher: EventDispatcher
 ) {
 
-    val (kalam, _, playerDataProvider, _, _, _, _, _, trackListType) = kalamItemParam
-
     val matColors = MaterialTheme.colors
-
     val isExpanded = rem(false)
 
     Column(Modifier.clickable {
-        playerDataProvider.changeTrack(kalam, trackListType)
+        eventDispatcher.dispatch(PlayerEvents.ChangeTrack(kalam, trackListType))
     }) {
         Row(
             modifier = Modifier
@@ -103,9 +101,11 @@ fun KalamItem(
                     )
 
                     KalamItemPopupMenu(
+                        eventDispatcher = eventDispatcher,
                         isExpanded = isExpanded,
-                        kalamItemParam = kalamItemParam,
-                        onMenuItemClicked = onMenuItemClicked
+                        kalamMenuItems = kalamMenuItems,
+                        kalam = kalam,
+                        trackListType = trackListType
                     )
                 }
             }
@@ -118,18 +118,11 @@ fun KalamItem(
 fun KalamItemPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         KalamItem(
-            KalamItemParam(
-                kalam = dummyTrack(),
-                listOf(""),
-                dummyPlayerDataProvider(),
-                dummyKalamDataProvider(),
-                dummyPlaylistDataProvider(),
-                flowOf<PagingData<Kalam>>().collectAsLazyPagingItems(),
-                listOf(),
-                remember { mutableStateOf("") },
-                TrackListType.All()
-            )
-        ) { _, _ -> }
+            kalam = dummyKalam(),
+            trackListType = TrackListType.All(),
+            kalamMenuItems = listOf(),
+            eventDispatcher = EventDispatcher()
+        )
     }
 }
 
@@ -138,17 +131,10 @@ fun KalamItemPreviewLight() {
 fun KalamItemPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         KalamItem(
-            KalamItemParam(
-                kalam = dummyTrack(),
-                listOf(""),
-                dummyPlayerDataProvider(),
-                dummyKalamDataProvider(),
-                dummyPlaylistDataProvider(),
-                flowOf<PagingData<Kalam>>().collectAsLazyPagingItems(),
-                listOf(),
-                remember { mutableStateOf("") },
-                TrackListType.All()
-            )
-        ) { _, _ -> }
+            kalam = dummyKalam(),
+            trackListType = TrackListType.All(),
+            kalamMenuItems = listOf(),
+            eventDispatcher = EventDispatcher()
+        )
     }
 }

@@ -4,7 +4,9 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.utils.IS_SHUFFLE_ON
 import pk.sufiishq.app.utils.getFromStorage
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppConfig @Inject constructor() {
 
     var trackListType: TrackListType = TrackListType.All()

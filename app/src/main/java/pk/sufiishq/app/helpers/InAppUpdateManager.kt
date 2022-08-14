@@ -12,18 +12,21 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.HomeDataProvider
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.GlobalEvents
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InAppUpdateManager @Inject constructor() {
+class InAppUpdateManager @Inject constructor(
+    private val eventDispatcher: EventDispatcher
+) {
 
     private lateinit var listener: Listener
     private lateinit var activity: ComponentActivity
     private lateinit var appUpdateInfo: AppUpdateInfo
 
-    fun checkInAppUpdate(activity: ComponentActivity, homeDataProvider: HomeDataProvider) {
+    fun checkInAppUpdate(activity: ComponentActivity) {
 
         val appUpdateManager = AppUpdateManagerFactory.create(activity)
 
@@ -39,7 +42,7 @@ class InAppUpdateManager @Inject constructor() {
                 this.appUpdateInfo = appUpdateInfo
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    homeDataProvider.setShowUpdateDialog(true)
+                    eventDispatcher.dispatch(GlobalEvents.ShowUpdateButton(true))
                 } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                     popupSnackbarForCompleteUpdate(activity)
                 }

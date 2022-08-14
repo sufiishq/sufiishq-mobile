@@ -16,10 +16,13 @@ class FavoriteChangeFactory @Inject constructor(
     private val kalamRepository: KalamRepository
 ) {
 
-    fun <T: FavoriteChangeStrategy> create(clazz: KClass<T>): FavoriteChangeStrategy {
-        return when(clazz) {
+    fun <T : FavoriteChangeStrategy> create(clazz: KClass<T>): FavoriteChangeStrategy {
+        return when (clazz) {
             AddToFavoriteStrategy::class -> AddToFavoriteStrategy(appContext, kalamRepository)
-            RemoveFromFavoriteStrategy::class -> RemoveFromFavoriteStrategy(appContext, kalamRepository)
+            RemoveFromFavoriteStrategy::class -> RemoveFromFavoriteStrategy(
+                appContext,
+                kalamRepository
+            )
             else -> throw IllegalArgumentException()
         }
     }

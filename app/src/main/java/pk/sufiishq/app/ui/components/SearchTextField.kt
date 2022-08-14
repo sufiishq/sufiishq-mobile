@@ -15,7 +15,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
@@ -24,7 +25,7 @@ import pk.sufiishq.app.utils.dummyKalamDataProvider
 @Composable
 fun SearchTextField(
     searchText: MutableState<String>,
-    kalamDataProvider: KalamDataProvider,
+    eventDispatcher: EventDispatcher,
     matColors: Colors,
     lazyKalamItems: LazyPagingItems<Kalam>,
     trackListType: TrackListType
@@ -36,7 +37,7 @@ fun SearchTextField(
         value = searchText.value,
         onValueChange = {
             searchText.value = it
-            kalamDataProvider.searchKalam(it, trackListType)
+            eventDispatcher.dispatch(KalamEvents.SearchKalam(it, trackListType))
             lazyKalamItems.refresh()
         },
         placeholder = {
@@ -66,7 +67,7 @@ fun SearchTextFieldPreviewLight() {
         val data = dummyKalamDataProvider()
         SearchTextField(
             remember { mutableStateOf("") },
-            data,
+            EventDispatcher(),
             MaterialTheme.colors,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
             TrackListType.All()

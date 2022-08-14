@@ -13,6 +13,5 @@ interface AudioPlayer {
     fun seekTo(msec: Int)
     fun release()
     fun getTrackListType(): TrackListType
-    fun registerListener(listener: PlayerStateListener)
-    fun unregisterListener(listener: PlayerStateListener)
+    fun registerListener(listener: PlayerStateListener): Boolean
 }

@@ -1,4 +1,4 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.buttons
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.app.R
+import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.utils.rem
 
 @Composable

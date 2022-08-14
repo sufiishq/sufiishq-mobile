@@ -1,5 +1,7 @@
 package pk.sufiishq.app.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -12,6 +14,12 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.Event
+import pk.sufiishq.app.core.event.events.KalamEvents
+import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
+import pk.sufiishq.app.core.event.exception.UnhandledEventException
+import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
@@ -23,6 +31,7 @@ import pk.sufiishq.app.helpers.factory.KalamDeleteStrategyFactory
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.AddToFavoriteStrategy
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrategy
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.utils.*
 import java.io.File
 import java.util.*
@@ -34,62 +43,95 @@ class KalamViewModel @Inject constructor(
     private val kalamSplitManager: KalamSplitManager,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val kalamDeleteStrategyFactory: KalamDeleteStrategyFactory,
-    private val favoriteChangeFactory: FavoriteChangeFactory
-) : ViewModel(), KalamDataProvider {
+    private val favoriteChangeFactory: FavoriteChangeFactory,
+    val eventDispatcher: EventDispatcher
+) : ViewModel(), KalamDataProvider, EventHandler {
 
     private val appContext = app
+    private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
+    private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
+    private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
+
+    init {
+        eventDispatcher.registerEventHandler(this)
+    }
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
 
-    private fun pagingSource(): () -> PagingSource<Int, Kalam> {
-        return {
-            kalamRepository.load()
-        }
-    }
-
-    private fun canDelete(kalam: Kalam): Boolean {
-
-        // stop playing kalam if it match with deleted kalam
-        return player.getActiveTrack().id != kalam.id
-    }
-
-    override fun init(trackListType: TrackListType) {
-        kalamRepository.setTrackListType(trackListType)
-        kalamRepository.setSearchKeyword("")
+    override fun getKalamDeleteConfirmDialog(): LiveData<KalamDeleteItem?> {
+        return showKalamDeleteConfirmDialog
     }
 
     override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
         return kalams
     }
 
-    override fun searchKalam(keyword: String, trackListType: TrackListType) {
+    override fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?> {
+        return showKalamSplitManagerDialog
+    }
+
+    override fun getKalamRenameDialog(): LiveData<Kalam?> {
+        return showKalamRenameDialog
+    }
+
+    override fun getActiveSearchKeyword(): String {
+        return kalamRepository.getSearchKeyword()
+    }
+
+    private fun setKalamRenameDialog(kalam: Kalam?) {
+        showKalamRenameDialog.postValue(kalam)
+    }
+
+    private fun searchKalam(keyword: String, trackListType: TrackListType) {
         kalamRepository.setSearchKeyword(keyword)
         kalamRepository.setTrackListType(trackListType)
     }
 
-    override fun update(kalam: Kalam) {
+    private fun update(kalam: Kalam) {
         viewModelScope.launch {
             kalamRepository.update(kalam)
         }
     }
 
-    override fun delete(kalam: Kalam, trackType: String) {
+    private fun updateTrackListType(trackListType: TrackListType) {
+        kalamRepository.setTrackListType(trackListType)
+        kalamRepository.setSearchKeyword("")
+    }
+
+    private fun setKalamSplitManagerDialog(kalam: Kalam?) {
+
+        var splitManager: KalamSplitManager? = null
+
+        kalam?.apply {
+            eventDispatcher.dispatch(KalamSplitManagerEvents.SetKalam(this))
+            splitManager = kalamSplitManager
+        }
+
+        showKalamSplitManagerDialog.postValue(splitManager)
+    }
+
+    private fun setKalamConfirmDeleteDialog(kalamDeleteItem: KalamDeleteItem?) {
+        showKalamDeleteConfirmDialog.postValue(kalamDeleteItem)
+    }
+
+    private fun delete(kalamDeleteItem: KalamDeleteItem) {
 
         viewModelScope.launch {
 
-            if(canDelete(kalam)) {
-                kalamDeleteStrategyFactory.create(trackType).delete(kalam)
+            if (canDelete(kalamDeleteItem.kalam)) {
+                kalamDeleteStrategyFactory.create(kalamDeleteItem.trackListType.type)
+                    .delete(kalamDeleteItem.kalam)
             } else {
                 appContext.toast(
                     appContext.getString(R.string.error_kalam_delete_on_playing)
-                        .format(kalam.title)
+                        .format(kalamDeleteItem.kalam.title)
                 )
             }
         }
     }
 
-    override fun saveSplitKalam(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {
+    private fun saveSplitKalam(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {
 
         val fileName = buildString {
             append(KALAM_DIR)
@@ -121,23 +163,52 @@ class KalamViewModel @Inject constructor(
         appContext.toast(appContext.getString(R.string.kalam_saved_label).format(kalamTitle))
     }
 
-    override fun markAsFavorite(kalam: Kalam) {
+    private fun markAsFavorite(kalam: Kalam) {
         viewModelScope.launch {
             favoriteChangeFactory.create(AddToFavoriteStrategy::class).change(kalam)
         }
     }
 
-    override fun removeFavorite(kalam: Kalam) {
+    private fun removeFavorite(kalam: Kalam) {
         viewModelScope.launch {
             favoriteChangeFactory.create(RemoveFromFavoriteStrategy::class).change(kalam)
         }
     }
 
-    override fun getKalamSplitManager(): KalamSplitManager {
-        return kalamSplitManager
+    private fun pagingSource(): () -> PagingSource<Int, Kalam> {
+        return {
+            kalamRepository.load()
+        }
     }
 
-    override fun getActiveSearchKeyword(): String {
-        return kalamRepository.getSearchKeyword()
+    private fun canDelete(kalam: Kalam): Boolean {
+
+        // stop playing kalam if it match with deleted kalam
+        return player.getActiveTrack().id != kalam.id
+    }
+
+    /*=======================================*/
+    // HANDLE KALAM EVENTS
+    /*=======================================*/
+
+    override fun onEvent(event: Event) {
+
+        when (event) {
+            is KalamEvents.UpdateTrackListType -> updateTrackListType(event.trackListType)
+            is KalamEvents.SearchKalam -> searchKalam(event.keyword, event.trackListType)
+            is KalamEvents.UpdateKalam -> update(event.kalam)
+            is KalamEvents.ShowKalamConfirmDeleteDialog -> setKalamConfirmDeleteDialog(event.kalamDeleteItem)
+            is KalamEvents.DeleteKalam -> delete(event.kalamDeleteItem)
+            is KalamEvents.SaveSplitKalam -> saveSplitKalam(
+                event.sourceKalam,
+                event.splitFile,
+                event.kalamTitle
+            )
+            is KalamEvents.MarkAsFavoriteKalam -> markAsFavorite(event.kalam)
+            is KalamEvents.RemoveFavoriteKalam -> removeFavorite(event.kalam)
+            is KalamEvents.ShowKalamSplitManagerDialog -> setKalamSplitManagerDialog(event.kalam)
+            is KalamEvents.ShowKalamRenameDialog -> setKalamRenameDialog(event.kalam)
+            else -> throw UnhandledEventException(event, this)
+        }
     }
 }

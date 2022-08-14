@@ -1,27 +1,21 @@
 package pk.sufiishq.app.utils
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
-import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
-import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.activities.BaseActivity
-import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
 import timber.log.Timber
@@ -116,38 +110,6 @@ fun <T> LiveData<T>.asFlow(): Flow<T> = callbackFlow {
         removeObserver(observer)
     }
 }.flowOn(Dispatchers.Main.immediate)
-
-fun Kalam.share(context: Context, linkCreated: (status: Boolean) -> Unit) {
-    if (context is MainActivity) {
-
-        FirebaseDynamicLinks.getInstance()
-            .createDynamicLink()
-            .setLink("$DEEPLINK_HOST/kalam/$id".toUri())
-            .setDomainUriPrefix(DEEPLINK_HOST)
-            .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
-            .buildShortDynamicLink()
-            .addOnSuccessListener { task ->
-                linkCreated(true)
-                val appName = context.getString(R.string.app_name)
-                Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, title)
-                    putExtra(Intent.EXTRA_TEXT, task.shortLink.toString())
-                }.also {
-                    context.startActivity(Intent.createChooser(it, "Share $appName"))
-                }
-            }
-            .addOnFailureListener {
-                linkCreated(false)
-                if (!context.isNetworkAvailable()) {
-                    context.toast(context.getString(R.string.no_network_connection))
-                } else {
-                    context.toast(it.message ?: context.getString(R.string.unknown_error))
-                }
-                Timber.e(it)
-            }
-    }
-}
 
 fun Kalam.offlineFile(): File? {
     return takeIf { offlineSource.isNotEmpty() }?.let {

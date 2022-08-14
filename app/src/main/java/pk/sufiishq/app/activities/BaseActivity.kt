@@ -8,10 +8,13 @@ import androidx.activity.viewModels
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.configs.AppConfig
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.ObserveOnlyOnce
 import pk.sufiishq.app.helpers.TrackListType
@@ -21,7 +24,6 @@ import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.isDeviceSupportDarkMode
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.HomeViewModel
-import pk.sufiishq.app.viewmodels.PlayerViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,7 +45,12 @@ open class BaseActivity : ComponentActivity() {
     @Inject
     lateinit var observeOnlyOnce: ObserveOnlyOnce<Kalam>
 
-    private val playerViewModel: PlayerViewModel by viewModels()
+    @Inject
+    lateinit var eventDispatcher: EventDispatcher
+
+    @Inject
+    lateinit var globalEventHandler: GlobalEventHandler
+
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     protected val homeViewModel: HomeViewModel by viewModels()
 
@@ -68,14 +75,14 @@ open class BaseActivity : ComponentActivity() {
         }
 
         handleDeeplink(intent)
-        inAppUpdateManager.checkInAppUpdate(this, homeViewModel)
+        inAppUpdateManager.checkInAppUpdate(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         runCatching {
-            playerViewModel.disposeDownload()
+            eventDispatcher.dispatch(PlayerEvents.DisposeDownload)
         }
 
         runCatching {
@@ -113,8 +120,11 @@ open class BaseActivity : ComponentActivity() {
                             homeViewModel.getKalam(kalamId.toInt())
                                 .observe(this@BaseActivity) { kalam ->
                                     kalam?.let {
-                                        playerViewModel.changeTrack(
-                                            kalam, TrackListType.All()
+                                        eventDispatcher.dispatch(
+                                            PlayerEvents.ChangeTrack(
+                                                kalam,
+                                                TrackListType.All()
+                                            )
                                         )
                                     }
                                 }

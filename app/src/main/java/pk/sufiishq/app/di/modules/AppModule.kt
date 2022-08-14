@@ -9,7 +9,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.core.player.helpers.AppMediaPlayer
@@ -17,7 +16,6 @@ import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
-import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.PreviewAudioPlayer
 import javax.inject.Singleton
 
@@ -36,15 +34,6 @@ class AppModule {
     }
 
     @Provides
-    fun providesKalamSplitManager(
-        @ApplicationContext appContext: Context,
-        previewAudioPlayer: PreviewAudioPlayer,
-        @AndroidMediaPlayer player: AudioPlayer
-    ): KalamSplitManager {
-        return KalamSplitManager(appContext, previewAudioPlayer, player)
-    }
-
-    @Provides
     @Singleton
     @SecureSharedPreferences
     fun providesKeyValueStorage(@ApplicationContext appContext: Context): KeyValueStorage {
@@ -59,11 +48,5 @@ class AppModule {
         appPlayer: AppMediaPlayer
     ): AudioPlayer {
         return SufiishqMediaPlayer(appContext, appPlayer)
-    }
-
-    @Provides
-    @Singleton
-    fun providesAppConfig(): AppConfig {
-        return AppConfig()
     }
 }

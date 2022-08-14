@@ -15,7 +15,7 @@ import pk.sufiishq.app.utils.IconProvider
 
 @Composable
 fun PopupMenuLabel(label: String) {
-    Row (
+    Row(
         modifier = Modifier.width(150.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
