@@ -2,4 +2,4 @@
 
 | Light | Dark |
 |-------|------|
-|![](https://github.com/sufiishq/sufiishq-mobile/tree/master/.github/screenshot_dark.jpg)|![](https://github.com/sufiishq/sufiishq-mobile/tree/master/.github/screenshot_light.jpg)
+|![](https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/.github/screenshot_dark.jpg)|![](https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/.github/screenshot_light.jpg)
