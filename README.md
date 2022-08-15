@@ -50,12 +50,13 @@
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Research</a>
 </p>
 
-<a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
-</a>
 
 <br />
 
 | Dark | Light |
 |-------|------|
 |![](.github/screenshot_dark.jpg)|![](.github/screenshot_light.jpg)
+
+<a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
+</a>
