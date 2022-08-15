@@ -1,6 +1,6 @@
 <p align="center">
   <img src="app/src/main/res/drawable-xxxhdpi/logo.png" width="500" />
-  <h2 align="center">Sufi Ishq</h2>
+  <h1 align="center">Sufi Ishq</h1>
 </p>
 
 <div align="center">
