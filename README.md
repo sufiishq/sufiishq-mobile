@@ -57,6 +57,8 @@
 |-------|------|
 |![](.github/screenshot_dark.jpg)|![](.github/screenshot_light.jpg)
 
+<!--
 <a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
 </a>
+-->
