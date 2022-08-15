@@ -36,7 +36,26 @@
   </a>
 </div>
 <br />
+<p align="center">
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Report Bug</a>
+·
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Code Health</a>
+·
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Enhancement</a>
+·
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Request Feature</a>
+·
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Help Wanted</a>
+·
+<a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Research</a>
+</p>
 
-| Light | Dark |
+<a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
+</a>
+
+<br />
+
+| Dark | Light |
 |-------|------|
 |![](.github/screenshot_dark.jpg)|![](.github/screenshot_light.jpg)
