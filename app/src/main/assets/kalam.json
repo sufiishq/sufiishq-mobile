@@ -4653,17 +4653,6 @@
         "title": "Mix 103"
     },
     {
-        "code": 104,
-        "favorite": 0,
-        "id": 428,
-        "location": "Mix",
-        "offline_src": "",
-        "online_src": "https://sufiishq.pk/media/kalam/mix/pk_104.mp3",
-        "playlist_id": 0,
-        "recorded_date": "",
-        "title": "Mix 104"
-    },
-    {
         "code": 105,
         "favorite": 0,
         "id": 429,
@@ -5069,17 +5058,6 @@
         "playlist_id": 0,
         "recorded_date": "",
         "title": "Mix 142"
-    },
-    {
-        "code": 143,
-        "favorite": 0,
-        "id": 466,
-        "location": "Mix",
-        "offline_src": "",
-        "online_src": "https://sufiishq.pk/media/kalam/mix/pk_143.mp3",
-        "playlist_id": 0,
-        "recorded_date": "",
-        "title": "Mix 143"
     },
     {
         "code": 144,
