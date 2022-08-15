@@ -7,13 +7,34 @@
   <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
     <img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=alert_status" />
   </a>
- [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=coverage)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=bugs)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile) ![GitHub issues](https://img.shields.io/github/issues/sufiishq/sufiishq-mobile) ![GitHub closed issues](https://img.shields.io/github/issues-closed/sufiishq/sufiishq-mobile) ![GitHub pull requests](https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile)
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
+    <img alt="Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=coverage" />
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
+    <img alt="Code Smells" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=code_smells" />
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
+    <img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=security_rating" />
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobil">
+    <img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=bugs" />
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
+    <img alt="Vulnerabilities" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=vulnerabilities" />
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">
+    <img alt="Duplicated Lines (%)" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=duplicated_lines_density" />
+  </a>
+  <a href="https://img.shields.io/github/issues/sufiishq/sufiishq-mobile">
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues/sufiishq/sufiishq-mobile" />
+  </a>
+  <a href="https://img.shields.io/github/issues-closed/sufiishq/sufiishq-mobile">
+    <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/sufiishq/sufiishq-mobile" />
+  </a>
+  <a href="https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile">
+    <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile" />
+  </a>
 </div>
-
-
-
-
-
 
 
 | Light | Dark |
