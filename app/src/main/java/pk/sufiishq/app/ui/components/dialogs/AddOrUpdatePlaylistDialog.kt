@@ -1,4 +1,4 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.dialogs
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,12 +7,14 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.ui.components.OutlinedTextFieldValidation
 import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
 import pk.sufiishq.app.utils.ifNotEmpty
@@ -20,16 +22,17 @@ import pk.sufiishq.app.utils.rem
 
 @Composable
 fun AddOrUpdatePlaylistDialog(
-    showAddPlaylistDialog: MutableState<Boolean>,
-    playlist: Playlist,
-    playlistDataProvider: PlaylistDataProvider
+    playlistState: State<Playlist?>,
+    eventDispatcher: EventDispatcher
 ) {
 
-    if (showAddPlaylistDialog.value) {
-        val playlistTitle = rem(playlist.title)
-        val error = rem(playlist.title.checkValue("", "Title cannot be empty"))
+    playlistState.value?.apply {
+        val playlistTitle = rem(title)
+        val error = rem(title.checkValue("", "Title cannot be empty"))
 
-        Dialog(onDismissRequest = { showAddPlaylistDialog.value = false }) {
+        Dialog(onDismissRequest = {
+            hideDialog(eventDispatcher)
+        }) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colors.surface,
@@ -54,9 +57,8 @@ fun AddOrUpdatePlaylistDialog(
                             keyboardActions = KeyboardActions(onDone = {
                                 playlistTitle.value.ifNotEmpty {
                                     addOrUpdatePlaylist(
-                                        showAddPlaylistDialog,
-                                        Playlist(playlist.id, it),
-                                        playlistDataProvider
+                                        Playlist(id, it),
+                                        eventDispatcher
                                     )
                                 }
                             }),
@@ -74,19 +76,18 @@ fun AddOrUpdatePlaylistDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = { showAddPlaylistDialog.value = false }) {
+                        TextButton(onClick = { hideDialog(eventDispatcher) }) {
                             Text(text = "Cancel")
                         }
                         TextButton(onClick = {
                             playlistTitle.value.ifNotEmpty {
                                 addOrUpdatePlaylist(
-                                    showAddPlaylistDialog,
-                                    Playlist(playlist.id, it),
-                                    playlistDataProvider
+                                    Playlist(id, it),
+                                    eventDispatcher
                                 )
                             }
                         }) {
-                            Text(text = if (playlist.title.isEmpty()) "Add" else "Update")
+                            Text(text = if (title.isEmpty()) "Add" else "Update")
                         }
                     }
                 }
@@ -97,14 +98,20 @@ fun AddOrUpdatePlaylistDialog(
 }
 
 private fun addOrUpdatePlaylist(
-    showAddPlaylistDialog: MutableState<Boolean>,
     playlist: Playlist,
-    playlistDataProvider: PlaylistDataProvider
+    eventDispatcher: EventDispatcher
 ) {
     if (playlist.id == 0) {
-        playlistDataProvider.add(playlist)
+        eventDispatcher.dispatch(PlaylistEvents.Add(playlist))
     } else {
-        playlistDataProvider.update(playlist)
+        eventDispatcher.dispatch(PlaylistEvents.Update(playlist))
     }
-    showAddPlaylistDialog.value = false
+
+    hideDialog(eventDispatcher)
+}
+
+private fun hideDialog(
+    eventDispatcher: EventDispatcher
+) {
+    eventDispatcher.dispatch(PlaylistEvents.ShowAddUpdatePlaylistDialog(null))
 }

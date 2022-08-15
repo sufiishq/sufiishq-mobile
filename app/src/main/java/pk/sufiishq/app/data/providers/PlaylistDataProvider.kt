@@ -7,9 +7,8 @@ import pk.sufiishq.app.models.Playlist
 interface PlaylistDataProvider {
 
     fun getShowPlaylistDialog(): LiveData<Kalam?>
+    fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?>
+    fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?>
     fun getAll(): LiveData<List<Playlist>>
     fun get(id: Int): LiveData<Playlist>
-    fun add(playlist: Playlist)
-    fun update(playlist: Playlist)
-    fun delete(playlist: Playlist)
 }

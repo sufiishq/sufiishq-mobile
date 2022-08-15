@@ -1,4 +1,4 @@
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.app.ui.components.dialogs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

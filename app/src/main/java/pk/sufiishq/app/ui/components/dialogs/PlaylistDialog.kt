@@ -20,7 +20,6 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
-import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.utils.toast
 
 @Composable

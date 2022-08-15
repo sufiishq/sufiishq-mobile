@@ -32,28 +32,50 @@ class PlaylistViewModel @Inject constructor(
     }
 
     private val showPlaylistDialog = MutableLiveData<Kalam?>(null)
+    private val showAddUpdatePlaylistDialog = MutableLiveData<Playlist?>(null)
+    private val showConfirmPlaylistDeleteDialog = MutableLiveData<Playlist?>(null)
 
     override fun getShowPlaylistDialog(): LiveData<Kalam?> {
         return showPlaylistDialog
+    }
+
+    override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
+        return showAddUpdatePlaylistDialog
+    }
+
+    override fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?> {
+        return showConfirmPlaylistDeleteDialog
     }
 
     override fun getAll(): LiveData<List<Playlist>> = playlistRepository.loadAll()
 
     override fun get(id: Int): LiveData<Playlist> = playlistRepository.load(id)
 
-    override fun add(playlist: Playlist) {
+    private fun add(playlist: Playlist) {
         viewModelScope.launch {
             playlistRepository.add(playlist)
         }
     }
 
-    override fun update(playlist: Playlist) {
+    private fun setShowPlaylistDialog(kalam: Kalam?) {
+        showPlaylistDialog.postValue(kalam)
+    }
+
+    private fun setShowPlaylistAddUpdateDialog(playlist: Playlist?) {
+        showAddUpdatePlaylistDialog.postValue(playlist)
+    }
+
+    private fun setShowPlaylistConfirmDeleteDialog(playlist: Playlist?) {
+        showConfirmPlaylistDeleteDialog.postValue(playlist)
+    }
+
+    private fun update(playlist: Playlist) {
         viewModelScope.launch {
             playlistRepository.update(playlist)
         }
     }
 
-    override fun delete(playlist: Playlist) {
+    private fun delete(playlist: Playlist) {
 
         // get all kalam where playlist matched with current playlist
         kalamRepository.loadAllPlaylistKalam(playlist.id).observeForever { kalams ->
@@ -67,10 +89,6 @@ class PlaylistViewModel @Inject constructor(
             // delete playlist from playlist table
             viewModelScope.launch { playlistRepository.delete(playlist) }
         }
-    }
-
-    private fun setShowPlaylistDialog(kalam: Kalam?) {
-        showPlaylistDialog.postValue(kalam)
     }
 
     private fun addToPlaylist(kalam: Kalam, playlist: Playlist) {
@@ -89,6 +107,13 @@ class PlaylistViewModel @Inject constructor(
         when (event) {
             is PlaylistEvents.ShowPlaylistDialog -> setShowPlaylistDialog(event.kalam)
             is PlaylistEvents.AddToPlaylist -> addToPlaylist(event.kalam, event.playlist)
+            is PlaylistEvents.ShowAddUpdatePlaylistDialog -> setShowPlaylistAddUpdateDialog(event.playlist)
+            is PlaylistEvents.ShowConfirmDeletePlaylistDialog -> setShowPlaylistConfirmDeleteDialog(
+                event.playlist
+            )
+            is PlaylistEvents.Add -> add(event.playlist)
+            is PlaylistEvents.Update -> update(event.playlist)
+            is PlaylistEvents.Delete -> delete(event.playlist)
             else -> throw UnhandledEventException(event, this)
         }
     }

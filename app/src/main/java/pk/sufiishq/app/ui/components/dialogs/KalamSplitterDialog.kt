@@ -22,7 +22,6 @@ import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.SplitCompleted
 import pk.sufiishq.app.helpers.SplitDone
 import pk.sufiishq.app.ui.components.SingleOutlinedTextField
-import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.utils.*
 
 @Composable

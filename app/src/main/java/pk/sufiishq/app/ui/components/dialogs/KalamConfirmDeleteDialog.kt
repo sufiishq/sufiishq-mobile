@@ -15,7 +15,6 @@ import androidx.compose.ui.text.withStyle
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.models.KalamDeleteItem
-import pk.sufiishq.app.ui.components.SufiIshqDialog
 
 @Composable
 fun KalamConfirmDeleteDialog(

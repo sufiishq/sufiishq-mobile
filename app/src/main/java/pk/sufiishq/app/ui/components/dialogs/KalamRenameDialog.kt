@@ -16,7 +16,6 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.components.OutlinedTextFieldValidation
-import pk.sufiishq.app.ui.components.SufiIshqDialog
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
 import pk.sufiishq.app.utils.ifNotEmpty

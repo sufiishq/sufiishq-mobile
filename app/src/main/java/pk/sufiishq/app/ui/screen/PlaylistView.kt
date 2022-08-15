@@ -11,16 +11,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.models.Playlist
-import pk.sufiishq.app.ui.components.AddOrUpdatePlaylistDialog
 import pk.sufiishq.app.ui.components.PlaylistItem
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dummyPlaylistDataProvider
@@ -28,10 +28,13 @@ import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 
 @Composable
-fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavController) {
+fun PlaylistView(
+    playlistDataProvider: PlaylistDataProvider,
+    navController: NavController,
+    eventDispatcher: EventDispatcher
+) {
 
     val matColors = MaterialTheme.colors
-    val showAddPlaylistDialog = rem(false)
     val playlist = rem(Playlist(0, ""))
     val allPlaylist = playlistDataProvider.getAll().observeAsState().optValue(listOf())
 
@@ -40,7 +43,7 @@ fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavC
             floatingActionButton = {
                 FloatingActionButton(onClick = {
                     playlist.value = Playlist(0, "")
-                    showAddPlaylistDialog.value = true
+                    eventDispatcher.dispatch(PlaylistEvents.ShowAddUpdatePlaylistDialog(playlist.value))
                 }) {
                     Icon(
                         tint = Color.White,
@@ -65,15 +68,10 @@ fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavC
 
                         itemsIndexed(allPlaylist) { index, pl ->
                             PlaylistItem(
-                                matColors,
-                                pl,
-                                allPlaylist.toMutableStateList(),
-                                playlistDataProvider,
-                                navController
-                            ) {
-                                playlist.value = it
-                                showAddPlaylistDialog.value = true
-                            }
+                                playlist = pl,
+                                eventDispatcher = eventDispatcher,
+                                navController = navController
+                            )
 
                             if (index < allPlaylist.lastIndex) {
                                 Divider(color = matColors.background)
@@ -90,13 +88,6 @@ fun PlaylistView(playlistDataProvider: PlaylistDataProvider, navController: NavC
             }
         }
     }
-
-    // add or update playlist dialog
-    AddOrUpdatePlaylistDialog(
-        showAddPlaylistDialog = showAddPlaylistDialog,
-        playlist = playlist.value,
-        playlistDataProvider = playlistDataProvider
-    )
 }
 
 @Preview(showBackground = true)
@@ -105,7 +96,8 @@ fun PreviewLightPlaylistView() {
     SufiIshqTheme(darkTheme = false) {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController()
+            navController = rememberNavController(),
+            eventDispatcher = EventDispatcher()
         )
     }
 }
@@ -116,7 +108,8 @@ fun PreviewDarkPlaylistView() {
     SufiIshqTheme(darkTheme = true) {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController()
+            navController = rememberNavController(),
+            eventDispatcher = EventDispatcher()
         )
     }
 }

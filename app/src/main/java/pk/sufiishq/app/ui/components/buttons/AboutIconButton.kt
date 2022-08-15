@@ -16,7 +16,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.ui.components.SufiIshqDialog
+import pk.sufiishq.app.ui.components.dialogs.SufiIshqDialog
 import pk.sufiishq.app.utils.rem
 
 @Composable
