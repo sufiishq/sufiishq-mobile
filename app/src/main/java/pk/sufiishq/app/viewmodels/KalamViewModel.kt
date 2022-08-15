@@ -47,7 +47,7 @@ class KalamViewModel @Inject constructor(
     val eventDispatcher: EventDispatcher
 ) : ViewModel(), KalamDataProvider, EventHandler {
 
-    private val appContext = app
+    private val appContext = app()
     private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
     private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
     private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
@@ -73,10 +73,6 @@ class KalamViewModel @Inject constructor(
 
     override fun getKalamRenameDialog(): LiveData<Kalam?> {
         return showKalamRenameDialog
-    }
-
-    override fun getActiveSearchKeyword(): String {
-        return kalamRepository.getSearchKeyword()
     }
 
     private fun setKalamRenameDialog(kalam: Kalam?) {

@@ -63,10 +63,6 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     override fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?> {
         return MutableLiveData(null)
     }
-
-    override fun getActiveSearchKeyword(): String {
-        return ""
-    }
 }
 
 @ExcludeFromJacocoGeneratedReport
@@ -78,6 +74,14 @@ fun dummyKalam() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
 
 @ExcludeFromJacocoGeneratedReport
 fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
+
+    override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
+        return MutableLiveData(null)
+    }
+
+    override fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?> {
+        return MutableLiveData(null)
+    }
 
     override fun getShowPlaylistDialog(): LiveData<Kalam?> {
         return MutableLiveData(null)
@@ -91,15 +95,6 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
     )
 
     override fun get(id: Int) = MutableLiveData(Playlist(1, "Karachi"))
-
-    override fun add(playlist: Playlist) { /* no comment */
-    }
-
-    override fun update(playlist: Playlist) { /* no comment */
-    }
-
-    override fun delete(playlist: Playlist) { /* no comment */
-    }
 }
 
 @ExcludeFromJacocoGeneratedReport

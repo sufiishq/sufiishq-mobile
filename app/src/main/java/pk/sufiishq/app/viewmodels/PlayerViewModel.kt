@@ -12,6 +12,7 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
@@ -31,6 +32,7 @@ import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
+import pk.sufiishq.app.models.FileInfo
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.*
@@ -58,7 +60,7 @@ class PlayerViewModel @Inject constructor(
     private var fileDownloaderDisposable = Disposables.disposed()
     private var fileMoveDisposables = Disposables.disposed()
 
-    private val appContext = app
+    private val appContext = app()
 
     init {
         player.registerListener(this)
@@ -192,14 +194,15 @@ class PlayerViewModel @Inject constructor(
             .throttleFirst(2, TimeUnit.SECONDS)
             .toFlowable(BackpressureStrategy.LATEST)
             .subscribeOn(Schedulers.io())
+            .delay(2, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
 
                 // onNext ->
                 {
-                    val progress = it.toFloat() / 100f * 1f
+                    //val progress = it.progress.toFloat() / 100f * 1f
                     Timber.d("kalam: ${kalam.title}, download progress: $it")
-                    setKalamDownloadState(KalamDownloadState.InProgress(progress, kalam))
+                    setKalamDownloadState(KalamDownloadState.InProgress(it, kalam))
                 },
 
                 // onError ->

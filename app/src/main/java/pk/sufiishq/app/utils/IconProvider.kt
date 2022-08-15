@@ -8,7 +8,7 @@ object IconProvider {
     private val iconsMap: Map<String, MenuIcon>
 
     init {
-        val context = app
+        val context = app()
         iconsMap = buildMap {
             put(
                 context.getString(R.string.mark_as_favorite), MenuIcon(

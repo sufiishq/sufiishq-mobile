@@ -1,8 +1,10 @@
 package pk.sufiishq.app.core.downloader
 
 import io.reactivex.Observable
+import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import pk.sufiishq.app.models.FileInfo
 import java.io.File
 import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
@@ -24,7 +26,7 @@ class FileDownloader @Inject constructor(okHttpClient: OkHttpClient) {
         this.okHttpClient = okHttpBuilder.build()
     }
 
-    fun download(url: String, file: File): Observable<Int> {
+    fun download(url: String, file: File): Observable<FileInfo> {
 
         return Observable.create { emitter ->
             val request = Request.Builder().url(url).build()
@@ -36,6 +38,7 @@ class FileDownloader @Inject constructor(okHttpClient: OkHttpClient) {
                 body != null
             ) {
                 val length = body.contentLength().toDouble()
+                val fileInfo = FileInfo(file, length)
                 body.byteStream().apply {
                     file.outputStream().use { fileOut ->
                         var bytesCopied = 0.toDouble()
@@ -45,7 +48,9 @@ class FileDownloader @Inject constructor(okHttpClient: OkHttpClient) {
                             fileOut.write(buffer, 0, bytes)
                             bytesCopied += bytes.toDouble()
                             bytes = read(buffer)
-                            emitter.onNext((bytesCopied / length * 100.toDouble()).toInt())
+
+                            fileInfo.progress = (bytesCopied / length * 100.toDouble()).toInt()
+                            emitter.onNext(fileInfo)
                         }
                     }
                     emitter.onComplete()

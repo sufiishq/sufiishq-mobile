@@ -49,7 +49,7 @@ sealed class ScreenType(val route: String) {
 
         private fun getTitle(navBackStackEntry: NavBackStackEntry): String {
             return navBackStackEntry.arguments?.getString(PARAM_TITLE)
-                ?: app.getString(R.string.all)
+                ?: app().getString(R.string.all)
         }
 
         private fun getPlaylistId(navBackStackEntry: NavBackStackEntry): Int {

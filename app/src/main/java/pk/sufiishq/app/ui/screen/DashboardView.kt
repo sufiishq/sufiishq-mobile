@@ -1,7 +1,5 @@
 package pk.sufiishq.app.ui.screen
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,16 +8,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -35,6 +28,7 @@ import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.TrackListType
+import pk.sufiishq.app.ui.components.SIAnimatedLog
 import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
 import pk.sufiishq.app.ui.components.buttons.UpdateButton
 import pk.sufiishq.app.utils.MenuIconColors
@@ -51,7 +45,7 @@ fun DashboardView(
 ) {
 
     val matColors = MaterialTheme.colors
-    val appConfig = app.appConfig
+    val appConfig = app().appConfig
 
     val all = stringResource(R.string.all)
     val favorites = stringResource(R.string.favorites)
@@ -66,30 +60,16 @@ fun DashboardView(
 
         val (logo, themeChangeButton, btnUpdate, buttonBox) = createRefs()
 
-        val infiniteTransition = rememberInfiniteTransition()
-        val angle by infiniteTransition.animateFloat(
-            initialValue = 0F,
-            targetValue = 360F,
-            animationSpec = infiniteRepeatable(
-                animation = tween(15000, easing = LinearEasing)
-            )
-        )
 
-        Image(
-            modifier = Modifier.graphicsLayer {
-                rotationY = angle
-            }.constrainAs(logo) {
+        SIAnimatedLog(
+            modifier = Modifier.constrainAs(logo) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top, 12.dp)
                 end.linkTo(parent.end)
                 bottom.linkTo(buttonBox.top, 12.dp)
                 width = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
-            },
-            colorFilter = ColorFilter.tint(matColors.primary),
-            contentScale = ContentScale.Fit,
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = null
+            }
         )
 
         // theme change button app only when android version less or equal from Android 9

@@ -38,7 +38,7 @@ fun PlaylistItem(
 ) {
 
     val matColors = MaterialTheme.colors
-    val appConfig = app.appConfig
+    val appConfig = app().appConfig
     val isExpanded = rem(false)
 
     Column(Modifier.clickable {

@@ -23,7 +23,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-val app: SufiIshqApp = SufiIshqApp.getInstance()
+fun app(): SufiIshqApp = SufiIshqApp.getInstance()
 
 fun <T> State<T?>.optValue(default: T) = value ?: default
 
@@ -81,7 +81,7 @@ fun <T> LiveData<T>.optValue(default: T): T {
 }
 
 fun Kalam.isOfflineFileExists(): Boolean {
-    return File(app.filesDir.absolutePath + File.separator + offlineSource).exists()
+    return File(app().filesDir.absolutePath + File.separator + offlineSource).exists()
 }
 
 fun isDeviceSupportDarkMode(): Boolean {
@@ -115,7 +115,7 @@ fun Kalam.offlineFile(): File? {
     return takeIf { offlineSource.isNotEmpty() }?.let {
         File(
             buildString {
-                append(app.filesDir)
+                append(app().filesDir)
                 append(File.separator)
                 append(it.offlineSource)
             }

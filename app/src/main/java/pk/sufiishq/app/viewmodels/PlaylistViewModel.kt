@@ -95,7 +95,7 @@ class PlaylistViewModel @Inject constructor(
         viewModelScope.launch {
             kalam.playlistId = playlist.id
             kalamRepository.update(kalam)
-            app.toast("${kalam.title} added in ${playlist.title} Playlist")
+            app().toast("${kalam.title} added in ${playlist.title} Playlist")
         }
     }
 
