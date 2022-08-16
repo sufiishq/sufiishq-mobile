@@ -63,6 +63,26 @@
 |----------|----------|--------|
 | Android  |<a href='https://play.google.com/store/apps/details?id=pk.sufiishq.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200"/></a>| 💚 Production |
 
+## 🏗️️ Built with
+
+| Component       | Tool                          |
+|----------------	|------------------------------	|
+| 🎭  User Interface    | [Jetpack Compose](https://developer.android.com/jetpack/compose)                |
+| 🏗  Architecture    | [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)                            |
+| 🧠  Backend    | [NodeJS Server](https://nodejs.org/en/)                            |
+| 💉  DI                | [Hilt](https://dagger.dev/hilt/)                        |
+| 🛣️  Navigation        | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation)                        |
+| 🌊  Async            | [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) + [Flow + StateFlow + SharedFlow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) + [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)                |
+| ⬇️Downloading            | [RxJava](https://github.com/ReactiveX/RxJava)                |
+| 📄  JSON            | [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization)                            |
+| 🔥  Firebase            | [Crashlytics](https://firebase.google.com/docs/crashlytics) [Deep Link](https://firebase.google.com/products/dynamic-links)                            |
+| ✨  Audio Editor            | [FFMpeg](https://ffmpeg.org/) [EPMedia](https://github.com/yangjie10930/EpMedia)                            |
+| 💾  Persistance     | [Room](https://developer.android.com/training/data-storage/room) + [Secure SharedPreferences](https://developer.android.com/topic/security/data)   |
+| 📦️  Update     | [Android In-App Update](https://developer.android.com/guide/playcore/in-app-updates/kotlin-java)   |
+| 🔧  Supplimentary   | [Accompanist](https://github.com/google/accompanist)  |
+| ⌨️  Logging            | [Timber](https://github.com/JakeWharton/timber)                            |
+| 🧪  Testing            | [Mockk](https://mockk.io/) + [JUnit](https://github.com/junit-team/junit5) + [Robolectric](http://robolectric.org/)   |
+
 <!--
 <a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
