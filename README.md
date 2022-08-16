@@ -73,18 +73,39 @@
 | 💉  DI                | [Hilt](https://dagger.dev/hilt/)                        |
 | 🛣️  Navigation        | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation)                        |
 | 🌊  Async            | [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) + [Flow + StateFlow + SharedFlow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) + [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)                |
-| ⬇️Downloading            | [RxJava](https://github.com/ReactiveX/RxJava)                |
+| ⬇️ Downloading            | [RxJava](https://github.com/ReactiveX/RxJava)                |
 | 📄  JSON            | [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization)                            |
-| 🔥  Firebase            | [Crashlytics](https://firebase.google.com/docs/crashlytics) [Deep Link](https://firebase.google.com/products/dynamic-links)                            |
-| ✨  Audio Editor            | [FFMpeg](https://ffmpeg.org/) [EPMedia](https://github.com/yangjie10930/EpMedia)                            |
+| 🔥  Firebase            | [Crashlytics](https://firebase.google.com/docs/crashlytics) + [Deep Link](https://firebase.google.com/products/dynamic-links)                            |
+| ✨  Audio Editor            | [FFMpeg](https://ffmpeg.org/) + [EPMedia](https://github.com/yangjie10930/EpMedia)                            |
 | 💾  Persistance     | [Room](https://developer.android.com/training/data-storage/room) + [Secure SharedPreferences](https://developer.android.com/topic/security/data)   |
 | 📦️  Update     | [Android In-App Update](https://developer.android.com/guide/playcore/in-app-updates/kotlin-java)   |
 | 🔧  Supplimentary   | [Accompanist](https://github.com/google/accompanist)  |
 | ⌨️  Logging            | [Timber](https://github.com/JakeWharton/timber)                            |
 | 🧪  Testing            | [Mockk](https://mockk.io/) + [JUnit](https://github.com/junit-team/junit5) + [Robolectric](http://robolectric.org/)   |
 
-<!--
-<a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=sufiishq/sufiishq-mobile" />
-</a>
--->
+## 🏋 Dependency
+
+- Java 11 or above
+- Android Studio Chipmunk | 2021.1+
+- Google Firebase
+
+## 🤝 Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any
+contributions you make are **greatly appreciated**.
+
+### Build project (this step is required)
+1. Go to the (Firebase Console)[https://console.firebase.google.com/]
+2. In the center of the project overview page, click the Android icon or Add app to launch the setup workflow.
+3. Enter **pk.sufiishq.app** in the Android package name field.
+4. (Optional) Enter other app information: **App nickname** and **Debug signing certificate SHA-1**.
+5. Click **Register app**.
+6. Click **Download google-services.json** to obtain your Firebase Android config file (google-services.json).
+7. Move your config file into the module (app-level) directory of your app.
+
+### Add new feature
+1. Open an issue first to discuss what you would like to change.
+1. Create your feature branch (`git checkout -b feature/your-feature`)
+1. Commit your changes (`git commit -m 'Add some message'`)
+1. Push to the branch (`git push origin feature/your-feature`)
+1. Open a pull request
