@@ -79,6 +79,7 @@
 | ✨  Audio Editor            | [FFMpeg](https://ffmpeg.org/) + [EPMedia](https://github.com/yangjie10930/EpMedia)                            |
 | 💾  Persistance     | [Room](https://developer.android.com/training/data-storage/room) + [Secure SharedPreferences](https://developer.android.com/topic/security/data)   |
 | 📦️  Update     | [Android In-App Update](https://developer.android.com/guide/playcore/in-app-updates/kotlin-java)   |
+| 🧐  Code Quality & Coverage     | [Sonarcloud](https://sonarcloud.io/)   |
 | 🔧  Supplimentary   | [Accompanist](https://github.com/google/accompanist)  |
 | ⌨️  Logging            | [Timber](https://github.com/JakeWharton/timber)                            |
 | 🧪  Testing            | [Mockk](https://mockk.io/) + [JUnit](https://github.com/junit-team/junit5) + [Robolectric](http://robolectric.org/)   |
