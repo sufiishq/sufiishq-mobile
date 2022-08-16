@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/src/main/res/drawable-xxxhdpi/logo.png" width="500" />
+  <img src="app/src/main/res/drawable-xxxhdpi/logo.png" width="400" />
   <h1 align="center">Sufi Ishq</h1>
 </p>
 
@@ -56,6 +56,12 @@
 | Dark | Light |
 |-------|------|
 |![](.github/screenshot_dark.jpg)|![](.github/screenshot_light.jpg)
+
+## 💻 Install
+
+| Platform | Download | Status |
+|----------|----------|--------|
+| Android  |<a href='https://play.google.com/store/apps/details?id=pk.sufiishq.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>| 💚 Production |
 
 <!--
 <a href="https://github.com/sufiishq/sufiishq-mobile/graphs/contributors">
