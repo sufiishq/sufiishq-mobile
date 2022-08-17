@@ -31,10 +31,11 @@
 </a>  
 <a href="https://github.com/sufiishq/sufiishq-mobile/pulls?q=is%3Aopen+is%3Apr">  
     <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile" />  
-</a>  
+</a>
 
 <br /><br />
 
+<p>
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Report Bug</a>  
 ·  
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Code Health</a>  
@@ -46,6 +47,7 @@
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Help Wanted</a>  
 ·  
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Research</a>  
+</p>
 </div>  
 
 
