@@ -182,7 +182,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     private fun setKalamDownloadState(kalamDownloadState: KalamDownloadState) {
-        this.kalamDownloadState.postValue(kalamDownloadState)
+        this.kalamDownloadState.value = kalamDownloadState
     }
 
     private fun startDownload(kalam: Kalam) {
