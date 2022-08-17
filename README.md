@@ -104,7 +104,7 @@ contributions you make are **greatly appreciated**.
 6. Click **Download google-services.json** to obtain your Firebase Android config file (google-services.json).
 7. Move your config file into the module (app-level) directory of your app.
 
-## Code reviews
+### Code reviews
 All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more information on using pull requests.
 
 ### Add new feature
