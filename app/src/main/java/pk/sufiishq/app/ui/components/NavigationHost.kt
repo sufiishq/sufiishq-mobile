@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
@@ -16,6 +17,7 @@ import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.screen.DashboardView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
+import pk.sufiishq.app.utils.app
 
 @Composable
 fun NavigationHost(
@@ -26,6 +28,9 @@ fun NavigationHost(
     globalEventHandler: GlobalEventHandler,
     navController: NavHostController
 ) {
+
+
+    val appConfig = app().appConfig
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -39,7 +44,8 @@ fun NavigationHost(
                     navController,
                     homeDataProvider,
                     globalEventHandler,
-                    eventDispatcher
+                    eventDispatcher,
+                    appConfig
                 )
             }
 

@@ -7,10 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.helpers.GlobalEventHandler
+import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
@@ -125,4 +128,17 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
     override fun countPlaylist(): LiveData<Int> {
         return MutableLiveData(5)
     }
+}
+
+// ----------------------------------------- //
+// GLOBAL EVENTS
+// ----------------------------------------- //
+
+fun dummyGlobalEventHandler(): GlobalEventHandler {
+    return GlobalEventHandler(
+        InAppUpdateManager(
+            eventDispatcher = EventDispatcher()
+        ),
+        eventDispatcher = EventDispatcher()
+    )
 }

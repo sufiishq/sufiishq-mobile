@@ -21,6 +21,7 @@ import pk.sufiishq.app.ui.components.buttons.AboutIconButton
 import pk.sufiishq.app.ui.components.buttons.ShareIconButton
 import pk.sufiishq.app.ui.components.dialogs.DialogHolder
 import pk.sufiishq.app.ui.components.player.Player
+import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
