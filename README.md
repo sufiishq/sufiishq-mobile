@@ -22,15 +22,6 @@
 </a>  
 <a href="https://sonarcloud.io/summary/new_code?id=sufiishq_sufiishq-mobile">  
     <img alt="Duplicated Lines (%)" src="https://sonarcloud.io/api/project_badges/measure?project=sufiishq_sufiishq-mobile&metric=duplicated_lines_density" />  
-</a>  
-<a href="https://github.com/sufiishq/sufiishq-mobile/issues?q=is%3Aopen+is%3Aissue">  
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/sufiishq/sufiishq-mobile" />  
-</a>  
-<a href="https://github.com/sufiishq/sufiishq-mobile/issues?q=is%3Aissue+is%3Aclosed">  
-    <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/sufiishq/sufiishq-mobile" />  
-</a>  
-<a href="https://github.com/sufiishq/sufiishq-mobile/pulls?q=is%3Aopen+is%3Apr">  
-    <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile" />  
 </a>
 
 <br />
