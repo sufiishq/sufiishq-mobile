@@ -33,7 +33,7 @@
     <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/sufiishq/sufiishq-mobile" />  
 </a>
 
-<br /><br />
+
 
 <p>
 <a href="https://github.com/sufiishq/sufiishq-mobile/issues/new/choose">Report Bug</a>  
