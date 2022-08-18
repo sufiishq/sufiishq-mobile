@@ -63,12 +63,14 @@ open class BaseActivity : ComponentActivity() {
                             player.setSource(it, TrackListType.All())
                         }
                     }
+
+                    handleDeeplink(intent)
+                    inAppUpdateManager.checkInAppUpdate(this@BaseActivity)
                 }
             }
         }
 
-        handleDeeplink(intent)
-        inAppUpdateManager.checkInAppUpdate(this)
+
     }
 
     override fun onDestroy() {
@@ -100,6 +102,7 @@ open class BaseActivity : ComponentActivity() {
     }
 
     private fun handleDeeplink(intent: Intent?) {
+        if(isActivityLaunchedFromHistory()) return
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
             .addOnSuccessListener { pendingDynamicLinkData ->
@@ -114,6 +117,7 @@ open class BaseActivity : ComponentActivity() {
 
                     uri.pathSegments?.let { pathSegments ->
                         if (pathSegments.size == 2) {
+                            intent?.data = null
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
                             homeViewModel.getKalam(kalamId.toInt())
                                 .observe(this@BaseActivity) { kalam ->
@@ -136,6 +140,10 @@ open class BaseActivity : ComponentActivity() {
         if (!isDeviceSupportDarkMode()) {
             IS_DARK_THEME = DARK_THEME.getFromStorage(false)
         }
+    }
+
+    private fun isActivityLaunchedFromHistory(): Boolean {
+        return intent.flags == (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)
     }
 
     companion object {
