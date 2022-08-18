@@ -24,15 +24,14 @@ import javax.inject.Singleton
 
 @Singleton
 class GlobalEventHandler @Inject constructor(
-    private val inAppUpdateManager: InAppUpdateManager,
-    eventDispatcher: EventDispatcher
+    private val inAppUpdateManager: InAppUpdateManager
 ) : EventHandler {
 
     private val showCircularProgressDialog = MutableLiveData(false)
     private val showUpdateDialog = MutableLiveData(false)
 
     init {
-        eventDispatcher.registerEventHandler(this)
+        EventDispatcher.getInstance().registerEventHandler(this)
     }
 
     fun getShowUpdateButton(): LiveData<Boolean> {

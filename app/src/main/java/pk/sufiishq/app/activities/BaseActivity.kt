@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
-import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.player.AudioPlayer
@@ -30,9 +29,6 @@ import javax.inject.Inject
 open class BaseActivity : ComponentActivity() {
 
     @Inject
-    lateinit var appConfig: AppConfig
-
-    @Inject
     lateinit var kalamRepository: KalamRepository
 
     @Inject
@@ -44,9 +40,6 @@ open class BaseActivity : ComponentActivity() {
 
     @Inject
     lateinit var observeOnlyOnce: ObserveOnlyOnce<Kalam>
-
-    @Inject
-    lateinit var eventDispatcher: EventDispatcher
 
     @Inject
     lateinit var globalEventHandler: GlobalEventHandler
@@ -81,15 +74,20 @@ open class BaseActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
+        EventDispatcher.getInstance().release()
+
         runCatching {
-            eventDispatcher.dispatch(PlayerEvents.DisposeDownload)
+            EventDispatcher.getInstance().dispatch(PlayerEvents.DisposeDownload)
         }
 
         runCatching {
             inAppUpdateManager.unregisterListener(this)
         }
 
-        assetKalamLoaderViewModel.release()
+        runCatching {
+            assetKalamLoaderViewModel.release()
+        }
+
         if (!player.isPlaying()) {
             player.release()
             stopService(playerIntent)
@@ -120,7 +118,7 @@ open class BaseActivity : ComponentActivity() {
                             homeViewModel.getKalam(kalamId.toInt())
                                 .observe(this@BaseActivity) { kalam ->
                                     kalam?.let {
-                                        eventDispatcher.dispatch(
+                                        EventDispatcher.getInstance().dispatch(
                                             PlayerEvents.ChangeTrack(
                                                 kalam,
                                                 TrackListType.All()

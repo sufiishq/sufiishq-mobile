@@ -131,7 +131,7 @@ fun TracksView(
 fun TracksPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         TracksView(
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             kalamDataProvider = dummyKalamDataProvider(),
             trackListType = TrackListType.All()
         )
@@ -143,7 +143,7 @@ fun TracksPreviewLight() {
 fun TracksPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         TracksView(
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             kalamDataProvider = dummyKalamDataProvider(),
             trackListType = TrackListType.All()
         )

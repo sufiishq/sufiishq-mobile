@@ -21,8 +21,7 @@ import javax.inject.Singleton
 class KalamSplitManager @Inject constructor(
     @ApplicationContext val appContext: Context,
     private val previewAudioPlayer: PreviewAudioPlayer,
-    @AndroidMediaPlayer private val player: AudioPlayer,
-    eventDispatcher: EventDispatcher
+    @AndroidMediaPlayer private val player: AudioPlayer
 ) : EventHandler {
 
     private val splitStatus = MutableLiveData<SplitStatus>(SplitCompleted())
@@ -37,7 +36,7 @@ class KalamSplitManager @Inject constructor(
 
     init {
 
-        eventDispatcher.registerEventHandler(this)
+        EventDispatcher.getInstance().registerEventHandler(this)
 
         previewAudioPlayer.setOnCompletionListener {
             previewAudioPlayer.releaseProgressListener()

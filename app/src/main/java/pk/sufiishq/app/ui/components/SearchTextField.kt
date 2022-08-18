@@ -67,7 +67,7 @@ fun SearchTextFieldPreviewLight() {
         val data = dummyKalamDataProvider()
         SearchTextField(
             remember { mutableStateOf("") },
-            EventDispatcher(),
+            EventDispatcher.getInstance(),
             MaterialTheme.colors,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
             TrackListType.All()

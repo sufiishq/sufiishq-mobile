@@ -25,7 +25,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     private var trackListType: TrackListType = TrackListType.All()

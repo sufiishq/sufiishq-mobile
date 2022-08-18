@@ -274,7 +274,7 @@ fun LightPreviewDashboardView() {
             navController = rememberNavController(),
             homeDataProvider = dummyHomeDataProvider(),
             globalEventHandler = dummyGlobalEventHandler(),
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             appConfig = AppConfig()
         )
     }

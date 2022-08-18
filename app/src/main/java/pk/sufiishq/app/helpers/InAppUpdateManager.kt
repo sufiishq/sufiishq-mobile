@@ -18,9 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InAppUpdateManager @Inject constructor(
-    private val eventDispatcher: EventDispatcher
-) {
+class InAppUpdateManager @Inject constructor() {
 
     private lateinit var listener: Listener
     private lateinit var activity: ComponentActivity
@@ -42,7 +40,7 @@ class InAppUpdateManager @Inject constructor(
                 this.appUpdateInfo = appUpdateInfo
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    eventDispatcher.dispatch(GlobalEvents.ShowUpdateButton(true))
+                    EventDispatcher.getInstance().dispatch(GlobalEvents.ShowUpdateButton(true))
                 } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                     popupSnackbarForCompleteUpdate(activity)
                 }

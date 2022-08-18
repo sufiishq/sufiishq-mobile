@@ -97,7 +97,7 @@ fun PreviewLightPlaylistView() {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
             navController = rememberNavController(),
-            eventDispatcher = EventDispatcher()
+            eventDispatcher = EventDispatcher.getInstance()
         )
     }
 }
@@ -109,7 +109,7 @@ fun PreviewDarkPlaylistView() {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
             navController = rememberNavController(),
-            eventDispatcher = EventDispatcher()
+            eventDispatcher = EventDispatcher.getInstance()
         )
     }
 }

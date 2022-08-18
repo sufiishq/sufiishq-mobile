@@ -12,7 +12,6 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
@@ -32,7 +31,6 @@ import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.FileInfo
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.*
@@ -48,8 +46,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val fileDownloader: FileDownloader,
-    private val kalamRepository: KalamRepository,
-    eventDispatcher: EventDispatcher
+    private val kalamRepository: KalamRepository
 ) : ViewModel(), PlayerDataProvider, PlayerStateListener, EventHandler {
 
     private var seekbarEnableOnPlaying = true
@@ -64,7 +61,7 @@ class PlayerViewModel @Inject constructor(
 
     init {
         player.registerListener(this)
-        eventDispatcher.registerEventHandler(this)
+        EventDispatcher.getInstance().registerEventHandler(this)
         RxJavaPlugins.setErrorHandler { e ->
             if (e is UndeliverableException) {
                 Timber.e(e)

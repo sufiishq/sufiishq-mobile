@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
@@ -136,9 +135,6 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
 
 fun dummyGlobalEventHandler(): GlobalEventHandler {
     return GlobalEventHandler(
-        InAppUpdateManager(
-            eventDispatcher = EventDispatcher()
-        ),
-        eventDispatcher = EventDispatcher()
+        InAppUpdateManager()
     )
 }
