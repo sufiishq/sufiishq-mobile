@@ -9,15 +9,15 @@ import io.reactivex.Observable
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.CODE
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.FAVORITE
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.ID
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.LOCATION
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.OFFLINE_SRC
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.ONLINE_SRC
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.PLAYLIST_ID
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.RECORDED_DATE
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.Companion.TITLE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.CODE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.FAVORITE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ID
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.LOCATION
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.OFFLINE_SRC
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ONLINE_SRC
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.PLAYLIST_ID
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.RECORDED_DATE
+import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.TITLE
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
@@ -209,17 +209,15 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
         )
     }
 
-    private class KalamTableInfo {
-        companion object {
-            const val ID = "id"
-            const val TITLE = "title"
-            const val CODE = "code"
-            const val RECORDED_DATE = "recorded_date"
-            const val LOCATION = "location"
-            const val ONLINE_SRC = "online_src"
-            const val OFFLINE_SRC = "offline_src"
-            const val FAVORITE = "favorite"
-            const val PLAYLIST_ID = "playlist_id"
-        }
+    object KalamTableInfo {
+        const val ID = "id"
+        const val TITLE = "title"
+        const val CODE = "code"
+        const val RECORDED_DATE = "recorded_date"
+        const val LOCATION = "location"
+        const val ONLINE_SRC = "online_src"
+        const val OFFLINE_SRC = "offline_src"
+        const val FAVORITE = "favorite"
+        const val PLAYLIST_ID = "playlist_id"
     }
 }

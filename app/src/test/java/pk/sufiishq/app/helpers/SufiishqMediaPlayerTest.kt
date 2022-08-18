@@ -17,7 +17,7 @@ class SufiishqMediaPlayerTest : SufiIshqTest() {
 
     private lateinit var sufiishqMediaPlayer: SufiishqMediaPlayer
     private lateinit var appContext: Context
-
+/*
     @Before
     fun setUp() {
         appContext = ApplicationProvider.getApplicationContext()
@@ -53,5 +53,5 @@ class SufiishqMediaPlayerTest : SufiIshqTest() {
 
         val uri = Uri.parse(kalam.onlineSource)
         verify(exactly = 1) { sufiishqMediaPlayer.setDataSource(appContext, uri) }
-    }
+    }*/
 }
