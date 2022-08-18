@@ -35,8 +35,12 @@ android {
     buildTypes {
         debug {
             testCoverageEnabled true
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "@string/app_name_debug"
         }
         release {
+
+            resValue "string", "app_name", "@string/app_name_release"
 
             ndk {
                 debugSymbolLevel = "FULL"

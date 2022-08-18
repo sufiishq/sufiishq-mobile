@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation" >
-    <string name="app_name">Sufi Ishq</string>
+    <string name="app_name_debug">Sufi Ishq Debug</string>
+    <string name="app_name_release">Sufi Ishq</string>
     <string name="all">All Kalam</string>
     <string name="downloads">Downloads</string>
     <string name="favorites">Favorites</string>
