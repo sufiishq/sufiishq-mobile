@@ -23,12 +23,11 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository,
-    private val kalamRepository: KalamRepository,
-    eventDispatcher: EventDispatcher
+    private val kalamRepository: KalamRepository
 ) : ViewModel(), PlaylistDataProvider, EventHandler {
 
     init {
-        eventDispatcher.registerEventHandler(this)
+        EventDispatcher.getInstance().registerEventHandler(this)
     }
 
     private val showPlaylistDialog = MutableLiveData<Kalam?>(null)

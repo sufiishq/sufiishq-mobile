@@ -2,7 +2,6 @@ package pk.sufiishq.app.core.player.service
 
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
-import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
@@ -10,6 +9,7 @@ import pk.sufiishq.app.core.player.util.PlayerNotification
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.utils.app
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,9 +22,6 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
 
     @Inject
     lateinit var kalamRepository: KalamRepository
-
-    @Inject
-    lateinit var appConfig: AppConfig
 
     private val notification: PlayerNotification by lazy { PlayerNotification(this) }
 
@@ -59,7 +56,11 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
     }
 
     private fun complete(kalam: Kalam) {
-        kalamRepository.getNextKalam(kalam.id, player.getTrackListType(), appConfig.isShuffle())
+        kalamRepository.getNextKalam(
+            kalam.id,
+            player.getTrackListType(),
+            app().appConfig.isShuffle()
+        )
             .observe(this) { nextKalam ->
                 nextKalam?.let {
                     player.setSource(nextKalam, player.getTrackListType())

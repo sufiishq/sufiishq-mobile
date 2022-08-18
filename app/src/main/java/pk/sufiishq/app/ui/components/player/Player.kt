@@ -241,7 +241,7 @@ fun Player(
 fun PlayerPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         Player(
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )
@@ -253,7 +253,7 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         Player(
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )

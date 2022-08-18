@@ -43,14 +43,14 @@ class KalamViewModel @Inject constructor(
     private val kalamSplitManager: KalamSplitManager,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val kalamDeleteStrategyFactory: KalamDeleteStrategyFactory,
-    private val favoriteChangeFactory: FavoriteChangeFactory,
-    val eventDispatcher: EventDispatcher
+    private val favoriteChangeFactory: FavoriteChangeFactory
 ) : ViewModel(), KalamDataProvider, EventHandler {
 
     private val appContext = app()
     private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
     private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
     private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
+    private val eventDispatcher = EventDispatcher.getInstance()
 
     init {
         eventDispatcher.registerEventHandler(this)

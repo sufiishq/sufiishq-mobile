@@ -2,11 +2,8 @@ package pk.sufiishq.app.core.event.dispatcher
 
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.handler.EventHandler
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class EventDispatcher @Inject constructor() {
+class EventDispatcher private constructor() {
 
     private val eventHandlerSet = mutableSetOf<EventHandler>()
 
@@ -20,5 +17,18 @@ class EventDispatcher @Inject constructor() {
 
     fun registerEventHandler(eventHandler: EventHandler) {
         eventHandlerSet.add(eventHandler)
+    }
+
+    fun release() {
+        instance = null
+    }
+
+    companion object {
+        private var instance: EventDispatcher? = null
+
+        fun getInstance(): EventDispatcher {
+            if (instance == null) instance = EventDispatcher()
+            return instance!!
+        }
     }
 }

@@ -21,12 +21,12 @@ class SufiIshqApp : Application() {
     @SecureSharedPreferences
     lateinit var keyValueStorage: KeyValueStorage
 
-    @Inject
     lateinit var appConfig: AppConfig
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        appConfig = AppConfig()
 
         // enable crashlytics only in release build
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)

@@ -6,8 +6,7 @@ import pk.sufiishq.app.utils.getFromStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AppConfig @Inject constructor() {
+class AppConfig {
 
     var trackListType: TrackListType = TrackListType.All()
 

@@ -186,7 +186,7 @@ fun PlaylistItemPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         PlaylistItem(
             playlist = dummyPlaylist(),
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             navController = rememberNavController()
         )
     }
@@ -198,7 +198,7 @@ fun PlaylistItemPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         PlaylistItem(
             playlist = dummyPlaylist(),
-            eventDispatcher = EventDispatcher(),
+            eventDispatcher = EventDispatcher.getInstance(),
             navController = rememberNavController()
         )
     }
