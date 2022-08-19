@@ -16,4 +16,5 @@ class CacheRemoveWorker(context: Context, workerParam: WorkerParameters) :
         applicationContext.cacheDir.deleteContent()
         return Result.success()
     }
+
 }

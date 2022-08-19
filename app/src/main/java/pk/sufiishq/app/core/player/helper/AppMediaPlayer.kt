@@ -1,4 +1,4 @@
-package pk.sufiishq.app.core.player.helpers
+package pk.sufiishq.app.core.player.helper
 
 import android.content.Context
 import android.media.MediaPlayer
@@ -66,6 +66,6 @@ class AppMediaPlayer @Inject constructor(
     }
 
     companion object {
-        private const val UPDATE_DELAY = 1000L
+        const val UPDATE_DELAY = 1000L
     }
 }
