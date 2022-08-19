@@ -89,7 +89,7 @@ contributions you make are **greatly appreciated**.
 ### Build project (this step is required)
 1. Go to the [Firebase Console](https://console.firebase.google.com/)
 2. In the center of the project overview page, click the Android icon or Add app to launch the setup workflow.
-3. Enter **pk.sufiishq.app** in the Android package name field.
+3. Enter **(pk.sufiishq.app.debug)** in the Android package name field.
 4. (Optional) Enter other app information: **App nickname** and **Debug signing certificate SHA-1**.
 5. Click **Register app**.
 6. Click **Download google-services.json** to obtain your Firebase Android config file (google-services.json).
