@@ -90,11 +90,6 @@ class KalamViewModel @Inject constructor(
         }
     }
 
-    private fun updateTrackListType(trackListType: TrackListType) {
-        kalamRepository.setTrackListType(trackListType)
-        kalamRepository.setSearchKeyword("")
-    }
-
     private fun setKalamSplitManagerDialog(kalam: Kalam?) {
 
         var splitManager: KalamSplitManager? = null
@@ -190,7 +185,6 @@ class KalamViewModel @Inject constructor(
     override fun onEvent(event: Event) {
 
         when (event) {
-            is KalamEvents.UpdateTrackListType -> updateTrackListType(event.trackListType)
             is KalamEvents.SearchKalam -> searchKalam(event.keyword, event.trackListType)
             is KalamEvents.UpdateKalam -> update(event.kalam)
             is KalamEvents.ShowKalamConfirmDeleteDialog -> setKalamConfirmDeleteDialog(event.kalamDeleteItem)

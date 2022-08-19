@@ -1,105 +1,138 @@
 package pk.sufiishq.app.viewmodels
 
+import android.content.Context
+import android.os.Looper.getMainLooper
 import androidx.lifecycle.MutableLiveData
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.mockk
+import io.mockk.*
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import org.robolectric.Shadows.shadowOf
 import pk.sufiishq.app.SufiIshqTest
+import pk.sufiishq.app.core.event.events.PlayerEvents
+import pk.sufiishq.app.core.event.events.PlaylistEvents
+import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.utils.copyWithDefaults
+import pk.sufiishq.app.utils.toast
 
 class PlaylistViewModelTest : SufiIshqTest() {
 
     private lateinit var playlistViewModel: PlaylistViewModel
     private lateinit var playlistRepository: PlaylistRepository
     private lateinit var kalamRepository: KalamRepository
-/*
+    private lateinit var appContext: Context
+
     @Before
     fun setUp() {
         playlistRepository = mockk()
         kalamRepository = mockk()
+        appContext = mockApp()
         playlistViewModel = PlaylistViewModel(playlistRepository, kalamRepository)
     }
 
     @Test
-    fun testGetAll_shouldReturn_allPlaylist() {
-        every { playlistRepository.loadAll() } returns MutableLiveData(
-            listOf(
-                Playlist(1, "Karachi"),
-                Playlist(2, "Lahore")
-            )
-        )
+    fun testShouldPlaylistDialog_shouldVerify_isShow() {
+        playlistViewModel.onEvent(PlaylistEvents.ShowPlaylistDialog(sampleKalam()))
 
-        playlistViewModel.getAll().observe(mockLifecycleOwner()) {
-            assertTrue(it.size == 2)
+        shadowOf(getMainLooper()).idle()
+        playlistViewModel.getShowPlaylistDialog().observe(mockLifecycleOwner()) {
+            assertNotNull(it)
+            assertEquals(sampleKalam().id, it?.id)
         }
     }
 
     @Test
-    fun testGet_shouldFindAndReturn_singlePlaylist() {
-        every { playlistRepository.load(1) } returns MutableLiveData(
-            Playlist(1, "Jhang")
-        )
+    fun testAddToPlaylist_shouldAdd_playlistInDatabase() {
+        mockkStatic(Context::toast)
+        every { appContext.toast(any()) } returns Unit
 
-        playlistViewModel.get(1).observe(mockLifecycleOwner()) {
-            assertEquals(1, it.id)
-            assertEquals("Jhang", it.title)
+        launchViewModelScope(playlistViewModel) { slot ->
+            coEvery { kalamRepository.update(any()) } returns Unit
+
+            val kalam = sampleKalam()
+            val playlist = Playlist(2, "Faisalabad")
+
+            playlistViewModel.onEvent(PlaylistEvents.AddToPlaylist(kalam, playlist))
+            slot.invoke()
+
+            assertEquals(kalam.playlistId, playlist.id)
+            verify { appContext.toast("${kalam.title} added in ${playlist.title} Playlist") }
         }
     }
 
     @Test
-    fun testAdd_shouldAdd_playlistInDatabase() {
+    fun testShowPlaylistAddUpdateDialog_shouldVerify_isShow() {
+        val playlist = Playlist(1, "Islamabad")
+        playlistViewModel.onEvent(PlaylistEvents.ShowAddUpdatePlaylistDialog(playlist))
 
+        shadowOf(getMainLooper()).idle()
+        playlistViewModel.getShowPlaylistAddUpdateDialog().observe(mockLifecycleOwner()) {
+            assertNotNull(it)
+            assertEquals(playlist.id, it?.id)
+            assertEquals(playlist.title, it?.title)
+        }
+    }
+
+    @Test
+    fun testShowPlaylistConfirmDeleteDialog_shouldVerify_isShow() {
+        val playlist = Playlist(1, "Islamabad")
+        playlistViewModel.onEvent(PlaylistEvents.ShowConfirmDeletePlaylistDialog(playlist))
+
+        shadowOf(getMainLooper()).idle()
+        playlistViewModel.getShowConfirmPlaylistDeleteDialog().observe(mockLifecycleOwner()) {
+            assertNotNull(it)
+            assertEquals(playlist.id, it?.id)
+            assertEquals(playlist.title, it?.title)
+        }
+    }
+
+    @Test
+    fun testAdd_shouldVerify_playlistAddInDatabase() {
         launchViewModelScope(playlistViewModel) { slot ->
             coEvery { playlistRepository.add(any()) } returns Unit
-            playlistViewModel.add(mockk())
+            playlistViewModel.onEvent(PlaylistEvents.Add(mockk()))
             slot.invoke()
-            coVerify(exactly = 1) { playlistRepository.add(any()) }
+            coVerify { playlistRepository.add(any()) }
         }
-
     }
 
     @Test
-    fun testUpdate_shouldUpdate_givePlaylist() {
-
+    fun testUpdate_shouldVerify_playlistUpdateInDatabase() {
         launchViewModelScope(playlistViewModel) { slot ->
             coEvery { playlistRepository.update(any()) } returns Unit
-            playlistViewModel.update(mockk())
+            playlistViewModel.onEvent(PlaylistEvents.Update(mockk()))
             slot.invoke()
-            coVerify(exactly = 1) { playlistRepository.update(any()) }
+            coVerify { playlistRepository.update(any()) }
         }
     }
 
     @Test
-    fun testDelete_should_resetAndDeletePlaylist() {
-
+    fun testDelete_shouldVerify_playlistDeleteAndResetRespectiveKalam() {
         launchViewModelScope(playlistViewModel) { slot ->
+            val kalam = sampleKalam().copyWithDefaults(playlistId = 1)
             every { kalamRepository.loadAllPlaylistKalam(any()) } returns MutableLiveData(
-                listOf(sampleKalam(), sampleKalam())
+                listOf(kalam)
             )
 
             coEvery { kalamRepository.update(any()) } returns Unit
             coEvery { playlistRepository.delete(any()) } returns Unit
 
-            playlistViewModel.delete(Playlist(1, ""))
-
+            playlistViewModel.onEvent(PlaylistEvents.Delete(Playlist(1, "Karachi")))
             slot.invoke()
-            coVerify(exactly = 2) { kalamRepository.update(any()) }
-            coVerify(exactly = 1) { playlistRepository.delete(any()) }
+
+            assertEquals(0, kalam.playlistId)
+            coVerify { kalamRepository.update(any()) }
+            coVerify { playlistRepository.delete(any()) }
         }
     }
 
-    @Test
-    fun testCountAll_shouldReturn_playlistCount() {
-        every { playlistRepository.countAll() } returns MutableLiveData(10)
-        playlistViewModel.countAll().observe(mockLifecycleOwner()) {
-            assertEquals(10, it)
-        }
-    }*/
+    @Test(expected = UnhandledEventException::class)
+    fun testUnknownEven_shouldReturn_unhandledEventException() {
+        playlistViewModel.onEvent(PlayerEvents.PlayPauseEvent)
+    }
+
 }

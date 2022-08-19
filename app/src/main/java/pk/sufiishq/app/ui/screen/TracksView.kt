@@ -35,7 +35,7 @@ fun TracksView(
     trackListType: TrackListType
 ) {
 
-    eventDispatcher.dispatch(KalamEvents.UpdateTrackListType(trackListType))
+    eventDispatcher.dispatch(KalamEvents.SearchKalam("", trackListType))
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()

@@ -43,6 +43,6 @@ class EventDispatcherTest : SufiIshqTest() {
 
     @Test(expected = NullPointerException::class)
     fun testDispatch_shouldThrow_NullPointerException() {
-        eventDispatcher.dispatch(KalamEvents.UpdateTrackListType(TrackListType.All()))
+        eventDispatcher.dispatch(KalamEvents.SearchKalam("", TrackListType.All()))
     }
 }
