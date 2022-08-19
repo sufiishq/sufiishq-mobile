@@ -3,9 +3,8 @@ package pk.sufiishq.app.helpers
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import javax.inject.Inject
 
-class ObserveOnlyOnce<T> @Inject constructor() {
+class ObserveOnlyOnce<T> {
 
     private var alreadyObserve = false
 

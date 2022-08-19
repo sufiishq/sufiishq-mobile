@@ -50,7 +50,7 @@ fun DashboardView(
     appConfig: AppConfig
 ) {
 
-    val matColors = MaterialTheme.colors
+    val backgroundColor = if (isDarkThem()) Color(0xFF444444) else Color(0xFFD2D4D5)
 
     val all = stringResource(R.string.all)
     val favorites = stringResource(R.string.favorites)
@@ -59,7 +59,7 @@ fun DashboardView(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(matColors.secondaryVariant)) {
+        .background(backgroundColor)) {
 
         TileAndroidImage(
             modifier = Modifier
