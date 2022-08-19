@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -18,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.configs.AppConfig
@@ -74,7 +78,7 @@ fun DashboardView(
                 .fillMaxSize()
         ) {
 
-            val (logo, calligraphy, themeChangeButton, btnUpdate, buttonBox) = createRefs()
+            val (logo, calligraphy, themeChangeButton, btnUpdate, buttonBox, debugLabel) = createRefs()
 
 
             SIAnimatedLog(
@@ -116,6 +120,23 @@ fun DashboardView(
                     }
             ) {
                 eventDispatcher.dispatch(GlobalEvents.StartUpdateFlow)
+            }
+
+            if(BuildConfig.DEBUG) {
+                Text(
+                    modifier = Modifier
+                        .background(
+                            color = Color(0f, 0f, 1f, 0.5f),
+                            shape = CircleShape
+                        )
+                        .padding(16.dp, 8.dp)
+                        .constrainAs(debugLabel) {
+                            end.linkTo(parent.end, 12.dp)
+                            bottom.linkTo(buttonBox.top, 6.dp)
+                        },
+                    color = Color.White,
+                    text = "DEBUG"
+                )
             }
 
             Box(
