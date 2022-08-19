@@ -10,7 +10,7 @@ import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class FileDownloader @Inject constructor(okHttpClient: OkHttpClient) {
+class FileDownloader @Inject constructor(okHttpClient: OkHttpClient, private val requestBuilder: Request.Builder) {
 
     companion object {
         const val BUFFER_LENGTH_BYTES = 1024 * 8
@@ -29,7 +29,7 @@ class FileDownloader @Inject constructor(okHttpClient: OkHttpClient) {
     fun download(url: String, file: File): Observable<FileInfo> {
 
         return Observable.create { emitter ->
-            val request = Request.Builder().url(url).build()
+            val request = requestBuilder.url(url).build()
             val response = okHttpClient.newCall(request).execute()
             val body = response.body
             val responseCode = response.code
