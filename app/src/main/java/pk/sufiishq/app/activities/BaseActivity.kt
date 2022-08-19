@@ -39,9 +39,6 @@ open class BaseActivity : ComponentActivity() {
     lateinit var inAppUpdateManager: InAppUpdateManager
 
     @Inject
-    lateinit var observeOnlyOnce: ObserveOnlyOnce<Kalam>
-
-    @Inject
     lateinit var globalEventHandler: GlobalEventHandler
 
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
@@ -54,6 +51,7 @@ open class BaseActivity : ComponentActivity() {
 
         setTheme()
 
+        val observeOnlyOnce = ObserveOnlyOnce<Kalam>()
         with(assetKalamLoaderViewModel) {
             this.countAll().observe(this@BaseActivity) { count ->
                 this.loadAllKalam(count) {
@@ -117,19 +115,18 @@ open class BaseActivity : ComponentActivity() {
 
                     uri.pathSegments?.let { pathSegments ->
                         if (pathSegments.size == 2) {
-                            intent?.data = null
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
-                            homeViewModel.getKalam(kalamId.toInt())
-                                .observe(this@BaseActivity) { kalam ->
-                                    kalam?.let {
-                                        EventDispatcher.getInstance().dispatch(
-                                            PlayerEvents.ChangeTrack(
-                                                kalam,
-                                                TrackListType.All()
-                                            )
+                            val observeOnlyOnce = ObserveOnlyOnce<Kalam?>()
+                            observeOnlyOnce.take(this@BaseActivity, homeViewModel.getKalam(kalamId.toInt())) { kalam ->
+                                kalam?.let {
+                                    EventDispatcher.getInstance().dispatch(
+                                        PlayerEvents.ChangeTrack(
+                                            kalam,
+                                            TrackListType.All()
                                         )
-                                    }
+                                    )
                                 }
+                            }
                         }
                     }
                 }
