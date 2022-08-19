@@ -11,7 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.SufiishqMediaPlayer
-import pk.sufiishq.app.core.player.helpers.AppMediaPlayer
+import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer

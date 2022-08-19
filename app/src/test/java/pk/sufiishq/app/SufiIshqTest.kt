@@ -4,10 +4,7 @@ import android.os.Build
 import androidx.lifecycle.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import io.mockk.clearAllMocks
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
+import io.mockk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,6 +18,14 @@ import pk.sufiishq.app.models.Kalam
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1], application = HiltTestApplication::class)
 abstract class SufiIshqTest {
+
+    protected fun mockApp(): SufiIshqApp {
+        mockkObject(SufiIshqApp)
+
+        val sufiIshqApp = mockk<SufiIshqApp>()
+        every { SufiIshqApp.getInstance() } returns sufiIshqApp
+        return sufiIshqApp
+    }
 
     protected fun mockLifecycleOwner(): LifecycleOwner {
         val owner = mockk<LifecycleOwner>()

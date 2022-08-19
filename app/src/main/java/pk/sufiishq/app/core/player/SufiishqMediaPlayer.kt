@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.*
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pk.sufiishq.app.core.player.helpers.AppMediaPlayer
+import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer

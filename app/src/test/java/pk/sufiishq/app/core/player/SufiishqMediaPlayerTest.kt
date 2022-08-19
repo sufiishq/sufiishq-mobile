@@ -11,7 +11,7 @@ import org.junit.Test
 import org.robolectric.util.ReflectionHelpers.callInstanceMethod
 import org.robolectric.util.ReflectionHelpers.setField
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.player.helpers.AppMediaPlayer
+import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.models.Kalam

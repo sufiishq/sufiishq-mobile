@@ -5,13 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import org.junit.Assert.*
 import org.junit.Test
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.models.Kalam
 
 class UtilExtTest : SufiIshqTest() {
+
+    @Test
+    fun testApp_shouldReturn_nonNull() {
+        mockApp()
+        assertNotNull(app())
+    }
 
     @Test
     fun testOptValue_shouldReturn_defaultValue() {
