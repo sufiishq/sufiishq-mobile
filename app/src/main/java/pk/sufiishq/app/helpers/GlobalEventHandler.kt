@@ -113,6 +113,7 @@ class GlobalEventHandler @Inject constructor(
             is GlobalEvents.ShareApp -> shareApp(event.context)
             is GlobalEvents.ShareKalam -> shareKalam(event.kalam, event.context)
             is GlobalEvents.ShowUpdateButton -> setShowUpdateButton(event.isShow)
+            is GlobalEvents.StartUpdateFlow -> handleUpdate()
             else -> throw UnhandledEventException(event, this)
         }
     }
