@@ -92,11 +92,11 @@ private fun AboutDialog(
                             withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
 
                                 // creating a string to display in the Text
-                                val mStr = "Please use SufiIshq facebook page for any "
+                                val mStr = "Please use Sufi Ishq facebook page for any "
 
                                 // word and span to be hyperlinked
-                                var mStartIndex = mStr.indexOf("SufiIshq")
-                                var mEndIndex = mStartIndex + 8
+                                var mStartIndex = mStr.indexOf("Sufi Ishq")
+                                var mEndIndex = mStartIndex + 9
 
                                 append(mStr)
                                 addStyle(
@@ -129,7 +129,7 @@ private fun AboutDialog(
                                     append("Are you a Developer? \n")
                                 }
 
-                                append("You can contribute by joining the organization check the repository on Github")
+                                append("You can contribute by joining the organization check the repository on Github ")
 
                                 mStartIndex = toAnnotatedString().indexOf("Github")
                                 mEndIndex = mStartIndex + 6
@@ -147,6 +147,26 @@ private fun AboutDialog(
                                     start = mStartIndex,
                                     end = mEndIndex
                                 )
+
+                                append("join the Sufi Ishq slack workspace for developer conversation")
+
+                                mStartIndex = toAnnotatedString().lastIndexOf("Sufi Ishq")
+                                mEndIndex = mStartIndex + 9
+
+                                addStyle(
+                                    style = SpanStyle(
+                                        color = MaterialTheme.colors.secondary,
+                                        textDecoration = TextDecoration.Underline
+                                    ), start = mStartIndex, end = mEndIndex
+                                )
+
+                                addStringAnnotation(
+                                    tag = "SLACK_WORKSPACE",
+                                    annotation = "https://join.slack.com/t/sufiishq/shared_invite/zt-1eu7kr4ap-1q7BSwHLOlco62l3ZUgJ7g",
+                                    start = mStartIndex,
+                                    end = mEndIndex
+                                )
+
                             }
                         }
 
@@ -163,6 +183,12 @@ private fun AboutDialog(
 
                                 annotatedString
                                     .getStringAnnotations("GITHUB_REPO", it, it)
+                                    .firstOrNull()?.let { stringAnnotation ->
+                                        mUriHandler.openUri(stringAnnotation.item)
+                                    }
+
+                                annotatedString
+                                    .getStringAnnotations("SLACK_WORKSPACE", it, it)
                                     .firstOrNull()?.let { stringAnnotation ->
                                         mUriHandler.openUri(stringAnnotation.item)
                                     }
