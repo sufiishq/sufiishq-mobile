@@ -35,9 +35,9 @@ fun MainView(
 ) {
     val matColors = MaterialTheme.colors
     val navController = rememberNavController()
-    val kalamDataProvider by rem(hiltViewModel<KalamViewModel>())
-    val playlistDataProvider by rem(hiltViewModel<PlaylistViewModel>())
-    val playerDataProvider by rem(hiltViewModel<PlayerViewModel>())
+    val kalamDataProvider = hiltViewModel<KalamViewModel>()
+    val playlistDataProvider = hiltViewModel<PlaylistViewModel>()
+    val playerDataProvider = hiltViewModel<PlayerViewModel>()
 
     Surface(color = matColors.background) {
         Scaffold(

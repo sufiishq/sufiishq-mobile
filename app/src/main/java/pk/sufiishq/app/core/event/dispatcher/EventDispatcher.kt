@@ -5,18 +5,17 @@ import pk.sufiishq.app.core.event.handler.EventHandler
 
 class EventDispatcher private constructor() {
 
-    private val eventHandlerSet = mutableSetOf<EventHandler>()
+    private val eventHandlerSet = mutableMapOf<String, EventHandler>()
 
     fun dispatch(event: Event, vararg events: Event) {
         arrayOf(event, *events).forEach { e ->
-            eventHandlerSet
-                .firstOrNull { e.resolverClass.java == it.javaClass }
-                ?.onEvent(e) ?: throw NullPointerException("No resolver found for $e event")
+            eventHandlerSet[e.resolverClass.simpleName]?.onEvent(e)
+                ?: throw NullPointerException("No resolver found for $e event")
         }
     }
 
     fun registerEventHandler(eventHandler: EventHandler) {
-        eventHandlerSet.add(eventHandler)
+        eventHandlerSet[eventHandler.javaClass.simpleName] = eventHandler
     }
 
     fun release() {

@@ -29,7 +29,7 @@ class SufiIshqApp : Application() {
         appConfig = AppConfig()
 
         // enable crashlytics only in release build
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.ENABLE_CRASHLYTICS)
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 

@@ -100,7 +100,15 @@ All submissions, including submissions by project members, require review. We us
 
 ### Add new feature
 1. Open an issue first to discuss what you would like to change.
-1. Create your feature branch (`git checkout -b feature/your-feature`)
-1. Commit your changes (`git commit -m 'Add some message'`)
-1. Push to the branch (`git push origin feature/your-feature`)
-1. Open a pull request
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some message'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
+
+### Crashlytics
+Firebase crashlytics are disabled in debug and enabled in release build by default but it can changed by adding the following properties in **local.properties** file.
+
+```aidl
+debug.crashlytics.enable=false      // default false
+release.crashlytics.enable=true     // default true
+```

@@ -1,0 +1,18 @@
+
+def loadProperties() {
+    def properties = new Properties()
+    def file = file("$rootDir/local.properties")
+    if (file.exists()) {
+        properties.load(new FileInputStream(file))
+        properties.each { property ->
+            project.ext.set(property.key, property.value)
+
+            println "\navailable properties in local.properties file"
+            println property
+        }
+    } else {
+        println "local.properties file not found in $rootDir"
+    }
+}
+
+loadProperties()
