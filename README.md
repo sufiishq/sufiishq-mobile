@@ -108,7 +108,7 @@ All submissions, including submissions by project members, require review. We us
 ### Crashlytics
 Firebase crashlytics are disabled in debug and enabled in release build by default but it can changed by adding the following properties in **local.properties** file.
 
-```aidl
+```
 debug.crashlytics.enable=false      // default false
 release.crashlytics.enable=true     // default true
 ```
