@@ -1,5 +1,7 @@
 package pk.sufiishq.app.core.player.service
 
+import android.os.Build
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.core.player.AudioPlayer
@@ -12,6 +14,7 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.app
 import timber.log.Timber
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class AudioPlayerService : LifecycleService(), PlayerStateListener {
@@ -27,6 +30,9 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
 
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(NOTIFY_ID, NotificationCompat.Builder(this, CHANNEL_ID).build())
+        }
         player.registerListener(this)
     }
 

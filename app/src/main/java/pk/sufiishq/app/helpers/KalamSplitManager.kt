@@ -15,9 +15,7 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.*
 import java.io.File
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class KalamSplitManager @Inject constructor(
     @ApplicationContext val appContext: Context,
     private val previewAudioPlayer: PreviewAudioPlayer,

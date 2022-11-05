@@ -18,12 +18,11 @@ import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.ObserveOnlyOnce
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.DARK_THEME
-import pk.sufiishq.app.utils.getFromStorage
-import pk.sufiishq.app.utils.isDeviceSupportDarkMode
+import pk.sufiishq.app.utils.*
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.HomeViewModel
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 open class BaseActivity : ComponentActivity() {
@@ -53,16 +52,26 @@ open class BaseActivity : ComponentActivity() {
 
         val observeOnlyOnce = ObserveOnlyOnce<Kalam>()
         with(assetKalamLoaderViewModel) {
+
+            // count number of kalam
             this.countAll().observe(this@BaseActivity) { count ->
+
+                // load kalam from assets to db if number of count is 0. note: loading done only once
                 this.loadAllKalam(count) {
+
+                    // setup player ui if player is pause/stop
                     if (!player.isPlaying()) {
-                        startService(playerIntent)
+
+                        player.startPlayerService(this@BaseActivity, playerIntent)
                         observeOnlyOnce.take(this@BaseActivity, kalamRepository.getDefaultKalam()) {
                             player.setSource(it, TrackListType.All())
                         }
                     }
 
+                    // handle all incoming deep links and extract the kalam-id and play
                     handleDeeplink(intent)
+
+                    // check any incoming update from play-store
                     inAppUpdateManager.checkInAppUpdate(this@BaseActivity)
                 }
             }
@@ -73,8 +82,6 @@ open class BaseActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        EventDispatcher.getInstance().release()
 
         runCatching {
             EventDispatcher.getInstance().dispatch(PlayerEvents.DisposeDownload)
@@ -92,6 +99,8 @@ open class BaseActivity : ComponentActivity() {
             player.release()
             stopService(playerIntent)
         }
+
+        EventDispatcher.getInstance().release()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -100,7 +109,7 @@ open class BaseActivity : ComponentActivity() {
     }
 
     private fun handleDeeplink(intent: Intent?) {
-        if(isActivityLaunchedFromHistory()) return
+        if (isActivityLaunchedFromHistory()) return
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
             .addOnSuccessListener { pendingDynamicLinkData ->
@@ -117,7 +126,10 @@ open class BaseActivity : ComponentActivity() {
                         if (pathSegments.size == 2) {
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
                             val observeOnlyOnce = ObserveOnlyOnce<Kalam?>()
-                            observeOnlyOnce.take(this@BaseActivity, homeViewModel.getKalam(kalamId.toInt())) { kalam ->
+                            observeOnlyOnce.take(
+                                this@BaseActivity,
+                                homeViewModel.getKalam(kalamId.toInt())
+                            ) { kalam ->
                                 kalam?.let {
                                     EventDispatcher.getInstance().dispatch(
                                         PlayerEvents.ChangeTrack(

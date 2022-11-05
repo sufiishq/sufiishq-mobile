@@ -187,7 +187,9 @@ class SufiishqMediaPlayer @Inject constructor(
     override fun onAudioFocusChange(focusChange: Int) {
         when (focusChange) {
             AudioManager.AUDIOFOCUS_LOSS -> {
-                setSource(activeKalam!!, getTrackListType())
+                activeKalam?.let {
+                    setSource(it, getTrackListType())
+                }
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                 // Pause playback

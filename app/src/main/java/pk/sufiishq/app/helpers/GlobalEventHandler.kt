@@ -20,9 +20,7 @@ import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.utils.toast
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class GlobalEventHandler @Inject constructor(
     private val inAppUpdateManager: InAppUpdateManager
 ) : EventHandler {
