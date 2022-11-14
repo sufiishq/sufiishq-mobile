@@ -30,9 +30,6 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
 
     override fun onCreate() {
         super.onCreate()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(NOTIFY_ID, NotificationCompat.Builder(this, CHANNEL_ID).build())
-        }
         player.registerListener(this)
     }
 

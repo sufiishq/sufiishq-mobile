@@ -62,7 +62,7 @@ open class BaseActivity : ComponentActivity() {
                     // setup player ui if player is pause/stop
                     if (!player.isPlaying()) {
 
-                        player.startPlayerService(this@BaseActivity, playerIntent)
+                        startService(playerIntent)
                         observeOnlyOnce.take(this@BaseActivity, kalamRepository.getDefaultKalam()) {
                             player.setSource(it, TrackListType.All())
                         }
