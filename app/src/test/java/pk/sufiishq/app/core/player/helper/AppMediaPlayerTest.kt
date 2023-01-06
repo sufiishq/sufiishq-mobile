@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Handler
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.*
+import java.io.File
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.annotation.Config
@@ -15,7 +16,6 @@ import org.robolectric.util.ReflectionHelpers.getField
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer.Companion.UPDATE_DELAY
 import pk.sufiishq.app.models.Kalam
-import java.io.File
 
 @Config(shadows = [AppMediaPlayerTest.ShadowPlayer::class])
 class AppMediaPlayerTest : SufiIshqTest() {

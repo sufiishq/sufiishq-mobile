@@ -22,8 +22,7 @@ import pk.sufiishq.app.models.KalamInfo
 @Composable
 fun PlayPauseButton(
     kalamInfo: KalamInfo?,
-    contentColor: Color,
-    eventDispatcher: EventDispatcher
+    contentColor: Color
 ) {
 
     Box(
@@ -41,7 +40,7 @@ fun PlayPauseButton(
             )
         } else {
             IconButton(onClick = {
-                eventDispatcher.dispatch(PlayerEvents.PlayPauseEvent)
+                EventDispatcher.getInstance().dispatch(PlayerEvents.PlayPauseEvent)
             }) {
                 Icon(
                     modifier = Modifier.size(25.dp),

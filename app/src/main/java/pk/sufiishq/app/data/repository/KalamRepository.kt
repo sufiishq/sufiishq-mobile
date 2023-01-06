@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
 import io.reactivex.Observable
+import javax.inject.Inject
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
@@ -22,8 +23,6 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {

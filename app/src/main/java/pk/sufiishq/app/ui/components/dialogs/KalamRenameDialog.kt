@@ -23,12 +23,12 @@ import pk.sufiishq.app.utils.rem
 
 @Composable
 fun KalamRenameDialog(
-    kalamState: State<Kalam?>,
-    eventDispatcher: EventDispatcher
+    kalamState: State<Kalam?>
 ) {
 
     kalamState.value?.apply {
 
+        val eventDispatcher = EventDispatcher.getInstance()
         val kalamTitle = rem(title)
         val error = rem(title.checkValue("", "Title cannot be empty"))
 
@@ -45,7 +45,7 @@ fun KalamRenameDialog(
                 keyboardActions = KeyboardActions(onDone = {
                     kalamTitle.value.ifNotEmpty {
                         title = it
-                        updateKalam(kalam = this@apply, eventDispatcher = eventDispatcher)
+                        updateKalam(kalam = this@apply)
                     }
                 }),
                 modifier = Modifier.padding(top = 8.dp),
@@ -69,7 +69,7 @@ fun KalamRenameDialog(
                 TextButton(onClick = {
                     kalamTitle.value.ifNotEmpty {
                         title = it
-                        updateKalam(this@apply, eventDispatcher)
+                        updateKalam(this@apply)
                     }
                 }) {
                     Text(text = "Rename")
@@ -80,10 +80,9 @@ fun KalamRenameDialog(
 }
 
 private fun updateKalam(
-    kalam: Kalam,
-    eventDispatcher: EventDispatcher
+    kalam: Kalam
 ) {
-    eventDispatcher.dispatch(
+    EventDispatcher.getInstance().dispatch(
 
         // update kalam
         KalamEvents.UpdateKalam(kalam),

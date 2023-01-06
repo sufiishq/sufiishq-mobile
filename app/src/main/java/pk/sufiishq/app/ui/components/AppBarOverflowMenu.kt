@@ -18,8 +18,9 @@ import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.utils.rem
 
 @Composable
-fun AppBarOverflowMenu(eventDispatcher: EventDispatcher) {
+fun AppBarOverflowMenu() {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val showOverflowMenu = rem(false)
     val context = LocalContext.current
 

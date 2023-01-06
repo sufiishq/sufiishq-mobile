@@ -3,9 +3,9 @@ package pk.sufiishq.app.utils
 import VideoHandle.EpEditor
 import VideoHandle.OnEditorListener
 import io.reactivex.Completable
+import java.io.File
 import org.apache.commons.io.IOUtils
 import timber.log.Timber
-import java.io.File
 
 fun File.moveTo(destination: File): Completable {
     return Completable.fromAction {

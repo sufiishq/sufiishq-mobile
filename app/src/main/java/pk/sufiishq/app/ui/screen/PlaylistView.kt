@@ -6,7 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -30,10 +37,10 @@ import pk.sufiishq.app.utils.rem
 @Composable
 fun PlaylistView(
     playlistDataProvider: PlaylistDataProvider,
-    navController: NavController,
-    eventDispatcher: EventDispatcher
+    navController: NavController
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val matColors = MaterialTheme.colors
     val playlist = rem(Playlist(0, ""))
     val allPlaylist = playlistDataProvider.getAll().observeAsState().optValue(listOf())
@@ -69,7 +76,6 @@ fun PlaylistView(
                         itemsIndexed(allPlaylist) { index, pl ->
                             PlaylistItem(
                                 playlist = pl,
-                                eventDispatcher = eventDispatcher,
                                 navController = navController
                             )
 
@@ -96,8 +102,7 @@ fun PreviewLightPlaylistView() {
     SufiIshqTheme(darkTheme = false) {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController(),
-            eventDispatcher = EventDispatcher.getInstance()
+            navController = rememberNavController()
         )
     }
 }
@@ -108,8 +113,7 @@ fun PreviewDarkPlaylistView() {
     SufiIshqTheme(darkTheme = true) {
         PlaylistView(
             playlistDataProvider = dummyPlaylistDataProvider(),
-            navController = rememberNavController(),
-            eventDispatcher = EventDispatcher.getInstance()
+            navController = rememberNavController()
         )
     }
 }

@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
@@ -17,7 +18,6 @@ import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.helpers.PreviewAudioPlayer
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

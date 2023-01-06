@@ -11,11 +11,11 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import javax.inject.Inject
+import javax.inject.Singleton
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class InAppUpdateManager @Inject constructor() {

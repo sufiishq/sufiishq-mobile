@@ -3,11 +3,16 @@ package pk.sufiishq.app.ui.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,8 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,17 +46,21 @@ import pk.sufiishq.app.ui.components.TileAndroidImage
 import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
 import pk.sufiishq.app.ui.components.buttons.UpdateButton
 import pk.sufiishq.app.ui.components.dialogs.SufiIshqDialog
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.MenuIconColors
+import pk.sufiishq.app.utils.dummyGlobalEventHandler
+import pk.sufiishq.app.utils.dummyHomeDataProvider
+import pk.sufiishq.app.utils.isDarkThem
+import pk.sufiishq.app.utils.optValue
 
 @Composable
 fun DashboardView(
     navController: NavController,
     homeDataProvider: HomeDataProvider,
     globalEventHandler: GlobalEventHandler,
-    eventDispatcher: EventDispatcher,
     appConfig: AppConfig
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val backgroundColor = if (isDarkThem()) Color(0xFF444444) else Color(0xFFD2D4D5)
 
     val all = stringResource(R.string.all)
@@ -61,9 +68,11 @@ fun DashboardView(
     val downloads = stringResource(R.string.downloads)
     val playlist = stringResource(R.string.playlist)
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(backgroundColor)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
 
         TileAndroidImage(
             modifier = Modifier
@@ -122,7 +131,7 @@ fun DashboardView(
                 eventDispatcher.dispatch(GlobalEvents.StartUpdateFlow)
             }
 
-            if(BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Text(
                     modifier = Modifier
                         .background(
@@ -295,7 +304,6 @@ fun LightPreviewDashboardView() {
             navController = rememberNavController(),
             homeDataProvider = dummyHomeDataProvider(),
             globalEventHandler = dummyGlobalEventHandler(),
-            eventDispatcher = EventDispatcher.getInstance(),
             appConfig = AppConfig()
         )
     }

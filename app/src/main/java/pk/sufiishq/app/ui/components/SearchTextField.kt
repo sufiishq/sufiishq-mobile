@@ -3,7 +3,11 @@ package pk.sufiishq.app.ui.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +29,6 @@ import pk.sufiishq.app.utils.dummyKalamDataProvider
 @Composable
 fun SearchTextField(
     searchText: MutableState<String>,
-    eventDispatcher: EventDispatcher,
     matColors: Colors,
     lazyKalamItems: LazyPagingItems<Kalam>,
     trackListType: TrackListType
@@ -37,7 +40,7 @@ fun SearchTextField(
         value = searchText.value,
         onValueChange = {
             searchText.value = it
-            eventDispatcher.dispatch(KalamEvents.SearchKalam(it, trackListType))
+            EventDispatcher.getInstance().dispatch(KalamEvents.SearchKalam(it, trackListType))
             lazyKalamItems.refresh()
         },
         placeholder = {
@@ -67,7 +70,6 @@ fun SearchTextFieldPreviewLight() {
         val data = dummyKalamDataProvider()
         SearchTextField(
             remember { mutableStateOf("") },
-            EventDispatcher.getInstance(),
             MaterialTheme.colors,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
             TrackListType.All()

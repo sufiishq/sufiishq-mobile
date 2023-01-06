@@ -26,14 +26,12 @@ import pk.sufiishq.app.utils.*
 
 @Composable
 fun KalamItemSplitDialog(
-    kalamSplitManager: State<KalamSplitManager?>,
-    eventDispatcher: EventDispatcher
+    kalamSplitManager: State<KalamSplitManager?>
 ) {
     kalamSplitManager.value?.apply {
         SufiIshqDialog {
             KalamSplitter(
-                kalamSplitManager = this,
-                eventDispatcher = eventDispatcher
+                kalamSplitManager = this
             )
         }
     }
@@ -41,8 +39,7 @@ fun KalamItemSplitDialog(
 
 @Composable
 private fun KalamSplitter(
-    kalamSplitManager: KalamSplitManager,
-    eventDispatcher: EventDispatcher
+    kalamSplitManager: KalamSplitManager
 ) {
 
     val splitStatus = kalamSplitManager.getSplitStatus().observeAsState()
@@ -58,12 +55,10 @@ private fun KalamSplitter(
         when (val status = splitStatus.value) {
             is SplitCompleted -> SplitCompletedView(
                 status,
-                eventDispatcher,
                 kalamSplitManager
             )
             is SplitDone -> SplitDoneView(
-                kalamSplitManager,
-                eventDispatcher
+                kalamSplitManager
             )
             else -> SplitInProgressView()
         }
@@ -73,13 +68,11 @@ private fun KalamSplitter(
 @Composable
 private fun SplitCompletedView(
     status: SplitCompleted,
-    eventDispatcher: EventDispatcher,
     kalamSplitManager: KalamSplitManager
 ) {
     if (status.returnCode == SPLIT_SUCCESS) {
         SplitSuccessView(
-            kalamSplitManager = kalamSplitManager,
-            eventDispatcher = eventDispatcher
+            kalamSplitManager = kalamSplitManager
         )
     } else {
 
@@ -87,17 +80,17 @@ private fun SplitCompletedView(
             LocalContext.current.toast("Execution failed with ${status.returnCode}")
         }
 
-        SplitView(eventDispatcher = eventDispatcher, kalamSplitManager = kalamSplitManager)
+        SplitView(kalamSplitManager = kalamSplitManager)
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SplitView(
-    eventDispatcher: EventDispatcher,
     kalamSplitManager: KalamSplitManager
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val splitStart = kalamSplitManager.getSplitStart().observeAsState()
     val splitEnd = kalamSplitManager.getSplitEnd().observeAsState()
     val kalamLength = kalamSplitManager.getKalamLength().observeAsState()
@@ -154,10 +147,10 @@ private fun SplitView(
 
 @Composable
 private fun SplitSuccessView(
-    kalamSplitManager: KalamSplitManager,
-    eventDispatcher: EventDispatcher
+    kalamSplitManager: KalamSplitManager
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val previewPlayStart = kalamSplitManager.getPreviewPlayStart().observeAsState()
     val previewKalamProgress = kalamSplitManager.getPreviewKalamProgress().observeAsState()
     val kalamPreviewLength = kalamSplitManager.getKalamPreviewLength().observeAsState()
@@ -216,10 +209,10 @@ private fun SplitSuccessView(
 
 @Composable
 private fun SplitDoneView(
-    kalamSplitManager: KalamSplitManager,
-    eventDispatcher: EventDispatcher
+    kalamSplitManager: KalamSplitManager
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val context = LocalContext.current
     val kalamTitle = rem("")
     val kalamTitleError = rem(false)

@@ -1,6 +1,10 @@
 package pk.sufiishq.app.ui.components.dialogs
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -22,8 +26,7 @@ import pk.sufiishq.app.utils.rem
 
 @Composable
 fun AddOrUpdatePlaylistDialog(
-    playlistState: State<Playlist?>,
-    eventDispatcher: EventDispatcher
+    playlistState: State<Playlist?>
 ) {
 
     playlistState.value?.apply {
@@ -31,7 +34,7 @@ fun AddOrUpdatePlaylistDialog(
         val error = rem(title.checkValue("", "Title cannot be empty"))
 
         Dialog(onDismissRequest = {
-            hideDialog(eventDispatcher)
+            hideDialog()
         }) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
@@ -57,8 +60,7 @@ fun AddOrUpdatePlaylistDialog(
                             keyboardActions = KeyboardActions(onDone = {
                                 playlistTitle.value.ifNotEmpty {
                                     addOrUpdatePlaylist(
-                                        Playlist(id, it),
-                                        eventDispatcher
+                                        Playlist(id, it)
                                     )
                                 }
                             }),
@@ -76,14 +78,13 @@ fun AddOrUpdatePlaylistDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = { hideDialog(eventDispatcher) }) {
+                        TextButton(onClick = { hideDialog() }) {
                             Text(text = "Cancel")
                         }
                         TextButton(onClick = {
                             playlistTitle.value.ifNotEmpty {
                                 addOrUpdatePlaylist(
-                                    Playlist(id, it),
-                                    eventDispatcher
+                                    Playlist(id, it)
                                 )
                             }
                         }) {
@@ -98,20 +99,20 @@ fun AddOrUpdatePlaylistDialog(
 }
 
 private fun addOrUpdatePlaylist(
-    playlist: Playlist,
-    eventDispatcher: EventDispatcher
+    playlist: Playlist
 ) {
+
+    val eventDispatcher = EventDispatcher.getInstance()
+
     if (playlist.id == 0) {
         eventDispatcher.dispatch(PlaylistEvents.Add(playlist))
     } else {
         eventDispatcher.dispatch(PlaylistEvents.Update(playlist))
     }
 
-    hideDialog(eventDispatcher)
+    hideDialog()
 }
 
-private fun hideDialog(
-    eventDispatcher: EventDispatcher
-) {
-    eventDispatcher.dispatch(PlaylistEvents.ShowAddUpdatePlaylistDialog(null))
+private fun hideDialog() {
+    EventDispatcher.getInstance().dispatch(PlaylistEvents.ShowAddUpdatePlaylistDialog(null))
 }

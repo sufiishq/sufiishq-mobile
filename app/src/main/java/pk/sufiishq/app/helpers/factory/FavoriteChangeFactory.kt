@@ -2,12 +2,12 @@ package pk.sufiishq.app.helpers.factory
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.AddToFavoriteStrategy
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.FavoriteChangeStrategy
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrategy
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 @Singleton

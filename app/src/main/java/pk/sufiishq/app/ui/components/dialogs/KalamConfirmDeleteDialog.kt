@@ -18,15 +18,17 @@ import pk.sufiishq.app.models.KalamDeleteItem
 
 @Composable
 fun KalamConfirmDeleteDialog(
-    kalamDeleteItem: State<KalamDeleteItem?>,
-    eventDispatcher: EventDispatcher
+    kalamDeleteItem: State<KalamDeleteItem?>
 ) {
 
     kalamDeleteItem.value
         ?.apply {
+
+            val eventDispatcher = EventDispatcher.getInstance()
+
             SufiIshqDialog(
                 onDismissRequest = {
-                    hideDialog(eventDispatcher)
+                    hideDialog()
                 }
             ) {
                 Text(
@@ -43,12 +45,12 @@ fun KalamConfirmDeleteDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
-                        hideDialog(eventDispatcher)
+                        hideDialog()
                     }) {
                         Text(text = "NO")
                     }
                     TextButton(onClick = {
-                        hideDialog(eventDispatcher)
+                        hideDialog()
                         eventDispatcher.dispatch(
                             KalamEvents.DeleteKalam(this@apply)
                         )
@@ -60,6 +62,6 @@ fun KalamConfirmDeleteDialog(
         }
 }
 
-private fun hideDialog(eventDispatcher: EventDispatcher) {
-    eventDispatcher.dispatch(KalamEvents.ShowKalamConfirmDeleteDialog(null))
+private fun hideDialog() {
+    EventDispatcher.getInstance().dispatch(KalamEvents.ShowKalamConfirmDeleteDialog(null))
 }

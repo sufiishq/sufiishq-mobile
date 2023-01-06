@@ -7,8 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import pk.sufiishq.app.configs.AppConfig
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
@@ -21,7 +19,6 @@ import pk.sufiishq.app.utils.app
 
 @Composable
 fun NavigationHost(
-    eventDispatcher: EventDispatcher,
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
     homeDataProvider: HomeDataProvider,
@@ -44,7 +41,6 @@ fun NavigationHost(
                     navController,
                     homeDataProvider,
                     globalEventHandler,
-                    eventDispatcher,
                     appConfig
                 )
             }
@@ -56,7 +52,6 @@ fun NavigationHost(
             ) { backStackEntry ->
 
                 TracksView(
-                    eventDispatcher = eventDispatcher,
                     kalamDataProvider = kalamDataProvider,
                     trackListType = ScreenType.Tracks.getTrackListType(backStackEntry),
                 )
@@ -66,8 +61,7 @@ fun NavigationHost(
             composable(ScreenType.Playlist.route) {
                 PlaylistView(
                     playlistDataProvider = playlistDataProvider,
-                    navController = navController,
-                    eventDispatcher = eventDispatcher
+                    navController = navController
                 )
             }
         }

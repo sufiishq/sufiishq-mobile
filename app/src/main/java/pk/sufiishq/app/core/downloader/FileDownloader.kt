@@ -1,16 +1,18 @@
 package pk.sufiishq.app.core.downloader
 
 import io.reactivex.Observable
-import kotlinx.coroutines.delay
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import pk.sufiishq.app.models.FileInfo
 import java.io.File
 import java.net.HttpURLConnection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import pk.sufiishq.app.models.FileInfo
 
-class FileDownloader @Inject constructor(okHttpClient: OkHttpClient, private val requestBuilder: Request.Builder) {
+class FileDownloader @Inject constructor(
+    okHttpClient: OkHttpClient,
+    private val requestBuilder: Request.Builder
+) {
 
     companion object {
         const val BUFFER_LENGTH_BYTES = 1024 * 8

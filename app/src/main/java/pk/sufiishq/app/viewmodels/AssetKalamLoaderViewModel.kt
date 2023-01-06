@@ -9,9 +9,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.data.repository.KalamRepository
-import javax.inject.Inject
 
 @HiltViewModel
 class AssetKalamLoaderViewModel @Inject constructor(

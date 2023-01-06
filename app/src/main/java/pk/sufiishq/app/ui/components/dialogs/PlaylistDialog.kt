@@ -24,12 +24,13 @@ import pk.sufiishq.app.utils.toast
 
 @Composable
 fun PlaylistDialog(
-    eventDispatcher: EventDispatcher,
     playlistState: State<List<Playlist>?>,
     showPlaylistDialog: State<Kalam?>
 ) {
 
     if (showPlaylistDialog.value != null) {
+
+        val eventDispatcher = EventDispatcher.getInstance()
 
         val context = LocalContext.current
         val kalam = showPlaylistDialog.value!!

@@ -19,13 +19,13 @@ import pk.sufiishq.app.models.KalamDeleteItem
 
 @Composable
 fun KalamItemPopupMenu(
-    eventDispatcher: EventDispatcher,
     isExpanded: MutableState<Boolean>,
     kalam: Kalam,
     kalamMenuItems: List<String>,
     trackListType: TrackListType
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     val context = LocalContext.current
 
     DropdownMenu(

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.ui.components.AppBarOverflowMenu
@@ -32,7 +31,6 @@ import pk.sufiishq.app.viewmodels.PlaylistViewModel
 @Composable
 fun MainView(
     homeDataProvider: HomeDataProvider,
-    eventDispatcher: EventDispatcher,
     globalEventHandler: GlobalEventHandler
 ) {
     val matColors = MaterialTheme.colors
@@ -64,13 +62,12 @@ fun MainView(
                         AboutIconButton()
                     },
                     actions = {
-                        AppBarOverflowMenu(eventDispatcher)
+                        AppBarOverflowMenu()
                     }
                 )
             },
             bottomBar = {
                 Player(
-                    eventDispatcher,
                     matColors,
                     playerDataProvider
                 )
@@ -78,7 +75,6 @@ fun MainView(
             content = { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {
                     NavigationHost(
-                        eventDispatcher,
                         kalamDataProvider,
                         playlistDataProvider,
                         homeDataProvider,
@@ -91,7 +87,6 @@ fun MainView(
     }
 
     DialogHolder(
-        eventDispatcher = eventDispatcher,
         playerDataProvider = playerDataProvider,
         playlistDataProvider = playlistDataProvider,
         kalamDataProvider = kalamDataProvider,

@@ -6,13 +6,13 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.worker.CacheRemoveWorker
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @HiltAndroidApp
 class SufiIshqApp : Application() {
@@ -29,7 +29,8 @@ class SufiIshqApp : Application() {
         appConfig = AppConfig()
 
         // enable crashlytics only in release build
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(BuildConfig.ENABLE_CRASHLYTICS)
+        FirebaseCrashlytics.getInstance()
+            .setCrashlyticsCollectionEnabled(BuildConfig.ENABLE_CRASHLYTICS)
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 

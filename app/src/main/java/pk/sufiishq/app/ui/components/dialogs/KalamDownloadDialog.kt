@@ -3,33 +3,35 @@ package pk.sufiishq.app.ui.components.dialogs
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.MutableLiveData
 import okhttp3.internal.format
 import pk.sufiishq.app.core.downloader.KalamDownloadState
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.dummyKalam
-import pk.sufiishq.app.utils.rem
 
 @Composable
 fun KalamDownloadStartedDialog(
-    eventDispatcher: EventDispatcher,
     kalamDownloadState: State<KalamDownloadState?>
 ) {
     kalamDownloadState.value?.apply {
@@ -45,7 +47,7 @@ fun KalamDownloadStartedDialog(
                         .padding(top = 8.dp)
                 )
 
-                CancelButton(eventDispatcher = eventDispatcher)
+                CancelButton()
             }
         }
     }
@@ -53,7 +55,6 @@ fun KalamDownloadStartedDialog(
 
 @Composable
 fun KalamDownloadInProgressDialog(
-    eventDispatcher: EventDispatcher,
     kalamDownloadState: State<KalamDownloadState?>
 ) {
     kalamDownloadState.value?.apply {
@@ -86,7 +87,7 @@ fun KalamDownloadInProgressDialog(
                     progress = progress,
                 )
 
-                CancelButton(eventDispatcher = eventDispatcher)
+                CancelButton()
             }
         }
     }
@@ -94,7 +95,6 @@ fun KalamDownloadInProgressDialog(
 
 @Composable
 fun KalamDownloadCompletedDialog(
-    eventDispatcher: EventDispatcher,
     kalamDownloadState: State<KalamDownloadState?>
 ) {
     kalamDownloadState.value?.apply {
@@ -113,7 +113,7 @@ fun KalamDownloadCompletedDialog(
                     }
                 )
 
-                OKButton(eventDispatcher = eventDispatcher)
+                OKButton()
             }
         }
     }
@@ -121,7 +121,6 @@ fun KalamDownloadCompletedDialog(
 
 @Composable
 fun KalamDownloadErrorDialog(
-    eventDispatcher: EventDispatcher,
     kalamDownloadState: State<KalamDownloadState?>
 ) {
 
@@ -136,7 +135,7 @@ fun KalamDownloadErrorDialog(
                 Text(text = "Download Error", fontWeight = FontWeight.Bold)
                 Text(error)
 
-                OKButton(eventDispatcher = eventDispatcher)
+                OKButton()
             }
         }
     }
@@ -157,7 +156,10 @@ private fun DownloadDialog(content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun OKButton(eventDispatcher: EventDispatcher) {
+private fun OKButton() {
+
+    val eventDispatcher = EventDispatcher.getInstance()
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -172,7 +174,9 @@ private fun OKButton(eventDispatcher: EventDispatcher) {
 }
 
 @Composable
-private fun CancelButton(eventDispatcher: EventDispatcher) {
+private fun CancelButton() {
+
+    val eventDispatcher = EventDispatcher.getInstance()
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -186,30 +190,3 @@ private fun CancelButton(eventDispatcher: EventDispatcher) {
         }
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun LightPreviewKalamDownloadInProgressDialog() {
-    SufiIshqTheme {
-        KalamDownloadInProgressDialog(
-            eventDispatcher = EventDispatcher(),
-            kalamDownloadState = MutableLiveData<KalamDownloadState?>(
-                KalamDownloadState.InProgress(0.5f, dummyKalam())
-            ).observeAsState()
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DarkPreviewKalamDownloadInProgressDialog() {
-    SufiIshqTheme(darkTheme = true) {
-        KalamDownloadInProgressDialog(
-            eventDispatcher = EventDispatcher(),
-            kalamDownloadState = MutableLiveData<KalamDownloadState?>(
-                KalamDownloadState.InProgress(0.5f, dummyKalam())
-            ).observeAsState()
-        )
-    }
-}*/

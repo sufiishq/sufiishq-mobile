@@ -4,9 +4,20 @@ import android.content.Context
 import android.os.Looper
 import androidx.paging.PagingSource
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.mockkStatic
+import io.mockk.slot
+import io.mockk.verify
 import io.reactivex.Completable
-import org.junit.Assert.*
+import java.io.File
+import java.util.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
@@ -33,8 +44,6 @@ import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.copyWithDefaults
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
-import java.io.File
-import java.util.*
 
 class KalamViewModelTest : SufiIshqTest() {
 

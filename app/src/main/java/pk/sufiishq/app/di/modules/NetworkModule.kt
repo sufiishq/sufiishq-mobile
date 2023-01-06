@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

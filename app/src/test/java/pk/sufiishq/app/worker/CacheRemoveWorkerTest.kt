@@ -6,12 +6,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
+import java.io.File
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.utils.deleteContent
-import java.io.File
 
 class CacheRemoveWorkerTest : SufiIshqTest() {
 

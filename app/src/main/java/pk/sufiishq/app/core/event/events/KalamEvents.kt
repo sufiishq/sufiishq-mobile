@@ -1,10 +1,10 @@
 package pk.sufiishq.app.core.event.events
 
+import java.io.File
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.viewmodels.KalamViewModel
-import java.io.File
 
 abstract class KalamEvents : Event(KalamViewModel::class) {
     class UpdateTrackListType(val trackListType: TrackListType) : Event(KalamViewModel::class)

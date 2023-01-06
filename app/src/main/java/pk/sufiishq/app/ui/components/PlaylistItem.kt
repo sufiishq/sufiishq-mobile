@@ -4,8 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Colors
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
@@ -33,7 +44,6 @@ import pk.sufiishq.app.utils.rem
 @Composable
 fun PlaylistItem(
     playlist: Playlist,
-    eventDispatcher: EventDispatcher,
     navController: NavController,
 ) {
 
@@ -64,8 +74,7 @@ fun PlaylistItem(
             InfoRow(
                 matColors = matColors,
                 playlist = playlist,
-                isExpanded = isExpanded,
-                eventDispatcher = eventDispatcher
+                isExpanded = isExpanded
             )
         }
     }
@@ -75,8 +84,7 @@ fun PlaylistItem(
 private fun InfoRow(
     matColors: Colors,
     playlist: Playlist,
-    isExpanded: MutableState<Boolean>,
-    eventDispatcher: EventDispatcher
+    isExpanded: MutableState<Boolean>
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -111,8 +119,7 @@ private fun InfoRow(
         PopupMenu(
             playlist = playlist,
             isExpanded = isExpanded,
-            matColors = matColors,
-            eventDispatcher = eventDispatcher
+            matColors = matColors
         )
     }
 }
@@ -136,9 +143,10 @@ private fun LogoIcon(
 private fun PopupMenu(
     playlist: Playlist,
     isExpanded: MutableState<Boolean>,
-    matColors: Colors,
-    eventDispatcher: EventDispatcher
+    matColors: Colors
 ) {
+    val eventDispatcher = EventDispatcher.getInstance()
+
     Box(modifier = Modifier.padding(end = 12.dp)) {
         Image(
             modifier = Modifier.clickable(
@@ -186,7 +194,6 @@ fun PlaylistItemPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         PlaylistItem(
             playlist = dummyPlaylist(),
-            eventDispatcher = EventDispatcher.getInstance(),
             navController = rememberNavController()
         )
     }
@@ -198,7 +205,6 @@ fun PlaylistItemPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         PlaylistItem(
             playlist = dummyPlaylist(),
-            eventDispatcher = EventDispatcher.getInstance(),
             navController = rememberNavController()
         )
     }

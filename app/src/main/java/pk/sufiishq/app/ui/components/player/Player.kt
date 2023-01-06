@@ -1,8 +1,21 @@
 package pk.sufiishq.app.ui.components.player
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Colors
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -25,15 +38,19 @@ import pk.sufiishq.app.ui.components.MarqueeText
 import pk.sufiishq.app.ui.components.PopupMenuLabel
 import pk.sufiishq.app.ui.components.buttons.SimpleIconButton
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.dummyPlayerDataProvider
+import pk.sufiishq.app.utils.formatDateAs
+import pk.sufiishq.app.utils.formatTime
+import pk.sufiishq.app.utils.isDarkThem
+import pk.sufiishq.app.utils.rem
 
 @Composable
 fun Player(
-    eventDispatcher: EventDispatcher,
     matColors: Colors,
     playerDataProvider: PlayerDataProvider
 ) {
 
+    val eventDispatcher = EventDispatcher.getInstance()
     var backgroundColor = Color(219, 219, 219, 255)
     var contentColor = Color(43, 43, 43, 255)
 
@@ -149,8 +166,7 @@ fun Player(
 
                 PlayPauseButton(
                     kalamInfo = kalamInfo,
-                    contentColor = contentColor,
-                    eventDispatcher = eventDispatcher
+                    contentColor = contentColor
                 )
 
                 SimpleIconButton(
@@ -241,7 +257,6 @@ fun Player(
 fun PlayerPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         Player(
-            eventDispatcher = EventDispatcher.getInstance(),
             matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )
@@ -253,7 +268,6 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         Player(
-            eventDispatcher = EventDispatcher.getInstance(),
             matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )

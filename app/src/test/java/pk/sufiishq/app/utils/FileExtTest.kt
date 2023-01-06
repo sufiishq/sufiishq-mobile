@@ -4,18 +4,22 @@ import VideoHandle.EpEditor
 import VideoHandle.OnEditorListener
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.slot
+import io.mockk.verify
 import io.reactivex.Completable
 import io.reactivex.functions.Action
+import java.io.File
+import java.io.FilenameFilter
+import java.nio.charset.Charset
 import org.apache.commons.io.IOUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import java.io.File
-import java.io.FilenameFilter
-import java.nio.charset.Charset
 
 class FileExtTest : SufiIshqTest() {
 

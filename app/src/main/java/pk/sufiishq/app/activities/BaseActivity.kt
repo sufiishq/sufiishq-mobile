@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.player.AudioPlayer
@@ -18,10 +19,11 @@ import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.ObserveOnlyOnce
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.DARK_THEME
+import pk.sufiishq.app.utils.getFromStorage
+import pk.sufiishq.app.utils.isDeviceSupportDarkMode
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.HomeViewModel
-import javax.inject.Inject
 
 
 @AndroidEntryPoint

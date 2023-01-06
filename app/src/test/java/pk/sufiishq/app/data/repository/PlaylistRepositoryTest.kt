@@ -1,7 +1,12 @@
 package pk.sufiishq.app.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before

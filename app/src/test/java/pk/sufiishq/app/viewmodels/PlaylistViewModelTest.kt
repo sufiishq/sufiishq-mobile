@@ -3,7 +3,12 @@ package pk.sufiishq.app.viewmodels
 import android.content.Context
 import android.os.Looper.getMainLooper
 import androidx.lifecycle.MutableLiveData
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

@@ -3,7 +3,11 @@ package pk.sufiishq.app.core.player
 import android.content.Context
 import android.media.AudioManager
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

@@ -1,9 +1,14 @@
 package pk.sufiishq.app.core.player
 
 import android.content.Context
-import android.media.*
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.PlaybackParams
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
@@ -12,7 +17,6 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.toast
 import timber.log.Timber
-import javax.inject.Inject
 
 
 @AndroidMediaPlayer

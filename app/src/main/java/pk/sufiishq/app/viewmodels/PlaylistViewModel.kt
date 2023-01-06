@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
@@ -18,7 +19,6 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.toast
-import javax.inject.Inject
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(

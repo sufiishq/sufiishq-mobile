@@ -14,7 +14,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.DARK_THEME
+import pk.sufiishq.app.utils.getFromStorage
+import pk.sufiishq.app.utils.isDeviceSupportDarkMode
+import pk.sufiishq.app.utils.putInStorage
+import pk.sufiishq.app.utils.rem
 
 @Composable
 fun ThemeChangeButton(

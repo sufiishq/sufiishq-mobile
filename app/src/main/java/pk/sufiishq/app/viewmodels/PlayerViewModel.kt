@@ -12,6 +12,11 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import java.io.File
+import java.net.SocketException
+import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
@@ -35,11 +40,6 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.*
 import timber.log.Timber
-import java.io.File
-import java.net.SocketException
-import java.net.UnknownHostException
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @HiltViewModel
 @SuppressLint("StaticFieldLeak")

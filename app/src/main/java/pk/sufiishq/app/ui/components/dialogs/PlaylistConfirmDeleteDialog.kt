@@ -18,14 +18,16 @@ import pk.sufiishq.app.models.Playlist
 
 @Composable
 fun PlaylistConfirmDeleteDialog(
-    playlistState: State<Playlist?>,
-    eventDispatcher: EventDispatcher
+    playlistState: State<Playlist?>
 ) {
 
     playlistState.value?.apply {
+
+        val eventDispatcher = EventDispatcher.getInstance()
+
         SufiIshqDialog(
             onDismissRequest = {
-                hideDialog(eventDispatcher)
+                hideDialog()
             }
         ) {
             Text(
@@ -43,13 +45,13 @@ fun PlaylistConfirmDeleteDialog(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = {
-                    hideDialog(eventDispatcher)
+                    hideDialog()
                 }) {
                     Text(text = "NO")
                 }
                 TextButton(onClick = {
                     eventDispatcher.dispatch(PlaylistEvents.Delete(this@apply))
-                    hideDialog(eventDispatcher)
+                    hideDialog()
 
                 }) {
                     Text(text = "YES")
@@ -59,6 +61,6 @@ fun PlaylistConfirmDeleteDialog(
     }
 }
 
-private fun hideDialog(eventDispatcher: EventDispatcher) {
-    eventDispatcher.dispatch(PlaylistEvents.ShowConfirmDeletePlaylistDialog(null))
+private fun hideDialog() {
+    EventDispatcher.getInstance().dispatch(PlaylistEvents.ShowConfirmDeletePlaylistDialog(null))
 }

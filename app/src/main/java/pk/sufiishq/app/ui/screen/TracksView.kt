@@ -1,7 +1,11 @@
 package pk.sufiishq.app.ui.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -30,12 +34,11 @@ import pk.sufiishq.app.utils.rem
 
 @Composable
 fun TracksView(
-    eventDispatcher: EventDispatcher,
     kalamDataProvider: KalamDataProvider,
     trackListType: TrackListType
 ) {
 
-    eventDispatcher.dispatch(KalamEvents.SearchKalam("", trackListType))
+    EventDispatcher.getInstance().dispatch(KalamEvents.SearchKalam("", trackListType))
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
@@ -91,7 +94,6 @@ fun TracksView(
     ) {
         SearchTextField(
             searchText,
-            eventDispatcher,
             matColors,
             lazyKalamItems,
             trackListType
@@ -110,8 +112,7 @@ fun TracksView(
                         KalamItem(
                             kalam = track,
                             trackListType = trackListType,
-                            kalamMenuItems = kalamMenuItems,
-                            eventDispatcher = eventDispatcher
+                            kalamMenuItems = kalamMenuItems
                         )
                     }
                 }
@@ -131,7 +132,6 @@ fun TracksView(
 fun TracksPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         TracksView(
-            eventDispatcher = EventDispatcher.getInstance(),
             kalamDataProvider = dummyKalamDataProvider(),
             trackListType = TrackListType.All()
         )
@@ -143,7 +143,6 @@ fun TracksPreviewLight() {
 fun TracksPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         TracksView(
-            eventDispatcher = EventDispatcher.getInstance(),
             kalamDataProvider = dummyKalamDataProvider(),
             trackListType = TrackListType.All()
         )

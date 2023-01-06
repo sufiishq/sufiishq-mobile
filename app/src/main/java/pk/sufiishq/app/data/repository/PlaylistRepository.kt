@@ -1,9 +1,9 @@
 package pk.sufiishq.app.data.repository
 
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 import pk.sufiishq.app.data.dao.PlaylistDao
 import pk.sufiishq.app.models.Playlist
-import javax.inject.Inject
 
 class PlaylistRepository @Inject constructor(private val playlistDao: PlaylistDao) {
 

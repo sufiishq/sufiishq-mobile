@@ -8,13 +8,17 @@ import io.mockk.mockkStatic
 import io.mockk.slot
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
-import okhttp3.*
+import java.io.File
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.models.FileInfo
-import java.io.File
 
 class FileDownloaderTest : SufiIshqTest() {
 
