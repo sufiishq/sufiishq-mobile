@@ -7,8 +7,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,11 +20,11 @@ import pk.sufiishq.app.utils.rem
 @Composable
 fun AppBarOverflowMenu(eventDispatcher: EventDispatcher) {
 
-    var showOverflowMenu by rem(false)
+    val showOverflowMenu = rem(false)
     val context = LocalContext.current
 
     IconButton(onClick = {
-        showOverflowMenu = !showOverflowMenu
+        showOverflowMenu.value = !showOverflowMenu.value
     }) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
@@ -36,10 +34,10 @@ fun AppBarOverflowMenu(eventDispatcher: EventDispatcher) {
     }
 
     DropdownMenu(
-        expanded = showOverflowMenu,
+        expanded = showOverflowMenu.value,
         modifier = Modifier.width(150.dp),
         onDismissRequest = {
-            showOverflowMenu = !showOverflowMenu
+            showOverflowMenu.value = false
         }
     ) {
 
@@ -47,7 +45,7 @@ fun AppBarOverflowMenu(eventDispatcher: EventDispatcher) {
             label = "Share",
             drawableId = R.drawable.ic_round_share_24,
             onClick = {
-                showOverflowMenu = !showOverflowMenu
+                showOverflowMenu.value = false
                 eventDispatcher.dispatch(GlobalEvents.ShareApp(context))
             }
         )
@@ -56,7 +54,7 @@ fun AppBarOverflowMenu(eventDispatcher: EventDispatcher) {
             label = "Facebook",
             drawableId = R.drawable.ic_round_groups_24,
             onClick = {
-                showOverflowMenu = !showOverflowMenu
+                showOverflowMenu.value = false
                 eventDispatcher.dispatch(
                     GlobalEvents.OpenFacebookGroup(
                         context,
