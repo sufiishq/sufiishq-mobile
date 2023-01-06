@@ -2,12 +2,14 @@ package pk.sufiishq.app.helpers
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import javax.inject.Inject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
@@ -19,7 +21,6 @@ import pk.sufiishq.app.utils.DEEPLINK_HOST
 import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.utils.toast
 import timber.log.Timber
-import javax.inject.Inject
 
 class GlobalEventHandler @Inject constructor(
     private val inAppUpdateManager: InAppUpdateManager
@@ -46,6 +47,10 @@ class GlobalEventHandler @Inject constructor(
 
     private fun handleUpdate() {
         inAppUpdateManager.startUpdateFlow()
+    }
+
+    private fun openFacebookGroup(context: Context, groupUrl: String) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(groupUrl)))
     }
 
     private fun setCircularProgressDialog(isShow: Boolean) {
@@ -112,6 +117,7 @@ class GlobalEventHandler @Inject constructor(
             is GlobalEvents.ShareKalam -> shareKalam(event.kalam, event.context)
             is GlobalEvents.ShowUpdateButton -> setShowUpdateButton(event.isShow)
             is GlobalEvents.StartUpdateFlow -> handleUpdate()
+            is GlobalEvents.OpenFacebookGroup -> openFacebookGroup(event.context, event.groupUrl)
             else -> throw UnhandledEventException(event, this)
         }
     }

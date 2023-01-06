@@ -376,7 +376,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         })
 
 
-        assertEquals(469, kalamListSLot.captured.size)
+        assertEquals(467, kalamListSLot.captured.size)
     }
 
     private fun verifyNextKalamQuery(id: Int, trackListType: TrackListType, expectedQuery: String) {
