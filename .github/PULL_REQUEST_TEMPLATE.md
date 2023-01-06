@@ -19,4 +19,4 @@ Choose one: (Bug fix | Feature | Documentation | Testing | Code health | Builds 
 - [ ] I have written Unit tests for any new feature(s) and edge cases for bug fixes.
 - [ ] I have added any strings visible on UI components to the strings.xml file.
 - [ ] I have updated the CHANGELOG.md file for any notable changes to the codebase.
-- [ ] I have built and run the demo app(s) to verify my change fixes the issue and/or does not break the demo app(s).
+- [ ] I have built and run the debug app to verify my change fixes the issue and/or does not break the demo app(s).
