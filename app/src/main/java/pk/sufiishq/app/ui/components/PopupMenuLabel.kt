@@ -8,22 +8,22 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.app.utils.IconProvider
 
 @Composable
-fun PopupMenuLabel(label: String) {
+fun PopupMenuLabel(label: String, drawableId: Int? = null, iconTint: Color? = null) {
     Row(
         modifier = Modifier.width(150.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        val menuIcon = IconProvider.getIcon(label)
         Icon(
-            painter = painterResource(id = menuIcon.drawableId),
-            tint = menuIcon.color,
+            painter = painterResource(id = drawableId ?: IconProvider.getIcon(label).drawableId),
+            tint = iconTint ?: IconProvider.getIcon(label).color,
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(12.dp))

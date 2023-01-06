@@ -3,9 +3,13 @@ package pk.sufiishq.app.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -16,13 +20,11 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
+import pk.sufiishq.app.ui.components.AppBarOverflowMenu
 import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.buttons.AboutIconButton
-import pk.sufiishq.app.ui.components.buttons.ShareIconButton
 import pk.sufiishq.app.ui.components.dialogs.DialogHolder
 import pk.sufiishq.app.ui.components.player.Player
-import pk.sufiishq.app.utils.app
-import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import pk.sufiishq.app.viewmodels.PlaylistViewModel
@@ -62,7 +64,7 @@ fun MainView(
                         AboutIconButton()
                     },
                     actions = {
-                        ShareIconButton(eventDispatcher = eventDispatcher)
+                        AppBarOverflowMenu(eventDispatcher)
                     }
                 )
             },

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - 2023-xx-xx
 
+### Added
+- Added Sufi-Ishq Facebook group menu item that will redirect the user to Official Sufi-Ishq Facebook group
+
 ## [1.7.0 SufiIshq] - 2022-11-14
 
 ### Fixed
