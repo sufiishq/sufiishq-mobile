@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [ 30 ]
+        api-level: [ 33 ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -53,6 +53,8 @@ jobs:
       with:
         api-level: ${{ matrix.api-level }}
         arch: x86_64
+        force-avd-creation: false
+        disable-animations: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         script: echo "Generated AVD snapshot for caching."
 
