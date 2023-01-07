@@ -46,13 +46,6 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    # API 30+ emulators only have x86_64 system images.
-    - name: Get AVD info
-      uses: ./.github/actions/get-avd-info
-      id: avd-info
-      with:
-        api-level: ${{ matrix.api-level }}
-
     # Retrieve the cached emulator snapshot.
     - uses: actions/cache@v3
       id: avd-cache
