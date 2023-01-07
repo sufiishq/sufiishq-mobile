@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
@@ -24,9 +25,12 @@ fun AppBarOverflowMenu() {
     val showOverflowMenu = rem(false)
     val context = LocalContext.current
 
-    IconButton(onClick = {
-        showOverflowMenu.value = !showOverflowMenu.value
-    }) {
+    IconButton(
+        modifier = Modifier.testTag("menu_button_tag"),
+        onClick = {
+            showOverflowMenu.value = !showOverflowMenu.value
+        }
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
             contentDescription = null,
@@ -36,7 +40,7 @@ fun AppBarOverflowMenu() {
 
     DropdownMenu(
         expanded = showOverflowMenu.value,
-        modifier = Modifier.width(150.dp),
+        modifier = Modifier.width(150.dp).testTag("dropdown_menu_tag"),
         onDismissRequest = {
             showOverflowMenu.value = false
         }
