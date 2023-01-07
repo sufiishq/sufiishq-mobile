@@ -61,7 +61,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
-        freeCompilerArgs = ['-Xjvm-default=compatibility']
+        freeCompilerArgs = ['-Xjvm-default=all-compatibility']
     }
     buildFeatures {
         compose true
@@ -110,7 +110,7 @@ android {
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
-            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         }
     }
 }
