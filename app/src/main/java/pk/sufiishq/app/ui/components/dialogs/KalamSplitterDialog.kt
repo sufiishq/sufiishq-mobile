@@ -97,7 +97,7 @@ private fun SplitView(
 
     Column {
         RangeSlider(
-            values = splitStart.optValue(0).toFloat()..splitEnd.optValue(0).toFloat(),
+            value = splitStart.optValue(0).toFloat()..splitEnd.optValue(0).toFloat(),
             onValueChange = {
                 var start = it.start.toInt()
                 var end = it.endInclusive.toInt()

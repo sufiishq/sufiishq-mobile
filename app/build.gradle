@@ -15,12 +15,12 @@ apply from: './gradle/jacoco.gradle'
 apply from: './gradle/sonarqube.gradle'
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "pk.sufiishq.app"
         minSdk 24
-        targetSdk 31
+        targetSdk 33
         versionCode 18
         versionName "1.7"
 
