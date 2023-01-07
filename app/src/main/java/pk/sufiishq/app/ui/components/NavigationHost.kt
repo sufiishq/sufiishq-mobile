@@ -13,6 +13,7 @@ import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.screen.DashboardView
+import pk.sufiishq.app.ui.screen.HelpView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
 import pk.sufiishq.app.utils.app
@@ -63,6 +64,11 @@ fun NavigationHost(
                     playlistDataProvider = playlistDataProvider,
                     navController = navController
                 )
+            }
+
+            // help screen
+            composable(ScreenType.Help.route) {
+                HelpView()
             }
         }
     }

@@ -62,7 +62,7 @@ fun MainView(
                         AboutIconButton()
                     },
                     actions = {
-                        AppBarOverflowMenu()
+                        AppBarOverflowMenu(navController)
                     }
                 )
             },

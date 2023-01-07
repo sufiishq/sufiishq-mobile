@@ -11,6 +11,7 @@ sealed class ScreenType(val route: String) {
 
     object Dashboard : ScreenType("screen_dashboard")
     object Playlist : ScreenType("screen_playlist")
+    object Help : ScreenType("screen_help")
     object Tracks : ScreenType("screen_tracks") {
 
         // params

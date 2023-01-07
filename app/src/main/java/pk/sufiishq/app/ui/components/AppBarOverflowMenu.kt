@@ -12,13 +12,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.rem
 
 @Composable
-fun AppBarOverflowMenu() {
+fun AppBarOverflowMenu(
+    navController: NavController
+) {
 
     val eventDispatcher = EventDispatcher.getInstance()
     val showOverflowMenu = rem(false)
@@ -62,6 +66,15 @@ fun AppBarOverflowMenu() {
                         "https://www.facebook.com/groups/375798102574085"
                     )
                 )
+            }
+        )
+
+        OverflowMenuItem(
+            label = "Help",
+            drawableId = R.drawable.ic_round_help_24,
+            onClick = {
+                showOverflowMenu.value = false
+                navController.navigate(ScreenType.Help.route)
             }
         )
     }
