@@ -6,6 +6,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'jacoco'
+    id 'com.spotify.ruler'
     id 'org.sonarqube' version '3.4.0.2513'
 }
 
@@ -93,6 +94,13 @@ android {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
+}
+
+ruler {
+    abi.set("arm64-v8a")
+    locale.set("en")
+    screenDensity.set(480)
+    sdkVersion.set(27)
 }
 
 apply from: './gradle/deps.gradle'
