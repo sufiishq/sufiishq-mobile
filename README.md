@@ -105,6 +105,14 @@ All submissions, including submissions by project members, require review. We us
 4. Push to the branch (`git push origin feature/your-feature`)
 5. Open a pull request
 
+### Linting with Sonar
+SonarLint is a free IDE extension to find and fix bugs, vulnerabilities and code smells as you write code! Like a spell checker, SonarLint highlights issues on the fly and provides quick fixes or clear remediation guidance to help you clean the code before it is even committed. With support for several popular and classic languages, SonarLint helps developers of all experience and skill levels write efficient, safe code.
+
+1. Open the File > Settings > Plugins.
+2. Select Marketplace and search [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint).
+3. Click on the Install and restart the IDE after that.
+4. Check at bottom of the android studio SonarLint option is visible than SonarLint integration successfully done if not than again go to the plugins and enable the SonarLint and restart the IDE.
+
 ### Crashlytics
 Firebase crashlytics are disabled in debug and enabled in release build by default but it can changed by adding the following properties in **local.properties** file.
 
