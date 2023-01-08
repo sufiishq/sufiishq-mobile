@@ -1,23 +1,17 @@
 package pk.sufiishq.app.ui.components
 
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildAt
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
-import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import pk.sufiishq.app.SufiIshqTest
 
-class AppBarOverflowMenuTest {
+class AppBarOverflowMenuTest : SufiIshqTest() {
 
     @get:Rule
     val composeTestRule = createComposeRule()
