@@ -8,10 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        api-level: [ 28 ]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
@@ -46,22 +43,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    # Retrieve the cached emulator snapshot.
-    - uses: actions/cache@v3
-      id: avd-cache
-      with:
-        path: |
-          ~/.android/avd/*
-          ~/.android/adb*
-        key: ${{ runner.os }}-avd-${{ env.CACHE_VERSION }}-${{ steps.avd-info.outputs.arch }}-${{ steps.avd-info.outputs.target }}-${{ matrix.api-level }}
-                  
-    - name: Create AVD snapshot
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: ${{ matrix.api-level }}
-        arch: x86_64
-        target: default
-        disable-animations: false
-        force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-        script: ./gradlew jacocoTestReport sonarqube --stacktrace
+    - name: Build and analyze
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew jacocoTestReport sonarqube --stacktrace
