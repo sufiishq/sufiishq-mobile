@@ -56,10 +56,7 @@ jobs:
         key: ${{ runner.os }}-avd-${{ env.CACHE_VERSION }}-${{ steps.avd-info.outputs.arch }}-${{ steps.avd-info.outputs.target }}-${{ matrix.api-level }}
                   
     - name: Create AVD snapshot
-      if: steps.avd-cache.outputs.cache-hit != 'true'
       uses: reactivecircus/android-emulator-runner@v2
-      env:
-        ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL: 600
       with:
         api-level: ${{ matrix.api-level }}
         arch: x86_64
