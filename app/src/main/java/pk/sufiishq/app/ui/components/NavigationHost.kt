@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
@@ -23,6 +24,7 @@ fun NavigationHost(
     kalamDataProvider: KalamDataProvider,
     playlistDataProvider: PlaylistDataProvider,
     homeDataProvider: HomeDataProvider,
+    helpDataProvider: HelpDataProvider,
     globalEventHandler: GlobalEventHandler,
     navController: NavHostController
 ) {
@@ -68,7 +70,7 @@ fun NavigationHost(
 
             // help screen
             composable(ScreenType.Help.route) {
-                HelpView()
+                HelpView(helpDataProvider)
             }
         }
     }

@@ -24,6 +24,7 @@ import pk.sufiishq.app.ui.components.NavigationHost
 import pk.sufiishq.app.ui.components.buttons.AboutIconButton
 import pk.sufiishq.app.ui.components.dialogs.DialogHolder
 import pk.sufiishq.app.ui.components.player.Player
+import pk.sufiishq.app.viewmodels.HelpViewModel
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import pk.sufiishq.app.viewmodels.PlaylistViewModel
@@ -38,6 +39,7 @@ fun MainView(
     val kalamDataProvider = hiltViewModel<KalamViewModel>()
     val playlistDataProvider = hiltViewModel<PlaylistViewModel>()
     val playerDataProvider = hiltViewModel<PlayerViewModel>()
+    val helpViewModel = hiltViewModel<HelpViewModel>()
 
     Surface(color = matColors.background) {
         Scaffold(
@@ -78,6 +80,7 @@ fun MainView(
                         kalamDataProvider,
                         playlistDataProvider,
                         homeDataProvider,
+                        helpViewModel,
                         globalEventHandler,
                         navController
                     )
