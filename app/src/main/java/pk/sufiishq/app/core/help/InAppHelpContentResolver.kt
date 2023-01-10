@@ -46,14 +46,11 @@ class InAppHelpContentResolver @Inject constructor(
             for simplicity create separate function for each transformation
          */
 
+        // for example
         Column {
             Text(text = data)
             Divider()
         }
-    }
-
-    fun String.asJSONObject(): JSONObject {
-        return JSONObject(this)
     }
 
     fun JSONObject.getJSONObjectAsList(key: String): List<JSONObject> {
