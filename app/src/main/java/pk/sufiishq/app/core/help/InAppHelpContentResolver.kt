@@ -1,43 +1,38 @@
 package pk.sufiishq.app.core.help
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONArray
 import org.json.JSONObject
+import pk.sufiishq.app.di.qualifier.HelpJson
 import pk.sufiishq.app.models.HelpContent
 
 class InAppHelpContentResolver @Inject constructor(
-    @ApplicationContext private val context: Context
+    @HelpJson private val helpJson: JSONObject
 ) {
 
     fun resolve() = flow {
 
-        val data = context
-            .assets
-            .open("help/help.json")
-            .bufferedReader()
-            .use { it.readText() }
-            .asJSONObject()
-            .getJSONObjectAsList("data")
-            .map { item ->
-                HelpContent(
-                    title = item.getString("title"),
-                    content = item
-                        .getJSONArray("content")
-                        .asStringList()
-                        .map {
-                            transform(it)
-                        }
-                )
-            }
+        val data =
+            helpJson
+                .getJSONObjectAsList("data")
+                .map { item ->
+                    HelpContent(
+                        title = item.getString("title"),
+                        content = item
+                            .getJSONArray("content")
+                            .asStringList()
+                            .map {
+                                transform(it)
+                            }
+                    )
+                }
 
         emit(data)
 
