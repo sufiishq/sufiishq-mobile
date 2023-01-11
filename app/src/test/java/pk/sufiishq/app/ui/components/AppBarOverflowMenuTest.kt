@@ -1,55 +1,129 @@
 package pk.sufiishq.app.ui.components
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.performClick
-import org.junit.Before
+import io.mockk.every
+import io.mockk.slot
+import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
+import pk.sufiishq.app.core.event.events.Event
+import pk.sufiishq.app.core.event.events.GlobalEvents
 
 class AppBarOverflowMenuTest : SufiIshqTest() {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @Before
-    fun setUp() {
+    @Test
+    fun `test overflow menu button should be exists and visible by default`() {
+
         composeTestRule.setContent {
             AppBarOverflowMenu()
         }
+
+        // acquire overflow menu button node
+        getOverflowMenuButtonNode()
+
+            // should be exists
+            .assertExists()
+
+            // should be visible
+            .assertIsDisplayed()
+
+            // must has click action
+            .assertHasClickAction()
     }
 
     @Test
-    fun testOverflowMenuWithMenuItems() {
+    fun `test dropdown menu should be visible when overflow menu button clicked`() {
 
-        val menuBarMatcher = hasTestTag("menu_button_tag")
-        val dropdownMenuMatcher = hasTestTag("dropdown_menu_tag")
+        composeTestRule.setContent {
+            AppBarOverflowMenu()
+        }
 
-        // verify menu bar button existence, visibility and click action
-        composeTestRule.onNode(menuBarMatcher).assertExists()
-        composeTestRule.onNode(menuBarMatcher).assertIsDisplayed()
-        composeTestRule.onNode(menuBarMatcher).assertHasClickAction()
+        // acquire dropdown menu node
+        val dropdownMenuNode = getDropdownMenuNode()
 
-        // dropdown should be hide before perform click action
-        composeTestRule.onNode(dropdownMenuMatcher).assertDoesNotExist()
+        // dropdown should not be visible by default
+        dropdownMenuNode.assertDoesNotExist()
 
-        // perform click on menu bar
-        composeTestRule.onNode(menuBarMatcher).performClick()
+        // show popup menu items
+        getOverflowMenuButtonNode().performClick()
 
         // verify all menu item existence and visibility
-        composeTestRule.onNode(dropdownMenuMatcher).assertExists()
-        composeTestRule.onNode(dropdownMenuMatcher).assertIsDisplayed()
+        dropdownMenuNode.assertExists().assertIsDisplayed()
+    }
 
-        // verify share menu item existence and visibility
-        composeTestRule.onNode(dropdownMenuMatcher).onChildAt(0).assertExists()
-        composeTestRule.onNode(dropdownMenuMatcher).onChildAt(0).assertHasClickAction()
+    @Test
+    fun `test dispatch even should be as ShareApp when ShareApp menu item clicked`() {
 
-        // verify facebook menu item existence and visibility
-        composeTestRule.onNode(dropdownMenuMatcher).onChildAt(1).assertExists()
-        composeTestRule.onNode(dropdownMenuMatcher).onChildAt(1).assertHasClickAction()
+        composeTestRule.setContent {
+            AppBarOverflowMenu()
+        }
+
+        val eventDispatcher = mockEventDispatcher()
+
+        val eventSlot = slot<Event>()
+        every { eventDispatcher.dispatch(capture(eventSlot)) } returns Unit
+
+        // show menu bar
+        getOverflowMenuButtonNode().performClick()
+
+        // perform click on share-app menu item
+        performClickOnMenuItem(0)
+
+        // menu bar should not be visible
+        getDropdownMenuNode().assertDoesNotExist()
+
+        // verify dispatched event should be correct
+        verify { eventDispatcher.dispatch(eventSlot.captured as GlobalEvents.ShareApp) }
+    }
+
+    @Test
+    fun `test dispatch even should be as OpenFacebookGroup when OpenFacebookGroup menu item clicked`() {
+
+        composeTestRule.setContent {
+            AppBarOverflowMenu()
+        }
+
+        val eventDispatcher = mockEventDispatcher()
+
+        val eventSlot = slot<Event>()
+        every { eventDispatcher.dispatch(capture(eventSlot)) } returns Unit
+
+        // show menu bar
+        getOverflowMenuButtonNode().performClick()
+
+        // perform click on share-app menu item
+        performClickOnMenuItem(1)
+
+        // menu bar should not be visible
+        getDropdownMenuNode().assertDoesNotExist()
+
+        // verify dispatched event should be correct
+        verify { eventDispatcher.dispatch(eventSlot.captured as GlobalEvents.OpenFacebookGroup) }
+    }
+
+    private fun performClickOnMenuItem(index: Int) {
+        getDropdownMenuNode()
+            .onChildAt(index)
+            .assertExists()
+            .assertHasClickAction()
+            .performClick()
+    }
+
+    private fun getOverflowMenuButtonNode(): SemanticsNodeInteraction {
+        return composeTestRule.onNode(hasTestTag("overflow_menu_button"))
+    }
+
+    private fun getDropdownMenuNode(): SemanticsNodeInteraction {
+        return composeTestRule.onNode(hasTestTag("dropdown_menu"))
     }
 }
