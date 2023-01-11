@@ -34,13 +34,11 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.ui.components.SIAnimatedLog
 import pk.sufiishq.app.ui.components.TileAndroidImage
 import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
@@ -56,8 +54,7 @@ import pk.sufiishq.app.utils.optValue
 fun DashboardView(
     navController: NavController,
     homeDataProvider: HomeDataProvider,
-    globalEventHandler: GlobalEventHandler,
-    appConfig: AppConfig
+    globalEventHandler: GlobalEventHandler
 ) {
 
     val eventDispatcher = EventDispatcher.getInstance()
@@ -168,7 +165,6 @@ fun DashboardView(
                             icon = R.drawable.ic_outline_check_circle_24,
                             iconColor = MenuIconColors.ALL_KALAM
                         ) {
-                            appConfig.trackListType = TrackListType.All()
                             navController.navigate(
                                 ScreenType.Tracks.withArgs(
                                     ScreenType.Tracks.ALL,
@@ -184,7 +180,6 @@ fun DashboardView(
                             icon = R.drawable.ic_outline_favorite_border_24,
                             iconColor = MenuIconColors.FAVORITE
                         ) {
-                            appConfig.trackListType = TrackListType.Favorites()
                             navController.navigate(
                                 ScreenType.Tracks.withArgs(
                                     ScreenType.Tracks.FAVORITES,
@@ -206,7 +201,6 @@ fun DashboardView(
                             icon = R.drawable.ic_outline_cloud_download_24,
                             iconColor = MenuIconColors.DOWNLOADS
                         ) {
-                            appConfig.trackListType = TrackListType.Downloads()
                             navController.navigate(
                                 ScreenType.Tracks.withArgs(
                                     ScreenType.Tracks.DOWNLOADS,
@@ -303,8 +297,7 @@ fun LightPreviewDashboardView() {
         DashboardView(
             navController = rememberNavController(),
             homeDataProvider = dummyHomeDataProvider(),
-            globalEventHandler = dummyGlobalEventHandler(),
-            appConfig = AppConfig()
+            globalEventHandler = dummyGlobalEventHandler()
         )
     }
 }

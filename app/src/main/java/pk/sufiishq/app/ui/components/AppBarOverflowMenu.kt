@@ -1,5 +1,7 @@
 package pk.sufiishq.app.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -10,11 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
+import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.rem
 
 @Composable
@@ -24,9 +30,12 @@ fun AppBarOverflowMenu() {
     val showOverflowMenu = rem(false)
     val context = LocalContext.current
 
-    IconButton(onClick = {
-        showOverflowMenu.value = !showOverflowMenu.value
-    }) {
+    IconButton(
+        modifier = Modifier.testTag("overflow_menu_button"),
+        onClick = {
+            showOverflowMenu.value = !showOverflowMenu.value
+        }
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
             contentDescription = null,
@@ -36,7 +45,9 @@ fun AppBarOverflowMenu() {
 
     DropdownMenu(
         expanded = showOverflowMenu.value,
-        modifier = Modifier.width(150.dp),
+        modifier = Modifier
+            .width(150.dp)
+            .testTag("dropdown_menu"),
         onDismissRequest = {
             showOverflowMenu.value = false
         }
@@ -80,5 +91,65 @@ private fun OverflowMenuItem(
             drawableId = drawableId,
             iconTint = iconTint
         )
+    }
+}
+
+@ExcludeFromJacocoGeneratedReport
+@Preview
+@Composable
+fun AppBarOverflowMenuPreviewLight() {
+    SufiIshqTheme {
+        Box(
+            Modifier.background(MaterialTheme.colors.secondaryVariant)
+        ) {
+            AppBarOverflowMenu()
+        }
+    }
+}
+
+@ExcludeFromJacocoGeneratedReport
+@Preview
+@Composable
+fun AppBarOverflowMenuPreviewDark() {
+    SufiIshqTheme(darkTheme = true) {
+        Box(
+            Modifier.background(MaterialTheme.colors.secondaryVariant)
+        ) {
+            AppBarOverflowMenu()
+        }
+    }
+}
+
+@ExcludeFromJacocoGeneratedReport
+@Preview(widthDp = 150)
+@Composable
+fun OverflowMenuItemPreviewLight() {
+    SufiIshqTheme {
+        Box(
+            Modifier.background(MaterialTheme.colors.secondaryVariant)
+        ) {
+            OverflowMenuItem(
+                label = "Share",
+                drawableId = R.drawable.ic_round_share_24,
+                onClick = {}
+            )
+        }
+    }
+}
+
+@ExcludeFromJacocoGeneratedReport
+@Preview(widthDp = 150)
+@Composable
+fun OverflowMenuItemPreviewDark() {
+    SufiIshqTheme(darkTheme = true) {
+        Box(
+            Modifier.background(MaterialTheme.colors.secondaryVariant)
+        ) {
+            OverflowMenuItem(
+                label = "Share",
+                drawableId = R.drawable.ic_round_share_24,
+                onClick = {}
+            )
+        }
     }
 }

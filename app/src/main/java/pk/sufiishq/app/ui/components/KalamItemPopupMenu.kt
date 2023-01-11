@@ -4,7 +4,9 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
@@ -29,6 +31,7 @@ fun KalamItemPopupMenu(
     val context = LocalContext.current
 
     DropdownMenu(
+        modifier = Modifier.testTag("dropdown_menu"),
         expanded = isExpanded.value,
         onDismissRequest = { isExpanded.value = false }) {
 
@@ -53,46 +56,56 @@ fun KalamItemPopupMenu(
                 )
             )
             .forEach { label ->
-                DropdownMenuItem(onClick = {
-                    when (label) {
-                        labelAddToPlaylist -> eventDispatcher.dispatch(
-                            PlaylistEvents.ShowPlaylistDialog(
-                                kalam
+                DropdownMenuItem(
+                    modifier = Modifier.testTag(label),
+                    onClick = {
+                        when (label) {
+                            labelAddToPlaylist -> eventDispatcher.dispatch(
+                                PlaylistEvents.ShowPlaylistDialog(
+                                    kalam
+                                )
                             )
-                        )
-                        labelMarkAsFavorite -> eventDispatcher.dispatch(
-                            KalamEvents.MarkAsFavoriteKalam(
-                                kalam
+                            labelMarkAsFavorite -> eventDispatcher.dispatch(
+                                KalamEvents.MarkAsFavoriteKalam(
+                                    kalam
+                                )
                             )
-                        )
-                        labelRemoveFavorite -> eventDispatcher.dispatch(
-                            KalamEvents.RemoveFavoriteKalam(
-                                kalam
+                            labelRemoveFavorite -> eventDispatcher.dispatch(
+                                KalamEvents.RemoveFavoriteKalam(
+                                    kalam
+                                )
                             )
-                        )
-                        labelDownload -> eventDispatcher.dispatch(PlayerEvents.StartDownload(kalam))
-                        labelDelete -> eventDispatcher.dispatch(
-                            KalamEvents.ShowKalamConfirmDeleteDialog(
-                                KalamDeleteItem(kalam, trackListType)
+                            labelDownload -> eventDispatcher.dispatch(
+                                PlayerEvents.StartDownload(
+                                    kalam
+                                )
                             )
-                        )
-                        labelSplitKalam -> {
-                            eventDispatcher.dispatch(KalamEvents.ShowKalamSplitManagerDialog(kalam))
+                            labelDelete -> eventDispatcher.dispatch(
+                                KalamEvents.ShowKalamConfirmDeleteDialog(
+                                    KalamDeleteItem(kalam, trackListType)
+                                )
+                            )
+                            labelSplitKalam -> {
+                                eventDispatcher.dispatch(
+                                    KalamEvents.ShowKalamSplitManagerDialog(
+                                        kalam
+                                    )
+                                )
+                            }
+                            labelRename -> eventDispatcher.dispatch(
+                                KalamEvents.ShowKalamRenameDialog(
+                                    kalam
+                                )
+                            )
+                            labelShare -> eventDispatcher.dispatch(
+                                GlobalEvents.ShareKalam(
+                                    kalam,
+                                    context
+                                )
+                            )
                         }
-                        labelRename -> eventDispatcher.dispatch(
-                            KalamEvents.ShowKalamRenameDialog(
-                                kalam
-                            )
-                        )
-                        labelShare -> eventDispatcher.dispatch(
-                            GlobalEvents.ShareKalam(
-                                kalam,
-                                context
-                            )
-                        )
-                    }
-                    isExpanded.value = false
-                }) {
+                        isExpanded.value = false
+                    }) {
                     PopupMenuLabel(label = label)
                 }
             }

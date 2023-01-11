@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.slot
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -13,7 +12,6 @@ import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.storage.KeyValueStorage
-import pk.sufiishq.app.helpers.TrackListType
 
 class AppConfigTest : SufiIshqTest() {
 
@@ -32,11 +30,6 @@ class AppConfigTest : SufiIshqTest() {
         }
 
         appConfig = AppConfig()
-    }
-
-    @Test
-    fun test_shouldReturn_defaultTrackListType() {
-        assertEquals(TrackListType.All().type, appConfig.trackListType.type)
     }
 
     @Test

@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,13 +32,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
+import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.dummyPlaylist
 import pk.sufiishq.app.utils.rem
 
@@ -48,19 +48,20 @@ fun PlaylistItem(
 ) {
 
     val matColors = MaterialTheme.colors
-    val appConfig = app().appConfig
     val isExpanded = rem(false)
 
-    Column(Modifier.clickable {
-        appConfig.trackListType = TrackListType.Playlist(playlist.title, playlist.id)
-        navController.navigate(
-            ScreenType.Tracks.withArgs(
-                "playlist",
-                "${playlist.title} Playlist",
-                "${playlist.id}"
-            )
-        )
-    }) {
+    Column(
+        Modifier
+            .testTag("playlist_item")
+            .clickable {
+                navController.navigate(
+                    ScreenType.Tracks.withArgs(
+                        "playlist",
+                        "${playlist.title} Playlist",
+                        "${playlist.id}"
+                    )
+                )
+            }) {
         Row(
             modifier = Modifier
                 .height(60.dp)
@@ -132,7 +133,8 @@ private fun LogoIcon(
         modifier = Modifier
             .width(40.dp)
             .height(40.dp)
-            .padding(start = 12.dp),
+            .padding(start = 12.dp)
+            .testTag("leading_icon"),
         colorFilter = ColorFilter.tint(matColors.primary),
         painter = painterResource(id = R.drawable.ic_outline_playlist_play_24),
         contentDescription = null
@@ -162,6 +164,7 @@ private fun PopupMenu(
         )
 
         DropdownMenu(
+            modifier = Modifier.testTag("dropdown_menu"),
             expanded = isExpanded.value,
             onDismissRequest = { isExpanded.value = false }) {
 
@@ -188,6 +191,7 @@ private fun PopupMenu(
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun PlaylistItemPreviewLight() {
@@ -199,6 +203,7 @@ fun PlaylistItemPreviewLight() {
     }
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun PlaylistItemPreviewDark() {
