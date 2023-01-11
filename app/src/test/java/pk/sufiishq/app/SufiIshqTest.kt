@@ -12,6 +12,7 @@ import org.junit.AfterClass
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.models.Kalam
 
 @HiltAndroidTest
@@ -76,6 +77,27 @@ abstract class SufiIshqTest {
             }
         }
     }
+
+    fun mockEventDispatcher(): EventDispatcher {
+        mockkObject(EventDispatcher.Companion)
+        val eventDispatcher = mockk<EventDispatcher>()
+
+        every { EventDispatcher.getInstance() } returns eventDispatcher
+
+        return eventDispatcher
+    }
+
+    fun getKalam() = Kalam(
+        id = 1,
+        title = "My Kalam",
+        code = 1,
+        recordeDate = "20-01-1989",
+        location = "Karachi",
+        onlineSource = "https://sufiishq.pk/media/kalam/karachi/karachi_01.mp3",
+        offlineSource = "",
+        isFavorite = 0,
+        playlistId = 0
+    )
 
     companion object {
 

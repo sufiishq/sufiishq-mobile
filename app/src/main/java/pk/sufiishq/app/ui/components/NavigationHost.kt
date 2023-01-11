@@ -17,7 +17,6 @@ import pk.sufiishq.app.ui.screen.DashboardView
 import pk.sufiishq.app.ui.screen.HelpView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
-import pk.sufiishq.app.utils.app
 
 @Composable
 fun NavigationHost(
@@ -28,9 +27,6 @@ fun NavigationHost(
     globalEventHandler: GlobalEventHandler,
     navController: NavHostController
 ) {
-
-
-    val appConfig = app().appConfig
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -43,8 +39,7 @@ fun NavigationHost(
                 DashboardView(
                     navController,
                     homeDataProvider,
-                    globalEventHandler,
-                    appConfig
+                    globalEventHandler
                 )
             }
 

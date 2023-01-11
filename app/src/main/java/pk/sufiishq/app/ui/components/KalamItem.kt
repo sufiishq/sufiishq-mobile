@@ -21,12 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.app.R
+import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.TrackListType
@@ -47,9 +49,13 @@ fun KalamItem(
     val matColors = MaterialTheme.colors
     val isExpanded = rem(false)
 
-    Column(Modifier.clickable {
-        eventDispatcher.dispatch(PlayerEvents.ChangeTrack(kalam, trackListType))
-    }) {
+    Column(
+        modifier = Modifier
+            .testTag("kalam_item")
+            .clickable {
+                eventDispatcher.dispatch(PlayerEvents.ChangeTrack(kalam, trackListType))
+            }
+    ) {
         Row(
             modifier = Modifier
                 .height(60.dp)
@@ -63,7 +69,8 @@ fun KalamItem(
                 modifier = Modifier
                     .width(40.dp)
                     .height(40.dp)
-                    .padding(start = 6.dp),
+                    .padding(start = 6.dp)
+                    .testTag("leading_icon"),
                 colorFilter = ColorFilter.tint(matColors.primary),
                 painter = painterResource(id = R.drawable.ic_start_logo), contentDescription = null
             )
@@ -98,10 +105,14 @@ fun KalamItem(
 
                 Box(modifier = Modifier.padding(end = 12.dp)) {
                     Image(
-                        modifier = Modifier.clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) { isExpanded.value = !isExpanded.value },
+                        modifier = Modifier
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                isExpanded.value = !isExpanded.value
+                            }
+                            .testTag("overflow_menu_button"),
                         colorFilter = ColorFilter.tint(matColors.primary),
                         painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
                         contentDescription = null
@@ -119,7 +130,8 @@ fun KalamItem(
     }
 }
 
-@Preview(showBackground = true)
+@ExcludeFromJacocoGeneratedReport
+@Preview
 @Composable
 fun KalamItemPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
@@ -131,7 +143,8 @@ fun KalamItemPreviewLight() {
     }
 }
 
-@Preview(showBackground = true)
+@ExcludeFromJacocoGeneratedReport
+@Preview
 @Composable
 fun KalamItemPreviewDark() {
     SufiIshqTheme(darkTheme = true) {

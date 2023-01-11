@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.helpers.TrackListType
@@ -63,6 +64,7 @@ fun SearchTextField(
     )
 }
 
+@ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun SearchTextFieldPreviewLight() {
