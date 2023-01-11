@@ -11,12 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import pk.sufiishq.app.R
 
 @Composable
 fun SIAnimatedLog(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
 
     val infiniteTransition = rememberInfiniteTransition()
@@ -29,9 +30,11 @@ fun SIAnimatedLog(
     )
 
     Image(
-        modifier = modifier.graphicsLayer {
-            rotationY = angle
-        },
+        modifier = modifier
+            .testTag("logo")
+            .graphicsLayer {
+                rotationY = angle
+            },
         contentScale = ContentScale.Fit,
         painter = painterResource(id = R.drawable.logo),
         contentDescription = null
