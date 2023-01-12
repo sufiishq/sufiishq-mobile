@@ -1,11 +1,9 @@
 package pk.sufiishq.app.viewmodels
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
@@ -15,9 +13,9 @@ import pk.sufiishq.app.data.repository.KalamRepository
 
 @HiltViewModel
 class AssetKalamLoaderViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+    private val app: Application,
     private val kalamRepository: KalamRepository
-) : ViewModel() {
+) : BaseViewModel(app) {
 
     private var disposable = Disposables.disposed()
 
@@ -25,7 +23,7 @@ class AssetKalamLoaderViewModel @Inject constructor(
 
     fun loadAllKalam(count: Int, block: (dataInserted: Boolean) -> Unit) {
         if (count <= 0) {
-            disposable = kalamRepository.loadAllFromAssets(appContext)
+            disposable = kalamRepository.loadAllFromAssets(app)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { kalamList ->

@@ -14,6 +14,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.event.events.PlaylistEvents
@@ -29,14 +30,14 @@ class PlaylistViewModelTest : SufiIshqTest() {
     private lateinit var playlistViewModel: PlaylistViewModel
     private lateinit var playlistRepository: PlaylistRepository
     private lateinit var kalamRepository: KalamRepository
-    private lateinit var appContext: Context
+    private lateinit var appContext: SufiIshqApp
 
     @Before
     fun setUp() {
         playlistRepository = mockk()
         kalamRepository = mockk()
         appContext = mockApp()
-        playlistViewModel = PlaylistViewModel(playlistRepository, kalamRepository)
+        playlistViewModel = PlaylistViewModel(appContext, playlistRepository, kalamRepository)
     }
 
     @Test

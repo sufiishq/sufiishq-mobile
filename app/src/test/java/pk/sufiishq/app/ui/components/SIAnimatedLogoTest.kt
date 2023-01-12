@@ -7,7 +7,7 @@ import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 
-class SIAnimatedLogTest : SufiIshqTest() {
+class SIAnimatedLogoTest : SufiIshqTest() {
 
     @get:Rule
     val composeTestRule = createComposeRule()

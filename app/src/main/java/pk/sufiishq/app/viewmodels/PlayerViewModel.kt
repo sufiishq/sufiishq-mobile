@@ -1,9 +1,8 @@
 package pk.sufiishq.app.viewmodels
 
-import android.annotation.SuppressLint
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.BackpressureStrategy
@@ -21,13 +20,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
 import pk.sufiishq.app.R
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.core.downloader.FileDownloader
 import pk.sufiishq.app.core.downloader.KalamDownloadState
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
-import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
@@ -38,16 +37,25 @@ import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.IS_SHUFFLE_ON
+import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.asFlow
+import pk.sufiishq.app.utils.canPlay
+import pk.sufiishq.app.utils.getFromStorage
+import pk.sufiishq.app.utils.isOfflineFileExists
+import pk.sufiishq.app.utils.moveTo
+import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.putInStorage
+import pk.sufiishq.app.utils.toast
 import timber.log.Timber
 
 @HiltViewModel
-@SuppressLint("StaticFieldLeak")
 class PlayerViewModel @Inject constructor(
+    app: Application,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val fileDownloader: FileDownloader,
     private val kalamRepository: KalamRepository
-) : ViewModel(), PlayerDataProvider, PlayerStateListener, EventHandler {
+) : BaseViewModel(app), PlayerDataProvider, PlayerStateListener {
 
     private var seekbarEnableOnPlaying = true
     private val kalamInfo = MutableLiveData<KalamInfo?>(null)
@@ -57,7 +65,7 @@ class PlayerViewModel @Inject constructor(
     private var fileDownloaderDisposable = Disposables.disposed()
     private var fileMoveDisposables = Disposables.disposed()
 
-    private val appContext = app()
+    private val appContext = app as SufiIshqApp
 
     init {
         player.registerListener(this)
@@ -197,7 +205,6 @@ class PlayerViewModel @Inject constructor(
 
                 // onNext ->
                 {
-                    //val progress = it.progress.toFloat() / 100f * 1f
                     Timber.d("kalam: ${kalam.title}, download progress: $it")
                     setKalamDownloadState(KalamDownloadState.InProgress(it, kalam))
                 },

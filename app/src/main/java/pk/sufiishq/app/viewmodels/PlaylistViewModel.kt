@@ -1,8 +1,8 @@
 package pk.sufiishq.app.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,20 +11,19 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
-import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
-import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.toast
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
+    private val app: Application,
     private val playlistRepository: PlaylistRepository,
     private val kalamRepository: KalamRepository
-) : ViewModel(), PlaylistDataProvider, EventHandler {
+) : BaseViewModel(app), PlaylistDataProvider {
 
     init {
         EventDispatcher.getInstance().registerEventHandler(this)
@@ -94,7 +93,7 @@ class PlaylistViewModel @Inject constructor(
         viewModelScope.launch {
             kalam.playlistId = playlist.id
             kalamRepository.update(kalam)
-            app().toast("${kalam.title} added in ${playlist.title} Playlist")
+            app.toast("${kalam.title} added in ${playlist.title} Playlist")
         }
     }
 
