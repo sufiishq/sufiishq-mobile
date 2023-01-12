@@ -286,9 +286,7 @@ class PlayerViewModel @Inject constructor(
         )
     }
 
-    private fun setLoadingState(
-        mediaState: MediaState.Loading
-    ): KalamInfo? {
+    private fun setLoadingState(mediaState: MediaState.Loading): KalamInfo? {
         return kalamInfo.value?.let {
             KalamInfo(
                 PlayerState.LOADING,
@@ -297,8 +295,6 @@ class PlayerViewModel @Inject constructor(
                 it.totalDuration,
                 false
             )
-        } ?: run {
-            kalamInfo.value
         }
     }
 
@@ -336,6 +332,10 @@ class PlayerViewModel @Inject constructor(
         )
     }
 
+    private fun updateKalamInfo(updatedKalamInfo: KalamInfo?) {
+        kalamInfo.postValue(updatedKalamInfo)
+    }
+
     override fun onStateChange(mediaState: MediaState) {
 
         val newKalamInfo = when (mediaState) {
@@ -350,6 +350,6 @@ class PlayerViewModel @Inject constructor(
             else -> kalamInfo.value
         }
 
-        kalamInfo.postValue(newKalamInfo)
+        updateKalamInfo(newKalamInfo)
     }
 }
