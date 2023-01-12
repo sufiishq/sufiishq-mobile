@@ -1,8 +1,8 @@
 package pk.sufiishq.app.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -22,7 +22,6 @@ import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
-import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
@@ -36,21 +35,20 @@ import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrat
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.utils.app
 import pk.sufiishq.app.utils.copyWithDefaults
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
 
 @HiltViewModel
 class KalamViewModel @Inject constructor(
+    private val app: Application,
     private val kalamRepository: KalamRepository,
     private val kalamSplitManager: KalamSplitManager,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val kalamDeleteStrategyFactory: KalamDeleteStrategyFactory,
     private val favoriteChangeFactory: FavoriteChangeFactory
-) : ViewModel(), KalamDataProvider, EventHandler {
+) : BaseViewModel(app), KalamDataProvider {
 
-    private val appContext = app()
     private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
     private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
     private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
@@ -118,8 +116,8 @@ class KalamViewModel @Inject constructor(
                 kalamDeleteStrategyFactory.create(kalamDeleteItem.trackListType.type)
                     .delete(kalamDeleteItem.kalam)
             } else {
-                appContext.toast(
-                    appContext.getString(R.string.error_kalam_delete_on_playing)
+                app.toast(
+                    app.getString(R.string.error_kalam_delete_on_playing)
                         .format(kalamDeleteItem.kalam.title)
                 )
             }
@@ -148,14 +146,14 @@ class KalamViewModel @Inject constructor(
             kalamRepository.insert(kalam)
         }
 
-        File(appContext.filesDir, fileName).apply {
+        File(app.filesDir, fileName).apply {
             splitFile.moveTo(this)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         }
 
-        appContext.toast(appContext.getString(R.string.kalam_saved_label).format(kalamTitle))
+        app.toast(app.getString(R.string.kalam_saved_label).format(kalamTitle))
     }
 
     private fun markAsFavorite(kalam: Kalam) {

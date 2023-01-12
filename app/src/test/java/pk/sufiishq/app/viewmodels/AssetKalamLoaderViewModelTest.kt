@@ -1,6 +1,6 @@
 package pk.sufiishq.app.viewmodels
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.coEvery
@@ -27,7 +27,7 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
 
     private lateinit var assetKalamLoaderViewModel: AssetKalamLoaderViewModel
     private lateinit var kalamRepository: KalamRepository
-    private lateinit var context: Context
+    private lateinit var context: Application
 
     @Before
     fun setUp() {

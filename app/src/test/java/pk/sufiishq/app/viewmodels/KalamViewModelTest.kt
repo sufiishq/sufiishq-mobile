@@ -23,6 +23,7 @@ import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.util.ReflectionHelpers.callInstanceMethod
 import pk.sufiishq.app.R
+import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
@@ -55,7 +56,7 @@ class KalamViewModelTest : SufiIshqTest() {
     private lateinit var favoriteChangeFactory: FavoriteChangeFactory
     private lateinit var eventDispatcher: EventDispatcher
     private lateinit var realContext: Context
-    private lateinit var appContext: Context
+    private lateinit var appContext: SufiIshqApp
 
     @Before
     fun setUp() {
@@ -74,6 +75,7 @@ class KalamViewModelTest : SufiIshqTest() {
         every { EventDispatcher.getInstance() } returns eventDispatcher
         every { eventDispatcher.registerEventHandler(any()) } returns Unit
         kalamViewModel = KalamViewModel(
+            appContext,
             kalamRepository,
             kalamSplitManager,
             audioPlayer,
