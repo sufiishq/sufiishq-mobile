@@ -1,9 +1,5 @@
 package pk.sufiishq.app.core.help
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -38,22 +34,14 @@ class InAppHelpContentResolver @Inject constructor(
 
     }.flowOn(Dispatchers.IO)
 
-    fun transform(data: String): @Composable () -> Unit = {
+    private fun transform(data: String): HelpData {
 
-        /*
-            transform each line here and build composable according to the tag
-            for example: simple text = Text() @divider = Divider()
-            for simplicity create separate function for each transformation
-         */
+        // for example transform text to paragraph based on data
+        return HelpData.Paragraph(data)
 
-        // for example
-        Column {
-            Text(text = data)
-            Divider()
-        }
     }
 
-    fun JSONObject.getJSONObjectAsList(key: String): List<JSONObject> {
+    private fun JSONObject.getJSONObjectAsList(key: String): List<JSONObject> {
         val list = mutableListOf<JSONObject>()
         val jsonArray = getJSONArray(key)
         (0..jsonArray.length().minus(1)).onEach {
@@ -62,7 +50,7 @@ class InAppHelpContentResolver @Inject constructor(
         return list
     }
 
-    fun JSONArray.asStringList(): List<String> {
+    private fun JSONArray.asStringList(): List<String> {
         val list = mutableListOf<String>()
         (0..length().minus(1)).onEach {
             list.add(getString(it))

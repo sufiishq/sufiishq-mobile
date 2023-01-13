@@ -1,8 +1,8 @@
 package pk.sufiishq.app.models
 
-import androidx.compose.runtime.Composable
+import pk.sufiishq.app.core.help.HelpData
 
 data class HelpContent(
     val title: String,
-    val content: List<@Composable () -> Unit>
+    val content: List<HelpData>
 )

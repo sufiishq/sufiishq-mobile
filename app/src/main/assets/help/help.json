@@ -9,7 +9,7 @@
                 "@{'divider': true, 'height': 1}",
                 "another paragraph",
                 "@{'spacer': 300}",
-                "another paragraph with some **bold** and _italic_ words another word with color Hi!  @{'color': '#0000FF', 'text': 'im a blue'}"
+                "another paragraph with some **bold** and _italic_ words"
             ]
         },
         {
