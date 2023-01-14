@@ -1,5 +1,6 @@
 package pk.sufiishq.app.ui.screen
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,8 +11,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +43,7 @@ import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.ui.components.MainNavigationButton
 import pk.sufiishq.app.ui.components.SIAnimatedLog
 import pk.sufiishq.app.ui.components.TileAndroidImage
 import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
@@ -84,7 +89,7 @@ fun DashboardView(
                 .fillMaxSize()
         ) {
 
-            val (logo, calligraphy, themeChangeButton, btnUpdate, buttonBox, debugLabel) = createRefs()
+            val (logo, calligraphy, themeChangeButton, btnUpdate, buttonBox, debugLabel, navButton) = createRefs()
 
 
             SIAnimatedLog(
@@ -102,7 +107,7 @@ fun DashboardView(
                 modifier = Modifier.constrainAs(calligraphy) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(buttonBox.top, 12.dp)
+                    bottom.linkTo(navButton.top, 12.dp)
                 },
                 painter = painterResource(id = R.drawable.caligraphi),
                 contentDescription = null
@@ -145,6 +150,15 @@ fun DashboardView(
                 )
             }
 
+            var bgColor = Color(233, 233, 233, 255)
+            var fgColor = Color(24, 24, 24, 255)
+
+            if (isDarkThem()) {
+                bgColor = Color(34, 34, 34, 255)
+                fgColor = Color(247, 247, 247, 255)
+            }
+
+            // main buttons
             Box(
                 modifier = Modifier
                     .constrainAs(buttonBox) {
@@ -160,6 +174,8 @@ fun DashboardView(
                     ) {
 
                         TrackButton(
+                            bgColor = bgColor,
+                            textColor = fgColor,
                             title = all,
                             count = homeDataProvider.countAll().observeAsState().optValue(0),
                             icon = R.drawable.ic_outline_check_circle_24,
@@ -175,6 +191,8 @@ fun DashboardView(
                         }
 
                         TrackButton(
+                            bgColor = bgColor,
+                            textColor = fgColor,
                             title = favorites,
                             count = homeDataProvider.countFavorites().observeAsState().optValue(0),
                             icon = R.drawable.ic_outline_favorite_border_24,
@@ -196,6 +214,8 @@ fun DashboardView(
                     ) {
 
                         TrackButton(
+                            bgColor = bgColor,
+                            textColor = fgColor,
                             title = downloads,
                             count = homeDataProvider.countDownloads().observeAsState().optValue(0),
                             icon = R.drawable.ic_outline_cloud_download_24,
@@ -211,6 +231,8 @@ fun DashboardView(
                         }
 
                         TrackButton(
+                            bgColor = bgColor,
+                            textColor = fgColor,
                             title = playlist,
                             count = homeDataProvider.countPlaylist().observeAsState().optValue(0),
                             icon = R.drawable.ic_outline_playlist_play_24,
@@ -221,26 +243,36 @@ fun DashboardView(
                     }
                 }
             }
+
+            // navigation menu button
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.constrainAs(navButton) {
+                    start.linkTo(buttonBox.start)
+                    top.linkTo(buttonBox.top, margin = (-35).dp)
+                    end.linkTo(buttonBox.end)
+                },
+            ) {
+                MainNavigationButton(
+                    backgroundColor = backgroundColor,
+                    bgColor = bgColor,
+                    fgColor = fgColor
+                )
+            }
         }
     }
 }
 
 @Composable
 fun TrackButton(
+    bgColor: Color,
+    textColor: Color,
     title: String,
     count: Int,
     icon: Int,
     iconColor: Color,
     navigate: () -> Unit
 ) {
-
-    var bgColor = Color(233, 233, 233, 255)
-    var textColor = Color(24, 24, 24, 255)
-
-    if (isDarkThem()) {
-        bgColor = Color(34, 34, 34, 255)
-        textColor = Color(247, 247, 247, 255)
-    }
 
     Box(modifier = Modifier
         .padding(6.dp)
