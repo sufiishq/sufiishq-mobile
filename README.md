@@ -100,7 +100,7 @@ All submissions, including submissions by project members, require review. We us
 
 ### Add new feature
 1. Open an issue first to discuss what you would like to change.
-2. Create your feature branch (`git checkout -b feature/issue-{github-issue-number}`) same pattern goes for `bugfix/issue-{github-issue-number}` and `hotfix/issue-{github-issue-number}`. 
+2. Create your feature branch (`git checkout -b feature/issue-{github-issue-number}, bugfix/issue-{github-issue-number}, hotfix/issue-{github-issue-number}`). 
 3. Commit your changes (`git commit -m 'Add some message'`)
 4. Push to the branch (`git push origin feature/your-feature`)
 5. Open a pull request
