@@ -36,9 +36,24 @@ class InAppHelpContentResolver @Inject constructor(
 
     private fun transform(data: String): HelpData {
 
-        // for example transform text to paragraph based on data
-        return HelpData.Paragraph(data)
+        if (data.contains("'image':")) {
+            val obj = JSONObject(data.replace("@", ""));
+            val image = obj.getString("image")
+            return HelpData.Photo(image)
+        }
+        else if (data.contains("'divider':")) {
+            val obj = JSONObject(data.replace("@", ""));
+            val divider = obj.getBoolean("divider")
+            val height = obj.getInt("height")
+            return HelpData.Divider(divider, height)
+        }
+        else if (data.contains("'spacer':")) {
+            val obj = JSONObject(data.replace("@", ""));
+            val spacer = obj.getInt("spacer")
+            return HelpData.Spacer(spacer)
+        }
 
+        return HelpData.Paragraph(data)
     }
 
     private fun JSONObject.getJSONObjectAsList(key: String): List<JSONObject> {

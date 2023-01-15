@@ -8,8 +8,8 @@
                 "another paragraph",
                 "@{'divider': true, 'height': 1}",
                 "another paragraph",
-                "@{'spacer': 300}",
-                "another paragraph with some **bold** and _italic_ words"
+                "@{'spacer': 10}",
+                "another paragraph with some **bold** and __italic__ words"
             ]
         },
         {

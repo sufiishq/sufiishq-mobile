@@ -7,17 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
-import pk.sufiishq.app.data.providers.HomeDataProvider
-import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlayerDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.core.help.HelpData
+import pk.sufiishq.app.data.providers.*
 import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.KalamSplitManager
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamDeleteItem
-import pk.sufiishq.app.models.KalamInfo
-import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.models.*
 
 // ----------------------------------------- //
 // PLAYER DATA PROVIDER
@@ -136,5 +131,28 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
 fun dummyGlobalEventHandler(): GlobalEventHandler {
     return GlobalEventHandler(
         InAppUpdateManager()
+    )
+}
+
+// ----------------------------------------- //
+// HELP DATA PROVIDER
+// ----------------------------------------- //
+
+@ExcludeFromJacocoGeneratedReport
+fun dummyHelpDataProvider() = object : HelpDataProvider {
+
+    override fun getHelpContent(): LiveData<List<HelpContent>> = MutableLiveData(
+        listOf(
+            HelpContent("First Title", listOf(
+                HelpData.Paragraph("some paragraph"),
+                HelpData.Photo("Path"),
+                HelpData.Paragraph("another paragraph"),
+                HelpData.Divider(true, 2),
+                HelpData.Paragraph("another paragraph"),
+                HelpData.Spacer(10),
+                HelpData.Paragraph("another paragraph with some **bold** and __italic__ words")
+            )),
+            HelpContent("Second Title", listOf(HelpData.Paragraph("Test 2")))
+        )
     )
 }
