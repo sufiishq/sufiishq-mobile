@@ -14,8 +14,8 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import javax.inject.Inject
 import javax.inject.Singleton
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.utils.dispatch
 
 @Singleton
 class InAppUpdateManager @Inject constructor() {
@@ -40,7 +40,7 @@ class InAppUpdateManager @Inject constructor() {
                 this.appUpdateInfo = appUpdateInfo
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    EventDispatcher.getInstance().dispatch(GlobalEvents.ShowUpdateButton(true))
+                    GlobalEvents.ShowUpdateButton(true).dispatch()
                 } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                     popupSnackbarForCompleteUpdate(activity)
                 }

@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
-import pk.sufiishq.app.core.event.events.PlaylistEvents
+import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.toast
 
 @Composable
@@ -30,8 +30,6 @@ fun PlaylistDialog(
 
     if (showPlaylistDialog.value != null) {
 
-        val eventDispatcher = EventDispatcher.getInstance()
-
         val context = LocalContext.current
         val kalam = showPlaylistDialog.value!!
 
@@ -41,7 +39,7 @@ fun PlaylistDialog(
             val playlistItems = playlistState.value!!
 
             SufiIshqDialog(onDismissRequest = {
-                eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
+                PlayerEvents.ShowPlaylistDialog(null).dispatch()
             }) {
 
                 Text(
@@ -62,13 +60,14 @@ fun PlaylistDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    eventDispatcher.dispatch(
-                                        PlaylistEvents.AddToPlaylist(
+                                    PlayerEvents
+                                        .AddKalamInPlaylist(
                                             kalam,
                                             item
                                         )
-                                    )
-                                    eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
+                                        .dispatch(
+                                            PlayerEvents.ShowPlaylistDialog(null)
+                                        )
                                 },
                         ) {
 
@@ -86,7 +85,7 @@ fun PlaylistDialog(
             }
         } else {
             context.toast("No playlist found")
-            eventDispatcher.dispatch(PlaylistEvents.ShowPlaylistDialog(null))
+            PlayerEvents.ShowPlaylistDialog(null).dispatch()
         }
     }
 }

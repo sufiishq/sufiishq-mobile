@@ -3,6 +3,7 @@ package pk.sufiishq.app.core.event.events
 import pk.sufiishq.app.core.downloader.KalamDownloadState
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 
 abstract class PlayerEvents : Event(PlayerViewModel::class) {
@@ -16,5 +17,9 @@ abstract class PlayerEvents : Event(PlayerViewModel::class) {
     class ChangeDownloadState(val downloadState: KalamDownloadState) : Event(PlayerViewModel::class)
     class StartDownload(val kalam: Kalam) : Event(PlayerViewModel::class)
     class ChangeTrack(val kalam: Kalam, val trackListType: TrackListType) :
+        Event(PlayerViewModel::class)
+
+    class ShowPlaylistDialog(val kalam: Kalam?) : Event(PlayerViewModel::class)
+    class AddKalamInPlaylist(val kalam: Kalam, val playlist: Playlist) :
         Event(PlayerViewModel::class)
 }

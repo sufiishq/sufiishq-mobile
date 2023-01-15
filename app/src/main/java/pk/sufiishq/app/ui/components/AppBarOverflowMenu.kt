@@ -18,15 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.rem
 
 @Composable
 fun AppBarOverflowMenu() {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val showOverflowMenu = rem(false)
     val context = LocalContext.current
 
@@ -58,7 +57,7 @@ fun AppBarOverflowMenu() {
             drawableId = R.drawable.ic_round_share_24,
             onClick = {
                 showOverflowMenu.value = false
-                eventDispatcher.dispatch(GlobalEvents.ShareApp(context))
+                GlobalEvents.ShareApp(context).dispatch()
             }
         )
 
@@ -67,12 +66,10 @@ fun AppBarOverflowMenu() {
             drawableId = R.drawable.ic_round_groups_24,
             onClick = {
                 showOverflowMenu.value = false
-                eventDispatcher.dispatch(
-                    GlobalEvents.OpenFacebookGroup(
-                        context,
-                        "https://www.facebook.com/groups/375798102574085"
-                    )
-                )
+                GlobalEvents.OpenFacebookGroup(
+                    context,
+                    "https://www.facebook.com/groups/375798102574085"
+                ).dispatch()
             }
         )
     }

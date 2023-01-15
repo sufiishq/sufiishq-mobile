@@ -29,15 +29,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.data.providers.HomeDataProvider
-import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.SIAnimatedLog
 import pk.sufiishq.app.ui.components.TileAndroidImage
@@ -45,19 +45,21 @@ import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
 import pk.sufiishq.app.ui.components.buttons.UpdateButton
 import pk.sufiishq.app.ui.components.dialogs.SufiIshqDialog
 import pk.sufiishq.app.utils.MenuIconColors
-import pk.sufiishq.app.utils.dummyGlobalEventHandler
+import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.utils.dummyGlobalDataProvider
 import pk.sufiishq.app.utils.dummyHomeDataProvider
 import pk.sufiishq.app.utils.isDarkThem
 import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.viewmodels.GlobalViewModel
+import pk.sufiishq.app.viewmodels.HomeViewModel
 
 @Composable
 fun DashboardView(
     navController: NavController,
-    homeDataProvider: HomeDataProvider,
-    globalEventHandler: GlobalEventHandler
+    homeDataProvider: HomeDataProvider = hiltViewModel<HomeViewModel>(),
+    globalDataProvider: GlobalDataProvider = hiltViewModel<GlobalViewModel>()
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val backgroundColor = if (isDarkThem()) Color(0xFF444444) else Color(0xFFD2D4D5)
 
     val all = stringResource(R.string.all)
@@ -118,14 +120,14 @@ fun DashboardView(
             )
 
             UpdateButton(
-                show = globalEventHandler.getShowUpdateButton().observeAsState(),
+                show = globalDataProvider.getShowUpdateButton().observeAsState(),
                 modifier = Modifier
                     .constrainAs(btnUpdate) {
                         start.linkTo(parent.start, 12.dp)
                         top.linkTo(parent.top, 12.dp)
                     }
             ) {
-                eventDispatcher.dispatch(GlobalEvents.StartUpdateFlow)
+                GlobalEvents.StartUpdateFlow.dispatch()
             }
 
             if (BuildConfig.DEBUG) {
@@ -216,7 +218,7 @@ fun DashboardView(
                             icon = R.drawable.ic_outline_playlist_play_24,
                             iconColor = MenuIconColors.PLAYLIST
                         ) {
-                            navController.navigate(ScreenType.Playlist.route)
+                            navController.navigate(ScreenType.Playlist.route())
                         }
                     }
                 }
@@ -297,7 +299,7 @@ fun LightPreviewDashboardView() {
         DashboardView(
             navController = rememberNavController(),
             homeDataProvider = dummyHomeDataProvider(),
-            globalEventHandler = dummyGlobalEventHandler()
+            globalDataProvider = dummyGlobalDataProvider()
         )
     }
 }

@@ -17,7 +17,7 @@ class MainActivity : BaseActivity() {
 
         setContent {
             SufiIshqTheme {
-                MainView(homeViewModel, globalEventHandler)
+                MainView()
             }
         }
     }

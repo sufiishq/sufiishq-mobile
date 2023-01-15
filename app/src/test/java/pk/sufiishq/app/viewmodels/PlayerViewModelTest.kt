@@ -1,6 +1,7 @@
 package pk.sufiishq.app.viewmodels
 
 import android.content.Context
+import android.os.Looper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
@@ -24,12 +25,14 @@ import java.io.File
 import java.net.SocketException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.robolectric.Shadows
 import org.robolectric.util.ReflectionHelpers
 import org.robolectric.util.ReflectionHelpers.callInstanceMethod
 import org.robolectric.util.ReflectionHelpers.getField
@@ -46,11 +49,13 @@ import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.FileInfo
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.IS_SHUFFLE_ON
 import pk.sufiishq.app.utils.canPlay
 import pk.sufiishq.app.utils.isOfflineFileExists
@@ -65,6 +70,7 @@ class PlayerViewModelTest : SufiIshqTest() {
     private val app = mockApp()
     private val player = mockk<SufiishqMediaPlayer>()
     private val kalamRepository = mockk<KalamRepository>()
+    private val playlistRepository = mockk<PlaylistRepository>()
     private val fileDownloader = mockk<FileDownloader>()
     private val storage = mockk<SecureSharedPreferencesStorage>()
     private val appConfig = mockk<AppConfig>()
@@ -77,7 +83,8 @@ class PlayerViewModelTest : SufiIshqTest() {
         every { app.appConfig } returns appConfig
         every { storage.get(IS_SHUFFLE_ON, false) } returns false
         every { player.registerListener(any()) } returns true
-        playerViewModel = PlayerViewModel(app, player, fileDownloader, kalamRepository)
+        playerViewModel =
+            PlayerViewModel(app, player, fileDownloader, kalamRepository, playlistRepository)
 
         setIdleKalamInfo()
     }
@@ -427,6 +434,36 @@ class PlayerViewModelTest : SufiIshqTest() {
     @Test(expected = UnhandledEventException::class)
     fun test_onEvent_shouldThrow_UnhandledEventException_whenUnknownEventReceived() {
         playerViewModel.onEvent(GlobalEvents.StartUpdateFlow)
+    }
+
+    @Test
+    fun testShouldPlaylistDialog_shouldVerify_isShow() {
+        playerViewModel.onEvent(PlayerEvents.ShowPlaylistDialog(sampleKalam()))
+
+        Shadows.shadowOf(Looper.getMainLooper()).idle()
+        playerViewModel.getShowPlaylistDialog().observe(mockLifecycleOwner()) {
+            Assert.assertNotNull(it)
+            assertEquals(sampleKalam().id, it?.id)
+        }
+    }
+
+    @Test
+    fun testAddToPlaylist_shouldAdd_playlistInDatabase() {
+        mockkStatic(Context::toast)
+        every { app.toast(any()) } returns Unit
+
+        launchViewModelScope(playerViewModel) { slot ->
+            coEvery { kalamRepository.update(any()) } returns Unit
+
+            val kalam = sampleKalam()
+            val playlist = Playlist(2, "Faisalabad")
+
+            playerViewModel.onEvent(PlayerEvents.AddKalamInPlaylist(kalam, playlist))
+            slot.invoke()
+
+            assertEquals(kalam.playlistId, playlist.id)
+            verify { app.toast("${kalam.title} added in ${playlist.title} Playlist") }
+        }
     }
 
     private fun setIdleKalamInfo() {

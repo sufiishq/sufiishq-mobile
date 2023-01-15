@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.components.OutlinedTextFieldValidation
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.ifNotEmpty
 import pk.sufiishq.app.utils.rem
 
@@ -28,7 +28,6 @@ fun KalamRenameDialog(
 
     kalamState.value?.apply {
 
-        val eventDispatcher = EventDispatcher.getInstance()
         val kalamTitle = rem(title)
         val error = rem(title.checkValue("", "Title cannot be empty"))
 
@@ -62,7 +61,7 @@ fun KalamRenameDialog(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = {
-                    eventDispatcher.dispatch(KalamEvents.ShowKalamRenameDialog(null))
+                    KalamEvents.ShowKalamRenameDialog(null).dispatch()
                 }) {
                     Text(text = "Cancel")
                 }
@@ -82,12 +81,5 @@ fun KalamRenameDialog(
 private fun updateKalam(
     kalam: Kalam
 ) {
-    EventDispatcher.getInstance().dispatch(
-
-        // update kalam
-        KalamEvents.UpdateKalam(kalam),
-
-        // hide dialog
-        KalamEvents.ShowKalamRenameDialog(null)
-    )
+    KalamEvents.UpdateKalam(kalam).dispatch(KalamEvents.ShowKalamRenameDialog(null))
 }

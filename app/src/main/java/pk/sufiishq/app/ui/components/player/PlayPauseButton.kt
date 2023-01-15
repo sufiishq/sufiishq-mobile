@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.utils.dispatch
 
 @Composable
 fun PlayPauseButton(
@@ -40,7 +40,7 @@ fun PlayPauseButton(
             )
         } else {
             IconButton(onClick = {
-                EventDispatcher.getInstance().dispatch(PlayerEvents.PlayPauseEvent)
+                PlayerEvents.PlayPauseEvent.dispatch()
             }) {
                 Icon(
                     modifier = Modifier.size(25.dp),

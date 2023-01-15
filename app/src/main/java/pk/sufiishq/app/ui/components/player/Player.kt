@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Colors
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
@@ -28,30 +27,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.PlayerEvents
-import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.ui.components.MarqueeText
 import pk.sufiishq.app.ui.components.PopupMenuLabel
 import pk.sufiishq.app.ui.components.buttons.SimpleIconButton
+import pk.sufiishq.app.ui.components.dialogs.KalamDownloadCompletedDialog
+import pk.sufiishq.app.ui.components.dialogs.KalamDownloadErrorDialog
+import pk.sufiishq.app.ui.components.dialogs.KalamDownloadInProgressDialog
+import pk.sufiishq.app.ui.components.dialogs.KalamDownloadStartedDialog
+import pk.sufiishq.app.ui.components.dialogs.PlaylistDialog
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyPlayerDataProvider
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.app.utils.isDarkThem
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.viewmodels.PlayerViewModel
 
 @Composable
 fun Player(
-    matColors: Colors,
-    playerDataProvider: PlayerDataProvider
-) {
+    playerDataProvider: PlayerDataProvider = hiltViewModel<PlayerViewModel>(),
 
-    val eventDispatcher = EventDispatcher.getInstance()
+    ) {
+
+    val matColors = MaterialTheme.colors
     var backgroundColor = Color(219, 219, 219, 255)
     var contentColor = Color(43, 43, 43, 255)
 
@@ -82,13 +87,11 @@ fun Player(
             value = kalamInfo?.currentProgress?.toFloat() ?: 0f,
             valueRange = 0f..(kalamInfo?.totalDuration?.toFloat() ?: 0f),
             enabled = kalamInfo?.enableSeekbar ?: false,
-            onValueChange = { eventDispatcher.dispatch(PlayerEvents.UpdateSeekbar(it)) },
+            onValueChange = { PlayerEvents.UpdateSeekbar(it).dispatch() },
             onValueChangeFinished = {
-                eventDispatcher.dispatch(
-                    PlayerEvents.SeekbarChanged(
-                        kalamInfo?.currentProgress ?: 0
-                    )
-                )
+                PlayerEvents.SeekbarChanged(
+                    kalamInfo?.currentProgress ?: 0
+                ).dispatch()
             })
 
         Column(
@@ -155,14 +158,14 @@ fun Player(
                     resId = drawable,
                     tint = contentColor
                 ) {
-                    eventDispatcher.dispatch(PlayerEvents.ChangeShuffle)
+                    PlayerEvents.ChangeShuffle.dispatch()
                 }
 
                 SimpleIconButton(
                     resId = R.drawable.ic_round_keyboard_double_arrow_left_24,
                     tint = contentColor
                 ) {
-                    eventDispatcher.dispatch(PlayerEvents.PlayPrevious)
+                    PlayerEvents.PlayPrevious.dispatch()
                 }
 
                 PlayPauseButton(
@@ -174,7 +177,7 @@ fun Player(
                     resId = R.drawable.ic_round_keyboard_double_arrow_right_24,
                     tint = contentColor
                 ) {
-                    eventDispatcher.dispatch(PlayerEvents.PlayNext)
+                    PlayerEvents.PlayNext.dispatch()
                 }
 
                 Box {
@@ -214,26 +217,17 @@ fun Player(
                                 DropdownMenuItem(onClick = {
                                     showMenu.value = false
                                     when (label) {
-                                        labelAddToPlaylist -> eventDispatcher.dispatch(
-                                            PlaylistEvents.ShowPlaylistDialog(
-                                                activeKalam
-                                            )
-                                        )
-                                        labelMarkAsFavorite -> eventDispatcher.dispatch(
-                                            KalamEvents.MarkAsFavoriteKalam(
-                                                activeKalam
-                                            )
-                                        )
-                                        labelRemoveFavorite -> eventDispatcher.dispatch(
-                                            KalamEvents.RemoveFavoriteKalam(
-                                                activeKalam
-                                            )
-                                        )
-                                        labelDownload -> eventDispatcher.dispatch(
-                                            PlayerEvents.StartDownload(
-                                                activeKalam
-                                            )
-                                        )
+                                        labelAddToPlaylist -> PlayerEvents.ShowPlaylistDialog(
+                                            activeKalam
+                                        ).dispatch()
+                                        labelMarkAsFavorite -> KalamEvents.MarkAsFavoriteKalam(
+                                            activeKalam
+                                        ).dispatch()
+                                        labelRemoveFavorite -> KalamEvents.RemoveFavoriteKalam(
+                                            activeKalam
+                                        ).dispatch()
+                                        labelDownload -> PlayerEvents.StartDownload(activeKalam)
+                                            .dispatch()
                                     }
                                 }) {
                                     PopupMenuLabel(label = label)
@@ -251,6 +245,34 @@ fun Player(
 
         }
     }
+
+    val kalamDownloadState = playerDataProvider.getKalamDownloadState().observeAsState()
+
+    // kalam download start dialog
+    KalamDownloadStartedDialog(
+        kalamDownloadState = kalamDownloadState
+    )
+
+    // kalam download in-progress dialog
+    KalamDownloadInProgressDialog(
+        kalamDownloadState = kalamDownloadState
+    )
+
+    // kalam download completed dialog
+    KalamDownloadCompletedDialog(
+        kalamDownloadState = kalamDownloadState
+    )
+
+    // kalam download error dialog
+    KalamDownloadErrorDialog(
+        kalamDownloadState = kalamDownloadState
+    )
+
+    // playlist dialog
+    PlaylistDialog(
+        playlistState = playerDataProvider.getAllPlaylist().observeAsState(),
+        showPlaylistDialog = playerDataProvider.getShowPlaylistDialog().observeAsState()
+    )
 }
 
 @ExcludeFromJacocoGeneratedReport
@@ -259,7 +281,6 @@ fun Player(
 fun PlayerPreviewLight() {
     SufiIshqTheme(darkTheme = false) {
         Player(
-            matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )
     }
@@ -271,7 +292,6 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     SufiIshqTheme(darkTheme = true) {
         Player(
-            matColors = MaterialTheme.colors,
             playerDataProvider = dummyPlayerDataProvider()
         )
     }

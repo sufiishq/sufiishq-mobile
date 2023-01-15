@@ -7,35 +7,23 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
-import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.Playlist
-import pk.sufiishq.app.utils.toast
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
-    private val app: Application,
+    app: Application,
     private val playlistRepository: PlaylistRepository,
     private val kalamRepository: KalamRepository
 ) : BaseViewModel(app), PlaylistDataProvider {
 
-    init {
-        EventDispatcher.getInstance().registerEventHandler(this)
-    }
-
-    private val showPlaylistDialog = MutableLiveData<Kalam?>(null)
     private val showAddUpdatePlaylistDialog = MutableLiveData<Playlist?>(null)
     private val showConfirmPlaylistDeleteDialog = MutableLiveData<Playlist?>(null)
-
-    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
-        return showPlaylistDialog
-    }
 
     override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
         return showAddUpdatePlaylistDialog
@@ -53,10 +41,6 @@ class PlaylistViewModel @Inject constructor(
         viewModelScope.launch {
             playlistRepository.add(playlist)
         }
-    }
-
-    private fun setShowPlaylistDialog(kalam: Kalam?) {
-        showPlaylistDialog.postValue(kalam)
     }
 
     private fun setShowPlaylistAddUpdateDialog(playlist: Playlist?) {
@@ -89,22 +73,12 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    private fun addToPlaylist(kalam: Kalam, playlist: Playlist) {
-        viewModelScope.launch {
-            kalam.playlistId = playlist.id
-            kalamRepository.update(kalam)
-            app.toast("${kalam.title} added in ${playlist.title} Playlist")
-        }
-    }
-
     /*=======================================*/
     // HANDLE PLAYLIST EVENTS
     /*=======================================*/
 
     override fun onEvent(event: Event) {
         when (event) {
-            is PlaylistEvents.ShowPlaylistDialog -> setShowPlaylistDialog(event.kalam)
-            is PlaylistEvents.AddToPlaylist -> addToPlaylist(event.kalam, event.playlist)
             is PlaylistEvents.ShowAddUpdatePlaylistDialog -> setShowPlaylistAddUpdateDialog(event.playlist)
             is PlaylistEvents.ShowConfirmDeletePlaylistDialog -> setShowPlaylistConfirmDeleteDialog(
                 event.playlist
