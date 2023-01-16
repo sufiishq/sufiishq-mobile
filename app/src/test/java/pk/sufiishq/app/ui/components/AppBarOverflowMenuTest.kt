@@ -8,6 +8,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.performClick
 import io.mockk.every
+import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.Rule
@@ -25,7 +26,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test overflow menu button should be exists and visible by default`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(mockk())
         }
 
         // acquire overflow menu button node
@@ -45,7 +46,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test dropdown menu should be visible when overflow menu button clicked`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(mockk())
         }
 
         // acquire dropdown menu node
@@ -65,7 +66,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test dispatch even should be as ShareApp when ShareApp menu item clicked`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(mockk())
         }
 
         val eventDispatcher = mockEventDispatcher()
@@ -90,7 +91,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test dispatch even should be as OpenFacebookGroup when OpenFacebookGroup menu item clicked`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(mockk())
         }
 
         val eventDispatcher = mockEventDispatcher()
