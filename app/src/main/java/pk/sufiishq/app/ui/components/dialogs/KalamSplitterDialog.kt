@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
 import pk.sufiishq.app.helpers.KalamSplitManager
@@ -90,7 +89,6 @@ private fun SplitView(
     kalamSplitManager: KalamSplitManager
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val splitStart = kalamSplitManager.getSplitStart().observeAsState()
     val splitEnd = kalamSplitManager.getSplitEnd().observeAsState()
     val kalamLength = kalamSplitManager.getKalamLength().observeAsState()
@@ -108,14 +106,8 @@ private fun SplitView(
                     (start == end) -> end = end.plus(1000)
                 }
 
-                eventDispatcher.dispatch(
-
-                    // start position
-                    KalamSplitManagerEvents.SetSplitStart(start),
-
-                    // end position
-                    KalamSplitManagerEvents.SetSplitEnd(end)
-                )
+                KalamSplitManagerEvents.SetSplitStart(start)
+                    .dispatch(KalamSplitManagerEvents.SetSplitEnd(end))
             },
             valueRange = 0f..kalamLength.optValue(0).toFloat()
         )
@@ -136,10 +128,10 @@ private fun SplitView(
         horizontalArrangement = Arrangement.End
     ) {
 
-        TextButton(onClick = { eventDispatcher.dispatch(KalamEvents.ShowKalamSplitManagerDialog(null)) }) {
+        TextButton(onClick = { KalamEvents.ShowKalamSplitManagerDialog(null).dispatch() }) {
             Text(text = "Cancel")
         }
-        TextButton(onClick = { eventDispatcher.dispatch(KalamSplitManagerEvents.StartPreview) }) {
+        TextButton(onClick = { KalamSplitManagerEvents.StartPreview.dispatch() }) {
             Text(text = "Preview")
         }
     }
@@ -150,7 +142,6 @@ private fun SplitSuccessView(
     kalamSplitManager: KalamSplitManager
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val previewPlayStart = kalamSplitManager.getPreviewPlayStart().observeAsState()
     val previewKalamProgress = kalamSplitManager.getPreviewKalamProgress().observeAsState()
     val kalamPreviewLength = kalamSplitManager.getKalamPreviewLength().observeAsState()
@@ -161,7 +152,7 @@ private fun SplitSuccessView(
                 modifier = Modifier
                     .width(35.dp)
                     .clickable {
-                        eventDispatcher.dispatch(KalamSplitManagerEvents.PlayPreview)
+                        KalamSplitManagerEvents.PlayPreview.dispatch()
                     },
                 painter = painterResource(id = if (previewPlayStart.optValue(false)) R.drawable.ic_pause else R.drawable.ic_play),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
@@ -173,7 +164,7 @@ private fun SplitSuccessView(
                 valueRange = 0f..kalamPreviewLength.optValue(0).toFloat(),
                 enabled = true,
                 onValueChange = {
-                    eventDispatcher.dispatch(KalamSplitManagerEvents.UpdateSeekbar(it))
+                    KalamSplitManagerEvents.UpdateSeekbar(it).dispatch()
                 })
         }
     }
@@ -194,13 +185,13 @@ private fun SplitSuccessView(
     ) {
 
         TextButton(onClick = {
-            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitCompleted()))
+            KalamSplitManagerEvents.SetSplitStatus(SplitCompleted()).dispatch()
         }) {
             Text(text = "Back")
         }
 
         TextButton(onClick = {
-            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitDone))
+            KalamSplitManagerEvents.SetSplitStatus(SplitDone).dispatch()
         }) {
             Text(text = "Done")
         }
@@ -212,7 +203,6 @@ private fun SplitDoneView(
     kalamSplitManager: KalamSplitManager
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val context = LocalContext.current
     val kalamTitle = rem("")
     val kalamTitleError = rem(false)
@@ -238,13 +228,11 @@ private fun SplitDoneView(
         ) {
 
             TextButton(onClick = {
-                eventDispatcher.dispatch(
-                    KalamSplitManagerEvents.SetSplitStatus(
-                        SplitCompleted(
-                            SPLIT_SUCCESS
-                        )
+                KalamSplitManagerEvents.SetSplitStatus(
+                    SplitCompleted(
+                        SPLIT_SUCCESS
                     )
-                )
+                ).dispatch()
             }) {
                 Text(text = "Back")
             }
@@ -254,14 +242,12 @@ private fun SplitDoneView(
                     context.toast("Kalam Title cannot be empty.")
                 } else {
 
-                    eventDispatcher.dispatch(
-
-                        // save split kalam
-                        KalamEvents.SaveSplitKalam(
-                            kalamSplitManager.getKalam(),
-                            kalamSplitManager.getSplitFile(),
-                            kalamTitle.value.trim()
-                        ),
+                    // save split kalam
+                    KalamEvents.SaveSplitKalam(
+                        kalamSplitManager.getKalam(),
+                        kalamSplitManager.getSplitFile(),
+                        kalamTitle.value.trim()
+                    ).dispatch(
 
                         // hide split dialog
                         KalamEvents.ShowKalamSplitManagerDialog(null)

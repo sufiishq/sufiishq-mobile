@@ -13,4 +13,5 @@ interface KalamDataProvider {
     fun getKalamDataFlow(): Flow<PagingData<Kalam>>
     fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?>
     fun getKalamRenameDialog(): LiveData<Kalam?>
+    fun getShowCircularProgressDialog(): LiveData<Boolean>
 }

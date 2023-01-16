@@ -25,7 +25,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.activities.BaseActivity
-import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
+import pk.sufiishq.app.core.event.events.Event
+import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.TagInfo
 import timber.log.Timber
@@ -45,15 +47,7 @@ fun Kalam.copyWithDefaults(
     isFavorite: Int = this.isFavorite,
     playlistId: Int = this.playlistId
 ) = Kalam(
-    id,
-    title,
-    code,
-    recordedDate,
-    location,
-    onlineSource,
-    offlineSource,
-    isFavorite,
-    playlistId
+    id, title, code, recordedDate, location, onlineSource, offlineSource, isFavorite, playlistId
 )
 
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
@@ -120,20 +114,13 @@ fun <T> LiveData<T>.asFlow(): Flow<T> = callbackFlow {
 
 fun Kalam.offlineFile(): File? {
     return takeIf { offlineSource.isNotEmpty() }?.let {
-        File(
-            buildString {
-                append(app().filesDir)
-                append(File.separator)
-                append(it.offlineSource)
-            }
-        )
+        File(buildString {
+            append(app().filesDir)
+            append(File.separator)
+            append(it.offlineSource)
+        })
     }
 }
-
-fun String.isAllType() = this == ScreenType.Tracks.ALL
-fun String.isDownloadsType() = this == ScreenType.Tracks.DOWNLOADS
-fun String.isFavoritesType() = this == ScreenType.Tracks.FAVORITES
-fun String.isPlaylistType() = this == ScreenType.Tracks.PLAYLIST
 
 fun annotateParagraph(text: String): AnnotatedString {
     val regex = Regex("__.*?__|\\*\\*.*?\\*\\*")
@@ -187,3 +174,12 @@ fun isDarkThem(): Boolean {
     }
 }
 
+fun <T : Event> T.dispatch(vararg with: T) {
+
+    // event dispatcher will throw an exception in preview mode
+    EventDispatcher.getInstance().dispatch(this, *with)
+}
+
+fun <T : EventHandler> T.registerEventHandler() {
+    EventDispatcher.getInstance().registerEventHandler(this)
+}

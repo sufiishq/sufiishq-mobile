@@ -11,17 +11,19 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.helpers.ScreenType
@@ -29,17 +31,26 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.components.KalamItem
 import pk.sufiishq.app.ui.components.SearchTextField
+import pk.sufiishq.app.ui.components.dialogs.KalamConfirmDeleteDialog
+import pk.sufiishq.app.ui.components.dialogs.KalamItemSplitDialog
+import pk.sufiishq.app.ui.components.dialogs.KalamRenameDialog
+import pk.sufiishq.app.ui.components.dialogs.ShowCircularProgressDialog
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyKalamDataProvider
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.viewmodels.KalamViewModel
 
 @Composable
 fun TracksView(
-    kalamDataProvider: KalamDataProvider,
+    kalamDataProvider: KalamDataProvider = hiltViewModel<KalamViewModel>(),
     trackListType: TrackListType
 ) {
 
-    EventDispatcher.getInstance().dispatch(KalamEvents.SearchKalam("", trackListType))
+    // skip dispatch event in preview mode
+    if (!LocalInspectionMode.current) {
+        KalamEvents.SearchKalam("", trackListType).dispatch()
+    }
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
@@ -126,6 +137,26 @@ fun TracksView(
             }
         }
     }
+
+    // kalam confirm delete dialog
+    KalamConfirmDeleteDialog(
+        kalamDeleteItem = kalamDataProvider.getKalamDeleteConfirmDialog().observeAsState()
+    )
+
+    // kalam split dialog
+    KalamItemSplitDialog(
+        kalamSplitManager = kalamDataProvider.getKalamSplitManagerDialog().observeAsState()
+    )
+
+    // kalam rename dialog
+    KalamRenameDialog(
+        kalamState = kalamDataProvider.getKalamRenameDialog().observeAsState(),
+    )
+
+    // show circular progress indicator dialog for shapre kalam
+    ShowCircularProgressDialog(
+        showDialog = kalamDataProvider.getShowCircularProgressDialog().observeAsState()
+    )
 }
 
 @ExcludeFromJacocoGeneratedReport

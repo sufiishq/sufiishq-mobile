@@ -1,6 +1,10 @@
 package pk.sufiishq.app.viewmodels
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import androidx.activity.ComponentActivity
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +12,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -17,7 +23,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
@@ -34,10 +39,14 @@ import pk.sufiishq.app.helpers.strategies.kalam.favorite.AddToFavoriteStrategy
 import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrategy
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
+import pk.sufiishq.app.utils.DEEPLINK_HOST
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.copyWithDefaults
+import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
+import timber.log.Timber
 
 @HiltViewModel
 class KalamViewModel @Inject constructor(
@@ -52,11 +61,7 @@ class KalamViewModel @Inject constructor(
     private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
     private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
     private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
-    private val eventDispatcher = EventDispatcher.getInstance()
-
-    init {
-        eventDispatcher.registerEventHandler(this)
-    }
+    private val showCircularProgressDialog = MutableLiveData(false)
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
@@ -75,6 +80,14 @@ class KalamViewModel @Inject constructor(
 
     override fun getKalamRenameDialog(): LiveData<Kalam?> {
         return showKalamRenameDialog
+    }
+
+    override fun getShowCircularProgressDialog(): LiveData<Boolean> {
+        return showCircularProgressDialog
+    }
+
+    private fun setCircularProgressDialog(isShow: Boolean) {
+        showCircularProgressDialog.postValue(isShow)
     }
 
     private fun setKalamRenameDialog(kalam: Kalam?) {
@@ -97,7 +110,7 @@ class KalamViewModel @Inject constructor(
         var splitManager: KalamSplitManager? = null
 
         kalam?.apply {
-            eventDispatcher.dispatch(KalamSplitManagerEvents.SetKalam(this))
+            KalamSplitManagerEvents.SetKalam(this).dispatch()
             splitManager = kalamSplitManager
         }
 
@@ -180,6 +193,42 @@ class KalamViewModel @Inject constructor(
         return player.getActiveTrack().id != kalam.id
     }
 
+    private fun shareKalam(kalam: Kalam, context: Context) {
+
+        if (ComponentActivity::class.java.isAssignableFrom(context.javaClass)) {
+            setCircularProgressDialog(true)
+
+            FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setLink("$DEEPLINK_HOST/kalam/${kalam.id}".toUri())
+                .setDomainUriPrefix(DEEPLINK_HOST)
+                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener { task ->
+                    setCircularProgressDialog(false)
+                    val appName = context.getString(R.string.app_name)
+                    Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_SUBJECT, kalam.title)
+                        putExtra(Intent.EXTRA_TEXT, task.shortLink.toString())
+                    }.also {
+                        context.startActivity(Intent.createChooser(it, "Share $appName"))
+                    }
+                }
+                .addOnFailureListener {
+                    setCircularProgressDialog(false)
+                    if (!context.isNetworkAvailable()) {
+                        context.toast(context.getString(R.string.no_network_connection))
+                    } else {
+                        context.toast(it.message ?: context.getString(R.string.unknown_error))
+                    }
+                    Timber.e(it)
+                }
+        } else {
+            throw IllegalArgumentException("context: $context is not an activity")
+        }
+    }
+
     /*=======================================*/
     // HANDLE KALAM EVENTS
     /*=======================================*/
@@ -200,6 +249,7 @@ class KalamViewModel @Inject constructor(
             is KalamEvents.RemoveFavoriteKalam -> removeFavorite(event.kalam)
             is KalamEvents.ShowKalamSplitManagerDialog -> setKalamSplitManagerDialog(event.kalam)
             is KalamEvents.ShowKalamRenameDialog -> setKalamRenameDialog(event.kalam)
+            is KalamEvents.ShareKalam -> shareKalam(event.kalam, event.context)
             else -> throw UnhandledEventException(event, this)
         }
     }

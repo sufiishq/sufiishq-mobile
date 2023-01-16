@@ -15,12 +15,12 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.components.OutlinedTextFieldValidation
 import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.ifNotEmpty
 import pk.sufiishq.app.utils.rem
 
@@ -102,17 +102,15 @@ private fun addOrUpdatePlaylist(
     playlist: Playlist
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
-
     if (playlist.id == 0) {
-        eventDispatcher.dispatch(PlaylistEvents.Add(playlist))
+        PlaylistEvents.Add(playlist).dispatch()
     } else {
-        eventDispatcher.dispatch(PlaylistEvents.Update(playlist))
+        PlaylistEvents.Update(playlist).dispatch()
     }
 
     hideDialog()
 }
 
 private fun hideDialog() {
-    EventDispatcher.getInstance().dispatch(PlaylistEvents.ShowAddUpdatePlaylistDialog(null))
+    PlaylistEvents.ShowAddUpdatePlaylistDialog(null).dispatch()
 }

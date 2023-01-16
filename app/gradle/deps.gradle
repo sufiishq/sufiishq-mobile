@@ -68,6 +68,9 @@ dependencies {
     // asLiveData extension
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
 
+    // kotlin reflection
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
+
     // ========================================= //
     // TESTING DEPENDENCIES
     // ========================================= //

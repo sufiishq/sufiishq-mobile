@@ -23,7 +23,6 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.core.downloader.FileDownloader
 import pk.sufiishq.app.core.downloader.KalamDownloadState
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
@@ -32,11 +31,13 @@ import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.helpers.PlayerState
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.IS_SHUFFLE_ON
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.asFlow
@@ -51,13 +52,15 @@ import timber.log.Timber
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    app: Application,
+    private val app: Application,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val fileDownloader: FileDownloader,
-    private val kalamRepository: KalamRepository
+    private val kalamRepository: KalamRepository,
+    private val playlistRepository: PlaylistRepository
 ) : BaseViewModel(app), PlayerDataProvider, PlayerStateListener {
 
     private var seekbarEnableOnPlaying = true
+    private val showPlaylistDialog = MutableLiveData<Kalam?>(null)
     private val kalamInfo = MutableLiveData<KalamInfo?>(null)
     private val shuffleState = MutableLiveData(IS_SHUFFLE_ON.getFromStorage(false))
     private val kalamDownloadState = MutableLiveData<KalamDownloadState>(KalamDownloadState.Idle)
@@ -69,7 +72,6 @@ class PlayerViewModel @Inject constructor(
 
     init {
         player.registerListener(this)
-        EventDispatcher.getInstance().registerEventHandler(this)
         RxJavaPlugins.setErrorHandler { e ->
             if (e is UndeliverableException) {
                 Timber.e(e)
@@ -92,6 +94,16 @@ class PlayerViewModel @Inject constructor(
 
     override fun getKalamInfo(): LiveData<KalamInfo?> {
         return kalamInfo
+    }
+
+    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
+        return showPlaylistDialog
+    }
+
+    override fun getAllPlaylist(): LiveData<List<Playlist>> = playlistRepository.loadAll()
+
+    private fun setShowPlaylistDialog(kalam: Kalam?) {
+        showPlaylistDialog.postValue(kalam)
     }
 
     private fun playNext() {
@@ -157,6 +169,14 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
+    private fun addToPlaylist(kalam: Kalam, playlist: Playlist) {
+        viewModelScope.launch {
+            kalam.playlistId = playlist.id
+            kalamRepository.update(kalam)
+            app.toast("${kalam.title} added in ${playlist.title} Playlist")
+        }
+    }
+
     /*=======================================*/
     // HANDLE PLAYER EVENTS
     /*=======================================*/
@@ -174,6 +194,8 @@ class PlayerViewModel @Inject constructor(
             is PlayerEvents.StartDownload -> startDownload(event.kalam)
             is PlayerEvents.DisposeDownload -> disposeDownload()
             is PlayerEvents.ChangeDownloadState -> setKalamDownloadState(event.downloadState)
+            is PlayerEvents.ShowPlaylistDialog -> setShowPlaylistDialog(event.kalam)
+            is PlayerEvents.AddKalamInPlaylist -> addToPlaylist(event.kalam, event.playlist)
             else -> throw UnhandledEventException(event, this)
         }
     }

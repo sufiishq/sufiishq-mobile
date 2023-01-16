@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyKalamDataProvider
 
 @Composable
@@ -41,7 +41,7 @@ fun SearchTextField(
         value = searchText.value,
         onValueChange = {
             searchText.value = it
-            EventDispatcher.getInstance().dispatch(KalamEvents.SearchKalam(it, trackListType))
+            KalamEvents.SearchKalam(it, trackListType).dispatch()
             lazyKalamItems.refresh()
         },
         placeholder = {

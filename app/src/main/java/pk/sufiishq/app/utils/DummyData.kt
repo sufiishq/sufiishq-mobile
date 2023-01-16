@@ -7,12 +7,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
+import pk.sufiishq.app.data.providers.HomeDataProvider
+import pk.sufiishq.app.data.providers.GlobalDataProvider
+import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.core.help.HelpData
-import pk.sufiishq.app.data.providers.*
-import pk.sufiishq.app.helpers.GlobalEventHandler
-import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.KalamSplitManager
-import pk.sufiishq.app.models.*
+import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.models.KalamDeleteItem
+import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.models.HelpContent
 
 // ----------------------------------------- //
 // PLAYER DATA PROVIDER
@@ -35,6 +42,14 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 
     override fun getKalamInfo(): LiveData<KalamInfo?> {
         return MutableLiveData(null)
+    }
+
+    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
+        return MutableLiveData(null)
+    }
+
+    override fun getAllPlaylist(): LiveData<List<Playlist>> {
+        return MutableLiveData(listOf())
     }
 }
 
@@ -60,6 +75,8 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
     override fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?> {
         return MutableLiveData(null)
     }
+
+    override fun getShowCircularProgressDialog() = MutableLiveData(false)
 }
 
 @ExcludeFromJacocoGeneratedReport
@@ -80,10 +97,6 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
         return MutableLiveData(null)
     }
 
-    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
-        return MutableLiveData(null)
-    }
-
     override fun getAll(): LiveData<List<Playlist>> = MutableLiveData(
         listOf(
             Playlist(1, "Karachi"),
@@ -101,6 +114,7 @@ fun dummyPlaylist() = Playlist(1, "Karachi")
 // HOME DATA PROVIDER
 // ----------------------------------------- //
 
+@ExcludeFromJacocoGeneratedReport
 fun dummyHomeDataProvider() = object : HomeDataProvider {
 
     override fun getKalam(id: Int): LiveData<Kalam?> {
@@ -125,14 +139,24 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
 }
 
 // ----------------------------------------- //
+// GLOBAL DATA PROVIDER
+// ----------------------------------------- //
+
+@ExcludeFromJacocoGeneratedReport
+fun dummyGlobalDataProvider() = object : GlobalDataProvider {
+
+    override fun getShowUpdateButton() = MutableLiveData(true)
+}
+
+// ----------------------------------------- //
 // GLOBAL EVENTS
 // ----------------------------------------- //
 
-fun dummyGlobalEventHandler(): GlobalEventHandler {
+/*fun dummyGlobalEventHandler(): GlobalEventHandler {
     return GlobalEventHandler(
         InAppUpdateManager()
     )
-}
+}*/
 
 // ----------------------------------------- //
 // HELP DATA PROVIDER

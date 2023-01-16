@@ -12,9 +12,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.models.KalamDeleteItem
+import pk.sufiishq.app.utils.dispatch
 
 @Composable
 fun KalamConfirmDeleteDialog(
@@ -23,8 +23,6 @@ fun KalamConfirmDeleteDialog(
 
     kalamDeleteItem.value
         ?.apply {
-
-            val eventDispatcher = EventDispatcher.getInstance()
 
             SufiIshqDialog(
                 onDismissRequest = {
@@ -51,9 +49,7 @@ fun KalamConfirmDeleteDialog(
                     }
                     TextButton(onClick = {
                         hideDialog()
-                        eventDispatcher.dispatch(
-                            KalamEvents.DeleteKalam(this@apply)
-                        )
+                        KalamEvents.DeleteKalam(this@apply).dispatch()
                     }) {
                         Text(text = "YES")
                     }
@@ -63,5 +59,5 @@ fun KalamConfirmDeleteDialog(
 }
 
 private fun hideDialog() {
-    EventDispatcher.getInstance().dispatch(KalamEvents.ShowKalamConfirmDeleteDialog(null))
+    KalamEvents.ShowKalamConfirmDeleteDialog(null).dispatch()
 }

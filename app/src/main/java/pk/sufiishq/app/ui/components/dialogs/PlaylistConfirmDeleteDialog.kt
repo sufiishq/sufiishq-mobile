@@ -12,9 +12,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.utils.dispatch
 
 @Composable
 fun PlaylistConfirmDeleteDialog(
@@ -22,8 +22,6 @@ fun PlaylistConfirmDeleteDialog(
 ) {
 
     playlistState.value?.apply {
-
-        val eventDispatcher = EventDispatcher.getInstance()
 
         SufiIshqDialog(
             onDismissRequest = {
@@ -50,7 +48,7 @@ fun PlaylistConfirmDeleteDialog(
                     Text(text = "NO")
                 }
                 TextButton(onClick = {
-                    eventDispatcher.dispatch(PlaylistEvents.Delete(this@apply))
+                    PlaylistEvents.Delete(this@apply).dispatch()
                     hideDialog()
 
                 }) {
@@ -62,5 +60,5 @@ fun PlaylistConfirmDeleteDialog(
 }
 
 private fun hideDialog() {
-    EventDispatcher.getInstance().dispatch(PlaylistEvents.ShowConfirmDeletePlaylistDialog(null))
+    PlaylistEvents.ShowConfirmDeletePlaylistDialog(null).dispatch()
 }

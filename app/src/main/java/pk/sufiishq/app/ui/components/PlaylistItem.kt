@@ -33,11 +33,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyPlaylist
 import pk.sufiishq.app.utils.rem
 
@@ -147,7 +147,6 @@ private fun PopupMenu(
     isExpanded: MutableState<Boolean>,
     matColors: Colors
 ) {
-    val eventDispatcher = EventDispatcher.getInstance()
 
     Box(modifier = Modifier.padding(end = 12.dp)) {
         Image(
@@ -171,16 +170,9 @@ private fun PopupMenu(
             listOf("Rename", "Delete").forEach { label ->
                 DropdownMenuItem(onClick = {
                     when (label) {
-                        "Rename" -> eventDispatcher.dispatch(
-                            PlaylistEvents.ShowAddUpdatePlaylistDialog(
-                                playlist
-                            )
-                        )
-                        "Delete" -> eventDispatcher.dispatch(
-                            PlaylistEvents.ShowConfirmDeletePlaylistDialog(
-                                playlist
-                            )
-                        )
+                        "Rename" -> PlaylistEvents.ShowAddUpdatePlaylistDialog(playlist).dispatch()
+                        "Delete" -> PlaylistEvents.ShowConfirmDeletePlaylistDialog(playlist)
+                            .dispatch()
                     }
                     isExpanded.value = false
                 }) {

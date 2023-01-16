@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
@@ -19,6 +18,7 @@ import pk.sufiishq.app.utils.SPLIT_IN_PROGRESS
 import pk.sufiishq.app.utils.SPLIT_SUCCESS
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.registerEventHandler
 import pk.sufiishq.app.utils.split
 
 class KalamSplitManager @Inject constructor(
@@ -39,7 +39,7 @@ class KalamSplitManager @Inject constructor(
 
     init {
 
-        EventDispatcher.getInstance().registerEventHandler(this)
+        registerEventHandler()
 
         previewAudioPlayer.setOnCompletionListener {
             previewAudioPlayer.releaseProgressListener()

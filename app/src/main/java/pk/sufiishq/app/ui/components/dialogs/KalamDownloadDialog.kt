@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import okhttp3.internal.format
 import pk.sufiishq.app.core.downloader.KalamDownloadState
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
+import pk.sufiishq.app.utils.dispatch
 
 @Composable
 fun KalamDownloadStartedDialog(
@@ -158,15 +158,13 @@ private fun DownloadDialog(content: @Composable () -> Unit) {
 @Composable
 private fun OKButton() {
 
-    val eventDispatcher = EventDispatcher.getInstance()
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
 
         TextButton(onClick = {
-            eventDispatcher.dispatch(PlayerEvents.ChangeDownloadState(KalamDownloadState.Idle))
+            PlayerEvents.ChangeDownloadState(KalamDownloadState.Idle).dispatch()
         }) {
             Text(text = "OK")
         }
@@ -176,15 +174,13 @@ private fun OKButton() {
 @Composable
 private fun CancelButton() {
 
-    val eventDispatcher = EventDispatcher.getInstance()
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
         TextButton(onClick = {
-            eventDispatcher.dispatch(PlayerEvents.DisposeDownload)
-            eventDispatcher.dispatch(PlayerEvents.ChangeDownloadState(KalamDownloadState.Idle))
+            PlayerEvents.DisposeDownload.dispatch()
+            PlayerEvents.ChangeDownloadState(KalamDownloadState.Idle).dispatch()
         }) {
             Text(text = "Cancel")
         }

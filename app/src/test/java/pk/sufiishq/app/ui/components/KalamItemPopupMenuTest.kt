@@ -19,10 +19,8 @@ import org.junit.Test
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.event.events.Event
-import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.PlayerEvents
-import pk.sufiishq.app.core.event.events.PlaylistEvents
 import pk.sufiishq.app.helpers.TrackListType
 
 class KalamItemPopupMenuTest : SufiIshqTest() {
@@ -63,13 +61,13 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
         menuItems
             .zip(
                 listOf(
-                    PlaylistEvents.ShowPlaylistDialog::class.java,
+                    PlayerEvents.ShowPlaylistDialog::class.java,
                     KalamEvents.MarkAsFavoriteKalam::class.java,
                     KalamEvents.RemoveFavoriteKalam::class.java,
                     PlayerEvents.StartDownload::class.java,
                     KalamEvents.ShowKalamSplitManagerDialog::class.java,
                     KalamEvents.ShowKalamRenameDialog::class.java,
-                    GlobalEvents.ShareKalam::class.java,
+                    KalamEvents.ShareKalam::class.java,
                     KalamEvents.ShowKalamConfirmDeleteDialog::class.java
                 )
             )

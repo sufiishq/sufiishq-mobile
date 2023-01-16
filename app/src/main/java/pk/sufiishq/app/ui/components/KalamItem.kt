@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyKalam
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.rem
@@ -45,7 +45,6 @@ fun KalamItem(
     kalamMenuItems: List<String>
 ) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val matColors = MaterialTheme.colors
     val isExpanded = rem(false)
 
@@ -53,7 +52,9 @@ fun KalamItem(
         modifier = Modifier
             .testTag("kalam_item")
             .clickable {
-                eventDispatcher.dispatch(PlayerEvents.ChangeTrack(kalam, trackListType))
+                PlayerEvents
+                    .ChangeTrack(kalam, trackListType)
+                    .dispatch()
             }
     ) {
         Row(
