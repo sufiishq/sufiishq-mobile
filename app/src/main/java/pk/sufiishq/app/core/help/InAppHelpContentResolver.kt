@@ -37,18 +37,16 @@ class InAppHelpContentResolver @Inject constructor(
     private fun transform(data: String): HelpData {
 
         if (data.contains("'image':")) {
-            val obj = JSONObject(data.replace("@", ""));
+            val obj = JSONObject(data.replace("@", ""))
             val image = obj.getString("image")
             return HelpData.Photo(image)
-        }
-        else if (data.contains("'divider':")) {
-            val obj = JSONObject(data.replace("@", ""));
+        } else if (data.contains("'divider':")) {
+            val obj = JSONObject(data.replace("@", ""))
             val divider = obj.getBoolean("divider")
             val height = obj.getInt("height")
             return HelpData.Divider(divider, height)
-        }
-        else if (data.contains("'spacer':")) {
-            val obj = JSONObject(data.replace("@", ""));
+        } else if (data.contains("'spacer':")) {
+            val obj = JSONObject(data.replace("@", ""))
             val spacer = obj.getInt("spacer")
             return HelpData.Spacer(spacer)
         }

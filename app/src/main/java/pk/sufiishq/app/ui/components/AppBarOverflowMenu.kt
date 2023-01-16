@@ -83,7 +83,7 @@ fun AppBarOverflowMenu(
             drawableId = R.drawable.ic_round_help_24,
             onClick = {
                 showOverflowMenu.value = false
-                navController.navigate(ScreenType.Help.route)
+                navController.navigate(ScreenType.Help.route())
             }
         )
     }

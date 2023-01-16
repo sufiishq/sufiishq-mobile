@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import pk.sufiishq.app.models.Playlist
 
 interface PlaylistDataProvider {
-
     fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?>
     fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?>
     fun getAll(): LiveData<List<Playlist>>

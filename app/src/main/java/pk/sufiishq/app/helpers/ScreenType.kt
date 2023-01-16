@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
 import pk.sufiishq.app.ui.screen.DashboardView
+import pk.sufiishq.app.ui.screen.HelpView
 import pk.sufiishq.app.ui.screen.PlaylistView
 import pk.sufiishq.app.ui.screen.TracksView
 import pk.sufiishq.app.utils.app
@@ -55,9 +56,7 @@ sealed interface ScreenType {
 
         @Composable
         override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
-            HelpView(
-                navController = navController
-            )
+            HelpView()
         }
     }
 
