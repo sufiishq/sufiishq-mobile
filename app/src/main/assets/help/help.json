@@ -4,19 +4,41 @@
             "title": "Accordion Title",
             "content": [
                 "some paragraph",
-                "@{'image': 'help_images/image1.jpg'}",
                 "another paragraph",
-                "@{'divider': true, 'height': 1}",
+                "{'divider' : 1}",
                 "another paragraph",
-                "@{'spacer': 10}",
+                "{'spacer': 20}",
                 "another paragraph with some **bold** and __italic__ words"
             ]
         },
         {
             "title": "Second Title",
             "content": [
-                "second paragraph",
-                "@{'image': 'help_images/image2.jpg'}"
+                "second paragraph"
+            ]
+        },
+        {
+            "title": "Third Title",
+            "content": [
+                "third paragraph"
+            ]
+        },
+        {
+            "title": "Forth Title",
+            "content": [
+                "forth paragraph"
+            ]
+        },
+        {
+            "title": "Fifth Title",
+            "content": [
+                "fifth paragraph"
+            ]
+        },
+        {
+            "title": "Sixth Title",
+            "content": [
+                "sixth paragraph"
             ]
         }
     ]

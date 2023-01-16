@@ -1,5 +1,6 @@
 package pk.sufiishq.app.utils
 
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
@@ -99,8 +100,7 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 
     override fun getAll(): LiveData<List<Playlist>> = MutableLiveData(
         listOf(
-            Playlist(1, "Karachi"),
-            Playlist(2, "Lahore")
+            Playlist(1, "Karachi"), Playlist(2, "Lahore")
         )
     )
 
@@ -159,16 +159,18 @@ fun dummyHelpDataProvider() = object : HelpDataProvider {
         listOf(
             HelpContent(
                 "First Title", listOf(
-                    HelpData.Paragraph("some paragraph"),
+                    HelpData.Paragraph(buildAnnotatedString { append("some paragraph") }),
                     HelpData.Photo("Path"),
-                    HelpData.Paragraph("another paragraph"),
-                    HelpData.Divider(true, 2),
-                    HelpData.Paragraph("another paragraph"),
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
+                    HelpData.Divider(2),
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
                     HelpData.Spacer(10),
-                    HelpData.Paragraph("another paragraph with some **bold** and __italic__ words")
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph with some **bold** and __italic__ words") })
                 )
-            ),
-            HelpContent("Second Title", listOf(HelpData.Paragraph("Test 2")))
+            ), HelpContent(
+                "Second Title",
+                listOf(HelpData.Paragraph(buildAnnotatedString { append("Test 2") }))
+            )
         )
     )
 }

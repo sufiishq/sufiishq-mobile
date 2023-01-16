@@ -10,6 +10,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.LifecycleOwner
@@ -122,44 +123,6 @@ fun Kalam.offlineFile(): File? {
     }
 }
 
-fun annotateParagraph(text: String): AnnotatedString {
-    val regex = Regex("__.*?__|\\*\\*.*?\\*\\*")
-    var results: MatchResult? = regex.find(text)
-    val tagInfo = mutableListOf<TagInfo>()
-    var finalText = text
-
-    while (results != null) {
-        val indexOf = finalText.indexOf(results.value)
-        val tagType = getType(results.value)
-
-        val newKeyWord = results.value.replace(Regex("__|\\*"), "")
-        finalText = finalText.replace(results.value, newKeyWord)
-
-        val item = TagInfo(indexOf, indexOf + newKeyWord.length, tagType)
-        tagInfo.add(item)
-        results = results.next()
-    }
-
-    return buildAnnotatedString {
-        append(finalText)
-        tagInfo.forEach {
-            addStyle(
-                style = it.getStyle(),
-                start = it.first,
-                end = it.last
-            )
-        }
-    }
-}
-
-fun getType(str: String): String {
-    return when (str.substring(0, 2)) {
-        "**" -> "bold"
-        "__" -> "italic"
-        else -> ""
-    }
-}
-
 @Composable
 fun <T> rem(value: T): MutableState<T> {
     return remember { mutableStateOf(value) }
@@ -182,4 +145,22 @@ fun <T : Event> T.dispatch(vararg with: T) {
 
 fun <T : EventHandler> T.registerEventHandler() {
     EventDispatcher.getInstance().registerEventHandler(this)
+}
+
+@Composable
+fun getCardBgColor(): Color {
+    return if (isDarkThem()) {
+        Color(34, 34, 34, 255)
+    } else {
+        Color(233, 233, 233, 255)
+    }
+}
+
+@Composable
+fun getCardFgColor(): Color {
+    return if (isDarkThem()) {
+        Color(247, 247, 247, 255)
+    } else {
+        Color(24, 24, 24, 255)
+    }
 }
