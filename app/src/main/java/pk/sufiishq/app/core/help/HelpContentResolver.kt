@@ -16,7 +16,7 @@ const val IMAGE_PATTERN = """^\{\s*\'image\'\s*:\s*\'[a-zA-Z0-9_/\-\.]+\'\s*\}${
 const val DIVIDER_PATTERN = """^\{\s*\'divider\'\s*:\s*\d+\s*\}${'$'}"""
 const val SPACER_PATTERN = """^\{\s*\'spacer\'\s*:\s*\d+\s*\}${'$'}"""
 
-class InAppHelpContentResolver @Inject constructor(
+class HelpContentResolver @Inject constructor(
     @HelpJson private val helpJson: JSONObject
 ) {
 
