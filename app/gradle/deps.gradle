@@ -65,12 +65,17 @@ dependencies {
     // required to avoid crash on Android 12 API 31
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
 
+    // asLiveData extension
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+
     // kotlin reflection
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
 
     // ========================================= //
     // TESTING DEPENDENCIES
     // ========================================= //
+
+    testImplementation 'androidx.test:core:1.4.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.12.3'

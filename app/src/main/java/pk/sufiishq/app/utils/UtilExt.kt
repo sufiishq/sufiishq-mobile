@@ -10,6 +10,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -141,4 +142,22 @@ fun <T : Event> T.dispatch(vararg with: T) {
 
 fun <T : EventHandler> T.registerEventHandler() {
     EventDispatcher.getInstance().registerEventHandler(this)
+}
+
+@Composable
+fun getCardBgColor(): Color {
+    return if (isDarkThem()) {
+        Color(34, 34, 34, 255)
+    } else {
+        Color(233, 233, 233, 255)
+    }
+}
+
+@Composable
+fun getCardFgColor(): Color {
+    return if (isDarkThem()) {
+        Color(247, 247, 247, 255)
+    } else {
+        Color(24, 24, 24, 255)
+    }
 }

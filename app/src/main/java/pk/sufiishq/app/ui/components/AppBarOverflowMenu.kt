@@ -16,15 +16,20 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.events.GlobalEvents
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.rem
 
 @Composable
-fun AppBarOverflowMenu() {
+fun AppBarOverflowMenu(
+    navController: NavController
+) {
 
     val showOverflowMenu = rem(false)
     val context = LocalContext.current
@@ -72,6 +77,17 @@ fun AppBarOverflowMenu() {
                 ).dispatch()
             }
         )
+
+        OverflowMenuItem(
+            label = "Help",
+            drawableId = R.drawable.ic_round_help_24,
+            onClick = {
+                showOverflowMenu.value = false
+                navController.navigate(ScreenType.Help.route()) {
+                    launchSingleTop = true
+                }
+            }
+        )
     }
 }
 
@@ -99,7 +115,7 @@ fun AppBarOverflowMenuPreviewLight() {
         Box(
             Modifier.background(MaterialTheme.colors.secondaryVariant)
         ) {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(rememberNavController())
         }
     }
 }
@@ -112,7 +128,7 @@ fun AppBarOverflowMenuPreviewDark() {
         Box(
             Modifier.background(MaterialTheme.colors.secondaryVariant)
         ) {
-            AppBarOverflowMenu()
+            AppBarOverflowMenu(rememberNavController())
         }
     }
 }

@@ -1,0 +1,45 @@
+{
+    "data": [
+        {
+            "title": "Accordion Title",
+            "content": [
+                "some paragraph",
+                "another paragraph",
+                "{'divider' : 1}",
+                "another paragraph",
+                "{'spacer': 20}",
+                "another paragraph with some **bold** and __italic__ words"
+            ]
+        },
+        {
+            "title": "Second Title",
+            "content": [
+                "second paragraph"
+            ]
+        },
+        {
+            "title": "Third Title",
+            "content": [
+                "third paragraph"
+            ]
+        },
+        {
+            "title": "Forth Title",
+            "content": [
+                "forth paragraph"
+            ]
+        },
+        {
+            "title": "Fifth Title",
+            "content": [
+                "fifth paragraph"
+            ]
+        },
+        {
+            "title": "Sixth Title",
+            "content": [
+                "sixth paragraph"
+            ]
+        }
+    ]
+}

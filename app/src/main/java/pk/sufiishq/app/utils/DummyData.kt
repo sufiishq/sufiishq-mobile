@@ -1,5 +1,6 @@
 package pk.sufiishq.app.utils
 
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
@@ -7,12 +8,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
+import pk.sufiishq.app.core.help.HelpData
 import pk.sufiishq.app.data.providers.GlobalDataProvider
+import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.KalamSplitManager
+import pk.sufiishq.app.models.HelpContent
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.models.KalamInfo
@@ -96,8 +100,7 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 
     override fun getAll(): LiveData<List<Playlist>> = MutableLiveData(
         listOf(
-            Playlist(1, "Karachi"),
-            Playlist(2, "Lahore")
+            Playlist(1, "Karachi"), Playlist(2, "Lahore")
         )
     )
 
@@ -146,11 +149,28 @@ fun dummyGlobalDataProvider() = object : GlobalDataProvider {
 }
 
 // ----------------------------------------- //
-// GLOBAL EVENTS
+// HELP DATA PROVIDER
 // ----------------------------------------- //
 
-/*fun dummyGlobalEventHandler(): GlobalEventHandler {
-    return GlobalEventHandler(
-        InAppUpdateManager()
+@ExcludeFromJacocoGeneratedReport
+fun dummyHelpDataProvider() = object : HelpDataProvider {
+
+    override fun getHelpContent(): LiveData<List<HelpContent>> = MutableLiveData(
+        listOf(
+            HelpContent(
+                "First Title", listOf(
+                    HelpData.Paragraph(buildAnnotatedString { append("some paragraph") }),
+                    HelpData.Photo("Path"),
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
+                    HelpData.Divider(2),
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
+                    HelpData.Spacer(10),
+                    HelpData.Paragraph(buildAnnotatedString { append("another paragraph with some **bold** and __italic__ words") })
+                )
+            ), HelpContent(
+                "Second Title",
+                listOf(HelpData.Paragraph(buildAnnotatedString { append("Test 2") }))
+            )
+        )
     )
-}*/
+}
