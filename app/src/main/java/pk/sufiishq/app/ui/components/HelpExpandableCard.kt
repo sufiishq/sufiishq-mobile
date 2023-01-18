@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ fun HelpExpandableCard(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .testTag("card_header")
             .clip(
                 if (expandedIndex.value == index) RoundedCornerShape(6.dp, 6.dp, 0.dp, 0.dp)
                 else RoundedCornerShape(6.dp, 6.dp, 6.dp, 6.dp)
@@ -115,9 +117,15 @@ fun HelpExpandableCard(
                         )
                         is HelpData.Divider -> Divider(
                             thickness = it.height.dp,
-                            modifier = Modifier.padding(top = 12.dp)
+                            modifier = Modifier
+                                .padding(top = 12.dp)
+                                .testTag("divider_tag")
                         )
-                        is HelpData.Spacer -> Spacer(modifier = Modifier.height(it.height.dp))
+                        is HelpData.Spacer -> Spacer(
+                            modifier = Modifier
+                                .height(it.height.dp)
+                                .testTag("spacer_tag")
+                        )
                     }
                 }
             }

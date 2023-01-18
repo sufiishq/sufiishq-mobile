@@ -1,8 +1,8 @@
 package pk.sufiishq.app.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -16,11 +16,11 @@ fun AssetImage(
     path: String,
     contentScale: ContentScale = ContentScale.Fit,
     alignment: Alignment = Alignment.Center,
-    modifier: Modifier
+    modifier: Modifier,
+    context: Context = LocalContext.current
 ) {
 
-    val context = LocalContext.current
-    val bitmap by rem(context.assetsToBitmap(path))
+    val bitmap = rem(context.assetsToBitmap(path)).value
 
     bitmap?.asImageBitmap()?.apply {
         Image(

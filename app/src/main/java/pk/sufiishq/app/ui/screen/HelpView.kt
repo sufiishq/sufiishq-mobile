@@ -52,7 +52,7 @@ fun HelpView(
 
         val lazyListState = rememberLazyListState()
 
-        val firstItemTranslationY by remember {
+        val firstItemTranslationY = remember {
             derivedStateOf {
                 if (lazyListState.firstVisibleItemIndex == 0) {
                     lazyListState.firstVisibleItemScrollOffset.toFloat()
@@ -60,9 +60,9 @@ fun HelpView(
                     0f
                 }
             }
-        }
+        }.value
 
-        val scaleAndVisibility by remember {
+        val scaleAndVisibility = remember {
             derivedStateOf {
                 if (lazyListState.firstVisibleItemIndex == 0) {
                     val imageSize = lazyListState.layoutInfo.visibleItemsInfo[0].size
@@ -72,7 +72,7 @@ fun HelpView(
                     0f
                 }
             }
-        }
+        }.value
 
         val expandedIndex = rem(0)
         val bgColor by rem(getCardBgColor())

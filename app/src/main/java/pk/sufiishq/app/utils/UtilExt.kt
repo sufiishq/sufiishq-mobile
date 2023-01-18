@@ -11,8 +11,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -30,7 +28,6 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.handler.EventHandler
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.TagInfo
 import timber.log.Timber
 
 fun app(): SufiIshqApp = SufiIshqApp.getInstance()
