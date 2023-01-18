@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -60,7 +59,7 @@ fun HelpView(
                     0f
                 }
             }
-        }.value
+        }
 
         val scaleAndVisibility = remember {
             derivedStateOf {
@@ -72,11 +71,11 @@ fun HelpView(
                     0f
                 }
             }
-        }.value
+        }
 
         val expandedIndex = rem(0)
-        val bgColor by rem(getCardBgColor())
-        val fgColor by rem(getCardFgColor())
+        val bgColor = rem(getCardBgColor()).value
+        val fgColor = rem(getCardFgColor()).value
 
         LazyColumn(
             modifier = Modifier
@@ -94,10 +93,10 @@ fun HelpView(
                         .height(230.dp)
                         .padding(0.dp)
                         .graphicsLayer {
-                            translationY = firstItemTranslationY
-                            scaleX = 1f - scaleAndVisibility
-                            scaleY = 1f - scaleAndVisibility
-                            alpha = 1f - scaleAndVisibility
+                            translationY = firstItemTranslationY.value
+                            scaleX = 1f - scaleAndVisibility.value
+                            scaleY = 1f - scaleAndVisibility.value
+                            alpha = 1f - scaleAndVisibility.value
                         },
                     painter = painterResource(id = R.drawable.help),
                     alignment = Alignment.Center,
