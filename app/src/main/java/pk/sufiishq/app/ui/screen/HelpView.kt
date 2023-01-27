@@ -1,18 +1,14 @@
 package pk.sufiishq.app.ui.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,24 +24,23 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.ui.components.HelpExpandableCard
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dummyHelpDataProvider
-import pk.sufiishq.app.utils.getCardBgColor
-import pk.sufiishq.app.utils.getCardFgColor
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.HelpViewModel
+import pk.sufiishq.aurora.layout.SIColumn
+import pk.sufiishq.aurora.layout.SILazyColumn
+import pk.sufiishq.aurora.theme.AuroraDark
+import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun HelpView(
     helpDataProvider: HelpDataProvider = hiltViewModel<HelpViewModel>()
 ) {
     val helpContent = helpDataProvider.getHelpContent().observeAsState().optValue(listOf())
-    val matColors = rem(MaterialTheme.colors).value
 
-    Column(
+    SIColumn(
         modifier = Modifier
-            .background(matColors.secondaryVariant)
             .fillMaxSize()
     ) {
 
@@ -74,13 +69,10 @@ fun HelpView(
         }
 
         val expandedIndex = rem(0)
-        val bgColor = rem(getCardBgColor()).value
-        val fgColor = rem(getCardFgColor()).value
 
-        LazyColumn(
+        SILazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .background(matColors.secondaryVariant),
+                .fillMaxSize(),
             contentPadding = PaddingValues(12.dp, 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             state = lazyListState
@@ -108,10 +100,7 @@ fun HelpView(
                 HelpExpandableCard(
                     expandedIndex = expandedIndex,
                     index = index,
-                    bgColor = bgColor,
-                    fgColor = fgColor,
                     item = item,
-                    matColors = matColors
                 )
             }
         }
@@ -122,7 +111,7 @@ fun HelpView(
 @Preview(showBackground = true)
 @Composable
 fun PreviewLightHelpView() {
-    SufiIshqTheme(darkTheme = false) {
+    AuroraLight {
         HelpView(
             helpDataProvider = dummyHelpDataProvider()
         )
@@ -133,7 +122,7 @@ fun PreviewLightHelpView() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDarkHelpView() {
-    SufiIshqTheme(darkTheme = true) {
+    AuroraDark {
         HelpView(
             helpDataProvider = dummyHelpDataProvider()
         )

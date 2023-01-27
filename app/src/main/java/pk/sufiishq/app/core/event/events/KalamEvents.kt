@@ -19,8 +19,6 @@ abstract class KalamEvents : Event(KalamViewModel::class) {
     class SaveSplitKalam(val sourceKalam: Kalam, val splitFile: File, val kalamTitle: String) :
         Event(KalamViewModel::class)
 
-    class MarkAsFavoriteKalam(val kalam: Kalam) : Event(KalamViewModel::class)
-    class RemoveFavoriteKalam(val kalam: Kalam) : Event(KalamViewModel::class)
     class ShowKalamSplitManagerDialog(val kalam: Kalam?) : Event(KalamViewModel::class)
     class ShowKalamRenameDialog(val kalam: Kalam?) : Event(KalamViewModel::class)
     class ShareKalam(val kalam: Kalam, val context: Context) : Event(KalamViewModel::class)

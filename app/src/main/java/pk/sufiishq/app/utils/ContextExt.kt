@@ -34,7 +34,9 @@ fun NetworkCapabilities.hasAnyOneTransport(vararg transport: Int): Boolean {
 
 fun Context.dpToPx(dp: Float) = dp * resources.displayMetrics.density
 
-fun Context.toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+fun Context.toastShort(text: String) = this.toast(text, Toast.LENGTH_SHORT)
+fun Context.toast(text: String, toastLength: Int = Toast.LENGTH_LONG) =
+    Toast.makeText(this, text, toastLength).show()
 
 fun Context.assetsToBitmap(fileName: String): Bitmap? {
     return try {

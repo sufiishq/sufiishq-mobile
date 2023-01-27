@@ -14,6 +14,7 @@ import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.aurora.models.DataMenuItem
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
@@ -24,6 +25,10 @@ class PlaylistViewModel @Inject constructor(
 
     private val showAddUpdatePlaylistDialog = MutableLiveData<Playlist?>(null)
     private val showConfirmPlaylistDeleteDialog = MutableLiveData<Playlist?>(null)
+
+    override fun getPopupMenuItems(): List<DataMenuItem> {
+        return playlistRepository.popupMenuItems(getApplication())
+    }
 
     override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
         return showAddUpdatePlaylistDialog

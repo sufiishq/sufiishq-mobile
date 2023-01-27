@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.service.AudioPlayerService
@@ -98,8 +97,6 @@ open class BaseActivity : ComponentActivity() {
             player.release()
             stopService(playerIntent)
         }
-
-        EventDispatcher.getInstance().release()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -126,13 +123,11 @@ open class BaseActivity : ComponentActivity() {
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
                             val observeOnlyOnce = ObserveOnlyOnce<Kalam?>()
                             observeOnlyOnce.take(
-                                this@BaseActivity,
-                                homeViewModel.getKalam(kalamId.toInt())
+                                this@BaseActivity, homeViewModel.getKalam(kalamId.toInt())
                             ) { kalam ->
                                 kalam?.let {
                                     PlayerEvents.ChangeTrack(
-                                        kalam,
-                                        TrackListType.All()
+                                        kalam, TrackListType.All()
                                     ).dispatch()
                                 }
                             }

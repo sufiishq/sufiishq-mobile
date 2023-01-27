@@ -1,11 +1,16 @@
 package pk.sufiishq.app.data.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import javax.inject.Inject
 import pk.sufiishq.app.data.dao.PlaylistDao
+import pk.sufiishq.app.helpers.PopupMenuItemProvider
 import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.aurora.models.DataMenuItem
 
-class PlaylistRepository @Inject constructor(private val playlistDao: PlaylistDao) {
+class PlaylistRepository @Inject constructor(
+    private val playlistDao: PlaylistDao
+) {
 
     fun loadAll(): LiveData<List<Playlist>> = playlistDao.getAll()
 
@@ -18,4 +23,8 @@ class PlaylistRepository @Inject constructor(private val playlistDao: PlaylistDa
     suspend fun delete(playlist: Playlist) = playlistDao.delete(playlist)
 
     fun countAll(): LiveData<Int> = playlistDao.countAll()
+
+    fun popupMenuItems(appContext: Context): List<DataMenuItem> {
+        return PopupMenuItemProvider.getPlaylistPopupMenuItems(appContext)
+    }
 }

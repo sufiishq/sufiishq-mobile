@@ -1,7 +1,6 @@
 package pk.sufiishq.app.ui.components
 
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -10,6 +9,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import pk.sufiishq.app.utils.assetsToBitmap
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.components.SIImage
 
 @Composable
 fun AssetImage(
@@ -23,12 +23,11 @@ fun AssetImage(
     val bitmap = rem(context.assetsToBitmap(path)).value
 
     bitmap?.asImageBitmap()?.apply {
-        Image(
+        SIImage(
             modifier = modifier,
             contentScale = contentScale,
             bitmap = this,
-            alignment = alignment,
-            contentDescription = null
+            alignment = alignment
         )
     }
 }

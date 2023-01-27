@@ -28,24 +28,23 @@ import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.core.splitter.KalamSplitManager
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.helpers.KalamSplitManager
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.helpers.factory.FavoriteChangeFactory
 import pk.sufiishq.app.helpers.factory.KalamDeleteStrategyFactory
-import pk.sufiishq.app.helpers.strategies.kalam.favorite.AddToFavoriteStrategy
-import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrategy
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.utils.DEEPLINK_HOST
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.copyWithDefaults
 import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.utils.filterItems
 import pk.sufiishq.app.utils.isNetworkAvailable
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
+import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
 
 @HiltViewModel
@@ -55,7 +54,6 @@ class KalamViewModel @Inject constructor(
     private val kalamSplitManager: KalamSplitManager,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val kalamDeleteStrategyFactory: KalamDeleteStrategyFactory,
-    private val favoriteChangeFactory: FavoriteChangeFactory
 ) : BaseViewModel(app), KalamDataProvider {
 
     private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
@@ -65,6 +63,10 @@ class KalamViewModel @Inject constructor(
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
+
+    override fun popupMenuItems(kalam: Kalam, trackType: String): List<DataMenuItem> {
+        return kalamRepository.popupMenuItems(app).filterItems(kalam, trackType)
+    }
 
     override fun getKalamDeleteConfirmDialog(): LiveData<KalamDeleteItem?> {
         return showKalamDeleteConfirmDialog
@@ -169,18 +171,6 @@ class KalamViewModel @Inject constructor(
         app.toast(app.getString(R.string.kalam_saved_label).format(kalamTitle))
     }
 
-    private fun markAsFavorite(kalam: Kalam) {
-        viewModelScope.launch {
-            favoriteChangeFactory.create(AddToFavoriteStrategy::class).change(kalam)
-        }
-    }
-
-    private fun removeFavorite(kalam: Kalam) {
-        viewModelScope.launch {
-            favoriteChangeFactory.create(RemoveFromFavoriteStrategy::class).change(kalam)
-        }
-    }
-
     private fun pagingSource(): () -> PagingSource<Int, Kalam> {
         return {
             kalamRepository.load()
@@ -245,8 +235,6 @@ class KalamViewModel @Inject constructor(
                 event.splitFile,
                 event.kalamTitle
             )
-            is KalamEvents.MarkAsFavoriteKalam -> markAsFavorite(event.kalam)
-            is KalamEvents.RemoveFavoriteKalam -> removeFavorite(event.kalam)
             is KalamEvents.ShowKalamSplitManagerDialog -> setKalamSplitManagerDialog(event.kalam)
             is KalamEvents.ShowKalamRenameDialog -> setKalamRenameDialog(event.kalam)
             is KalamEvents.ShareKalam -> shareKalam(event.kalam, event.context)

@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Sufi Ishq"
 include ':app'
+include ':aurora'
