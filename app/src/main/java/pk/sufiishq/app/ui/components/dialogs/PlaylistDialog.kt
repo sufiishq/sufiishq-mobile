@@ -49,7 +49,7 @@ fun PlaylistDialog(
                     textSize = TextSize.Regular,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 SIHeightSpace(value = 12)
                 SIDivider(color = AuroraColor.Secondary)
 

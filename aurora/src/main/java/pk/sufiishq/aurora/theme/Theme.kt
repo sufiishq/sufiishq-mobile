@@ -50,7 +50,8 @@ fun Aurora(content: @Composable () -> Unit) {
 @Composable
 private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
 
-    val activeSecondaryColorPalette = AuroraConfig.getDefaultColorPalette(LocalContext.current).collectAsState()
+    val activeSecondaryColorPalette =
+        AuroraConfig.getDefaultColorPalette(LocalContext.current).collectAsState()
 
     val colors = (if (darkTheme) {
         DarkColorPalette

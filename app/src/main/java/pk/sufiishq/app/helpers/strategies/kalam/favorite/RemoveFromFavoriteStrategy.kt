@@ -18,7 +18,9 @@ class RemoveFromFavoriteStrategy(
         }.also {
             kalamRepository.update(kalam)
         }.also {
-            appContext.toastShort(appContext.getString(R.string.favorite_removed).format(kalam.title))
+            appContext.toastShort(
+                appContext.getString(R.string.favorite_removed).format(kalam.title)
+            )
         }
     }
 }

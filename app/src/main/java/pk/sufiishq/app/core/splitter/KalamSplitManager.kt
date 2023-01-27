@@ -77,7 +77,7 @@ class KalamSplitManager @Inject constructor(
                 (splitEnd.optValue(0) - splitStart.optValue(0)).formatTime
             ) { splitStatus ->
 
-                if(splitStatus is SplitStatus.Done) {
+                if (splitStatus is SplitStatus.Done) {
                     val duration = previewAudioPlayer.getDuration(outFile.absolutePath)
                     kalamPreviewLength.postValue(duration)
                 }

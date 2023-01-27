@@ -30,11 +30,12 @@ fun DashboardButton(
     navigate: () -> Unit
 ) {
 
-    SIBox(modifier = paddingModifier
-        .clip(RoundedCornerShape(5.dp))
-        .clickable {
-            navigate()
-        },
+    SIBox(
+        modifier = paddingModifier
+            .clip(RoundedCornerShape(5.dp))
+            .clickable {
+                navigate()
+            },
         bgColor = AuroraColor.Background
     ) { textColor ->
         SIBox(

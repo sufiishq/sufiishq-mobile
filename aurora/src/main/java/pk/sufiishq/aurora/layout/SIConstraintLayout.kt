@@ -22,7 +22,11 @@ inline fun SIConstraintLayout(
 
     ConstraintLayout(
         modifier = modifier
-            .background(bgColor.validateBackground().color())
+            .background(
+                bgColor
+                    .validateBackground()
+                    .color()
+            )
             .padding(padding.coerceIn(0, 12).dp),
         content = {
             content(bgColor.getForegroundColor())

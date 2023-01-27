@@ -12,7 +12,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun ContentBackground(
     content: @Composable () -> Unit
 ) {
-    SIBox (
+    SIBox(
         bgColor = AuroraColor.Surface,
         modifier = Modifier.fillMaxSize()
     ) {
