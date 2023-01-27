@@ -10,7 +10,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -22,12 +21,15 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.activities.BaseActivity
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.handler.EventHandler
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
 
 fun app(): SufiIshqApp = SufiIshqApp.getInstance()
@@ -137,27 +139,42 @@ fun isDarkThem(): Boolean {
 fun <T : Event> T.dispatch(vararg with: T) {
 
     // event dispatcher will throw an exception in preview mode
-    EventDispatcher.getInstance().dispatch(this, *with)
+    EventDispatcher.dispatch(this, *with)
 }
 
 fun <T : EventHandler> T.registerEventHandler() {
-    EventDispatcher.getInstance().registerEventHandler(this)
+    EventDispatcher.registerEventHandler(this)
 }
 
-@Composable
-fun getCardBgColor(): Color {
-    return if (isDarkThem()) {
-        Color(34, 34, 34, 255)
-    } else {
-        Color(233, 233, 233, 255)
-    }
-}
+fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): List<DataMenuItem> {
 
-@Composable
-fun getCardFgColor(): Color {
-    return if (isDarkThem()) {
-        Color(247, 247, 247, 255)
-    } else {
-        Color(24, 24, 24, 255)
+    return filter {
+        when (it.resId) {
+            R.drawable.ic_round_favorite_24 -> {
+                kalam.isFavorite == 0
+            }
+            R.drawable.ic_round_favorite_border_24 -> {
+                kalam.isFavorite == 1
+            }
+            R.drawable.ic_round_cloud_download_24 -> {
+                kalam.offlineSource.isEmpty()
+            }
+            R.drawable.ic_round_share_24 -> {
+                kalam.onlineSource.isNotEmpty()
+            }
+            R.drawable.ic_round_call_split_24 -> {
+                trackType == ScreenType.Tracks.DOWNLOADS
+            }
+            R.drawable.ic_outline_delete_24 -> {
+                if (trackType == ScreenType.Tracks.ALL) {
+                    kalam.onlineSource.isEmpty()
+                } else true
+            }
+            R.drawable.ic_round_playlist_add_24 -> {
+                trackType != ScreenType.Tracks.PLAYLIST
+            }
+            else -> true
+        }
     }
+
 }

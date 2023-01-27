@@ -1,21 +1,10 @@
 package pk.sufiishq.app.ui.components.buttons
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -23,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -32,74 +20,89 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.constraintlayout.compose.ConstraintLayout
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.components.SIClickableText
+import pk.sufiishq.aurora.components.SIHeightSpace
+import pk.sufiishq.aurora.components.SIIcon
+import pk.sufiishq.aurora.components.SIImage
+import pk.sufiishq.aurora.components.SIText
+import pk.sufiishq.aurora.layout.SIBox
+import pk.sufiishq.aurora.layout.SIColumn
+import pk.sufiishq.aurora.layout.SIConstraintLayout
+import pk.sufiishq.aurora.layout.SIDialog
+import pk.sufiishq.aurora.layout.SISurface
+import pk.sufiishq.aurora.theme.AuroraColor
+import pk.sufiishq.aurora.theme.AuroraDark
+import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
-fun AboutIconButton() {
+fun AboutIconButton(
+    onColor: AuroraColor
+) {
 
     val showDialog = rem(false)
 
-    IconButton(onClick = {
-        showDialog.value = true
-    }) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_outline_info_24),
-            contentDescription = null,
-            tint = MaterialTheme.colors.primary
-        )
-    }
+    SIIcon(
+        resId = R.drawable.ic_outline_info_24,
+        tint = onColor,
+        onClick = {
+            showDialog.value = true
+        }
+    )
 
     AboutDialog(showDialog = showDialog)
 }
 
 @Composable
-private fun AboutDialog(
-    showDialog: MutableState<Boolean>
-) {
+private fun AboutDialog(showDialog: MutableState<Boolean>) {
     if (showDialog.value) {
 
-        val matColors = MaterialTheme.colors
+        SIDialog(
+            bgColor = AuroraColor.Transparent,
+            borderColor = AuroraColor.Transparent,
+            onDismissRequest = {
+                showDialog.value = false
+            }
+        ) {
 
-        Dialog(onDismissRequest = { showDialog.value = false }) {
-            ConstraintLayout {
+            SIConstraintLayout {
 
                 val (icon, content) = createRefs()
 
-                Surface(
+                SISurface(
+                    color = AuroraColor.Background,
                     shape = MaterialTheme.shapes.medium,
-                    color = matColors.background,
                     modifier = Modifier.constrainAs(content) {
                         start.linkTo(parent.start)
                         top.linkTo(parent.top, 50.dp)
                         end.linkTo(parent.end)
                     }
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    SIColumn(
+                        padding = 12
+                    ) { textColor ->
 
-                        Spacer(modifier = Modifier.height(50.dp))
+                        SIHeightSpace(value = 50)
 
-                        Box(
+                        SIBox(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
-                        ) {
-                            Text(
+                        ) { textColor ->
+                            SIText(
                                 text = stringResource(id = R.string.app_name),
-                                fontSize = 17.sp,
+                                textColor = textColor,
                                 fontWeight = FontWeight.Bold
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                        SIHeightSpace(value = 12)
 
+                        val linkColor = AuroraColor.SecondaryVariant.color()
                         val annotatedString = buildAnnotatedString {
 
-                            withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+                            withStyle(style = SpanStyle(color = textColor.color())) {
 
                                 // creating a string to display in the Text
                                 val mStr = "Please use Sufi Ishq facebook page for any "
@@ -111,7 +114,7 @@ private fun AboutDialog(
                                 append(mStr)
                                 addStyle(
                                     style = SpanStyle(
-                                        color = MaterialTheme.colors.secondary,
+                                        color = linkColor,
                                         textDecoration = TextDecoration.Underline
                                     ), start = mStartIndex, end = mEndIndex
                                 )
@@ -146,7 +149,7 @@ private fun AboutDialog(
 
                                 addStyle(
                                     style = SpanStyle(
-                                        color = MaterialTheme.colors.secondary,
+                                        color = linkColor,
                                         textDecoration = TextDecoration.Underline
                                     ), start = mStartIndex, end = mEndIndex
                                 )
@@ -165,7 +168,7 @@ private fun AboutDialog(
 
                                 addStyle(
                                     style = SpanStyle(
-                                        color = MaterialTheme.colors.secondary,
+                                        color = linkColor,
                                         textDecoration = TextDecoration.Underline
                                     ), start = mStartIndex, end = mEndIndex
                                 )
@@ -182,7 +185,7 @@ private fun AboutDialog(
 
                         val mUriHandler = LocalUriHandler.current
 
-                        ClickableText(
+                        SIClickableText(
                             text = annotatedString,
                             onClick = {
                                 annotatedString
@@ -207,11 +210,11 @@ private fun AboutDialog(
                     }
                 }
 
-                Box(
+                SIBox(
+                    bgColor = AuroraColor.Background,
                     modifier = Modifier
                         .size(100.dp)
                         .clip(CircleShape)
-                        .background(matColors.background)
                         .padding(3.dp)
                         .constrainAs(icon) {
                             start.linkTo(parent.start)
@@ -220,15 +223,14 @@ private fun AboutDialog(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Box(
+                    SIBox(
                         modifier = Modifier
                             .size(100.dp)
                             .clip(CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.sarkar),
-                            contentDescription = null,
+                        SIImage(
+                            resId = R.drawable.sarkar,
                             contentScale = ContentScale.FillWidth
                         )
                     }
@@ -242,7 +244,7 @@ private fun AboutDialog(
 @Preview(showBackground = true)
 @Composable
 fun LightPreviewAboutDialog() {
-    SufiIshqTheme {
+    AuroraLight {
         AboutDialog(showDialog = rem(true))
     }
 }
@@ -251,7 +253,7 @@ fun LightPreviewAboutDialog() {
 @Preview(showBackground = true)
 @Composable
 fun DarkPreviewAboutDialog() {
-    SufiIshqTheme(darkTheme = true) {
+    AuroraDark {
         AboutDialog(showDialog = rem(true))
     }
 }

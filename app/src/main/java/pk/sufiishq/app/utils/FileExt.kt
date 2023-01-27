@@ -5,6 +5,7 @@ import VideoHandle.OnEditorListener
 import io.reactivex.Completable
 import java.io.File
 import org.apache.commons.io.IOUtils
+import pk.sufiishq.app.core.splitter.SplitStatus
 import timber.log.Timber
 
 fun File.moveTo(destination: File): Completable {
@@ -35,7 +36,7 @@ fun File.split(
     output: File,
     start: String,
     end: String,
-    onComplete: (returnCode: Int) -> Unit
+    onComplete: (splitStatus: SplitStatus) -> Unit
 ) {
 
     EpEditor.execCmd(
@@ -43,16 +44,14 @@ fun File.split(
         0,
         object : OnEditorListener {
             override fun onSuccess() {
-                onComplete(SPLIT_SUCCESS)
+                onComplete(SplitStatus.Done)
             }
 
             override fun onFailure() {
-                onComplete(SPLIT_CANCEL)
+                onComplete(SplitStatus.Error("Execution failed"))
             }
 
-            override fun onProgress(progress: Float) {
-                onComplete(SPLIT_IN_PROGRESS)
-            }
+            override fun onProgress(progress: Float) {}
         }
     )
 }

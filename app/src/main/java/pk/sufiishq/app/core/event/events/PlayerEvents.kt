@@ -22,4 +22,7 @@ abstract class PlayerEvents : Event(PlayerViewModel::class) {
     class ShowPlaylistDialog(val kalam: Kalam?) : Event(PlayerViewModel::class)
     class AddKalamInPlaylist(val kalam: Kalam, val playlist: Playlist) :
         Event(PlayerViewModel::class)
+
+    class MarkAsFavoriteKalam(val kalam: Kalam) : Event(PlayerViewModel::class)
+    class RemoveFavoriteKalam(val kalam: Kalam) : Event(PlayerViewModel::class)
 }

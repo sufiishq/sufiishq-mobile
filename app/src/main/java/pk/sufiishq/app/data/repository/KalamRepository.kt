@@ -19,13 +19,17 @@ import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ONLINE_SRC
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.PLAYLIST_ID
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.RECORDED_DATE
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.TITLE
+import pk.sufiishq.app.helpers.PopupMenuItemProvider
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
+import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
 
 
-class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
+class KalamRepository @Inject constructor(
+    private val kalamDao: KalamDao
+) {
 
     private var trackListType: TrackListType = TrackListType.All()
     private var searchKeyword = ""
@@ -176,6 +180,10 @@ class KalamRepository @Inject constructor(private val kalamDao: KalamDao) {
 
     suspend fun delete(kalam: Kalam) {
         kalamDao.delete(kalam)
+    }
+
+    fun popupMenuItems(appContext: Context): List<DataMenuItem> {
+        return PopupMenuItemProvider.getTrackListPopupMenuItems(appContext)
     }
 
     fun loadAllFromAssets(context: Context): Observable<List<Kalam>> {

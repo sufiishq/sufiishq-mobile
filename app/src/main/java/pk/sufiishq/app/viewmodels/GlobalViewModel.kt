@@ -15,6 +15,8 @@ import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.helpers.InAppUpdateManager
+import pk.sufiishq.app.helpers.PopupMenuItemProvider
+import pk.sufiishq.aurora.models.DataMenuItem
 
 @HiltViewModel
 class GlobalViewModel @Inject constructor(
@@ -26,6 +28,10 @@ class GlobalViewModel @Inject constructor(
 
     override fun getShowUpdateButton(): LiveData<Boolean> {
         return showUpdateDialog
+    }
+
+    override fun popupMenuItems(): List<DataMenuItem> {
+        return PopupMenuItemProvider.getAppBarPopupMenuItems(getApplication())
     }
 
     private fun setShowUpdateButton(value: Boolean) {

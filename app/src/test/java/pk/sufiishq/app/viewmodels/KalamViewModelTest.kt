@@ -32,7 +32,7 @@ import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.helpers.KalamSplitManager
+import pk.sufiishq.app.core.splitter.KalamSplitManager
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.helpers.factory.FavoriteChangeFactory
 import pk.sufiishq.app.helpers.factory.KalamDeleteStrategyFactory

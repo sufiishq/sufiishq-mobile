@@ -14,12 +14,12 @@ import org.json.JSONObject
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
+import pk.sufiishq.app.core.splitter.PreviewAudioPlayer
 import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.HelpJson
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
-import pk.sufiishq.app.helpers.PreviewAudioPlayer
 
 @Module
 @InstallIn(SingletonComponent::class)

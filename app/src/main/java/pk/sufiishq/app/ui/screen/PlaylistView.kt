@@ -1,28 +1,15 @@
 package pk.sufiishq.app.ui.screen
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Divider
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -33,12 +20,16 @@ import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.components.PlaylistItem
 import pk.sufiishq.app.ui.components.dialogs.AddOrUpdatePlaylistDialog
 import pk.sufiishq.app.ui.components.dialogs.PlaylistConfirmDeleteDialog
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
 import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.dummyPlaylistDataProvider
+import pk.sufiishq.app.utils.isScrollingUp
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.PlaylistViewModel
+import pk.sufiishq.aurora.layout.SILazyColumn
+import pk.sufiishq.aurora.layout.SIScaffold
+import pk.sufiishq.aurora.theme.AuroraDark
+import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun PlaylistView(
@@ -46,61 +37,34 @@ fun PlaylistView(
     playlistDataProvider: PlaylistDataProvider = hiltViewModel<PlaylistViewModel>()
 ) {
 
-    val matColors = MaterialTheme.colors
     val playlist = rem(Playlist(0, ""))
     val allPlaylist = playlistDataProvider.getAll().observeAsState().optValue(listOf())
+    val popupMenuItems = playlistDataProvider.getPopupMenuItems()
 
-    Surface {
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    playlist.value = Playlist(0, "")
-                    PlaylistEvents.ShowAddUpdatePlaylistDialog(playlist.value).dispatch()
-                }) {
-                    Icon(
-                        tint = Color.White,
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = null
-                    )
-                }
-            },
-            floatingActionButtonPosition = FabPosition.End
-        ) { innerPadding ->
+    val listState = rememberLazyListState()
 
-            Box(modifier = Modifier.padding(innerPadding)) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(matColors.secondaryVariant)
-                ) {
-                    if (allPlaylist.isNotEmpty()) {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
+    SIScaffold(
+        onFloatingButtonAction = {
+            playlist.value = Playlist(0, "")
+            PlaylistEvents.ShowAddUpdatePlaylistDialog(playlist.value).dispatch()
+        },
+        isVisibleFAB = listState.isScrollingUp()
+    ) {
+        SILazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            hasItems = allPlaylist.isNotEmpty(),
+            contentPadding = PaddingValues(8.dp, 8.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            state = listState,
+            noItemText = "No playlist found"
+        ) {
 
-                            itemsIndexed(allPlaylist) { index, pl ->
-                                PlaylistItem(
-                                    playlist = pl,
-                                    navController = navController
-                                )
-
-                                if (index < allPlaylist.lastIndex) {
-                                    Divider(color = matColors.background)
-                                }
-                            }
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "No playlist found"
-                            )
-                        }
-                    }
-                }
+            items(allPlaylist) { pl ->
+                PlaylistItem(
+                    playlist = pl,
+                    navController = navController,
+                    popupMenuItems = popupMenuItems
+                )
             }
         }
     }
@@ -120,7 +84,7 @@ fun PlaylistView(
 @Preview(showBackground = true)
 @Composable
 fun PreviewLightPlaylistView() {
-    SufiIshqTheme(darkTheme = false) {
+    AuroraLight {
         PlaylistView(
             navController = rememberNavController(),
             playlistDataProvider = dummyPlaylistDataProvider()
@@ -132,7 +96,7 @@ fun PreviewLightPlaylistView() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDarkPlaylistView() {
-    SufiIshqTheme(darkTheme = true) {
+    AuroraDark {
         PlaylistView(
             navController = rememberNavController(),
             playlistDataProvider = dummyPlaylistDataProvider()

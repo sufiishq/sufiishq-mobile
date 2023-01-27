@@ -71,6 +71,9 @@ dependencies {
     // kotlin reflection
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
 
+    // add sufi-ishq aurora ui sdk
+    implementation project(":aurora")
+
     // ========================================= //
     // TESTING DEPENDENCIES
     // ========================================= //

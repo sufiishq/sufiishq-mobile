@@ -1,33 +1,15 @@
 package pk.sufiishq.app.ui.screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -35,23 +17,28 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.SIAnimatedLog
-import pk.sufiishq.app.ui.components.TileAndroidImage
-import pk.sufiishq.app.ui.components.buttons.ThemeChangeButton
-import pk.sufiishq.app.ui.components.buttons.UpdateButton
-import pk.sufiishq.app.ui.components.dialogs.SufiIshqDialog
-import pk.sufiishq.app.utils.MenuIconColors
-import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.ui.components.buttons.DashboardButton
+import pk.sufiishq.app.ui.components.dialogs.UpdateAvailableDialog
 import pk.sufiishq.app.utils.dummyGlobalDataProvider
 import pk.sufiishq.app.utils.dummyHomeDataProvider
-import pk.sufiishq.app.utils.isDarkThem
 import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.GlobalViewModel
 import pk.sufiishq.app.viewmodels.HomeViewModel
+import pk.sufiishq.aurora.components.SIBadge
+import pk.sufiishq.aurora.components.SIImage
+import pk.sufiishq.aurora.layout.SIBox
+import pk.sufiishq.aurora.layout.SIColumn
+import pk.sufiishq.aurora.layout.SIConstraintLayout
+import pk.sufiishq.aurora.layout.SIRow
+import pk.sufiishq.aurora.models.ColorPalette
+import pk.sufiishq.aurora.theme.AuroraDark
+import pk.sufiishq.aurora.theme.AuroraLight
+import pk.sufiishq.aurora.widgets.SIColorPaletteView
 
 @Composable
 fun DashboardView(
@@ -60,34 +47,24 @@ fun DashboardView(
     globalDataProvider: GlobalDataProvider = hiltViewModel<GlobalViewModel>()
 ) {
 
-    val backgroundColor = if (isDarkThem()) Color(0xFF444444) else Color(0xFFD2D4D5)
+    val all = rem(stringResource(R.string.all))
+    val favorites = rem(stringResource(R.string.favorites))
+    val downloads = rem(stringResource(R.string.downloads))
+    val playlist = rem(stringResource(R.string.playlist))
 
-    val all = stringResource(R.string.all)
-    val favorites = stringResource(R.string.favorites)
-    val downloads = stringResource(R.string.downloads)
-    val playlist = stringResource(R.string.playlist)
+    SIBox {
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-    ) {
-
-        TileAndroidImage(
-            modifier = Modifier
-                .fillMaxSize()
-                .alpha(0.2f),
-            drawableId = R.drawable.pattern,
-            contentDescription = ""
+        UpdateAvailableDialog(
+            isUpdateAvailable = rem(
+                globalDataProvider.getShowUpdateButton().observeAsState().optValue(false)
+            )
         )
 
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
+        SIConstraintLayout(
+            modifier = Modifier.fillMaxSize()
         ) {
 
-            val (logo, calligraphy, themeChangeButton, btnUpdate, buttonBox, debugLabel) = createRefs()
-
+            val (logo, calligraphy, buttonBox, debugLabel) = createRefs()
 
             SIAnimatedLog(
                 modifier = Modifier.constrainAs(logo) {
@@ -100,96 +77,71 @@ fun DashboardView(
                 }
             )
 
-            Image(
+            SIImage(
                 modifier = Modifier.constrainAs(calligraphy) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(buttonBox.top, 12.dp)
+                    bottom.linkTo(buttonBox.top)
                 },
-                painter = painterResource(id = R.drawable.caligraphi),
-                contentDescription = null
+                resId = R.drawable.caligraphi
             )
-
-            // theme change button app only when android version less or equal from Android 9
-            ThemeChangeButton(
-                modifier = Modifier
-                    .constrainAs(themeChangeButton) {
-                        start.linkTo(parent.start, 12.dp)
-                        bottom.linkTo(buttonBox.top, 6.dp)
-                    }
-            )
-
-            UpdateButton(
-                show = globalDataProvider.getShowUpdateButton().observeAsState(),
-                modifier = Modifier
-                    .constrainAs(btnUpdate) {
-                        start.linkTo(parent.start, 12.dp)
-                        top.linkTo(parent.top, 12.dp)
-                    }
-            ) {
-                GlobalEvents.StartUpdateFlow.dispatch()
-            }
 
             if (BuildConfig.DEBUG) {
-                Text(
-                    modifier = Modifier
-                        .background(
-                            color = Color(0f, 0f, 1f, 0.5f),
-                            shape = CircleShape
-                        )
-                        .padding(16.dp, 8.dp)
-                        .constrainAs(debugLabel) {
-                            end.linkTo(parent.end, 12.dp)
-                            bottom.linkTo(buttonBox.top, 6.dp)
-                        },
-                    color = Color.White,
-                    text = "DEBUG"
+                SIBadge(
+                    text = "DEBUG",
+                    modifier = Modifier.constrainAs(debugLabel) {
+                        end.linkTo(parent.end, 12.dp)
+                        bottom.linkTo(buttonBox.top)
+                    }
                 )
             }
 
-            Box(
+            SIBox(
                 modifier = Modifier
                     .constrainAs(buttonBox) {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom, 12.dp)
-                    }
+                        bottom.linkTo(parent.bottom)
+                    },
+                padding = 12
             ) {
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
+                SIRow {
+                    SIColumn(
+                        modifier = Modifier.weight(1f)
                     ) {
 
-                        TrackButton(
-                            title = all,
+                        DashboardButton(
+                            title = all.value,
                             count = homeDataProvider.countAll().observeAsState().optValue(0),
                             icon = R.drawable.ic_outline_check_circle_24,
-                            iconColor = MenuIconColors.ALL_KALAM
-                        ) {
-                            navController.navigate(
-                                ScreenType.Tracks.withArgs(
-                                    ScreenType.Tracks.ALL,
-                                    all,
-                                    "0"
+                            paddingModifier = Modifier.padding(0.dp, 0.dp, 6.dp, 6.dp),
+                            navigate = {
+                                navController.navigate(
+                                    ScreenType.Tracks.withArgs(
+                                        ScreenType.Tracks.ALL,
+                                        all.value,
+                                        "0"
+                                    )
                                 )
-                            )
-                        }
+                            }
+                        )
 
-                        TrackButton(
-                            title = favorites,
-                            count = homeDataProvider.countFavorites().observeAsState().optValue(0),
-                            icon = R.drawable.ic_outline_favorite_border_24,
-                            iconColor = MenuIconColors.FAVORITE
-                        ) {
-                            navController.navigate(
-                                ScreenType.Tracks.withArgs(
-                                    ScreenType.Tracks.FAVORITES,
-                                    favorites,
-                                    "0"
+                        DashboardButton(
+                            title = favorites.value,
+                            count = homeDataProvider.countFavorites().observeAsState()
+                                .optValue(0),
+                            icon = R.drawable.ic_round_favorite_border_24,
+                            paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
+                            navigate = {
+                                navController.navigate(
+                                    ScreenType.Tracks.withArgs(
+                                        ScreenType.Tracks.FAVORITES,
+                                        favorites.value,
+                                        "0"
+                                    )
                                 )
-                            )
-                        }
+                            }
+                        )
                     }
 
                     Column(
@@ -197,96 +149,44 @@ fun DashboardView(
                             .weight(1f)
                     ) {
 
-                        TrackButton(
-                            title = downloads,
-                            count = homeDataProvider.countDownloads().observeAsState().optValue(0),
+                        DashboardButton(
+                            title = downloads.value,
+                            count = homeDataProvider.countDownloads().observeAsState()
+                                .optValue(0),
                             icon = R.drawable.ic_outline_cloud_download_24,
-                            iconColor = MenuIconColors.DOWNLOADS
-                        ) {
-                            navController.navigate(
-                                ScreenType.Tracks.withArgs(
-                                    ScreenType.Tracks.DOWNLOADS,
-                                    downloads,
-                                    "0"
+                            paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
+                            navigate = {
+                                navController.navigate(
+                                    ScreenType.Tracks.withArgs(
+                                        ScreenType.Tracks.DOWNLOADS,
+                                        downloads.value,
+                                        "0"
+                                    )
                                 )
-                            )
-                        }
+                            }
+                        )
 
-                        TrackButton(
-                            title = playlist,
-                            count = homeDataProvider.countPlaylist().observeAsState().optValue(0),
+                        DashboardButton(
+                            title = playlist.value,
+                            count = homeDataProvider.countPlaylist().observeAsState()
+                                .optValue(0),
                             icon = R.drawable.ic_outline_playlist_play_24,
-                            iconColor = MenuIconColors.PLAYLIST
-                        ) {
-                            navController.navigate(ScreenType.Playlist.route())
-                        }
+                            paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
+                            navigate = {
+                                navController.navigate(ScreenType.Playlist.route())
+                            }
+                        )
                     }
                 }
             }
         }
-    }
-}
 
-@Composable
-fun TrackButton(
-    title: String,
-    count: Int,
-    icon: Int,
-    iconColor: Color,
-    navigate: () -> Unit
-) {
+        SIRow(modifier = Modifier.align(Alignment.TopStart)) {
 
-    var bgColor = Color(233, 233, 233, 255)
-    var textColor = Color(24, 24, 24, 255)
-
-    if (isDarkThem()) {
-        bgColor = Color(34, 34, 34, 255)
-        textColor = Color(247, 247, 247, 255)
-    }
-
-    Box(modifier = Modifier
-        .padding(6.dp)
-        .clip(RoundedCornerShape(5.dp))
-        .clickable {
-            navigate()
-        }
-    ) {
-        Box(
-            modifier = Modifier
-                .background(bgColor)
-                .padding(20.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-
-                Icon(
-                    modifier = Modifier.padding(10.dp),
-                    painter = painterResource(id = icon),
-                    contentDescription = null,
-                    tint = iconColor
-                )
-
-                Column(
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "$count",
-                        fontSize = 30.sp,
-                        color = textColor,
-                        fontFamily = FontFamily.Serif,
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 2.dp),
-                        text = title,
-                        color = textColor,
-                    )
-                }
-            }
+            SIColorPaletteView(colorPalette = ColorPalette.Clover, onClick = {})
+            SIColorPaletteView(colorPalette = ColorPalette.Blackberry, onClick = {})
+            SIColorPaletteView(colorPalette = ColorPalette.Grape, onClick = {})
+            SIColorPaletteView(colorPalette = ColorPalette.Blueberry, onClick = {})
         }
     }
 }
@@ -295,7 +195,20 @@ fun TrackButton(
 @Preview(showBackground = true)
 @Composable
 fun LightPreviewDashboardView() {
-    SufiIshqDialog {
+    AuroraLight {
+        DashboardView(
+            navController = rememberNavController(),
+            homeDataProvider = dummyHomeDataProvider(),
+            globalDataProvider = dummyGlobalDataProvider()
+        )
+    }
+}
+
+@ExcludeFromJacocoGeneratedReport
+@Preview(showBackground = true)
+@Composable
+fun DarkPreviewDashboardView() {
+    AuroraDark {
         DashboardView(
             navController = rememberNavController(),
             homeDataProvider = dummyHomeDataProvider(),
