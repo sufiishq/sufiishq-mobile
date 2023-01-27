@@ -16,18 +16,20 @@ internal fun SISpace(
 
 @Composable
 fun SIWidthSpace(
+    modifier: Modifier = Modifier,
     value: Int
 ) {
     SISpace(
-        modifier = Modifier.width(value.dp)
+        modifier = modifier.width(value.dp)
     )
 }
 
 @Composable
 fun SIHeightSpace(
+    modifier: Modifier = Modifier,
     value: Int
 ) {
     SISpace(
-        modifier = Modifier.height(value.dp)
+        modifier = modifier.height(value.dp)
     )
 }

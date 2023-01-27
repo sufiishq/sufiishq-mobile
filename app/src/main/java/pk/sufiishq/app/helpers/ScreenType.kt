@@ -11,6 +11,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.ui.screen.DashboardView
 import pk.sufiishq.app.ui.screen.HelpView
 import pk.sufiishq.app.ui.screen.PlaylistView
+import pk.sufiishq.app.ui.screen.ThemeView
 import pk.sufiishq.app.ui.screen.TracksView
 import pk.sufiishq.app.utils.app
 
@@ -138,6 +139,15 @@ sealed interface ScreenType {
             TracksView(
                 trackListType = getTrackListType(navBackStackEntry),
             )
+        }
+    }
+
+    object Theme : ScreenType {
+        override fun route() = "screen_theme"
+
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            ThemeView()
         }
     }
 }

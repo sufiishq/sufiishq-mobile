@@ -71,6 +71,16 @@ enum class AuroraColor(val color: @Composable () -> Color) {
             Color(0xFF919191)
         }
     ),
+    Light(
+        {
+            Color(0xFFFFFFFF)
+        }
+    ),
+    Dark(
+        {
+            Color(0xFF2C2C2C)
+        }
+    ),
     Transparent(
         {
             Color.Transparent

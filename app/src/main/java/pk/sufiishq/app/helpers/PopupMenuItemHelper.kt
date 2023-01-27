@@ -45,7 +45,8 @@ object PopupMenuItemProvider {
         return appBarPopupMenuItems ?: listOf(
             PopupMenuItem.Share(context.getString(R.string.share_label)),
             PopupMenuItem.Facebook(context.getString(R.string.facebook)),
-            PopupMenuItem.Help(context.getString(R.string.help))
+            PopupMenuItem.Help(context.getString(R.string.help)),
+            PopupMenuItem.Theme("Theme")
         ).also {
             appBarPopupMenuItems = it
         }
@@ -125,6 +126,12 @@ sealed class PopupMenuItem(
     class Help(
         itemLabel: String,
         itemResId: Int? = R.drawable.ic_round_help_24,
+        itemIconTint: AuroraColor? = null
+    ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
+
+    class Theme(
+        itemLabel: String,
+        itemResId: Int? = R.drawable.ic_round_dark_mode_24,
         itemIconTint: AuroraColor? = null
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 }

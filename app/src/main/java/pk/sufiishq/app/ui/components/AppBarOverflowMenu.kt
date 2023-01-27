@@ -57,6 +57,13 @@ private fun handleClick(
         }
         is PopupMenuItem.Help -> {
             navController.navigate(ScreenType.Help.route()) {
+                popUpTo(ScreenType.Dashboard.route())
+                launchSingleTop = true
+            }
+        }
+        is PopupMenuItem.Theme -> {
+            navController.navigate(ScreenType.Theme.route()) {
+                popUpTo(ScreenType.Dashboard.route())
                 launchSingleTop = true
             }
         }
