@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.data.providers.KalamDataProvider
@@ -24,7 +22,6 @@ fun KalamItemPopupMenu(
     kalam: Kalam,
     kalamDataProvider: KalamDataProvider,
     trackListType: TrackListType,
-    coroutineScope: CoroutineScope
 ) {
     val context = LocalContext.current
 
@@ -45,9 +42,7 @@ fun KalamItemPopupMenu(
                     resId = it.resId,
                     onClick = {
                         isExpanded.value = false
-                        coroutineScope.launch {
-                            handleClick(it, kalam, trackListType, context)
-                        }
+                        handleClick(it, kalam, trackListType, context)
                     }
                 )
             }

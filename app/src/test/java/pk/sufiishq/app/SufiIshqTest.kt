@@ -78,15 +78,6 @@ abstract class SufiIshqTest {
         }
     }
 
-    fun mockEventDispatcher(): EventDispatcher {
-        mockkObject(EventDispatcher.Companion)
-        val eventDispatcher = mockk<EventDispatcher>()
-
-        every { EventDispatcher.getInstance() } returns eventDispatcher
-
-        return eventDispatcher
-    }
-
     fun getKalam() = Kalam(
         id = 1,
         title = "My Kalam",

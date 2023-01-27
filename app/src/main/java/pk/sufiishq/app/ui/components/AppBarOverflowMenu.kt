@@ -26,7 +26,7 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 @Composable
 fun AppBarOverflowMenu(
     navController: NavController,
-    iconColor: AuroraColor,
+    iconColor: AuroraColor? = null,
     globalDataProvider: GlobalDataProvider = hiltViewModel<GlobalViewModel>()
 ) {
 

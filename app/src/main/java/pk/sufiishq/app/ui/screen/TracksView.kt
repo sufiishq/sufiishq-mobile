@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +46,6 @@ fun TracksView(
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
-    val lifecycleScope = rememberCoroutineScope()
     val searchText = rem("")
 
     SIColumn { textColor ->
@@ -73,8 +71,7 @@ fun TracksView(
                     KalamItem(
                         kalam = track,
                         trackListType = trackListType,
-                        kalamDataProvider = kalamDataProvider,
-                        coroutineScope = lifecycleScope
+                        kalamDataProvider = kalamDataProvider
                     )
                 }
             }

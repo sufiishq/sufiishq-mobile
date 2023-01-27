@@ -1,9 +1,7 @@
 package pk.sufiishq.app.ui.components
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.CoroutineScope
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.event.events.PlayerEvents
@@ -23,8 +21,7 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 fun KalamItem(
     kalam: Kalam,
     trackListType: TrackListType,
-    kalamDataProvider: KalamDataProvider,
-    coroutineScope: CoroutineScope
+    kalamDataProvider: KalamDataProvider
 ) {
 
     val isExpanded = rem(false)
@@ -39,8 +36,7 @@ fun KalamItem(
                 isExpanded = isExpanded,
                 kalamDataProvider = kalamDataProvider,
                 kalam = kalam,
-                trackListType = trackListType,
-                coroutineScope = coroutineScope
+                trackListType = trackListType
             )
         },
         onClick = {
@@ -59,8 +55,7 @@ fun KalamItemPreviewLight() {
         KalamItem(
             kalam = dummyKalam(),
             trackListType = TrackListType.All(),
-            kalamDataProvider = dummyKalamDataProvider(),
-            coroutineScope = rememberCoroutineScope()
+            kalamDataProvider = dummyKalamDataProvider()
         )
     }
 }
@@ -73,8 +68,7 @@ fun KalamItemPreviewDark() {
         KalamItem(
             kalam = dummyKalam(),
             trackListType = TrackListType.All(),
-            kalamDataProvider = dummyKalamDataProvider(),
-            coroutineScope = rememberCoroutineScope()
+            kalamDataProvider = dummyKalamDataProvider()
         )
     }
 }
