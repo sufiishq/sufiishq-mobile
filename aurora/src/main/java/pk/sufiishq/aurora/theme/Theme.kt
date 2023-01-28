@@ -11,6 +11,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pk.sufiishq.app.ui.theme.Shapes
 import pk.sufiishq.aurora.config.AuroraConfig
 
+enum class Theme {
+    Light, Dark, Auto
+}
+
 @Composable
 fun AuroraLight(content: @Composable () -> Unit) {
     Aurora(
@@ -50,16 +54,24 @@ fun Aurora(content: @Composable () -> Unit) {
 @Composable
 private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
 
-    val activeSecondaryColorPalette =
-        AuroraConfig.getDefaultColorPalette(LocalContext.current).collectAsState()
+    val activeTheme = AuroraConfig.getDefaultTheme(LocalContext.current).collectAsState().value
 
-    val colors = (if (darkTheme) {
+    val activeSecondaryColorPalette =
+        AuroraConfig.getDefaultColorPalette(LocalContext.current).collectAsState().value
+
+    val isDark = when (activeTheme) {
+        Theme.Auto -> darkTheme
+        Theme.Light -> false
+        Theme.Dark -> true
+    }
+
+    val colors = (if (isDark) {
         DarkColorPalette
     } else {
         LightColorPalette
     }).copy(
-        secondary = activeSecondaryColorPalette.value.color.first,
-        secondaryVariant = activeSecondaryColorPalette.value.color.second
+        secondary = activeSecondaryColorPalette.color.first,
+        secondaryVariant = activeSecondaryColorPalette.color.second
     )
 
     val systemUiController = rememberSystemUiController()
@@ -69,7 +81,7 @@ private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
         // dark icons if we're in light theme
         systemUiController.setSystemBarsColor(
             color = colors.primary,
-            darkIcons = !darkTheme
+            darkIcons = !isDark
         )
 
         // setStatusBarColor() and setNavigationBarColor() also exist

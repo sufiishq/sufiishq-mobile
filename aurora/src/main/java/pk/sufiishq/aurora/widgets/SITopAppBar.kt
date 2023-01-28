@@ -71,7 +71,8 @@ fun SITopAppBar(
         )
         SIDivider(
             modifier = Modifier.align(Alignment.BottomCenter),
-            color = AuroraColor.SecondaryVariant
+            color = AuroraColor.SecondaryVariant,
+            thickness = 3.dp
         )
     }
 

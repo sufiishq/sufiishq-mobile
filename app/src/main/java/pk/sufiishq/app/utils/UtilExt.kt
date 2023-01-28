@@ -178,3 +178,9 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
     }
 
 }
+
+fun String.maxLength(length: Int, endWith: String) : String {
+    return if (this.length > length) {
+        this.substring(0, length) + endWith
+    } else this
+}

@@ -211,11 +211,11 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                 }
 
                 SIBox(
+                    padding = 3,
                     bgColor = AuroraColor.Background,
                     modifier = Modifier
                         .size(100.dp)
                         .clip(CircleShape)
-                        .padding(3.dp)
                         .constrainAs(icon) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)

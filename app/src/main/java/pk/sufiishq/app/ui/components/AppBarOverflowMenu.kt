@@ -63,7 +63,6 @@ private fun handleClick(
         }
         is PopupMenuItem.Theme -> {
             navController.navigate(ScreenType.Theme.route()) {
-                popUpTo(ScreenType.Dashboard.route())
                 launchSingleTop = true
             }
         }

@@ -10,11 +10,12 @@ import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
 fun ContentBackground(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     SIBox(
         bgColor = AuroraColor.Surface,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         TileAndroidImage(
             modifier = Modifier

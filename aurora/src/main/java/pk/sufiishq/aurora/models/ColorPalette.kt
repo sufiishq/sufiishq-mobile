@@ -10,7 +10,7 @@ sealed class ColorPalette(val name: String, val color: Pair<Color, Color>) {
     object Grape : ColorPalette("Grape", Pair(Color(0xFF944584), Color(0xFF6c3461)))
     object Mud : ColorPalette("Mud", Pair(Color(0xFF9C7657), Color(0xFF70543e)))
     object Kiwi : ColorPalette("Kiwi", Pair(Color(0xFFA4E473), Color(0xFF7aab55)))
-    object Mint : ColorPalette("Mint", Pair(Color(0xFFA2F5D1), Color(0xFF88ffcc)))
+    object Mint : ColorPalette("Mint", Pair(Color(0xFFA4F1D1), Color(0xFF69C29C)))
     object Mulberry : ColorPalette("Mulberry", Pair(Color(0xFFE2147B), Color(0xFF920a4e)))
     object Antler : ColorPalette("Antler", Pair(Color(0xFFCFA6A0), Color(0xFF957a76)))
     object Berry : ColorPalette("Berry", Pair(Color(0xFFAD3D6E), Color(0xFF990f4b)))

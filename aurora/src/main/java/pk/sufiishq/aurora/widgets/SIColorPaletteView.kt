@@ -32,6 +32,7 @@ fun SIColorPaletteView(
     bgColor: AuroraColor = AuroraColor.Background,
     colorPalette: ColorPalette,
     @IntRange(from = 50, to = 65) size: Int = 50,
+    nameFilter: ((String) -> String)? = null,
     onClick: (ColorPalette) -> Unit
 ) {
 
@@ -80,7 +81,7 @@ fun SIColorPaletteView(
             }
 
             SIText(
-                text = colorPalette.name,
+                text = nameFilter?.invoke(colorPalette.name) ?: colorPalette.name,
                 textColor = textColor,
                 textSize = TextSize.Small,
                 textAlign = TextAlign.Center
