@@ -2,6 +2,7 @@ package pk.sufiishq.app.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +16,7 @@ import pk.sufiishq.app.data.repository.KalamRepository
 class AssetKalamLoaderViewModel @Inject constructor(
     private val app: Application,
     private val kalamRepository: KalamRepository
-) : BaseViewModel(app) {
+) : ViewModel() {
 
     private var disposable = Disposables.disposed()
 

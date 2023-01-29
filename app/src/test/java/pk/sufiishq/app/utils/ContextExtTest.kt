@@ -1,6 +1,8 @@
 package pk.sufiishq.app.utils
 
 import android.content.Context
+import android.content.res.AssetManager
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH
@@ -10,12 +12,15 @@ import android.net.NetworkCapabilities.TRANSPORT_USB
 import android.net.NetworkCapabilities.TRANSPORT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.widget.Toast
+import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
@@ -105,6 +110,25 @@ class ContextExtTest : SufiIshqTest() {
 
         assertEquals(toastLength, Toast.LENGTH_LONG)
         assertEquals("toast showing", toastMessage)
+    }
+
+    @Test
+    fun test_assetsToBitmap_shouldReturn_bitmap() {
+        mockkStatic(BitmapFactory::class)
+        val assetManager = mockk<AssetManager>()
+
+        every { BitmapFactory.decodeStream(any()) } returns mockk()
+
+        every { assetManager.open(any()) } returns mockk()
+        val context = mockk<Context> {
+            every { assets } returns assetManager
+        }
+
+        assertNotNull(context.assetsToBitmap("test_file"))
+        verify { assetManager.open("test_file") }
+
+        every { context.assets } returns ApplicationProvider.getApplicationContext<Context>().assets
+        assertNull(context.assetsToBitmap(""))
     }
 
     private fun mockNetworkCapabilities(): NetworkCapabilities {

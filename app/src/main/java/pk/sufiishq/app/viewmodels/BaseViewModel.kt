@@ -2,10 +2,13 @@ package pk.sufiishq.app.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.handler.EventHandler
+import pk.sufiishq.app.utils.registerEventHandler
 
-open class BaseViewModel(app: Application) : AndroidViewModel(app), EventHandler {
+abstract class BaseViewModel(app: Application) : AndroidViewModel(app), EventHandler {
 
-    override fun onEvent(event: Event) {}
+    init {
+        registerEventHandler()
+    }
+
 }

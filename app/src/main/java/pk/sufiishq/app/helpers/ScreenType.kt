@@ -1,17 +1,70 @@
 package pk.sufiishq.app.helpers
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
+import pk.sufiishq.app.ui.screen.DashboardView
+import pk.sufiishq.app.ui.screen.HelpView
+import pk.sufiishq.app.ui.screen.PlaylistView
+import pk.sufiishq.app.ui.screen.ThemeView
+import pk.sufiishq.app.ui.screen.TracksView
 import pk.sufiishq.app.utils.app
 
-sealed class ScreenType(val route: String) {
+val ALL_SCREENS: List<ScreenType> = ScreenType::class
+    .nestedClasses
+    .toList()
+    .map {
+        it.objectInstance as ScreenType
+    }
 
-    object Dashboard : ScreenType("screen_dashboard")
-    object Playlist : ScreenType("screen_playlist")
-    object Tracks : ScreenType("screen_tracks") {
+sealed interface ScreenType {
+    fun route(): String
+    fun arguments(): List<NamedNavArgument> = emptyList()
+    fun deepLinks(): List<NavDeepLink> = emptyList()
+
+    @Composable
+    fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry)
+
+    object Dashboard : ScreenType {
+        override fun route() = "screen_dashboard"
+
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            DashboardView(
+                navController
+            )
+        }
+    }
+
+    object Playlist : ScreenType {
+        override fun route() = "screen_playlist"
+
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            PlaylistView(
+                navController = navController
+            )
+        }
+    }
+
+    object Help : ScreenType {
+        override fun route() = "screen_help"
+
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            HelpView()
+        }
+    }
+
+    object Tracks : ScreenType {
+
+        // route
+        private const val route = "screen_tracks"
 
         // params
         private const val PARAM_TRACK_TYPE = "trackType"
@@ -24,23 +77,8 @@ sealed class ScreenType(val route: String) {
         const val FAVORITES = "favorites"
         const val PLAYLIST = "playlist"
 
-        fun routeWithPath(): String {
+        override fun route(): String {
             return "$route/{$PARAM_TRACK_TYPE}/{$PARAM_TITLE}/{$PARAM_PLAYLIST_ID}"
-        }
-
-        fun navArgs(): List<NamedNavArgument> {
-            return listOf(
-                navArgument(PARAM_TRACK_TYPE) {
-                    type = NavType.StringType
-                },
-                navArgument(PARAM_TITLE) {
-                    type = NavType.StringType
-                },
-                navArgument(PARAM_PLAYLIST_ID) {
-                    type = NavType.IntType
-                    defaultValue = 0
-                }
-            )
         }
 
         private fun getTrackType(navBackStackEntry: NavBackStackEntry): String {
@@ -56,7 +94,7 @@ sealed class ScreenType(val route: String) {
             return navBackStackEntry.arguments?.getInt(PARAM_PLAYLIST_ID) ?: 0
         }
 
-        fun getTrackListType(navBackStackEntry: NavBackStackEntry): TrackListType {
+        private fun getTrackListType(navBackStackEntry: NavBackStackEntry): TrackListType {
 
             val trackType = getTrackType(navBackStackEntry)
             val title = getTitle(navBackStackEntry)
@@ -69,16 +107,47 @@ sealed class ScreenType(val route: String) {
                 else -> TrackListType.All()
             }
         }
+
+        fun withArgs(vararg args: String): String {
+
+            return buildString {
+                append(route)
+
+                args.forEach { arg ->
+                    append("/").append(arg)
+                }
+            }
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_TRACK_TYPE) {
+                    type = NavType.StringType
+                },
+                navArgument(PARAM_TITLE) {
+                    type = NavType.StringType
+                },
+                navArgument(PARAM_PLAYLIST_ID) {
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        }
+
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            TracksView(
+                trackListType = getTrackListType(navBackStackEntry),
+            )
+        }
     }
 
-    fun withArgs(vararg args: String): String {
+    object Theme : ScreenType {
+        override fun route() = "screen_theme"
 
-        return buildString {
-            append(route)
-
-            args.forEach { arg ->
-                append("/").append(arg)
-            }
+        @Composable
+        override fun Compose(navController: NavController, navBackStackEntry: NavBackStackEntry) {
+            ThemeView()
         }
     }
 }

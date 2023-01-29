@@ -8,18 +8,17 @@ import androidx.activity.viewModels
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.helpers.GlobalEventHandler
 import pk.sufiishq.app.helpers.InAppUpdateManager
 import pk.sufiishq.app.helpers.ObserveOnlyOnce
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.DARK_THEME
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.isDeviceSupportDarkMode
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
@@ -39,11 +38,8 @@ open class BaseActivity : ComponentActivity() {
     @Inject
     lateinit var inAppUpdateManager: InAppUpdateManager
 
-    @Inject
-    lateinit var globalEventHandler: GlobalEventHandler
-
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
-    protected val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
 
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -86,7 +82,7 @@ open class BaseActivity : ComponentActivity() {
         super.onDestroy()
 
         runCatching {
-            EventDispatcher.getInstance().dispatch(PlayerEvents.DisposeDownload)
+            PlayerEvents.DisposeDownload.dispatch()
         }
 
         runCatching {
@@ -101,8 +97,6 @@ open class BaseActivity : ComponentActivity() {
             player.release()
             stopService(playerIntent)
         }
-
-        EventDispatcher.getInstance().release()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -129,16 +123,12 @@ open class BaseActivity : ComponentActivity() {
                             val kalamId = pathSegments[pathSegments.size.minus(1)]
                             val observeOnlyOnce = ObserveOnlyOnce<Kalam?>()
                             observeOnlyOnce.take(
-                                this@BaseActivity,
-                                homeViewModel.getKalam(kalamId.toInt())
+                                this@BaseActivity, homeViewModel.getKalam(kalamId.toInt())
                             ) { kalam ->
                                 kalam?.let {
-                                    EventDispatcher.getInstance().dispatch(
-                                        PlayerEvents.ChangeTrack(
-                                            kalam,
-                                            TrackListType.All()
-                                        )
-                                    )
+                                    PlayerEvents.ChangeTrack(
+                                        kalam, TrackListType.All()
+                                    ).dispatch()
                                 }
                             }
                         }

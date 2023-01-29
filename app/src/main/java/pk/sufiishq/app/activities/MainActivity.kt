@@ -5,7 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.ui.screen.MainView
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
+import pk.sufiishq.aurora.theme.Aurora
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -16,8 +16,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            SufiIshqTheme {
-                MainView(homeViewModel, globalEventHandler)
+            Aurora {
+                MainView()
             }
         }
     }

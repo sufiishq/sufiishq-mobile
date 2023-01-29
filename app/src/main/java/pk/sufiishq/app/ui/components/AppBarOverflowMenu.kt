@@ -1,109 +1,85 @@
 package pk.sufiishq.app.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.GlobalEvents
-import pk.sufiishq.app.ui.theme.SufiIshqTheme
-import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.data.providers.GlobalDataProvider
+import pk.sufiishq.app.helpers.PopupMenuItem
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.utils.dummyGlobalDataProvider
+import pk.sufiishq.app.viewmodels.GlobalViewModel
+import pk.sufiishq.aurora.components.SIDropdownMenuItem
+import pk.sufiishq.aurora.models.DataMenuItem
+import pk.sufiishq.aurora.theme.AuroraColor
+import pk.sufiishq.aurora.theme.AuroraDark
+import pk.sufiishq.aurora.theme.AuroraLight
+import pk.sufiishq.aurora.widgets.SIPopupMenu
 
 @Composable
-fun AppBarOverflowMenu() {
+fun AppBarOverflowMenu(
+    navController: NavController,
+    iconColor: AuroraColor? = null,
+    globalDataProvider: GlobalDataProvider = hiltViewModel<GlobalViewModel>()
+) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
-    val showOverflowMenu = rem(false)
     val context = LocalContext.current
 
-    IconButton(
-        modifier = Modifier.testTag("overflow_menu_button"),
+    SIPopupMenu(
+        resId = R.drawable.ic_baseline_more_vert_24,
+        iconTint = iconColor,
+        data = globalDataProvider.popupMenuItems(),
         onClick = {
-            showOverflowMenu.value = !showOverflowMenu.value
+            handleClick(it, context, navController)
         }
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_more_vert_24),
-            contentDescription = null,
-            tint = MaterialTheme.colors.primary
-        )
-    }
-
-    DropdownMenu(
-        expanded = showOverflowMenu.value,
-        modifier = Modifier
-            .width(150.dp)
-            .testTag("dropdown_menu"),
-        onDismissRequest = {
-            showOverflowMenu.value = false
-        }
-    ) {
-
-        OverflowMenuItem(
-            label = "Share",
-            drawableId = R.drawable.ic_round_share_24,
-            onClick = {
-                showOverflowMenu.value = false
-                eventDispatcher.dispatch(GlobalEvents.ShareApp(context))
-            }
-        )
-
-        OverflowMenuItem(
-            label = "Facebook",
-            drawableId = R.drawable.ic_round_groups_24,
-            onClick = {
-                showOverflowMenu.value = false
-                eventDispatcher.dispatch(
-                    GlobalEvents.OpenFacebookGroup(
-                        context,
-                        "https://www.facebook.com/groups/375798102574085"
-                    )
-                )
-            }
-        )
-    }
+    )
 }
 
-@Composable
-private fun OverflowMenuItem(
-    label: String,
-    drawableId: Int? = null,
-    iconTint: Color? = MaterialTheme.colors.primary,
-    onClick: () -> Unit
+private fun handleClick(
+    popupMenuItem: DataMenuItem,
+    context: Context,
+    navController: NavController
 ) {
-    DropdownMenuItem(onClick) {
-        PopupMenuLabel(
-            label = label,
-            drawableId = drawableId,
-            iconTint = iconTint
-        )
+    when (popupMenuItem) {
+        is PopupMenuItem.Share -> GlobalEvents.ShareApp(context).dispatch()
+        is PopupMenuItem.Facebook -> {
+            GlobalEvents.OpenFacebookGroup(
+                context,
+                "https://www.facebook.com/groups/375798102574085"
+            ).dispatch()
+        }
+        is PopupMenuItem.Help -> {
+            navController.navigate(ScreenType.Help.route()) {
+                popUpTo(ScreenType.Dashboard.route())
+                launchSingleTop = true
+            }
+        }
+        is PopupMenuItem.Theme -> {
+            navController.navigate(ScreenType.Theme.route()) {
+                launchSingleTop = true
+            }
+        }
     }
 }
+
 
 @ExcludeFromJacocoGeneratedReport
 @Preview
 @Composable
 fun AppBarOverflowMenuPreviewLight() {
-    SufiIshqTheme {
-        Box(
-            Modifier.background(MaterialTheme.colors.secondaryVariant)
-        ) {
-            AppBarOverflowMenu()
-        }
+    AuroraLight {
+        AppBarOverflowMenu(
+            rememberNavController(),
+            AuroraColor.OnPrimary,
+            dummyGlobalDataProvider()
+        )
     }
 }
 
@@ -111,12 +87,12 @@ fun AppBarOverflowMenuPreviewLight() {
 @Preview
 @Composable
 fun AppBarOverflowMenuPreviewDark() {
-    SufiIshqTheme(darkTheme = true) {
-        Box(
-            Modifier.background(MaterialTheme.colors.secondaryVariant)
-        ) {
-            AppBarOverflowMenu()
-        }
+    AuroraDark {
+        AppBarOverflowMenu(
+            rememberNavController(),
+            AuroraColor.OnPrimary,
+            dummyGlobalDataProvider()
+        )
     }
 }
 
@@ -124,16 +100,13 @@ fun AppBarOverflowMenuPreviewDark() {
 @Preview(widthDp = 150)
 @Composable
 fun OverflowMenuItemPreviewLight() {
-    SufiIshqTheme {
-        Box(
-            Modifier.background(MaterialTheme.colors.secondaryVariant)
-        ) {
-            OverflowMenuItem(
-                label = "Share",
-                drawableId = R.drawable.ic_round_share_24,
-                onClick = {}
-            )
-        }
+    AuroraLight {
+        SIDropdownMenuItem(
+            label = "Share",
+            labelColor = AuroraColor.OnBackground,
+            resId = R.drawable.ic_round_share_24,
+            onClick = {}
+        )
     }
 }
 
@@ -141,15 +114,12 @@ fun OverflowMenuItemPreviewLight() {
 @Preview(widthDp = 150)
 @Composable
 fun OverflowMenuItemPreviewDark() {
-    SufiIshqTheme(darkTheme = true) {
-        Box(
-            Modifier.background(MaterialTheme.colors.secondaryVariant)
-        ) {
-            OverflowMenuItem(
-                label = "Share",
-                drawableId = R.drawable.ic_round_share_24,
-                onClick = {}
-            )
-        }
+    AuroraDark {
+        SIDropdownMenuItem(
+            label = "Share",
+            labelColor = AuroraColor.OnBackground,
+            resId = R.drawable.ic_round_share_24,
+            onClick = {}
+        )
     }
 }

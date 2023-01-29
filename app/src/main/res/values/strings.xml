@@ -12,6 +12,7 @@
     <string name="split_kalam">Split Kalam</string>
     <string name="rename_label">Rename</string>
     <string name="share_label">Share</string>
+    <string name="group_label">Group</string>
     <string name="error_kalam_delete_on_playing">%s is playing. Can\'t be deleted</string>
     <string name="kalam_saved_label">%s saved</string>
     <string name="favorite_added">%s added in favorites</string>
@@ -19,4 +20,6 @@
     <string name="no_network_connection">No network connection</string>
     <string name="unknown_error">Something went wrong</string>
     <string name="about_title">About</string>
+    <string name="facebook">Facebook</string>
+    <string name="help">Help</string>
 </resources>

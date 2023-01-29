@@ -1,93 +1,76 @@
 package pk.sufiishq.app.ui.components.dialogs
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.ui.components.OutlinedTextFieldValidation
+import pk.sufiishq.app.ui.components.SingleOutlinedTextField
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.checkValue
+import pk.sufiishq.app.utils.dispatch
 import pk.sufiishq.app.utils.ifNotEmpty
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.components.SIText
+import pk.sufiishq.aurora.layout.SIDialog
 
 @Composable
-fun KalamRenameDialog(
-    kalamState: State<Kalam?>
-) {
+fun KalamRenameDialog(kalamState: State<Kalam?>) {
 
     kalamState.value?.apply {
 
-        val eventDispatcher = EventDispatcher.getInstance()
         val kalamTitle = rem(title)
-        val error = rem(title.checkValue("", "Title cannot be empty"))
+        val errorText = rem(title.checkValue("", "Title cannot be empty"))
+        val isError = rem(false)
 
-        SufiIshqDialog {
+        SIDialog(
+            onNoText = "Cancel",
+            onNoClick = ::hideDialog,
+            onYesText = "Rename",
+            onYesClick = {
+                kalamTitle.value.ifNotEmpty {
+                    updateKalam(kalam = this@apply, it)
+                }
+            }
+        ) { textColor ->
 
-            Text(text = "Rename Kalam", style = MaterialTheme.typography.subtitle1)
+            SIText(
+                text = "Rename Kalam",
+                textColor = textColor
+            )
 
-            OutlinedTextFieldValidation(
+            SingleOutlinedTextField(
                 value = kalamTitle.value,
                 onValueChange = {
                     kalamTitle.value = it
-                    error.value = kalamTitle.value.checkValue("", "Title cannot be empty")
+                    errorText.value =
+                        kalamTitle.value.trim().checkValue("", "Title cannot be empty")
+                    isError.value = errorText.value.isNotEmpty()
                 },
                 keyboardActions = KeyboardActions(onDone = {
                     kalamTitle.value.ifNotEmpty {
-                        title = it
-                        updateKalam(kalam = this@apply)
+                        updateKalam(kalam = this@apply, it)
                     }
                 }),
                 modifier = Modifier.padding(top = 8.dp),
-                label = {
-                    Text(text = "Title")
-                },
-                error = error.value,
+                label = "Title",
+                isError = isError,
+                errorText = errorText.value,
                 maxLength = KALAM_TITLE_LENGTH
             )
-
-            // BUTTONS
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(onClick = {
-                    eventDispatcher.dispatch(KalamEvents.ShowKalamRenameDialog(null))
-                }) {
-                    Text(text = "Cancel")
-                }
-                TextButton(onClick = {
-                    kalamTitle.value.ifNotEmpty {
-                        title = it
-                        updateKalam(this@apply)
-                    }
-                }) {
-                    Text(text = "Rename")
-                }
-            }
         }
     }
 }
 
-private fun updateKalam(
-    kalam: Kalam
-) {
-    EventDispatcher.getInstance().dispatch(
+private fun hideDialog() {
+    KalamEvents.ShowKalamRenameDialog(null).dispatch()
+}
 
-        // update kalam
-        KalamEvents.UpdateKalam(kalam),
-
-        // hide dialog
-        KalamEvents.ShowKalamRenameDialog(null)
-    )
+private fun updateKalam(kalam: Kalam, newTitle: String) {
+    kalam.title = newTitle
+    KalamEvents.UpdateKalam(kalam).dispatch()
+    hideDialog()
 }

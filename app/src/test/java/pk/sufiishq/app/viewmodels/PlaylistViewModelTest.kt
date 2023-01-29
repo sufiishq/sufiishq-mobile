@@ -1,14 +1,11 @@
 package pk.sufiishq.app.viewmodels
 
-import android.content.Context
 import android.os.Looper.getMainLooper
 import androidx.lifecycle.MutableLiveData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -23,7 +20,6 @@ import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.copyWithDefaults
-import pk.sufiishq.app.utils.toast
 
 class PlaylistViewModelTest : SufiIshqTest() {
 
@@ -38,36 +34,6 @@ class PlaylistViewModelTest : SufiIshqTest() {
         kalamRepository = mockk()
         appContext = mockApp()
         playlistViewModel = PlaylistViewModel(appContext, playlistRepository, kalamRepository)
-    }
-
-    @Test
-    fun testShouldPlaylistDialog_shouldVerify_isShow() {
-        playlistViewModel.onEvent(PlaylistEvents.ShowPlaylistDialog(sampleKalam()))
-
-        shadowOf(getMainLooper()).idle()
-        playlistViewModel.getShowPlaylistDialog().observe(mockLifecycleOwner()) {
-            assertNotNull(it)
-            assertEquals(sampleKalam().id, it?.id)
-        }
-    }
-
-    @Test
-    fun testAddToPlaylist_shouldAdd_playlistInDatabase() {
-        mockkStatic(Context::toast)
-        every { appContext.toast(any()) } returns Unit
-
-        launchViewModelScope(playlistViewModel) { slot ->
-            coEvery { kalamRepository.update(any()) } returns Unit
-
-            val kalam = sampleKalam()
-            val playlist = Playlist(2, "Faisalabad")
-
-            playlistViewModel.onEvent(PlaylistEvents.AddToPlaylist(kalam, playlist))
-            slot.invoke()
-
-            assertEquals(kalam.playlistId, playlist.id)
-            verify { appContext.toast("${kalam.title} added in ${playlist.title} Playlist") }
-        }
     }
 
     @Test

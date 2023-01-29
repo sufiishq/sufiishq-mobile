@@ -19,11 +19,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
-import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.core.downloader.FileDownloader
 import pk.sufiishq.app.core.downloader.KalamDownloadState
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.core.event.exception.UnhandledEventException
@@ -32,35 +30,47 @@ import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.helpers.PlayerState
+import pk.sufiishq.app.helpers.PopupMenuItemProvider
 import pk.sufiishq.app.helpers.TrackListType
+import pk.sufiishq.app.helpers.factory.FavoriteChangeFactory
+import pk.sufiishq.app.helpers.strategies.kalam.favorite.AddToFavoriteStrategy
+import pk.sufiishq.app.helpers.strategies.kalam.favorite.RemoveFromFavoriteStrategy
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.IS_SHUFFLE_ON
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.asFlow
 import pk.sufiishq.app.utils.canPlay
+import pk.sufiishq.app.utils.filterItems
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.isOfflineFileExists
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.putInStorage
 import pk.sufiishq.app.utils.toast
+import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    app: Application,
+    private val app: Application,
     @AndroidMediaPlayer private val player: AudioPlayer,
     private val fileDownloader: FileDownloader,
-    private val kalamRepository: KalamRepository
+    private val kalamRepository: KalamRepository,
+    private val playlistRepository: PlaylistRepository,
+    private val favoriteChangeFactory: FavoriteChangeFactory
 ) : BaseViewModel(app), PlayerDataProvider, PlayerStateListener {
 
     private var seekbarEnableOnPlaying = true
+    private val showPlaylistDialog = MutableLiveData<Kalam?>(null)
     private val kalamInfo = MutableLiveData<KalamInfo?>(null)
     private val shuffleState = MutableLiveData(IS_SHUFFLE_ON.getFromStorage(false))
     private val kalamDownloadState = MutableLiveData<KalamDownloadState>(KalamDownloadState.Idle)
+    private var popupMenu: MutableLiveData<List<DataMenuItem>>? = null
 
     private var fileDownloaderDisposable = Disposables.disposed()
     private var fileMoveDisposables = Disposables.disposed()
@@ -69,7 +79,6 @@ class PlayerViewModel @Inject constructor(
 
     init {
         player.registerListener(this)
-        EventDispatcher.getInstance().registerEventHandler(this)
         RxJavaPlugins.setErrorHandler { e ->
             if (e is UndeliverableException) {
                 Timber.e(e)
@@ -81,17 +90,28 @@ class PlayerViewModel @Inject constructor(
         return shuffleState
     }
 
-    override fun getMenuItems(): List<String> {
-        return listOf(
-            appContext.getString(R.string.mark_as_favorite),
-            appContext.getString(R.string.remove_favorite),
-            appContext.getString(R.string.download_label),
-            appContext.getString(R.string.add_to_playlist),
-        )
+    override fun getPopupMenuItems(kalam: Kalam): LiveData<List<DataMenuItem>> {
+        return popupMenu ?: MutableLiveData(
+            PopupMenuItemProvider.getPlayerPopupMenuItems(
+                getApplication()
+            ).filterItems(kalam)
+        ).also {
+            popupMenu = it
+        }
     }
 
     override fun getKalamInfo(): LiveData<KalamInfo?> {
         return kalamInfo
+    }
+
+    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
+        return showPlaylistDialog
+    }
+
+    override fun getAllPlaylist(): LiveData<List<Playlist>> = playlistRepository.loadAll()
+
+    private fun setShowPlaylistDialog(kalam: Kalam?) {
+        showPlaylistDialog.postValue(kalam)
     }
 
     private fun playNext() {
@@ -152,9 +172,48 @@ class PlayerViewModel @Inject constructor(
 
     private fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
         if (kalam.canPlay(appContext)) {
+            updateMenuItems(kalam)
             player.setSource(kalam, trackListType)
             player.doPlayOrPause()
         }
+    }
+
+    private fun addToPlaylist(kalam: Kalam, playlist: Playlist) {
+        viewModelScope.launch {
+            kalam.playlistId = playlist.id
+            kalamRepository.update(kalam)
+            app.toast("${kalam.title} added in ${playlist.title} Playlist")
+        }
+    }
+
+    private fun markAsFavorite(kalam: Kalam) {
+        viewModelScope.launch {
+            favoriteChangeFactory.create(AddToFavoriteStrategy::class).change(kalam)
+            canUpdateMenuItems(kalam)
+        }
+    }
+
+    private fun removeFavorite(kalam: Kalam) {
+        viewModelScope.launch {
+            favoriteChangeFactory.create(RemoveFromFavoriteStrategy::class).change(kalam)
+            canUpdateMenuItems(kalam)
+        }
+    }
+
+    private fun canUpdateMenuItems(kalam: Kalam) {
+        kalamInfo
+            .value
+            ?.kalam
+            ?.takeIf { it.id == kalam.id }
+            ?.apply(::updateMenuItems)
+    }
+
+    private fun updateMenuItems(kalam: Kalam) {
+        popupMenu?.postValue(
+            PopupMenuItemProvider.getPlayerPopupMenuItems(
+                getApplication()
+            ).filterItems(kalam)
+        )
     }
 
     /*=======================================*/
@@ -174,6 +233,10 @@ class PlayerViewModel @Inject constructor(
             is PlayerEvents.StartDownload -> startDownload(event.kalam)
             is PlayerEvents.DisposeDownload -> disposeDownload()
             is PlayerEvents.ChangeDownloadState -> setKalamDownloadState(event.downloadState)
+            is PlayerEvents.ShowPlaylistDialog -> setShowPlaylistDialog(event.kalam)
+            is PlayerEvents.AddKalamInPlaylist -> addToPlaylist(event.kalam, event.playlist)
+            is PlayerEvents.MarkAsFavoriteKalam -> markAsFavorite(event.kalam)
+            is PlayerEvents.RemoveFavoriteKalam -> removeFavorite(event.kalam)
             else -> throw UnhandledEventException(event, this)
         }
     }

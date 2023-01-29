@@ -65,9 +65,31 @@ dependencies {
     // required to avoid crash on Android 12 API 31
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
 
+    // asLiveData extension
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+
+    // kotlin reflection
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
+
+    // Jetpack Compose extension library:
+    implementation 'io.coil-kt:coil-compose:2.2.2'
+
+    // A type-safe HTTP client for Android and Java
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // add sufi-ishq aurora ui sdk
+    implementation project(":aurora")
+
     // ========================================= //
     // TESTING DEPENDENCIES
     // ========================================= //
+
+    testImplementation 'androidx.test:core:1.4.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.12.3'

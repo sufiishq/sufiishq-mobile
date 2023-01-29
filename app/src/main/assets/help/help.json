@@ -1,0 +1,106 @@
+{
+    "data": [
+        {
+            "title": "Top Application Bar Options",
+            "content": [
+                "{'image': 'https://www.sufiishq.pk/media/help/images/top_app_bar_1.jpg'}",
+                "{'spacer': 15}",
+                "There are two main options in the top application bar.",
+                "{'spacer': 10}",
+                "**On the Left** side of the app bar has an about icon button and when click on that button the about dialog will be shown",
+                "{'spacer': 5}",
+                "**On the Right** side of the app bar has 3 dot menu icon button when you click on that the below menu will be shown",
+                "{'spacer': 15}",
+                "{'image': 'https://www.sufiishq.pk/media/help/images/top_app_bar_2.jpg'}",
+                "{'spacer': 15}",
+                "**• Share** this option will be used to share the application with other people like WhatsApp or other available options.",
+                "{'spacer': 10}",
+                "**• Facebook** this option will take you to the SufiIshq Facebook group.",
+                "{'spacer': 10}",
+                "**• Help** this option will take you to the help screen.",
+                "{'spacer': 10}",
+                "**• Theme** this option will take you to the theme screen where you can change and apply different colors to the app."
+            ]
+        },
+        {
+            "title": "Dashboard Button Options",
+            "content": [
+                "{'image': 'https://www.sufiishq.pk/media/help/images/dashboard_buttons.jpg'}",
+                "{'spacer': 15}",
+                "There are four main button available on the dashboard.",
+                "{'spacer': 15}",
+                "**• All Kalam** this button is showing the total count of all of kalam in the application and when will take you to the __All Kalam__ screen when you clicked.",
+                "{'spacer': 10}",
+                "**• Downloads** this button is showing only the downloaded kalam count and that will take you to the __Downloaded Kalam__ screen when you clicked.",
+                "{'spacer': 10}",
+                "**• Favorite** this button is showing only the favorite kalam count and that will take you to the __Favorite Kalam__ screen when you clicked.",
+                "{'spacer': 10}",
+                "**• Playlist** this button is showing a count of playlists which is created by the user and when will take you to the __Playlist__ screen when you clicked."
+            ]
+        },
+        {
+            "title": "Player Options",
+            "content": [
+                "{'image': 'https://www.sufiishq.pk/media/help/images/player.jpg'}",
+                "{'spacer': 15}",
+                "The player having multiple options to manage the playing kalam.",
+                "{'spacer': 15}",
+                "**1.** you can enable the shuffle option which will select random kalam on next from the active play type list.",
+                "{'spacer': 10}",
+                "**2.** you can press the left arrow button to play the previous kalam.",
+                "{'spacer': 10}",
+                "**3.** Play/Pause button you can play and pause active kalam with this button.",
+                "{'spacer': 10}",
+                "**4.** you can press the right arrow button to play the next kalam.",
+                "{'spacer': 10}",
+                "**5.** you can show menu items by clicking the three-dot vertical button."
+            ]
+        },
+        {
+            "title": "Custom Playlist",
+            "content": [
+                "{'image': 'https://www.sufiishq.pk/media/help/images/playlist_screen.jpg'}",
+                "{'spacer': 15}",
+                "You can create your custom playlist by clicking the **+** button. This will show you the below dialog.",
+                "{'spacer': 15}",
+                "{'image': 'https://www.sufiishq.pk/media/help/images/add_new_playlist_dialog.jpg'}",
+                "{'spacer': 10}",
+                "You can add a kalam to your custom playlist by just clicking any kalam popup menu and selecting the **Add to Playlist** option and choosing your playlist from the list."
+            ]
+        },
+        {
+            "title": "Split Kalam",
+            "content": [
+                "You can split any kalam just download the kalam first then go to the **Downloads** screen from the dashboard and click a three-dot icon and select the **Split Kalam** option. You will see the below dialog.",
+                "{'spacer': 10}",
+                "You can set the kalam start and end length by using this slider option.",
+                "{'spacer': 15}",
+                "{'image': 'https://www.sufiishq.pk/media/help/images/kalam_split_start.jpg'}",
+                "{'spacer': 15}",
+                "Once you set the kalam start/end range then just click the **Preview** button. You can see the below dialog after some loading.",
+                "{'spacer': 15}",
+                "{'image': 'https://www.sufiishq.pk/media/help/images/kalam_splitted.jpg'}",
+                "{'spacer': 15}",
+                "Now you can listen to your split kalam. You can click the **Back** button to re-update the kalam length or click the **Done** button to save the split kalam. When you click the Done button then you will see the below dialog.",
+                "{'spacer': 15}",
+                "{'image': 'https://www.sufiishq.pk/media/help/images/split_kalam_done.jpg'}",
+                "{'spacer': 15}",
+                "Here you can type your split kalam name and click the **Save** button to save your kalam."
+            ]
+        },
+        {
+            "title": "Custom Theme",
+            "content": [
+                "{'image': 'https://www.sufiishq.pk/media/help/images/theme_screen.jpg'}",
+                "{'spacer': 15}",
+                "There 3 main theme option and rest are just for contrast.",
+                "{'spacer': 10}",
+                "**1.** When you click **Light** Button then the app will use the light theme every time even if you change the mobile theme mode to dark.",
+                "{'spacer': 10}",
+                "**2.** When you click the **Center Icon** button then the app will use auto theme i.e the system-defined theme",
+                "{'spacer': 10}",
+                "**3.** When you click **Dark** Button then the app will use the dark theme every time even if you change the mobile theme mode to light."
+            ]
+        }
+    ]
+}

@@ -1,63 +1,27 @@
 package pk.sufiishq.app.ui.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import pk.sufiishq.app.data.providers.HomeDataProvider
-import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
-import pk.sufiishq.app.helpers.GlobalEventHandler
+import pk.sufiishq.app.helpers.ALL_SCREENS
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.ui.screen.DashboardView
-import pk.sufiishq.app.ui.screen.PlaylistView
-import pk.sufiishq.app.ui.screen.TracksView
+import pk.sufiishq.aurora.layout.SIColumn
 
 @Composable
 fun NavigationHost(
-    kalamDataProvider: KalamDataProvider,
-    playlistDataProvider: PlaylistDataProvider,
-    homeDataProvider: HomeDataProvider,
-    globalEventHandler: GlobalEventHandler,
     navController: NavHostController
 ) {
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        NavHost(navController = navController, startDestination = ScreenType.Dashboard.route) {
+    SIColumn(modifier = Modifier.fillMaxSize()) {
+        NavHost(navController = navController, startDestination = ScreenType.Dashboard.route()) {
 
-            // dashboard screen
-            composable(ScreenType.Dashboard.route) {
-
-                DashboardView(
-                    navController,
-                    homeDataProvider,
-                    globalEventHandler
-                )
-            }
-
-            // tracks screen
-            composable(
-                ScreenType.Tracks.routeWithPath(),
-                arguments = ScreenType.Tracks.navArgs()
-            ) { backStackEntry ->
-
-                TracksView(
-                    kalamDataProvider = kalamDataProvider,
-                    trackListType = ScreenType.Tracks.getTrackListType(backStackEntry),
-                )
-            }
-
-            // playlist screen
-            composable(ScreenType.Playlist.route) {
-                PlaylistView(
-                    playlistDataProvider = playlistDataProvider,
-                    navController = navController
-                )
+            ALL_SCREENS.onEach { screen ->
+                composable(screen.route(), screen.arguments(), screen.deepLinks()) {
+                    screen.Compose(navController, it)
+                }
             }
         }
     }

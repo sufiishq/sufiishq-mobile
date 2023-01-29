@@ -4,7 +4,7 @@ import android.content.Context
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.toast
+import pk.sufiishq.app.utils.toastShort
 
 class AddToFavoriteStrategy(
     private val appContext: Context,
@@ -17,7 +17,7 @@ class AddToFavoriteStrategy(
         }.also {
             kalamRepository.update(kalam)
         }.also {
-            appContext.toast(appContext.getString(R.string.favorite_added).format(kalam.title))
+            appContext.toastShort(appContext.getString(R.string.favorite_added).format(kalam.title))
         }
     }
 }

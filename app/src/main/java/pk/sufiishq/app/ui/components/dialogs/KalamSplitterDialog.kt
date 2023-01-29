@@ -1,102 +1,79 @@
 package pk.sufiishq.app.ui.components.dialogs
 
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
-import pk.sufiishq.app.helpers.KalamSplitManager
-import pk.sufiishq.app.helpers.SplitCompleted
-import pk.sufiishq.app.helpers.SplitDone
+import pk.sufiishq.app.core.splitter.KalamSplitManager
+import pk.sufiishq.app.core.splitter.SplitStatus
 import pk.sufiishq.app.ui.components.SingleOutlinedTextField
-import pk.sufiishq.app.utils.*
+import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
+import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.utils.formatTime
+import pk.sufiishq.app.utils.optValue
+import pk.sufiishq.app.utils.rem
+import pk.sufiishq.app.utils.toast
+import pk.sufiishq.aurora.components.SICircularProgressIndicator
+import pk.sufiishq.aurora.components.SIHeightSpace
+import pk.sufiishq.aurora.components.SIImage
+import pk.sufiishq.aurora.components.SIRangeSlider
+import pk.sufiishq.aurora.components.SISlider
+import pk.sufiishq.aurora.components.SIText
+import pk.sufiishq.aurora.components.TextSize
+import pk.sufiishq.aurora.layout.SIBox
+import pk.sufiishq.aurora.layout.SIDialog
+import pk.sufiishq.aurora.layout.SIRow
+import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
-fun KalamItemSplitDialog(
-    kalamSplitManager: State<KalamSplitManager?>
-) {
+fun KalamItemSplitDialog(kalamSplitManager: State<KalamSplitManager?>) {
+
     kalamSplitManager.value?.apply {
-        SufiIshqDialog {
-            KalamSplitter(
-                kalamSplitManager = this
-            )
-        }
-    }
-}
 
-@Composable
-private fun KalamSplitter(
-    kalamSplitManager: KalamSplitManager
-) {
-
-    val splitStatus = kalamSplitManager.getSplitStatus().observeAsState()
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-
-        Text(
-            modifier = Modifier.padding(bottom = 12.dp),
-            text = "Split Kalam ${kalamSplitManager.getKalam().title}",
-            fontWeight = FontWeight.Bold
-        )
+        val splitStatus = getSplitStatus().observeAsState()
 
         when (val status = splitStatus.value) {
-            is SplitCompleted -> SplitCompletedView(
-                status,
-                kalamSplitManager
-            )
-            is SplitDone -> SplitDoneView(
-                kalamSplitManager
-            )
-            else -> SplitInProgressView()
+            is SplitStatus.Start -> StartSplitView(kalamSplitManager = this)
+            is SplitStatus.InProgress -> SplitInProgressView(kalamSplitManager = this)
+            is SplitStatus.Done -> SplitDoneView(kalamSplitManager = this)
+            is SplitStatus.Completed -> SplitCompletedView(kalamSplitManager = this)
+            is SplitStatus.Error -> LocalContext.current.toast(status.error)
+            else -> throw IllegalStateException("${status.toString()} is not covered")
         }
     }
 }
 
 @Composable
-private fun SplitCompletedView(
-    status: SplitCompleted,
-    kalamSplitManager: KalamSplitManager
-) {
-    if (status.returnCode == SPLIT_SUCCESS) {
-        SplitSuccessView(
-            kalamSplitManager = kalamSplitManager
-        )
-    } else {
+private fun StartSplitView(kalamSplitManager: KalamSplitManager) {
 
-        if (status.returnCode != SPLIT_CANCEL) {
-            LocalContext.current.toast("Execution failed with ${status.returnCode}")
-        }
-
-        SplitView(kalamSplitManager = kalamSplitManager)
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun SplitView(
-    kalamSplitManager: KalamSplitManager
-) {
-
-    val eventDispatcher = EventDispatcher.getInstance()
     val splitStart = kalamSplitManager.getSplitStart().observeAsState()
     val splitEnd = kalamSplitManager.getSplitEnd().observeAsState()
     val kalamLength = kalamSplitManager.getKalamLength().observeAsState()
 
-    Column {
-        RangeSlider(
+    ShowDialog(
+        kalamSplitManager = kalamSplitManager,
+        onNoText = "Cancel",
+        onNoClick = ::hideDialog,
+        onYesText = "Preview",
+        onYesClick = ::startSplitting
+    ) { textColor ->
+
+        SIRangeSlider(
             value = splitStart.optValue(0).toFloat()..splitEnd.optValue(0).toFloat(),
             onValueChange = {
                 var start = it.start.toInt()
@@ -108,117 +85,47 @@ private fun SplitView(
                     (start == end) -> end = end.plus(1000)
                 }
 
-                eventDispatcher.dispatch(
-
-                    // start position
-                    KalamSplitManagerEvents.SetSplitStart(start),
-
-                    // end position
-                    KalamSplitManagerEvents.SetSplitEnd(end)
-                )
+                KalamSplitManagerEvents.SetSplitStart(start)
+                    .dispatch(KalamSplitManagerEvents.SetSplitEnd(end))
             },
             valueRange = 0f..kalamLength.optValue(0).toFloat()
         )
-    }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = splitStart.optValue(0).formatTime)
-        Text(text = splitEnd.optValue(0).formatTime)
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 6.dp),
-        horizontalArrangement = Arrangement.End
-    ) {
-
-        TextButton(onClick = { eventDispatcher.dispatch(KalamEvents.ShowKalamSplitManagerDialog(null)) }) {
-            Text(text = "Cancel")
-        }
-        TextButton(onClick = { eventDispatcher.dispatch(KalamSplitManagerEvents.StartPreview) }) {
-            Text(text = "Preview")
-        }
-    }
-}
-
-@Composable
-private fun SplitSuccessView(
-    kalamSplitManager: KalamSplitManager
-) {
-
-    val eventDispatcher = EventDispatcher.getInstance()
-    val previewPlayStart = kalamSplitManager.getPreviewPlayStart().observeAsState()
-    val previewKalamProgress = kalamSplitManager.getPreviewKalamProgress().observeAsState()
-    val kalamPreviewLength = kalamSplitManager.getKalamPreviewLength().observeAsState()
-
-    Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                modifier = Modifier
-                    .width(35.dp)
-                    .clickable {
-                        eventDispatcher.dispatch(KalamSplitManagerEvents.PlayPreview)
-                    },
-                painter = painterResource(id = if (previewPlayStart.optValue(false)) R.drawable.ic_pause else R.drawable.ic_play),
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
-                contentDescription = null
+        SIRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SIText(
+                text = splitStart.optValue(0).formatTime,
+                textColor = textColor,
+                textSize = TextSize.Small
             )
-            Slider(
-                modifier = Modifier.padding(start = 8.dp),
-                value = previewKalamProgress.optValue(0).toFloat(),
-                valueRange = 0f..kalamPreviewLength.optValue(0).toFloat(),
-                enabled = true,
-                onValueChange = {
-                    eventDispatcher.dispatch(KalamSplitManagerEvents.UpdateSeekbar(it))
-                })
-        }
-    }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = previewKalamProgress.optValue(0).formatTime)
-        Text(text = kalamPreviewLength.optValue(0).formatTime)
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 6.dp),
-        horizontalArrangement = Arrangement.End
-    ) {
-
-        TextButton(onClick = {
-            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitCompleted()))
-        }) {
-            Text(text = "Back")
-        }
-
-        TextButton(onClick = {
-            eventDispatcher.dispatch(KalamSplitManagerEvents.SetSplitStatus(SplitDone))
-        }) {
-            Text(text = "Done")
+            SIText(
+                text = splitEnd.optValue(0).formatTime,
+                textColor = textColor,
+                textSize = TextSize.Small
+            )
         }
     }
 }
 
 @Composable
-private fun SplitDoneView(
-    kalamSplitManager: KalamSplitManager
-) {
+private fun SplitCompletedView(kalamSplitManager: KalamSplitManager) {
 
-    val eventDispatcher = EventDispatcher.getInstance()
     val context = LocalContext.current
     val kalamTitle = rem("")
     val kalamTitleError = rem(false)
 
-    Column {
-
+    ShowDialog(
+        kalamSplitManager = kalamSplitManager,
+        onNoText = "Back",
+        onNoClick = ::backToDone,
+        onYesText = "Save",
+        onYesClick = {
+            saveKalam(context, kalamTitle.value, kalamSplitManager, kalamTitleError)
+        }
+    ) {
         SingleOutlinedTextField(
             value = kalamTitle.value,
             onValueChange = {
@@ -226,58 +133,151 @@ private fun SplitDoneView(
                 kalamTitleError.value = false
             },
             label = "Kalam Title",
-            isError = kalamTitleError.value,
+            isError = kalamTitleError,
             maxLength = KALAM_TITLE_LENGTH
         )
+    }
+}
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 6.dp),
-            horizontalArrangement = Arrangement.End
+@Composable
+private fun SplitDoneView(kalamSplitManager: KalamSplitManager) {
+
+    val previewPlayStart = kalamSplitManager.getPreviewPlayStart().observeAsState()
+    val previewKalamProgress = kalamSplitManager.getPreviewKalamProgress().observeAsState()
+    val kalamPreviewLength = kalamSplitManager.getKalamPreviewLength().observeAsState()
+
+    ShowDialog(
+        kalamSplitManager = kalamSplitManager,
+        onNoText = "Back",
+        onNoClick = ::backToStart,
+        onYesText = "Done",
+        onYesClick = ::done
+    ) { textColor ->
+
+        SIRow(
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            SIImage(
+                modifier = Modifier
+                    .width(35.dp)
+                    .clickable {
+                        KalamSplitManagerEvents.PlayPreview.dispatch()
+                    },
+                resId = if (previewPlayStart.optValue(false)) R.drawable.ic_pause else R.drawable.ic_play,
+                tintColor = textColor,
+            )
 
-            TextButton(onClick = {
-                eventDispatcher.dispatch(
-                    KalamSplitManagerEvents.SetSplitStatus(
-                        SplitCompleted(
-                            SPLIT_SUCCESS
-                        )
-                    )
-                )
-            }) {
-                Text(text = "Back")
-            }
-            TextButton(onClick = {
-                if (kalamTitle.value.trim().isEmpty()) {
-                    kalamTitleError.value = true
-                    context.toast("Kalam Title cannot be empty.")
-                } else {
-
-                    eventDispatcher.dispatch(
-
-                        // save split kalam
-                        KalamEvents.SaveSplitKalam(
-                            kalamSplitManager.getKalam(),
-                            kalamSplitManager.getSplitFile(),
-                            kalamTitle.value.trim()
-                        ),
-
-                        // hide split dialog
-                        KalamEvents.ShowKalamSplitManagerDialog(null)
-                    )
-
+            SISlider(
+                modifier = Modifier.padding(start = 8.dp),
+                value = previewKalamProgress.optValue(0).toFloat(),
+                valueRange = 0f..kalamPreviewLength.optValue(0).toFloat(),
+                enabled = true,
+                onValueChange = {
+                    KalamSplitManagerEvents.UpdateSeekbar(it).dispatch()
                 }
-            }) {
-                Text(text = "Save")
-            }
+            )
+        }
+
+        SIHeightSpace(value = 8)
+
+        SIRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SIText(
+                text = previewKalamProgress.optValue(0).formatTime,
+                textColor = textColor,
+                textSize = TextSize.Small
+            )
+            SIText(
+                text = kalamPreviewLength.optValue(0).formatTime,
+                textColor = textColor,
+                textSize = TextSize.Small
+            )
         }
     }
 }
 
 @Composable
-private fun SplitInProgressView() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
+private fun SplitInProgressView(kalamSplitManager: KalamSplitManager) {
+    ShowDialog(kalamSplitManager = kalamSplitManager) {
+        SIBox(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            SICircularProgressIndicator(
+                strokeWidth = 2
+            )
+        }
+    }
+}
+
+@Composable
+private fun ShowDialog(
+    kalamSplitManager: KalamSplitManager,
+    onNoText: String? = null,
+    onNoClick: () -> Unit = {},
+    onYesText: String? = null,
+    onYesClick: () -> Unit = {},
+    content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit
+) {
+    SIDialog(
+        onNoText = onNoText,
+        onNoClick = onNoClick,
+        onYesText = onYesText,
+        onYesClick = onYesClick,
+    ) { textColor ->
+
+        SIText(
+            text = "Split Kalam ${kalamSplitManager.getKalam().title}",
+            textColor = textColor,
+            fontWeight = FontWeight.Bold
+        )
+
+        SIHeightSpace(value = 12)
+
+        content(textColor)
+    }
+}
+
+private fun hideDialog() {
+    KalamEvents.ShowKalamSplitManagerDialog(null).dispatch()
+}
+
+private fun startSplitting() {
+    KalamSplitManagerEvents.StartSplitting.dispatch()
+}
+
+private fun backToStart() {
+    KalamSplitManagerEvents.SetSplitStatus(SplitStatus.Start).dispatch()
+}
+
+private fun done() {
+    KalamSplitManagerEvents.SetSplitStatus(SplitStatus.Completed).dispatch()
+}
+
+private fun backToDone() {
+    KalamSplitManagerEvents.SetSplitStatus(SplitStatus.Done).dispatch()
+}
+
+private fun saveKalam(
+    context: Context,
+    kalamTitle: String,
+    kalamSplitManager: KalamSplitManager,
+    kalamTitleError: MutableState<Boolean>
+) {
+
+    if (kalamTitle.trim().isEmpty()) {
+        kalamTitleError.value = true
+        context.toast("Kalam Title cannot be empty.")
+    } else {
+
+        // save split kalam
+        KalamEvents.SaveSplitKalam(
+            kalamSplitManager.getKalam(),
+            kalamSplitManager.getSplitFile(),
+            kalamTitle.trim()
+        ).dispatch()
+
+        hideDialog()
     }
 }
