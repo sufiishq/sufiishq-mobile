@@ -1,4 +1,4 @@
-package pk.sufiishq.app.ui.components.widgets
+package pk.sufiishq.app.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText

@@ -172,6 +172,7 @@ class PlayerViewModel @Inject constructor(
 
     private fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
         if (kalam.canPlay(appContext)) {
+            updateMenuItems(kalam)
             player.setSource(kalam, trackListType)
             player.doPlayOrPause()
         }
@@ -188,29 +189,31 @@ class PlayerViewModel @Inject constructor(
     private fun markAsFavorite(kalam: Kalam) {
         viewModelScope.launch {
             favoriteChangeFactory.create(AddToFavoriteStrategy::class).change(kalam)
-            updateMenuItems(kalam)
+            canUpdateMenuItems(kalam)
         }
     }
 
     private fun removeFavorite(kalam: Kalam) {
         viewModelScope.launch {
             favoriteChangeFactory.create(RemoveFromFavoriteStrategy::class).change(kalam)
-            updateMenuItems(kalam)
+            canUpdateMenuItems(kalam)
         }
     }
 
-    private fun updateMenuItems(kalam: Kalam) {
+    private fun canUpdateMenuItems(kalam: Kalam) {
         kalamInfo
             .value
             ?.kalam
             ?.takeIf { it.id == kalam.id }
-            ?.apply {
-                popupMenu?.postValue(
-                    PopupMenuItemProvider.getPlayerPopupMenuItems(
-                        getApplication()
-                    ).filterItems(kalam)
-                )
-            }
+            ?.apply(::updateMenuItems)
+    }
+
+    private fun updateMenuItems(kalam: Kalam) {
+        popupMenu?.postValue(
+            PopupMenuItemProvider.getPlayerPopupMenuItems(
+                getApplication()
+            ).filterItems(kalam)
+        )
     }
 
     /*=======================================*/

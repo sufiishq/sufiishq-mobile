@@ -27,6 +27,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIExpandableCard
+import pk.sufiishq.aurora.widgets.SIPopupImage
 
 @Composable
 fun HelpExpandableCard(
@@ -60,12 +61,17 @@ fun HelpExpandableCard(
                     textColor = textColor,
                     textSize = TextSize.Small
                 )
-                is HelpData.Photo -> AssetImage(
-                    path = it.path,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                )
+                is HelpData.Photo -> SIPopupImage(
+                    enablePanning = true,
+                    enableScaling = true
+                ) {
+                    NetworkImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp),
+                        url = it.path,
+                    )
+                }
                 is HelpData.Divider -> Divider(
                     thickness = it.height.dp,
                     modifier = Modifier
@@ -80,7 +86,6 @@ fun HelpExpandableCard(
             }
         }
     }
-
 }
 
 @ExcludeFromJacocoGeneratedReport

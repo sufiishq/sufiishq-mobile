@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
@@ -168,7 +169,7 @@ fun dummyGlobalDataProvider() = object : GlobalDataProvider {
 @ExcludeFromJacocoGeneratedReport
 fun dummyHelpDataProvider() = object : HelpDataProvider {
 
-    override fun getHelpContent(): LiveData<List<HelpContent>> = MutableLiveData(
+    override fun getHelpContent(): Flow<List<HelpContent>> = MutableStateFlow(
         listOf(
             HelpContent(
                 "First Title", listOf(

@@ -9,7 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import pk.sufiishq.app.ui.components.widgets.DayNightThemeControl
+import pk.sufiishq.app.ui.components.DayNightThemeControl
 import pk.sufiishq.app.utils.maxLength
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.utils.toastShort

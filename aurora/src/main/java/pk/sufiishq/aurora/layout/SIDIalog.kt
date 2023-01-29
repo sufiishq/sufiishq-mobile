@@ -22,6 +22,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SIDialog(
+    modifier: Modifier = Modifier,
     bgColor: AuroraColor = AuroraColor.Surface,
     borderColor: AuroraColor = AuroraColor.Background,
     onNoText: String? = null,
@@ -39,7 +40,7 @@ fun SIDialog(
     ) {
 
         Surface(
-            modifier = Modifier.padding(36.dp, 0.dp),
+            modifier = modifier.padding(36.dp, 0.dp),
             shape = RoundedCornerShape(8.dp),
             color = bgColor.color(),
             border = BorderStroke(1.dp, borderColor.color())

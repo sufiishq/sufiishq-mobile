@@ -1,8 +1,8 @@
 package pk.sufiishq.app.data.providers
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import pk.sufiishq.app.models.HelpContent
 
 interface HelpDataProvider {
-    fun getHelpContent(): LiveData<List<HelpContent>>
+    fun getHelpContent(): Flow<List<HelpContent>>
 }
