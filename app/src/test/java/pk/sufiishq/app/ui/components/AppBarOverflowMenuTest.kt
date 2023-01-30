@@ -22,7 +22,7 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.GlobalEvents
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.utils.dummyGlobalDataProvider
+import pk.sufiishq.app.utils.fakeGlobalDataProvider
 
 @Ignore("will be fixed later")
 class AppBarOverflowMenuTest : SufiIshqTest() {
@@ -34,7 +34,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test overflow menu button should be exists and visible by default`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), globalDataProvider = dummyGlobalDataProvider())
+            AppBarOverflowMenu(mockk(), globalDataProvider = fakeGlobalDataProvider())
         }
 
         // acquire overflow menu button node
@@ -54,7 +54,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test dropdown menu should be visible when overflow menu button clicked`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), globalDataProvider = dummyGlobalDataProvider())
+            AppBarOverflowMenu(mockk(), globalDataProvider = fakeGlobalDataProvider())
         }
 
         // acquire dropdown menu node
@@ -76,7 +76,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
         mockkObject(EventDispatcher)
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), globalDataProvider = dummyGlobalDataProvider())
+            AppBarOverflowMenu(mockk(), globalDataProvider = fakeGlobalDataProvider())
         }
 
         val eventSlot = slot<Event>()
@@ -101,7 +101,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
         mockkObject(EventDispatcher)
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), globalDataProvider = dummyGlobalDataProvider())
+            AppBarOverflowMenu(mockk(), globalDataProvider = fakeGlobalDataProvider())
         }
 
         val eventSlot = slot<Event>()
@@ -128,7 +128,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
         }
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), globalDataProvider = dummyGlobalDataProvider())
+            AppBarOverflowMenu(mockk(), globalDataProvider = fakeGlobalDataProvider())
         }
 
         // show menu bar

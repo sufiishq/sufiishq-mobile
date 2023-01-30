@@ -12,7 +12,7 @@ import pk.sufiishq.app.core.event.events.KalamEvents
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamDataProvider
 import pk.sufiishq.aurora.components.SITextField
 import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
@@ -44,7 +44,7 @@ fun SearchTextField(
 @Composable
 fun SearchTextFieldPreviewLight() {
     AuroraLight {
-        val data = dummyKalamDataProvider()
+        val data = fakeKalamDataProvider()
         SearchTextField(
             remember { mutableStateOf("") },
             AuroraColor.OnBackground,
@@ -59,7 +59,7 @@ fun SearchTextFieldPreviewLight() {
 @Composable
 fun SearchTextFieldPreviewDark() {
     AuroraDark {
-        val data = dummyKalamDataProvider()
+        val data = fakeKalamDataProvider()
         SearchTextField(
             remember { mutableStateOf("") },
             AuroraColor.OnBackground,

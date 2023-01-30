@@ -25,7 +25,7 @@ import pk.sufiishq.app.ui.components.dialogs.KalamItemSplitDialog
 import pk.sufiishq.app.ui.components.dialogs.KalamRenameDialog
 import pk.sufiishq.app.ui.components.dialogs.ShowCircularProgressDialog
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamDataProvider
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.aurora.layout.SIColumn
@@ -105,7 +105,7 @@ fun TracksView(
 fun TracksPreviewLight() {
     AuroraLight {
         TracksView(
-            kalamDataProvider = dummyKalamDataProvider(),
+            kalamDataProvider = fakeKalamDataProvider(),
             trackListType = TrackListType.All()
         )
     }
@@ -117,7 +117,7 @@ fun TracksPreviewLight() {
 fun TracksPreviewDark() {
     AuroraDark {
         TracksView(
-            kalamDataProvider = dummyKalamDataProvider(),
+            kalamDataProvider = fakeKalamDataProvider(),
             trackListType = TrackListType.All()
         )
     }

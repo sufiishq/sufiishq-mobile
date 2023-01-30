@@ -1,5 +1,6 @@
 package pk.sufiishq.aurora.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ fun SIText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontStyle: FontStyle = FontStyle.Normal,
     textAlign: TextAlign = TextAlign.Start,
+    @DrawableRes leadingIcon: Int? = null,
     onClick: (() -> Unit)? = null
 ) {
 
@@ -35,6 +37,15 @@ fun SIText(
         TextButton(
             onClick = onClick,
         ) {
+
+            if(leadingIcon != null) {
+                SIIcon(
+                    resId = leadingIcon,
+                    tint = textColor
+                )
+                SIWidthSpace(value = 12)
+            }
+
             Text(
                 text = text,
                 color = textColor.color(),

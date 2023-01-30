@@ -21,7 +21,7 @@ import pk.sufiishq.app.ui.components.dialogs.KalamDownloadInProgressDialog
 import pk.sufiishq.app.ui.components.dialogs.KalamDownloadStartedDialog
 import pk.sufiishq.app.ui.components.dialogs.PlaylistDialog
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyPlayerDataProvider
+import pk.sufiishq.app.utils.fakePlayerDataProvider
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.PlayerViewModel
@@ -182,7 +182,7 @@ fun Player(
 fun PlayerPreviewLight() {
     AuroraLight {
         Player(
-            playerDataProvider = dummyPlayerDataProvider()
+            playerDataProvider = fakePlayerDataProvider()
         )
     }
 }
@@ -193,7 +193,7 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     AuroraDark {
         Player(
-            playerDataProvider = dummyPlayerDataProvider()
+            playerDataProvider = fakePlayerDataProvider()
         )
     }
 }

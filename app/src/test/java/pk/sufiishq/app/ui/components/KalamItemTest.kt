@@ -21,7 +21,7 @@ import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamDataProvider
 import pk.sufiishq.app.utils.formatDateAs
 
 class KalamItemTest : SufiIshqTest() {
@@ -36,7 +36,7 @@ class KalamItemTest : SufiIshqTest() {
             KalamItem(
                 kalam = getKalam(),
                 trackListType = TrackListType.All(),
-                kalamDataProvider = dummyKalamDataProvider()
+                kalamDataProvider = fakeKalamDataProvider()
             )
         }
     }
