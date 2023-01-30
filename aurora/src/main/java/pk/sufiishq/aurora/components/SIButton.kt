@@ -1,5 +1,7 @@
 package pk.sufiishq.aurora.components
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -16,7 +18,8 @@ fun SIButton(
     visibility: Boolean = true,
     bgColor: AuroraColor = AuroraColor.SecondaryVariant,
     textSize: TextSize = TextSize.Small,
-    defaultElevation: Int = 2
+    defaultElevation: Int = 2,
+    @DrawableRes leadingIcon: Int? = null
 ) {
     if (visibility) {
         Button(
@@ -29,10 +32,19 @@ fun SIButton(
                 defaultElevation = defaultElevation.dp
             )
         ) {
+
+            if (leadingIcon != null) {
+                SIIcon(
+                    modifier = Modifier.padding(end = 12.dp),
+                    resId = leadingIcon,
+                    tint = bgColor.getForegroundColor()
+                )
+            }
+
             SIText(
                 text = text,
                 textSize = textSize,
-                textColor = bgColor.getForegroundColor()
+                textColor = bgColor.getForegroundColor(),
             )
         }
     }

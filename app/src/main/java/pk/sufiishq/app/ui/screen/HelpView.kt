@@ -18,7 +18,7 @@ import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.ui.components.HelpExpandableCard
 import pk.sufiishq.app.ui.components.HelpHeader
-import pk.sufiishq.app.utils.dummyHelpDataProvider
+import pk.sufiishq.app.utils.fakeHelpDataProvider
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.HelpViewModel
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
@@ -107,7 +107,7 @@ fun HelpView(
 fun PreviewLightHelpView() {
     AuroraLight {
         HelpView(
-            helpDataProvider = dummyHelpDataProvider()
+            helpDataProvider = fakeHelpDataProvider()
         )
     }
 }
@@ -118,7 +118,7 @@ fun PreviewLightHelpView() {
 fun PreviewDarkHelpView() {
     AuroraDark {
         HelpView(
-            helpDataProvider = dummyHelpDataProvider()
+            helpDataProvider = fakeHelpDataProvider()
         )
     }
 }

@@ -14,7 +14,7 @@ import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.helpers.PopupMenuItem
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyGlobalDataProvider
+import pk.sufiishq.app.utils.fakeGlobalDataProvider
 import pk.sufiishq.app.viewmodels.GlobalViewModel
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
 import pk.sufiishq.aurora.models.DataMenuItem
@@ -78,7 +78,7 @@ fun AppBarOverflowMenuPreviewLight() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            dummyGlobalDataProvider()
+            fakeGlobalDataProvider()
         )
     }
 }
@@ -91,7 +91,7 @@ fun AppBarOverflowMenuPreviewDark() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            dummyGlobalDataProvider()
+            fakeGlobalDataProvider()
         )
     }
 }

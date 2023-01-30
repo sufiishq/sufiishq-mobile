@@ -22,7 +22,7 @@ import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
 import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamDataProvider
 
 class KalamItemPopupMenuTest : SufiIshqTest() {
 
@@ -111,7 +111,7 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
             KalamItemPopupMenu(
                 isExpanded = isExpanded,
                 kalam = getKalam(),
-                kalamDataProvider = dummyKalamDataProvider(),
+                kalamDataProvider = fakeKalamDataProvider(),
                 trackListType = trackListType
             )
         }

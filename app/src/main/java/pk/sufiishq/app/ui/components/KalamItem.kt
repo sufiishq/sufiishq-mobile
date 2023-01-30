@@ -9,8 +9,8 @@ import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyKalam
-import pk.sufiishq.app.utils.dummyKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalam
+import pk.sufiishq.app.utils.fakeKalamDataProvider
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.theme.AuroraDark
@@ -53,9 +53,9 @@ fun KalamItem(
 fun KalamItemPreviewLight() {
     AuroraLight {
         KalamItem(
-            kalam = dummyKalam(),
+            kalam = fakeKalam(),
             trackListType = TrackListType.All(),
-            kalamDataProvider = dummyKalamDataProvider()
+            kalamDataProvider = fakeKalamDataProvider()
         )
     }
 }
@@ -66,9 +66,9 @@ fun KalamItemPreviewLight() {
 fun KalamItemPreviewDark() {
     AuroraDark {
         KalamItem(
-            kalam = dummyKalam(),
+            kalam = fakeKalam(),
             trackListType = TrackListType.All(),
-            kalamDataProvider = dummyKalamDataProvider()
+            kalamDataProvider = fakeKalamDataProvider()
         )
     }
 }

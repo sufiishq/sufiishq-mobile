@@ -52,8 +52,8 @@ fun Kalam.copyWithDefaults(
 
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     observe(lifecycleOwner, object : Observer<T> {
-        override fun onChanged(t: T?) {
-            observer.onChanged(t)
+        override fun onChanged(value: T) {
+            observer.onChanged(value)
             removeObserver(this)
         }
     })
@@ -179,7 +179,7 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
 
 }
 
-fun String.maxLength(length: Int, endWith: String) : String {
+fun String.maxLength(length: Int, endWith: String): String {
     return if (this.length > length) {
         this.substring(0, length) + endWith
     } else this

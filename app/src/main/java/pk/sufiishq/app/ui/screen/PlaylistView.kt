@@ -21,7 +21,7 @@ import pk.sufiishq.app.ui.components.PlaylistItem
 import pk.sufiishq.app.ui.components.dialogs.AddOrUpdatePlaylistDialog
 import pk.sufiishq.app.ui.components.dialogs.PlaylistConfirmDeleteDialog
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyPlaylistDataProvider
+import pk.sufiishq.app.utils.fakePlaylistDataProvider
 import pk.sufiishq.app.utils.isScrollingUp
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
@@ -87,7 +87,7 @@ fun PreviewLightPlaylistView() {
     AuroraLight {
         PlaylistView(
             navController = rememberNavController(),
-            playlistDataProvider = dummyPlaylistDataProvider()
+            playlistDataProvider = fakePlaylistDataProvider()
         )
     }
 }
@@ -99,7 +99,7 @@ fun PreviewDarkPlaylistView() {
     AuroraDark {
         PlaylistView(
             navController = rememberNavController(),
-            playlistDataProvider = dummyPlaylistDataProvider()
+            playlistDataProvider = fakePlaylistDataProvider()
         )
     }
 }

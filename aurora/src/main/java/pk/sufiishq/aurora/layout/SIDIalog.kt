@@ -1,5 +1,6 @@
 package pk.sufiishq.aurora.layout
 
+import androidx.annotation.IntRange
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
@@ -30,6 +31,7 @@ fun SIDialog(
     onYesText: String? = null,
     onYesClick: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
+    @IntRange(from = 0, to = 12) innerPadding: Int = 12,
     content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     Dialog(
@@ -47,7 +49,7 @@ fun SIDialog(
         ) {
             SIColumn(
                 bgColor = bgColor,
-                padding = 12
+                padding = innerPadding
             ) { fgColor ->
 
                 content(fgColor)

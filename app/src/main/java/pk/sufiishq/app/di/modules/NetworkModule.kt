@@ -18,7 +18,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideBaseUrl() : String = "https://www.sufiishq.pk/"
+    fun provideBaseUrl(): String = "https://www.sufiishq.pk/"
 
     @Singleton
     @Provides

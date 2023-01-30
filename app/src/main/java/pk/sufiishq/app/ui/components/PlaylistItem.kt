@@ -11,7 +11,7 @@ import pk.sufiishq.app.helpers.PopupMenuItem
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.dummyPlaylist
+import pk.sufiishq.app.utils.fakePlaylist
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.models.DataMenuItem
 import pk.sufiishq.aurora.theme.AuroraDark
@@ -72,7 +72,7 @@ private fun handleClick(popupMenuItem: DataMenuItem, playlist: Playlist) {
 fun PlaylistItemPreviewLight() {
     AuroraLight {
         PlaylistItem(
-            playlist = dummyPlaylist(),
+            playlist = fakePlaylist(),
             navController = rememberNavController(),
             popupMenuItems = listOf()
         )
@@ -85,7 +85,7 @@ fun PlaylistItemPreviewLight() {
 fun PlaylistItemPreviewDark() {
     AuroraDark {
         PlaylistItem(
-            playlist = dummyPlaylist(),
+            playlist = fakePlaylist(),
             navController = rememberNavController(),
             popupMenuItems = listOf()
         )

@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import org.json.JSONObject
+import pk.sufiishq.app.R
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.SufiishqMediaPlayer
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
@@ -20,6 +21,7 @@ import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.HelpJson
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.models.NavigationItem
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -62,6 +64,22 @@ class AppModule {
                 .open("help/help.json")
                 .bufferedReader()
                 .use { it.readText() }
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMainNavigation(): List<NavigationItem> {
+        return listOf(
+            NavigationItem("Qibla Direction", R.drawable.compass, ""),
+            NavigationItem("Tasbee-Sarkar", R.drawable.tasbih, ""),
+            NavigationItem("Events", R.drawable.events, ""),
+            NavigationItem("Gallery", R.drawable.gallery, ""),
+            NavigationItem("Niaz", R.drawable.niaz, ""),
+            NavigationItem("Remedy", R.drawable.remedy, ""),
+            NavigationItem("Rubai", R.drawable.rubai, ""),
+            NavigationItem("Location", R.drawable.location, ""),
+            NavigationItem("Shijra", R.drawable.shijra, ""),
         )
     }
 }

@@ -11,6 +11,7 @@ import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.downloader.KalamDownloadState
 import pk.sufiishq.app.core.help.HelpData
 import pk.sufiishq.app.core.splitter.KalamSplitManager
+import pk.sufiishq.app.data.providers.DashboardDataProvider
 import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.data.providers.HelpDataProvider
 import pk.sufiishq.app.data.providers.HomeDataProvider
@@ -21,6 +22,7 @@ import pk.sufiishq.app.models.HelpContent
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.models.NavigationItem
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
@@ -29,7 +31,18 @@ import pk.sufiishq.aurora.models.DataMenuItem
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyPlayerDataProvider() = object : PlayerDataProvider {
+fun fakeDashboardDataProvider() = object : DashboardDataProvider {
+    override fun getMainNavigationItems(): List<NavigationItem> {
+        return listOf()
+    }
+}
+
+// ----------------------------------------- //
+// PLAYER DATA PROVIDER
+// ----------------------------------------- //
+
+@ExcludeFromJacocoGeneratedReport
+fun fakePlayerDataProvider() = object : PlayerDataProvider {
 
     override fun getKalamDownloadState(): LiveData<KalamDownloadState> {
         return MutableLiveData(KalamDownloadState.Idle)
@@ -61,7 +74,7 @@ fun dummyPlayerDataProvider() = object : PlayerDataProvider {
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyKalamDataProvider() = object : KalamDataProvider {
+fun fakeKalamDataProvider() = object : KalamDataProvider {
 
     override fun getKalamRenameDialog(): LiveData<Kalam?> {
         return MutableLiveData(null)
@@ -87,14 +100,14 @@ fun dummyKalamDataProvider() = object : KalamDataProvider {
 }
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyKalam() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
+fun fakeKalam() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
 
 // ----------------------------------------- //
 // PLAYLIST DATA PROVIDER
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
+fun fakePlaylistDataProvider() = object : PlaylistDataProvider {
 
     override fun getPopupMenuItems(): List<DataMenuItem> {
         return listOf()
@@ -118,14 +131,14 @@ fun dummyPlaylistDataProvider() = object : PlaylistDataProvider {
 }
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyPlaylist() = Playlist(1, "Karachi")
+fun fakePlaylist() = Playlist(1, "Karachi")
 
 // ----------------------------------------- //
 // HOME DATA PROVIDER
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyHomeDataProvider() = object : HomeDataProvider {
+fun fakeHomeDataProvider() = object : HomeDataProvider {
 
     override fun getKalam(id: Int): LiveData<Kalam?> {
         return MutableLiveData(null)
@@ -153,7 +166,7 @@ fun dummyHomeDataProvider() = object : HomeDataProvider {
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyGlobalDataProvider() = object : GlobalDataProvider {
+fun fakeGlobalDataProvider() = object : GlobalDataProvider {
 
     override fun getShowUpdateButton() = MutableLiveData(true)
 
@@ -167,7 +180,7 @@ fun dummyGlobalDataProvider() = object : GlobalDataProvider {
 // ----------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun dummyHelpDataProvider() = object : HelpDataProvider {
+fun fakeHelpDataProvider() = object : HelpDataProvider {
 
     override fun getHelpContent(): Flow<List<HelpContent>> = MutableStateFlow(
         listOf(
