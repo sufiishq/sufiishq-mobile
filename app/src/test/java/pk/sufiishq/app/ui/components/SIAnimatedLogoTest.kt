@@ -15,7 +15,7 @@ class SIAnimatedLogoTest : SufiIshqTest() {
     @Test
     fun `test logo image should be exists and displayed`() {
         composeTestRule.setContent {
-            SIAnimatedLog()
+            SIAnimatedLogo()
         }
 
         composeTestRule.onNode(hasTestTag("logo")).assertExists().assertIsDisplayed()

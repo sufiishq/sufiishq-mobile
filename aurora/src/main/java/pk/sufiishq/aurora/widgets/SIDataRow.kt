@@ -38,6 +38,7 @@ fun SIDataRow(
     trailingIconScope: @Composable BoxScope.() -> Unit = {},
     onTrailingIconClick: (() -> Unit)? = null,
     onClick: () -> Unit = {},
+    rowHeight: Int = 60,
     title: String,
     subTitle: String? = null
 ) {
@@ -53,7 +54,8 @@ fun SIDataRow(
         trailingIconColor = trailingIconColor,
         trailingIconScope = trailingIconScope,
         onTrailingIconClick = onTrailingIconClick,
-        onClick = onClick
+        onClick = onClick,
+        rowHeight = rowHeight
     ) { textColor ->
         SIColumn(
             modifier = Modifier.fillMaxWidth(),
@@ -63,7 +65,8 @@ fun SIDataRow(
             SIText(
                 text = title,
                 textColor = textColor,
-                textSize = TextSize.Regular
+                textSize = TextSize.Regular,
+                maxLines = 1
             )
 
             subTitle?.run {
@@ -91,11 +94,12 @@ fun SIDataRow(
     trailingIconScope: @Composable BoxScope.() -> Unit = {},
     onTrailingIconClick: (() -> Unit)? = null,
     onClick: () -> Unit = {},
+    rowHeight: Int = 60,
     content: @Composable RowScope.(fgColor: AuroraColor) -> Unit
 ) {
     SIConstraintLayout(
         modifier = modifier
-            .height(60.dp)
+            .height(rowHeight.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(6.dp))
             .clickable {

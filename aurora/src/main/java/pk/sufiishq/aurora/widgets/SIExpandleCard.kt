@@ -36,11 +36,11 @@ fun SIExpandableCard(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(AuroraColor.PrimaryVariant.color())
+                            .background(AuroraColor.SecondaryVariant.color())
                             .clickable(onClick = onHeaderClick)
                             .padding(12.dp, 12.dp)
                     ) {
-                        header(AuroraColor.PrimaryVariant.getForegroundColor())
+                        header(AuroraColor.SecondaryVariant.getForegroundColor())
                     }
                 }
 

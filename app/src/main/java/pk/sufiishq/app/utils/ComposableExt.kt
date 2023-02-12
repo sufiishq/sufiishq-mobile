@@ -1,10 +1,12 @@
 package pk.sufiishq.app.utils
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * Returns whether the lazy list is currently scrolling up.
@@ -25,4 +27,10 @@ fun LazyListState.isScrollingUp(): Boolean {
             }
         }
     }.value
+}
+
+@Composable
+fun optString(@StringRes resId: Int, vararg args: Any?): String {
+    val context = LocalContext.current
+    return context.getString(resId).format(*args)
 }

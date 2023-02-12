@@ -10,28 +10,28 @@ import pk.sufiishq.aurora.models.ColorPalette
 internal val DarkColorPalette = darkColors(
     surface = Color(0xFF121313),
     background = Color(0xFF2C2C2C),
-    primary = Color(0xFF2C2C2C),
-    primaryVariant = Color(0xFF272727),
-    secondary = Color(0xFF8BEE00),
-    secondaryVariant = Color(0xFF68B300),
+    primary = Color(0xFF383838),
+    primaryVariant = Color(0xFF444444),
+    secondary = Color(0xFF0F76C4),
+    secondaryVariant = Color(0xFF005493),
     onBackground = Color(0xFFDDDDDD),
     onPrimary = Color(0xFFEEEEEE),
     onSecondary = Color(0xFFF4FFE5),
-    onError = Color(0xFFFD647F)
+    onError = Color(0xFFE2425F)
 )
 
 @SuppressLint("ConflictingOnColor")
 internal val LightColorPalette = lightColors(
     surface = Color(0xFFEFF2F3),
-    background = Color(0xFFFFFFFF),
-    primary = Color(0xFFFFFFFF),
-    primaryVariant = Color(0xFFF7F7F7),
-    secondary = Color(0xFF8BEE00),
-    secondaryVariant = Color(0xFF68B300),
+    background = Color(0xFFFCFCFC),
+    primary = Color(0xFFEBEBEB),
+    primaryVariant = Color(0xFFCACACA),
+    secondary = Color(0xFF0F76C4),
+    secondaryVariant = Color(0xFF005493),
     onBackground = Color(0xFF2B2C2E),
     onPrimary = Color(0xFF424242),
     onSecondary = Color(0xFFF4FFE5),
-    onError = Color(0xFFDB2545)
+    onError = Color(0xFFE2425F)
 )
 
 internal object AuroraColorPalettes {
@@ -39,8 +39,8 @@ internal object AuroraColorPalettes {
 
     fun getColorPallets(): List<ColorPalette> {
         return colorPallets ?: listOf(
-            ColorPalette.Clover,
             ColorPalette.Ocean,
+            ColorPalette.Clover,
             ColorPalette.Blackberry,
             ColorPalette.Blueberry,
             ColorPalette.Mud,
@@ -66,7 +66,11 @@ internal object AuroraColorPalettes {
             ColorPalette.Olive,
             ColorPalette.Forest,
             ColorPalette.Berry,
-            ColorPalette.Grape
+            ColorPalette.Grape,
+            ColorPalette.Dolphin,
+            ColorPalette.Granite,
+            ColorPalette.Pigeons,
+            ColorPalette.Slate
         ).also {
             colorPallets = it
         }

@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.getForegroundColor
@@ -21,15 +23,18 @@ fun SIRow(
     verticalAlignment: Alignment.Vertical = Alignment.Top,
     bgColor: AuroraColor = AuroraColor.Transparent,
     @IntRange(from = 0, to = 12) padding: Int = 0,
+    radius: Int = 0,
     content: @Composable RowScope.(fgColor: AuroraColor) -> Unit
 ) {
-    Row(modifier = modifier
+    Row(modifier = Modifier
+        .clip(RoundedCornerShape(radius.dp))
         .background(
             bgColor
                 .validateBackground()
                 .color()
         )
-        .padding(padding.coerceIn(0, 12).dp),
+        .padding(padding.coerceIn(0, 12).dp)
+        .then(modifier),
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = verticalAlignment,
         content = {

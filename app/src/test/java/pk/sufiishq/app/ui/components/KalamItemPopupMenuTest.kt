@@ -118,14 +118,14 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
     }
 
     private fun getAllMenuItems() = listOf(
-        R.string.add_to_playlist,
-        R.string.mark_as_favorite,
-        R.string.remove_favorite,
-        R.string.download_label,
-        R.string.split_kalam,
-        R.string.rename_label,
-        R.string.share_label,
-        R.string.delete_label
+        R.string.menu_item_add_to_playlist,
+        R.string.menu_item_mark_as_favorite,
+        R.string.menu_item_remove_favorite,
+        R.string.menu_item_download,
+        R.string.menu_item_split_kalam,
+        R.string.menu_item_rename,
+        R.string.menu_item_share,
+        R.string.menu_item_delete
     ).map {
         getString(it)
     }

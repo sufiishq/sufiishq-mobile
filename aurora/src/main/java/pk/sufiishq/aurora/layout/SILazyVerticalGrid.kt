@@ -18,7 +18,7 @@ fun SILazyVerticalGrid(
     columns: GridCells,
     modifier: Modifier = Modifier,
     state: LazyGridState = rememberLazyGridState(),
-    contentPadding: PaddingValues = PaddingValues(12.dp),
+    contentPadding: PaddingValues = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(12.dp),
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(12.dp),
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),

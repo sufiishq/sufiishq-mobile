@@ -9,15 +9,17 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import pk.sufiishq.aurora.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
+import kotlin.math.max
 
 enum class TextSize(val value: Int) {
-    ExtraSmall(12), Small(14), Regular(18), Large(22), ExtraLarge(26);
+    ExtraSmall(12), Small(14), Regular(18), Large(22), ExtraLarge(26), Banner(36);
 }
 
 @Composable
@@ -29,6 +31,7 @@ fun SIText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontStyle: FontStyle = FontStyle.Normal,
     textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int = Int.MAX_VALUE,
     @DrawableRes leadingIcon: Int? = null,
     onClick: (() -> Unit)? = null
 ) {
@@ -53,6 +56,7 @@ fun SIText(
                 fontStyle = fontStyle,
                 fontSize = textSize.value.sp,
                 textAlign = textAlign,
+                maxLines = maxLines,
                 modifier = modifier
             )
         }
@@ -64,7 +68,9 @@ fun SIText(
             fontStyle = fontStyle,
             fontSize = textSize.value.sp,
             textAlign = textAlign,
-            modifier = modifier
+            maxLines = maxLines,
+            modifier = modifier,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

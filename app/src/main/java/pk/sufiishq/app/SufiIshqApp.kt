@@ -8,7 +8,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import pk.sufiishq.app.configs.AppConfig
 import pk.sufiishq.app.core.storage.KeyValueStorage
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.worker.CacheRemoveWorker
@@ -21,12 +20,10 @@ class SufiIshqApp : Application() {
     @SecureSharedPreferences
     lateinit var keyValueStorage: KeyValueStorage
 
-    lateinit var appConfig: AppConfig
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        appConfig = AppConfig()
 
         // enable crashlytics only in release build
         FirebaseCrashlytics.getInstance()

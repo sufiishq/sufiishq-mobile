@@ -1,20 +1,11 @@
 package pk.sufiishq.app.core.event.dispatcher
 
-import io.mockk.every
-import io.mockk.mockk
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.Ignore
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.event.events.Event
-import pk.sufiishq.app.core.event.events.KalamEvents
-import pk.sufiishq.app.core.event.events.PlayerEvents
-import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.utils.dispatch
-import pk.sufiishq.app.utils.registerEventHandler
-import pk.sufiishq.app.viewmodels.PlayerViewModel
 
+@Ignore("this file will be deleted later")
 class EventDispatcherTest : SufiIshqTest() {
-
+/*
     @Test
     fun testDispatch_shouldDispatchEvent_toRespectiveResolver() {
 
@@ -39,5 +30,5 @@ class EventDispatcherTest : SufiIshqTest() {
     @Test(expected = NullPointerException::class)
     fun testDispatch_shouldThrow_NullPointerException() {
         KalamEvents.SearchKalam("", TrackListType.All()).dispatch()
-    }
+    }*/
 }

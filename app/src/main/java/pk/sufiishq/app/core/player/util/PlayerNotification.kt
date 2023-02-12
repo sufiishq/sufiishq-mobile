@@ -11,6 +11,7 @@ import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.formatDateAs
+import pk.sufiishq.app.utils.getString
 
 @SuppressLint("UnspecifiedImmutableFlag")
 class PlayerNotification(private val context: Context) {
@@ -39,7 +40,7 @@ class PlayerNotification(private val context: Context) {
             val notificationChannel =
                 NotificationChannel(
                     AudioPlayerService.CHANNEL_ID,
-                    "Sufi Ishq",
+                    getString(R.string.app_name),
                     NotificationManager.IMPORTANCE_MIN
                 )
             notificationChannel.enableLights(false)

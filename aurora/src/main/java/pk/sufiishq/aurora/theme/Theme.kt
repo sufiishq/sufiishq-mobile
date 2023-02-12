@@ -6,6 +6,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pk.sufiishq.app.ui.theme.Shapes
@@ -80,7 +81,7 @@ private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
         // Update all of the system bar colors to be transparent, and use
         // dark icons if we're in light theme
         systemUiController.setSystemBarsColor(
-            color = colors.primary,
+            color = colors.background,
             darkIcons = !isDark
         )
 

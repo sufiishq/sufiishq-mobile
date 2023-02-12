@@ -18,7 +18,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun SILazyColumn(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     hasItems: Boolean = true,

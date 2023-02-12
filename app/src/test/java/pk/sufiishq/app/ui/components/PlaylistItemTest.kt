@@ -52,7 +52,7 @@ class PlaylistItemTest : SufiIshqTest() {
         // playlist item should be exists, visible and has click action
         getPlaylistItemNode().assertExists().assertIsDisplayed().performClick()
 
-        val route = ScreenType.Tracks.withArgs(
+        val route = ScreenType.Tracks.buildRoute(
             "playlist",
             "${playlist.title} Playlist",
             "${playlist.id}"

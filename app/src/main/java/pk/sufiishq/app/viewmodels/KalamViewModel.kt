@@ -1,175 +1,54 @@
 package pk.sufiishq.app.viewmodels
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import java.io.File
 import java.util.*
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
-import pk.sufiishq.app.core.event.events.Event
-import pk.sufiishq.app.core.event.events.KalamEvents
-import pk.sufiishq.app.core.event.events.KalamSplitManagerEvents
-import pk.sufiishq.app.core.event.exception.UnhandledEventException
-import pk.sufiishq.app.core.player.AudioPlayer
-import pk.sufiishq.app.core.splitter.KalamSplitManager
+import pk.sufiishq.app.core.app.AppManager
+import pk.sufiishq.app.core.kalam.delete.KalamDeleteManager
+import pk.sufiishq.app.core.kalam.downloader.KalamDownloadManager
+import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.core.kalam.favorite.FavoriteManager
+import pk.sufiishq.app.core.kalam.splitter.KalamSplitManager
+import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
+import pk.sufiishq.app.core.kalam.splitter.SplitStatus
+import pk.sufiishq.app.core.player.PlayerManager
+import pk.sufiishq.app.core.playlist.PlaylistManager
 import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.di.qualifier.KalamItemPopupMenuItems
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.helpers.factory.KalamDeleteStrategyFactory
+import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
-import pk.sufiishq.app.utils.DEEPLINK_HOST
-import pk.sufiishq.app.utils.KALAM_DIR
-import pk.sufiishq.app.utils.copyWithDefaults
-import pk.sufiishq.app.utils.dispatch
+import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.filterItems
-import pk.sufiishq.app.utils.isNetworkAvailable
-import pk.sufiishq.app.utils.moveTo
-import pk.sufiishq.app.utils.toast
 import pk.sufiishq.aurora.models.DataMenuItem
-import timber.log.Timber
 
+@SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class KalamViewModel @Inject constructor(
-    private val app: Application,
-    private val kalamRepository: KalamRepository,
+    @KalamItemPopupMenuItems private val popupMenu: PopupMenu,
+    private val kalamDownloadManager: KalamDownloadManager,
+    private val kalamDeleteManager: KalamDeleteManager,
     private val kalamSplitManager: KalamSplitManager,
-    @AndroidMediaPlayer private val player: AudioPlayer,
-    private val kalamDeleteStrategyFactory: KalamDeleteStrategyFactory,
-) : BaseViewModel(app), KalamDataProvider {
-
-    private val showKalamRenameDialog = MutableLiveData<Kalam?>(null)
-    private val showKalamDeleteConfirmDialog = MutableLiveData<KalamDeleteItem?>(null)
-    private val showKalamSplitManagerDialog = MutableLiveData<KalamSplitManager?>(null)
-    private val showCircularProgressDialog = MutableLiveData(false)
+    private val kalamRepository: KalamRepository,
+    private val playlistManager: PlaylistManager,
+    private val favoriteManager: FavoriteManager,
+    private val playerManager: PlayerManager,
+    private val appManager: AppManager
+) : ViewModel(), KalamDataProvider {
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
-
-    override fun popupMenuItems(kalam: Kalam, trackType: String): List<DataMenuItem> {
-        return kalamRepository.popupMenuItems(app).filterItems(kalam, trackType)
-    }
-
-    override fun getKalamDeleteConfirmDialog(): LiveData<KalamDeleteItem?> {
-        return showKalamDeleteConfirmDialog
-    }
-
-    override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
-        return kalams
-    }
-
-    override fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?> {
-        return showKalamSplitManagerDialog
-    }
-
-    override fun getKalamRenameDialog(): LiveData<Kalam?> {
-        return showKalamRenameDialog
-    }
-
-    override fun getShowCircularProgressDialog(): LiveData<Boolean> {
-        return showCircularProgressDialog
-    }
-
-    private fun setCircularProgressDialog(isShow: Boolean) {
-        showCircularProgressDialog.postValue(isShow)
-    }
-
-    private fun setKalamRenameDialog(kalam: Kalam?) {
-        showKalamRenameDialog.postValue(kalam)
-    }
-
-    private fun searchKalam(keyword: String, trackListType: TrackListType) {
-        kalamRepository.setSearchKeyword(keyword)
-        kalamRepository.setTrackListType(trackListType)
-    }
-
-    private fun update(kalam: Kalam) {
-        viewModelScope.launch {
-            kalamRepository.update(kalam)
-        }
-    }
-
-    private fun setKalamSplitManagerDialog(kalam: Kalam?) {
-
-        var splitManager: KalamSplitManager? = null
-
-        kalam?.apply {
-            KalamSplitManagerEvents.SetKalam(this).dispatch()
-            splitManager = kalamSplitManager
-        }
-
-        showKalamSplitManagerDialog.postValue(splitManager)
-    }
-
-    private fun setKalamConfirmDeleteDialog(kalamDeleteItem: KalamDeleteItem?) {
-        showKalamDeleteConfirmDialog.postValue(kalamDeleteItem)
-    }
-
-    private fun delete(kalamDeleteItem: KalamDeleteItem) {
-
-        viewModelScope.launch {
-
-            if (canDelete(kalamDeleteItem.kalam)) {
-                kalamDeleteStrategyFactory.create(kalamDeleteItem.trackListType.type)
-                    .delete(kalamDeleteItem.kalam)
-            } else {
-                app.toast(
-                    app.getString(R.string.error_kalam_delete_on_playing)
-                        .format(kalamDeleteItem.kalam.title)
-                )
-            }
-        }
-    }
-
-    private fun saveSplitKalam(sourceKalam: Kalam, splitFile: File, kalamTitle: String) {
-
-        val fileName = buildString {
-            append(KALAM_DIR)
-            append(File.separator)
-            append(kalamTitle.lowercase().replace(" ", "_"))
-            append("_${Calendar.getInstance().timeInMillis}.mp3")
-        }
-
-        val kalam = sourceKalam.copyWithDefaults(
-            id = 0,
-            title = kalamTitle,
-            onlineSource = "",
-            offlineSource = fileName,
-            isFavorite = 0,
-            playlistId = 0
-        )
-
-        viewModelScope.launch {
-            kalamRepository.insert(kalam)
-        }
-
-        File(app.filesDir, fileName).apply {
-            splitFile.moveTo(this)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-        }
-
-        app.toast(app.getString(R.string.kalam_saved_label).format(kalamTitle))
-    }
 
     private fun pagingSource(): () -> PagingSource<Int, Kalam> {
         return {
@@ -177,68 +56,148 @@ class KalamViewModel @Inject constructor(
         }
     }
 
-    private fun canDelete(kalam: Kalam): Boolean {
+    // -------------------------------------------------------------------- //
+    // kalam base functionality
+    // -------------------------------------------------------------------- //
 
-        // stop playing kalam if it match with deleted kalam
-        return player.getActiveTrack().id != kalam.id
+    override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
+        return kalams
     }
 
-    private fun shareKalam(kalam: Kalam, context: Context) {
-
-        if (ComponentActivity::class.java.isAssignableFrom(context.javaClass)) {
-            setCircularProgressDialog(true)
-
-            FirebaseDynamicLinks.getInstance()
-                .createDynamicLink()
-                .setLink("$DEEPLINK_HOST/kalam/${kalam.id}".toUri())
-                .setDomainUriPrefix(DEEPLINK_HOST)
-                .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
-                .buildShortDynamicLink()
-                .addOnSuccessListener { task ->
-                    setCircularProgressDialog(false)
-                    val appName = context.getString(R.string.app_name)
-                    Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_SUBJECT, kalam.title)
-                        putExtra(Intent.EXTRA_TEXT, task.shortLink.toString())
-                    }.also {
-                        context.startActivity(Intent.createChooser(it, "Share $appName"))
-                    }
-                }
-                .addOnFailureListener {
-                    setCircularProgressDialog(false)
-                    if (!context.isNetworkAvailable()) {
-                        context.toast(context.getString(R.string.no_network_connection))
-                    } else {
-                        context.toast(it.message ?: context.getString(R.string.unknown_error))
-                    }
-                    Timber.e(it)
-                }
-        } else {
-            throw IllegalArgumentException("context: $context is not an activity")
-        }
+    override fun searchKalam(keyword: String, trackListType: TrackListType) {
+        kalamRepository.setSearchKeyword(keyword)
+        kalamRepository.setTrackListType(trackListType)
     }
 
-    /*=======================================*/
-    // HANDLE KALAM EVENTS
-    /*=======================================*/
+    override fun popupMenuItems(kalam: Kalam, trackType: String): List<DataMenuItem> {
+        return popupMenu.getPopupMenuItems().filterItems(kalam, trackType)
+    }
 
-    override fun onEvent(event: Event) {
+    // -------------------------------------------------------------------- //
+    // kalam change functionality
+    // -------------------------------------------------------------------- //
 
-        when (event) {
-            is KalamEvents.SearchKalam -> searchKalam(event.keyword, event.trackListType)
-            is KalamEvents.UpdateKalam -> update(event.kalam)
-            is KalamEvents.ShowKalamConfirmDeleteDialog -> setKalamConfirmDeleteDialog(event.kalamDeleteItem)
-            is KalamEvents.DeleteKalam -> delete(event.kalamDeleteItem)
-            is KalamEvents.SaveSplitKalam -> saveSplitKalam(
-                event.sourceKalam,
-                event.splitFile,
-                event.kalamTitle
-            )
-            is KalamEvents.ShowKalamSplitManagerDialog -> setKalamSplitManagerDialog(event.kalam)
-            is KalamEvents.ShowKalamRenameDialog -> setKalamRenameDialog(event.kalam)
-            is KalamEvents.ShareKalam -> shareKalam(event.kalam, event.context)
-            else -> throw UnhandledEventException(event, this)
-        }
+    override fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
+        playerManager.changeTrack(kalam, trackListType)
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam share functionality
+    // -------------------------------------------------------------------- //
+
+    override fun showKalamShareIndicatorDialog(): LiveData<Boolean> {
+        return appManager.showKalamShareIndicatorDialog()
+    }
+
+    override fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {
+        appManager.shareKalam(kalam, componentActivity)
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam favorite/remove-favorite functionality
+    // -------------------------------------------------------------------- //
+
+    override fun markAsFavorite(kalam: Kalam) {
+        favoriteManager.markAsFavorite(kalam)
+    }
+
+    override fun removeFavorite(kalam: Kalam) {
+        favoriteManager.removeFavorite(kalam)
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam delete functionality
+    // -------------------------------------------------------------------- //
+
+    override fun delete(kalamDeleteItem: KalamDeleteItem) {
+        kalamDeleteManager.delete(kalamDeleteItem)
+    }
+
+    override fun showKalamConfirmDeleteDialog(): LiveData<KalamDeleteItem?> {
+        return kalamDeleteManager.showKalamConfirmDeleteDialog()
+    }
+
+    override fun showKalamConfirmDeleteDialog(kalamDeleteItem: KalamDeleteItem?) {
+        return kalamDeleteManager.showKalamConfirmDeleteDialog(kalamDeleteItem)
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam playlist functionality
+    // -------------------------------------------------------------------- //
+
+    override fun addToPlaylist(kalam: Kalam, playlist: Playlist) {
+        playlistManager.addToPlaylist(kalam, playlist)
+    }
+
+    override fun showPlaylistDialog(): LiveData<Pair<Kalam, List<Playlist>>?> {
+        return playlistManager.showPlaylistDialog()
+    }
+
+    override fun showPlaylistDialog(kalam: Kalam) {
+        playlistManager.showPlaylistDialog(kalam)
+    }
+
+    override fun dismissPlaylistDialog() {
+        playlistManager.dismissPlaylistDialog()
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam download functionality
+    // -------------------------------------------------------------------- //
+
+    override fun getKalamDownloadState(): LiveData<KalamDownloadState> {
+        return kalamDownloadManager.getKalamDownloadState()
+    }
+
+    override fun startDownload(kalam: Kalam) {
+        kalamDownloadManager.startDownload(kalam)
+    }
+
+    override fun dismissDownload() {
+        kalamDownloadManager.dismissDownload()
+    }
+
+    // -------------------------------------------------------------------- //
+    // kalam split functionality
+    // -------------------------------------------------------------------- //
+
+    override fun showKalamSplitDialog(kalam: Kalam) {
+        kalamSplitManager.showKalamSplitDialog(kalam)
+    }
+
+    override fun showKalamSplitDialog(): LiveData<SplitKalamInfo?> {
+        return kalamSplitManager.showKalamSplitDialog()
+    }
+
+    override fun startSplitting() {
+        kalamSplitManager.startSplitting()
+    }
+
+    override fun playSplitKalamPreview() {
+        kalamSplitManager.playSplitKalamPreview()
+    }
+
+    override fun setSplitStart(start: Int) {
+        kalamSplitManager.setSplitStart(start)
+    }
+
+    override fun setSplitEnd(end: Int) {
+        kalamSplitManager.setSplitEnd(end)
+    }
+
+    override fun setSplitStatus(status: SplitStatus) {
+        kalamSplitManager.setSplitStatus(status)
+    }
+
+    override fun updateSplitSeekbarValue(value: Float) {
+        kalamSplitManager.updateSplitSeekbarValue(value)
+    }
+
+    override fun saveSplitKalam(sourceKalam: Kalam, kalamTitle: String) {
+        kalamSplitManager.saveSplitKalam(sourceKalam, kalamTitle)
+    }
+
+    override fun dismissKalamSplitDialog() {
+        kalamSplitManager.dismissKalamSplitDialog()
     }
 }

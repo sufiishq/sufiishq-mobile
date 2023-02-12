@@ -11,14 +11,21 @@ import pk.sufiishq.aurora.theme.validateBackground
 @Composable
 fun SIDivider(
     modifier: Modifier = Modifier,
-    color: AuroraColor = AuroraColor.Primary,
+    color: AuroraColor = AuroraColor.PrimaryVariant,
     thickness: Dp = 1.dp,
-    startIndent: Dp = 0.dp
+    startIndent: Dp = 0.dp,
+    topSpace: Int = 0,
+    bottomSpace: Int = 0
 ) {
+
+    SIHeightSpace(value = topSpace)
+
     Divider(
         modifier = modifier,
         color.validateBackground().color(),
         thickness = thickness,
         startIndent = startIndent
     )
+
+    SIHeightSpace(value = bottomSpace)
 }

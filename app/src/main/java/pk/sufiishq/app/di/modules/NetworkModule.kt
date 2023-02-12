@@ -7,9 +7,10 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
-import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.core.help.HelpContentService
+import pk.sufiishq.app.core.kalam.downloader.DownloadFileService
+import pk.sufiishq.app.core.hijridate.HijriDateService
+import pk.sufiishq.app.utils.SUFI_ISHQ_HOST
 import retrofit2.Retrofit
 
 @Module
@@ -18,20 +19,12 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideBaseUrl(): String = "https://www.sufiishq.pk/"
+    fun provideBaseUrl(): String = SUFI_ISHQ_HOST
 
     @Singleton
     @Provides
     fun providesOkHttpClient(): OkHttpClient {
-        return if (BuildConfig.DEBUG) {
-            val loggingInterceptor = HttpLoggingInterceptor()
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-            OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build()
-        } else {
-            OkHttpClient.Builder().build()
-        }
+        return OkHttpClient.Builder().build()
     }
 
     @Singleton
@@ -52,5 +45,15 @@ class NetworkModule {
     @Provides
     fun provideHelpContentService(retrofit: Retrofit): HelpContentService {
         return retrofit.create(HelpContentService::class.java)
+    }
+
+    @Provides
+    fun provideDownloadFileService(retrofit: Retrofit): DownloadFileService {
+        return retrofit.create(DownloadFileService::class.java)
+    }
+
+    @Provides
+    fun provideHijriDateService(retrofit: Retrofit): HijriDateService {
+        return retrofit.create(HijriDateService::class.java)
     }
 }

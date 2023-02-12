@@ -21,7 +21,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.splitter.SplitStatus
+import pk.sufiishq.app.core.kalam.splitter.SplitStatus
 
 class FileExtTest : SufiIshqTest() {
 

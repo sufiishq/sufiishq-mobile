@@ -9,6 +9,5 @@ import pk.sufiishq.app.models.HelpContent
 class HelpContentRepository @Inject constructor(
     @OnlineResolver private val helpContentResolver: HelpContentResolver
 ) {
-
     fun loadContent(): Flow<List<HelpContent>> = helpContentResolver.resolve()
 }

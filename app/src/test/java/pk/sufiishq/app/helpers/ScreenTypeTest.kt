@@ -17,7 +17,7 @@ class ScreenTypeTest : SufiIshqTest() {
     fun test_dashboard_shouldVerify_allMethods() {
         val dashboardType = ScreenType.Dashboard
 
-        assertEquals("screen_dashboard", dashboardType.route())
+        assertEquals("screen_dashboard", dashboardType.buildRoute())
         assertEquals(0, dashboardType.arguments().size)
         assertEquals(0, dashboardType.deepLinks().size)
     }
@@ -26,7 +26,7 @@ class ScreenTypeTest : SufiIshqTest() {
     fun test_playlist_shouldVerify_allMethods() {
         val playlistType = ScreenType.Playlist
 
-        assertEquals("screen_playlist", playlistType.route())
+        assertEquals("screen_playlist", playlistType.buildRoute())
         assertEquals(0, playlistType.arguments().size)
         assertEquals(0, playlistType.deepLinks().size)
     }
@@ -35,7 +35,7 @@ class ScreenTypeTest : SufiIshqTest() {
     fun test_help_shouldVerify_allMethods() {
         val helpType = ScreenType.Help
 
-        assertEquals("screen_help", helpType.route())
+        assertEquals("screen_help", helpType.buildRoute())
         assertEquals(0, helpType.arguments().size)
         assertEquals(0, helpType.deepLinks().size)
     }
@@ -44,7 +44,7 @@ class ScreenTypeTest : SufiIshqTest() {
     fun test_tracks_shouldVerify_allMethods() {
         val tracksType = ScreenType.Tracks
 
-        assertEquals("screen_tracks/{trackType}/{title}/{playlistId}", tracksType.route())
+        assertEquals("screen_tracks/{trackType}/{title}/{playlistId}", tracksType.buildRoute())
         assertEquals(0, tracksType.deepLinks().size)
 
 
@@ -54,7 +54,7 @@ class ScreenTypeTest : SufiIshqTest() {
         assertEquals("title", args[1].name)
         assertEquals("playlistId", args[2].name)
 
-        val withArgs = tracksType.withArgs(
+        val withArgs = tracksType.buildRoute(
             ScreenType.Tracks.FAVORITES,
             "Favorites",
             "0"

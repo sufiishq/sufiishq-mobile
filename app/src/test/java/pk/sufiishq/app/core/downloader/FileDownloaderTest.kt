@@ -18,7 +18,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.models.FileInfo
+import pk.sufiishq.app.core.kalam.downloader.FileDownloader
+import pk.sufiishq.app.core.kalam.downloader.FileInfo
 
 class FileDownloaderTest : SufiIshqTest() {
 

@@ -48,7 +48,7 @@ object AuroraConfig {
                     .map {
                         it.objectInstance as ColorPalette
                     }.firstOrNull { it.name == colorName }
-            } ?: ColorPalette.Clover
+            } ?: ColorPalette.Ocean
     }
 
     private fun updateColorPalette(colorPalette: ColorPalette, appContext: Context) {

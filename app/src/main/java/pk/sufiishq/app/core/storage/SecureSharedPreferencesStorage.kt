@@ -47,4 +47,8 @@ class SecureSharedPreferencesStorage @Inject constructor(context: Context) : Key
         }
         editor.apply()
     }
+
+    override fun getSharedPreferences(): SharedPreferences {
+        return sharedPreferences
+    }
 }

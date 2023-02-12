@@ -2,17 +2,18 @@ package pk.sufiishq.app.utils
 
 import VideoHandle.EpEditor
 import VideoHandle.OnEditorListener
-import io.reactivex.Completable
 import java.io.File
 import org.apache.commons.io.IOUtils
-import pk.sufiishq.app.core.splitter.SplitStatus
+import pk.sufiishq.app.R
+import pk.sufiishq.app.core.kalam.splitter.SplitStatus
 import timber.log.Timber
 
-fun File.moveTo(destination: File): Completable {
-    return Completable.fromAction {
-        IOUtils.copy(this.inputStream(), destination.outputStream())
-        this.delete()
-    }
+fun File.moveTo(destination: File) {
+    IOUtils
+        .copy(this.inputStream(), destination.outputStream())
+        .also {
+            this.delete()
+        }
 }
 
 fun File.deleteContent() {
@@ -48,10 +49,12 @@ fun File.split(
             }
 
             override fun onFailure() {
-                onComplete(SplitStatus.Error("Execution failed"))
+                onComplete(SplitStatus.Error(getString(R.string.msg_execution_failed)))
             }
 
             override fun onProgress(progress: Float) {}
         }
     )
 }
+
+fun File.appendPath(path: String): File = File("${absolutePath}/${path}")

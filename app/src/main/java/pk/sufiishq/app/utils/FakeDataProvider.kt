@@ -1,24 +1,28 @@
 package pk.sufiishq.app.utils
 
+import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.downloader.KalamDownloadState
 import pk.sufiishq.app.core.help.HelpData
-import pk.sufiishq.app.core.splitter.KalamSplitManager
+import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
+import pk.sufiishq.app.core.kalam.splitter.SplitStatus
 import pk.sufiishq.app.data.providers.DashboardDataProvider
-import pk.sufiishq.app.data.providers.GlobalDataProvider
 import pk.sufiishq.app.data.providers.HelpDataProvider
-import pk.sufiishq.app.data.providers.HomeDataProvider
 import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.providers.MainDataProvider
 import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.HelpContent
+import pk.sufiishq.app.models.HijriDate
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.models.KalamInfo
@@ -26,101 +30,100 @@ import pk.sufiishq.app.models.NavigationItem
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
-// ----------------------------------------- //
-// PLAYER DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
+// DASHBOARD DATA PROVIDER
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
 fun fakeDashboardDataProvider() = object : DashboardDataProvider {
-    override fun getMainNavigationItems(): List<NavigationItem> {
-        return listOf()
-    }
+    override fun getMainNavigationItems(): List<NavigationItem> = listOf()
+    override fun countAll(): LiveData<Int> = MutableLiveData(150)
+    override fun countFavorites(): LiveData<Int> = MutableLiveData(15)
+    override fun countDownloads(): LiveData<Int> = MutableLiveData(35)
+    override fun countPlaylist(): LiveData<Int> = MutableLiveData(5)
 }
 
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 // PLAYER DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
 fun fakePlayerDataProvider() = object : PlayerDataProvider {
 
-    override fun getKalamDownloadState(): LiveData<KalamDownloadState> {
-        return MutableLiveData(KalamDownloadState.Idle)
-    }
-
-    override fun getShuffleState(): LiveData<Boolean> {
-        return MutableLiveData(false)
-    }
-
-    override fun getPopupMenuItems(kalam: Kalam): LiveData<List<DataMenuItem>> {
-        return MutableLiveData()
-    }
-
-    override fun getKalamInfo(): LiveData<KalamInfo?> {
-        return MutableLiveData(null)
-    }
-
-    override fun getShowPlaylistDialog(): LiveData<Kalam?> {
-        return MutableLiveData(null)
-    }
-
-    override fun getAllPlaylist(): LiveData<List<Playlist>> {
-        return MutableLiveData(listOf())
-    }
+    override fun getKalamInfo(): LiveData<KalamInfo?> = MutableLiveData(null)
+    override fun updateSeekbarValue(value: Float) = Unit
+    override fun onSeekbarChanged(value: Int) = Unit
+    override fun doPlayOrPause() = Unit
 }
 
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 // KALAM DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
 fun fakeKalamDataProvider() = object : KalamDataProvider {
 
-    override fun getKalamRenameDialog(): LiveData<Kalam?> {
-        return MutableLiveData(null)
+    override fun getKalamDataFlow(): Flow<PagingData<Kalam>> = flow {
+        PagingData.from(
+            listOf(
+                fakeKalam()
+            )
+        )
     }
 
-    override fun getKalamDataFlow(): Flow<PagingData<Kalam>> {
-        return emptyFlow()
-    }
+    override fun searchKalam(keyword: String, trackListType: TrackListType) = Unit
+    override fun popupMenuItems(kalam: Kalam, trackType: String): List<DataMenuItem> = listOf()
 
-    override fun getKalamDeleteConfirmDialog(): LiveData<KalamDeleteItem?> {
-        return MutableLiveData(null)
-    }
+    override fun changeTrack(kalam: Kalam, trackListType: TrackListType) = Unit
 
-    override fun getKalamSplitManagerDialog(): LiveData<KalamSplitManager?> {
-        return MutableLiveData(null)
-    }
+    override fun showKalamShareIndicatorDialog(): LiveData<Boolean> = MutableLiveData(false)
+    override fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) = Unit
 
-    override fun getShowCircularProgressDialog() = MutableLiveData(false)
+    override fun markAsFavorite(kalam: Kalam) = Unit
+    override fun removeFavorite(kalam: Kalam) = Unit
 
-    override fun popupMenuItems(kalam: Kalam, trackType: String): List<DataMenuItem> {
-        return listOf()
-    }
+    override fun delete(kalamDeleteItem: KalamDeleteItem) = Unit
+    override fun showKalamConfirmDeleteDialog(): LiveData<KalamDeleteItem?> = MutableLiveData(null)
+    override fun showKalamConfirmDeleteDialog(kalamDeleteItem: KalamDeleteItem?) = Unit
+
+    override fun addToPlaylist(kalam: Kalam, playlist: Playlist) = Unit
+    override fun showPlaylistDialog(): LiveData<Pair<Kalam, List<Playlist>>?> =
+        MutableLiveData(null)
+
+    override fun showPlaylistDialog(kalam: Kalam) = Unit
+    override fun dismissPlaylistDialog() = Unit
+
+    override fun getKalamDownloadState(): LiveData<KalamDownloadState> =
+        MutableLiveData(KalamDownloadState.Idle)
+
+    override fun startDownload(kalam: Kalam) = Unit
+    override fun dismissDownload() = Unit
+
+    override fun showKalamSplitDialog(kalam: Kalam) = Unit
+    override fun showKalamSplitDialog(): LiveData<SplitKalamInfo?> = MutableLiveData(null)
+    override fun startSplitting() = Unit
+    override fun playSplitKalamPreview() = Unit
+    override fun setSplitStart(start: Int) = Unit
+    override fun setSplitEnd(end: Int) = Unit
+    override fun setSplitStatus(status: SplitStatus) = Unit
+    override fun updateSplitSeekbarValue(value: Float) = Unit
+    override fun saveSplitKalam(sourceKalam: Kalam, kalamTitle: String) = Unit
+    override fun dismissKalamSplitDialog() = Unit
 }
 
 @ExcludeFromJacocoGeneratedReport
 fun fakeKalam() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
 
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 // PLAYLIST DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
 fun fakePlaylistDataProvider() = object : PlaylistDataProvider {
 
-    override fun getPopupMenuItems(): List<DataMenuItem> {
-        return listOf()
-    }
-
-    override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
-        return MutableLiveData(null)
-    }
-
-    override fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?> {
-        return MutableLiveData(null)
-    }
-
+    override fun getPopupMenuItems(): List<DataMenuItem> = listOf()
+    override fun showAddUpdatePlaylistDialog(): LiveData<Playlist?> = MutableLiveData(null)
+    override fun showConfirmDeletePlaylistDialog(): LiveData<Playlist?> = MutableLiveData(null)
     override fun getAll(): LiveData<List<Playlist>> = MutableLiveData(
         listOf(
             Playlist(1, "Karachi"), Playlist(2, "Lahore")
@@ -128,56 +131,37 @@ fun fakePlaylistDataProvider() = object : PlaylistDataProvider {
     )
 
     override fun get(id: Int) = MutableLiveData(Playlist(1, "Karachi"))
+    override fun add(playlist: Playlist) = Unit
+    override fun showAddUpdatePlaylistDialog(playlist: Playlist?) = Unit
+    override fun showConfirmDeletePlaylistDialog(playlist: Playlist?) = Unit
+    override fun update(playlist: Playlist) = Unit
+    override fun delete(playlist: Playlist) = Unit
 }
 
 @ExcludeFromJacocoGeneratedReport
 fun fakePlaylist() = Playlist(1, "Karachi")
 
-// ----------------------------------------- //
-// HOME DATA PROVIDER
-// ----------------------------------------- //
-
-@ExcludeFromJacocoGeneratedReport
-fun fakeHomeDataProvider() = object : HomeDataProvider {
-
-    override fun getKalam(id: Int): LiveData<Kalam?> {
-        return MutableLiveData(null)
-    }
-
-    override fun countAll(): LiveData<Int> {
-        return MutableLiveData(150)
-    }
-
-    override fun countFavorites(): LiveData<Int> {
-        return MutableLiveData(15)
-    }
-
-    override fun countDownloads(): LiveData<Int> {
-        return MutableLiveData(35)
-    }
-
-    override fun countPlaylist(): LiveData<Int> {
-        return MutableLiveData(5)
-    }
-}
-
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 // GLOBAL DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakeGlobalDataProvider() = object : GlobalDataProvider {
+fun fakeMainDataProvider() = object : MainDataProvider {
 
-    override fun getShowUpdateButton() = MutableLiveData(true)
-
-    override fun popupMenuItems(): List<DataMenuItem> {
-        return listOf()
-    }
+    override fun popupMenuItems(): List<DataMenuItem> = listOf()
+    override fun showUpdateButton(): LiveData<Boolean> = MutableLiveData(false)
+    override fun handleUpdate() = Unit
+    override fun openFacebookGroup(context: Context, groupUrl: String) = Unit
+    override fun shareApp(activity: ComponentActivity) = Unit
+    override fun checkUpdate(activity: ComponentActivity) = Unit
+    override fun showUpdateButton(value: Boolean) = Unit
+    override fun unregisterListener(activity: ComponentActivity) = Unit
+    override fun getHijriDate(): LiveData<HijriDate?> = MutableLiveData(null)
 }
 
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 // HELP DATA PROVIDER
-// ----------------------------------------- //
+// ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
 fun fakeHelpDataProvider() = object : HelpDataProvider {

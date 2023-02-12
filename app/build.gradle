@@ -37,7 +37,6 @@ android {
     buildTypes {
         debug {
             testCoverageEnabled true
-            applicationIdSuffix ".debug"
 
             buildConfigField "Boolean", "ENABLE_CRASHLYTICS", "${getBoolProperty("debug.crashlytics.enable", false)}"
         }

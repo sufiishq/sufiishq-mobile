@@ -1,40 +1,39 @@
 package pk.sufiishq.app.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.core.event.events.Event
-import pk.sufiishq.app.core.event.events.PlaylistEvents
-import pk.sufiishq.app.core.event.exception.UnhandledEventException
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
+import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
+import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
-    app: Application,
     private val playlistRepository: PlaylistRepository,
-    private val kalamRepository: KalamRepository
-) : BaseViewModel(app), PlaylistDataProvider {
+    private val kalamRepository: KalamRepository,
+    @PlaylistItemPopupMenuItems private val popupMenu: PopupMenu
+) : ViewModel(), PlaylistDataProvider {
 
     private val showAddUpdatePlaylistDialog = MutableLiveData<Playlist?>(null)
     private val showConfirmPlaylistDeleteDialog = MutableLiveData<Playlist?>(null)
 
     override fun getPopupMenuItems(): List<DataMenuItem> {
-        return playlistRepository.popupMenuItems(getApplication())
+        return popupMenu.getPopupMenuItems()
     }
 
-    override fun getShowPlaylistAddUpdateDialog(): LiveData<Playlist?> {
+    override fun showAddUpdatePlaylistDialog(): LiveData<Playlist?> {
         return showAddUpdatePlaylistDialog
     }
 
-    override fun getShowConfirmPlaylistDeleteDialog(): LiveData<Playlist?> {
+    override fun showConfirmDeletePlaylistDialog(): LiveData<Playlist?> {
         return showConfirmPlaylistDeleteDialog
     }
 
@@ -42,27 +41,27 @@ class PlaylistViewModel @Inject constructor(
 
     override fun get(id: Int): LiveData<Playlist> = playlistRepository.load(id)
 
-    private fun add(playlist: Playlist) {
+    override fun add(playlist: Playlist) {
         viewModelScope.launch {
             playlistRepository.add(playlist)
         }
     }
 
-    private fun setShowPlaylistAddUpdateDialog(playlist: Playlist?) {
+    override fun showAddUpdatePlaylistDialog(playlist: Playlist?) {
         showAddUpdatePlaylistDialog.postValue(playlist)
     }
 
-    private fun setShowPlaylistConfirmDeleteDialog(playlist: Playlist?) {
+    override fun showConfirmDeletePlaylistDialog(playlist: Playlist?) {
         showConfirmPlaylistDeleteDialog.postValue(playlist)
     }
 
-    private fun update(playlist: Playlist) {
+    override fun update(playlist: Playlist) {
         viewModelScope.launch {
             playlistRepository.update(playlist)
         }
     }
 
-    private fun delete(playlist: Playlist) {
+    override fun delete(playlist: Playlist) {
 
         // get all kalam where playlist matched with current playlist
         kalamRepository.loadAllPlaylistKalam(playlist.id).observeForever { kalams ->
@@ -78,20 +77,4 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    /*=======================================*/
-    // HANDLE PLAYLIST EVENTS
-    /*=======================================*/
-
-    override fun onEvent(event: Event) {
-        when (event) {
-            is PlaylistEvents.ShowAddUpdatePlaylistDialog -> setShowPlaylistAddUpdateDialog(event.playlist)
-            is PlaylistEvents.ShowConfirmDeletePlaylistDialog -> setShowPlaylistConfirmDeleteDialog(
-                event.playlist
-            )
-            is PlaylistEvents.Add -> add(event.playlist)
-            is PlaylistEvents.Update -> update(event.playlist)
-            is PlaylistEvents.Delete -> delete(event.playlist)
-            else -> throw UnhandledEventException(event, this)
-        }
-    }
 }

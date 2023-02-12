@@ -5,8 +5,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
-import io.reactivex.Observable
 import javax.inject.Inject
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
@@ -19,16 +19,17 @@ import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ONLINE_SRC
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.PLAYLIST_ID
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.RECORDED_DATE
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.TITLE
-import pk.sufiishq.app.helpers.PopupMenuItemProvider
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
-import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 
 class KalamRepository @Inject constructor(
-    private val kalamDao: KalamDao
+    private val kalamDao: KalamDao,
+    @IoDispatcher private val dispatcher: CoroutineContext
 ) {
 
     private var trackListType: TrackListType = TrackListType.All()
@@ -182,13 +183,9 @@ class KalamRepository @Inject constructor(
         kalamDao.delete(kalam)
     }
 
-    fun popupMenuItems(appContext: Context): List<DataMenuItem> {
-        return PopupMenuItemProvider.getTrackListPopupMenuItems(appContext)
-    }
+    suspend fun loadAllFromAssets(context: Context): List<Kalam> {
 
-    fun loadAllFromAssets(context: Context): Observable<List<Kalam>> {
-
-        return Observable.create { emitter ->
+        return withContext(dispatcher) {
             val list = mutableListOf<Kalam>()
             val fileContent =
                 context.assets.open("kalam.json").bufferedReader().use { it.readText() }
@@ -197,7 +194,7 @@ class KalamRepository @Inject constructor(
                 val jsonObject = jsonArray.getJSONObject(it)
                 list.add(parseKalam(jsonObject))
             }
-            emitter.onNext(list)
+            list
         }
     }
 

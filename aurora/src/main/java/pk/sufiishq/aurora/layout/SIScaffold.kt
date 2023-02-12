@@ -7,16 +7,15 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberScaffoldState
@@ -42,7 +41,9 @@ fun SIScaffold(
     onFloatingButtonAction: (() -> Unit)? = null,
     isVisibleFAB: Boolean = true,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
+    snackbarHost: @Composable (SnackbarHostState) -> Unit = { SnackbarHost(it) },
     drawer: @Composable (ColumnScope.() -> Unit)? = null,
+    drawerGesturesEnabled: Boolean = true,
     content: @Composable (fgColor: AuroraColor) -> Unit
 ) {
 
@@ -63,6 +64,7 @@ fun SIScaffold(
 
     Scaffold(
         scaffoldState = scaffoldState,
+        snackbarHost = snackbarHost,
         topBar = { topBar(mFgColor) },
         bottomBar = { bottomBar(mFgColor) },
         drawerShape = object : Shape {
@@ -76,6 +78,7 @@ fun SIScaffold(
             }
         },
         drawerContent = drawerContent,
+        drawerGesturesEnabled = drawerGesturesEnabled,
         floatingActionButton = {
             onFloatingButtonAction?.let {
 

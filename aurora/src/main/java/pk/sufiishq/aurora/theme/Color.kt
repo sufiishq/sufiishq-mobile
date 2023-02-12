@@ -66,6 +66,11 @@ enum class AuroraColor(val color: @Composable () -> Color) {
             Color(0xFFFFFFFF)
         }
     ),
+    Green(
+        {
+            Color(0xFF66A528)
+        }
+    ),
     Disabled(
         {
             Color(0xFF919191)

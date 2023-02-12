@@ -3,8 +3,8 @@ package pk.sufiishq.aurora.models
 import androidx.compose.ui.graphics.Color
 
 sealed class ColorPalette(val name: String, val color: Pair<Color, Color>) {
-    object Clover : ColorPalette("Clover", Pair(Color(0xFF8BEE00), Color(0xFF68B300)))
     object Ocean : ColorPalette("Ocean", Pair(Color(0xFF0F76C4), Color(0xFF005493)))
+    object Clover : ColorPalette("Clover", Pair(Color(0xFF8BEE00), Color(0xFF68B300)))
     object Blackberry : ColorPalette("Blackberry", Pair(Color(0xFF742D53), Color(0xFF43182f)))
     object Blueberry : ColorPalette("Blueberry", Pair(Color(0xFF5E58BD), Color(0xFF464196)))
     object Grape : ColorPalette("Grape", Pair(Color(0xFF944584), Color(0xFF6c3461)))
@@ -31,4 +31,8 @@ sealed class ColorPalette(val name: String, val color: Pair<Color, Color>) {
     object Royal : ColorPalette("Royal", Pair(Color(0xFF8B67E2), Color(0xFF6040AD)))
     object Olive : ColorPalette("Olive", Pair(Color(0xFF808000), Color(0xFF5F5F06)))
     object Forest : ColorPalette("Forest", Pair(Color(0xFF299E27), Color(0xFF187216)))
+    object Dolphin : ColorPalette("Dolphin", Pair(Color(0xFF524E5C), Color(0xFF35323C)))
+    object Granite : ColorPalette("Granite", Pair(Color(0xFF2F3030), Color(0xFF232424)))
+    object Pigeons : ColorPalette("Pigeons", Pair(Color(0xFF444444), Color(0xFF313131)))
+    object Slate : ColorPalette("Slate", Pair(Color(0xFF222222), Color(0xFF131313)))
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
-import pk.sufiishq.app.ui.screen.MainView
+import pk.sufiishq.app.ui.main.MainHostView
 import pk.sufiishq.aurora.theme.Aurora
 
 @AndroidEntryPoint
@@ -17,7 +17,7 @@ class MainActivity : BaseActivity() {
 
         setContent {
             Aurora {
-                MainView()
+                MainHostView()
             }
         }
     }

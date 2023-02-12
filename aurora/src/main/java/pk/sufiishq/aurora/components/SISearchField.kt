@@ -56,6 +56,6 @@ fun SITextField(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .background(AuroraColor.PrimaryVariant.color())
+            .background(AuroraColor.Background.color())
     )
 }
