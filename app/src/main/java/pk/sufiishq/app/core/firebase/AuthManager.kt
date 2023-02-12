@@ -23,6 +23,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.repository.AdminSettingsRepository
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.utils.getString
+import pk.sufiishq.app.utils.tryAsyncWithDefault
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -129,15 +130,6 @@ class AuthManager @Inject constructor(
             adminSettingsRepository.getValidDeveloperEmails()
                 .split(",")
                 .any { it.trim() == firebaseUser?.email }
-        }
-    }
-
-    private suspend fun <T> tryAsyncWithDefault(default: T, block: suspend () -> T): T {
-        return try {
-            block()
-        } catch (ex: Exception) {
-            Timber.e(ex)
-            default
         }
     }
 

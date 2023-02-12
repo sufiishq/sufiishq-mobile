@@ -67,3 +67,9 @@ fun Context.launchGoogleMap(latLng: Pair<Double, Double>) {
         startActivity(this)
     }
 }
+
+fun Context.launchCallIntent(number: String) {
+    Intent(Intent.ACTION_DIAL)
+        .setData(Uri.parse("tel:${number}"))
+        .apply(this::startActivity)
+}

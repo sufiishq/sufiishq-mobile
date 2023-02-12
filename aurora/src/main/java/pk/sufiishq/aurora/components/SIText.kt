@@ -1,14 +1,18 @@
 package pk.sufiishq.aurora.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -33,6 +37,9 @@ fun SIText(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
     @DrawableRes leadingIcon: Int? = null,
+    textStyle: TextStyle = LocalTextStyle.current.copy(
+        textDirection = TextDirection.Content,
+    ),
     onClick: (() -> Unit)? = null
 ) {
 
@@ -57,7 +64,8 @@ fun SIText(
                 fontSize = textSize.value.sp,
                 textAlign = textAlign,
                 maxLines = maxLines,
-                modifier = modifier
+                modifier = modifier,
+                style = textStyle
             )
         }
     } ?: run {
@@ -70,7 +78,8 @@ fun SIText(
             textAlign = textAlign,
             maxLines = maxLines,
             modifier = modifier,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            style = textStyle
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import java.util.*
 import pk.sufiishq.app.core.firebase.AuthState
 import pk.sufiishq.app.core.firebase.HighlightStatus
+import pk.sufiishq.app.models.Maintenance
 
 interface AdminSettingsDataProvider {
 
@@ -52,8 +53,7 @@ interface AdminSettingsDataProvider {
     // signatures for update and read maintenance
     // -------------------------------------------------------------------- //
 
-    fun maintenanceStatus(): LiveData<Boolean>
     fun setMaintenanceStatus(status: Boolean)
-    fun maintenanceStrictMode(): LiveData<Boolean>
     fun setMaintenanceStrict(mode: Boolean)
+    fun getMaintenance(): LiveData<Maintenance?>
 }

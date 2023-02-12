@@ -10,6 +10,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.repository.AdminSettingsRepository
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.models.Highlight
+import pk.sufiishq.app.utils.contactsAsListPair
 import pk.sufiishq.app.utils.getString
 import kotlin.coroutines.CoroutineContext
 
@@ -36,7 +37,7 @@ class HighlightManager @Inject constructor(
         MutableLiveData<MutableList<Pair<String, String>?>>(mutableListOf(null, null, null))
 
     init {
-        checkHighlightAvailable()
+        //checkHighlightAvailable()
     }
 
     private fun checkHighlightAvailable() {
@@ -46,9 +47,9 @@ class HighlightManager @Inject constructor(
                 .takeIf { it is FirebaseDatabaseStatus.ReadHighlight }
                 ?.let {
                     it as FirebaseDatabaseStatus.ReadHighlight
-                    it.highlight }
+                    it.highlight
+                }
                 ?.let(highlightAvailable::postValue)
-
         }
     }
 
@@ -149,16 +150,9 @@ class HighlightManager @Inject constructor(
         setDetail(highlight.detail)
 
         val defaultContacts = mutableListOf<Pair<String, String>?>(null, null, null)
-        highlight.contacts
-            ?.map { it.value.toList().map { data -> data.second } }
-            ?.flatten()
-            ?.let {
-                val size = it.size
-                val cut = (size + 1) / 2
-                val first = it.subList(0, cut)
-                val second = it.subList(cut, size)
-                first.zip(second)
-            }?.forEachIndexed { index, pair ->
+        highlight
+            .contactsAsListPair()
+            ?.forEachIndexed { index, pair ->
                 defaultContacts[index] = pair
             }
         contacts.value = defaultContacts

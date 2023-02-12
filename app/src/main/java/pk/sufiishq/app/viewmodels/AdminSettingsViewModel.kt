@@ -22,6 +22,7 @@ import pk.sufiishq.app.core.firebase.HighlightManager
 import pk.sufiishq.app.core.firebase.HighlightStatus
 import pk.sufiishq.app.core.firebase.MaintenanceManager
 import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.isNetworkAvailable
 
@@ -239,20 +240,12 @@ class AdminSettingsViewModel @Inject constructor(
     // maintenance control functionality
     // -------------------------------------------------------------------- //
 
-    override fun maintenanceStatus(): LiveData<Boolean> {
-        return maintenanceManager.getActiveStatus()
-    }
-
     override fun setMaintenanceStatus(status: Boolean) {
         callIfOnline {
             launchAsyncWithOnline {
                 maintenanceManager.setActiveStatus(status).message.apply(::showSnackbar)
             }
         }
-    }
-
-    override fun maintenanceStrictMode(): LiveData<Boolean> {
-        return maintenanceManager.getStrictMode()
     }
 
     override fun setMaintenanceStrict(mode: Boolean) {
@@ -263,4 +256,7 @@ class AdminSettingsViewModel @Inject constructor(
         }
     }
 
+    override fun getMaintenance(): LiveData<Maintenance?> {
+        return maintenanceManager.getMaintenance()
+    }
 }

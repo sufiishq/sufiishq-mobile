@@ -11,6 +11,7 @@ import pk.sufiishq.app.core.firebase.FirebaseDatabaseReference
 import pk.sufiishq.app.core.firebase.FirebaseDatabaseStatus
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.models.Highlight
+import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.utils.getString
 import kotlin.coroutines.CoroutineContext
 
@@ -74,7 +75,10 @@ class AdminSettingsRepository @Inject constructor(
                 data.child(FirebaseDatabaseReference.ACTIVE).getValue(Boolean::class.java)!!
             val strictMode =
                 data.child(FirebaseDatabaseReference.STRICT).getValue(Boolean::class.java)!!
-            FirebaseDatabaseStatus.ReadMaintenance(activeStatus, strictMode)
+            FirebaseDatabaseStatus.ReadMaintenance(Maintenance(
+                activeStatus = activeStatus,
+                strictMode = strictMode
+            ))
         }
     }
 

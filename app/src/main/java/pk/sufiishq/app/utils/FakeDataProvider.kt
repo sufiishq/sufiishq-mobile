@@ -22,6 +22,7 @@ import pk.sufiishq.app.data.providers.PlayerDataProvider
 import pk.sufiishq.app.data.providers.PlaylistDataProvider
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.HelpContent
+import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.HijriDate
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
@@ -41,6 +42,7 @@ fun fakeDashboardDataProvider() = object : DashboardDataProvider {
     override fun countFavorites(): LiveData<Int> = MutableLiveData(15)
     override fun countDownloads(): LiveData<Int> = MutableLiveData(35)
     override fun countPlaylist(): LiveData<Int> = MutableLiveData(5)
+    override fun getHighlightAvailable(): LiveData<Highlight?> = MutableLiveData(null)
 }
 
 // ---------------------------------------------------------------------------------- //

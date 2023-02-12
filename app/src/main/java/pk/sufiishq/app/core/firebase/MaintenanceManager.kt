@@ -5,17 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.data.repository.AdminSettingsRepository
+import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.IoDispatcher
+import pk.sufiishq.app.models.Maintenance
 import kotlin.coroutines.CoroutineContext
 
 class MaintenanceManager @Inject constructor(
     private val adminSettingsRepository: AdminSettingsRepository,
+    @AndroidMediaPlayer private val player: AudioPlayer,
     @IoDispatcher private val dispatcher: CoroutineContext
 ) {
 
-    private val activeStatus = MutableLiveData(false)
-    private val strictMode = MutableLiveData(false)
+    private val maintenance = MutableLiveData<Maintenance?>()
 
     init {
         fetch()
@@ -26,39 +29,44 @@ class MaintenanceManager @Inject constructor(
             adminSettingsRepository
                 .readMaintenance()
                 .takeIf { it is FirebaseDatabaseStatus.ReadMaintenance }
-                ?.let {
-                    it as FirebaseDatabaseStatus.ReadMaintenance
-                    activeStatus.postValue(it.activeStatus)
-                    strictMode.postValue(it.strictMode)
+                ?.let { fbStatus ->
+                    fbStatus as FirebaseDatabaseStatus.ReadMaintenance
+                    maintenance.postValue(
+                        fbStatus.maintenance.also {
+                            if (it.activeStatus && it.strictMode && player.isPlaying()) {
+                                player.doPlayOrPause()
+                            }
+                        }
+                    )
                 }
         }
     }
 
     suspend fun setActiveStatus(status: Boolean): FirebaseDatabaseStatus {
         val firebaseDatabaseStatus = adminSettingsRepository.updateMaintenance("active", status)
-        activeStatus.postValue(
-            if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !status else status
+        maintenance.postValue(
+            maintenance.value?.copy(
+                activeStatus = if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !status else status
+            )
         )
 
         return firebaseDatabaseStatus
-    }
-
-    fun getActiveStatus(): LiveData<Boolean> {
-        return activeStatus
     }
 
     suspend fun setStrictMode(mode: Boolean): FirebaseDatabaseStatus {
 
         val firebaseDatabaseStatus = adminSettingsRepository.updateMaintenance("strict", mode)
-        strictMode.postValue(
-            if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !mode else mode
+        maintenance.postValue(
+            maintenance.value?.copy(
+                strictMode = if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !mode else mode
+            )
         )
 
         return firebaseDatabaseStatus
     }
 
-    fun getStrictMode(): LiveData<Boolean> {
-        return strictMode
+    fun getMaintenance(): LiveData<Maintenance?> {
+        return maintenance
     }
 
     private fun inCoroutine(block: suspend CoroutineScope.() -> Unit) {

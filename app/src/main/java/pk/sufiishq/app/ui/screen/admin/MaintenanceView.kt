@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
-import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -29,9 +28,9 @@ fun MaintenanceView(
 
     val active = rem(false)
     val strict = rem(false)
-    active.value = adminSettingsDataProvider.maintenanceStatus().observeAsState().optValue(false)
-    strict.value =
-        adminSettingsDataProvider.maintenanceStrictMode().observeAsState().optValue(false)
+    val maintenance = adminSettingsDataProvider.getMaintenance().observeAsState().value
+    active.value = maintenance?.activeStatus ?: false
+    strict.value = maintenance?.strictMode ?: false
 
     SIHeightSpace(value = 12)
     AdminHeader("Maintenance")

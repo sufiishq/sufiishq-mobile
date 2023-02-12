@@ -19,6 +19,7 @@ import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.data.providers.DashboardDataProvider
 import pk.sufiishq.app.data.providers.MainDataProvider
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.utils.fakeDashboardDataProvider
 import pk.sufiishq.app.utils.fakeMainDataProvider
 import pk.sufiishq.app.utils.optString
@@ -61,6 +62,14 @@ fun DashboardScreen(
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         scaffoldState = scaffoldState
     ) {
+
+        // highlight available dialog
+        val showHighlightDialog = rem<Highlight?>(null)
+
+        HighlightAvailableDialog(
+            showDialog = showHighlightDialog
+        )
+
         SIBox {
 
             UpdateAvailableDialog(
@@ -74,7 +83,7 @@ fun DashboardScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
 
-                val (logo, calligraphy, buttonBox, debugLabel) = createRefs()
+                val (logo, calligraphy, highlightAvailableButton, buttonBox, debugLabel) = createRefs()
 
                 MainAnimatedLogo(
                     modifier = Modifier.constrainAs(logo) {
@@ -94,6 +103,15 @@ fun DashboardScreen(
                         bottom.linkTo(buttonBox.top)
                     },
                     resId = R.drawable.caligraphi
+                )
+
+                HighlightAvailableButton(
+                    modifier = Modifier.constrainAs(highlightAvailableButton) {
+                        start.linkTo(parent.start, 12.dp)
+                        bottom.linkTo(buttonBox.top)
+                    },
+                    highlightDialogControl = showHighlightDialog,
+                    dashboardDataProvider = dashboardDataProvider
                 )
 
                 if (BuildConfig.DEBUG) {

@@ -12,8 +12,10 @@ import java.util.*
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.aurora.models.DataMenuItem
+import timber.log.Timber
 
 fun getApp(): SufiIshqApp = SufiIshqApp.getInstance()
 
@@ -90,3 +92,43 @@ fun quickToast(@StringRes resId: Int, vararg args: Any?) {
 fun getString(@StringRes resId: Int, vararg args: Any?): String {
     return getApp().getString(resId).format(*args)
 }
+
+fun Highlight?.contactsAsListPair(): List<Pair<String, String>>? {
+    return this
+        ?.contacts
+        ?.map { it.value.toList().map { data -> data.second } }
+        ?.flatten()
+        ?.let {
+            val size = it.size
+            val cut = (size + 1) / 2
+            val first = it.subList(0, cut)
+            val second = it.subList(cut, size)
+            first.zip(second)
+        }
+}
+
+fun String.addCharAtIndex(char: Char, index: Int): String {
+    return tryWithDefault(this) {
+        StringBuilder(this).apply { insert(index, char) }.toString()
+    }
+}
+
+suspend fun <T> tryAsyncWithDefault(default: T, block: suspend () -> T): T {
+    return try {
+        block()
+    } catch (ex: Exception) {
+        Timber.e(ex)
+        default
+    }
+}
+
+fun <T> tryWithDefault(default: T, block: () -> T): T {
+    return try {
+        block()
+    } catch (ex: Exception) {
+        Timber.e(ex)
+        default
+    }
+}
+
+

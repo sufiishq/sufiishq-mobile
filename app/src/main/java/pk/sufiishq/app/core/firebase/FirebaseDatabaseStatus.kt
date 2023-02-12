@@ -2,6 +2,7 @@ package pk.sufiishq.app.core.firebase
 
 import pk.sufiishq.app.R
 import pk.sufiishq.app.models.Highlight
+import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.utils.getString
 
 sealed class FirebaseDatabaseStatus(val message: String?) {
@@ -9,7 +10,7 @@ sealed class FirebaseDatabaseStatus(val message: String?) {
         FirebaseDatabaseStatus(message)
 
     class ReadHighlight(val highlight: Highlight) : FirebaseDatabaseStatus(null)
-    class ReadMaintenance(val activeStatus: Boolean, val strictMode: Boolean) :
+    class ReadMaintenance(val maintenance: Maintenance) :
         FirebaseDatabaseStatus(null)
 
     class Delete(message: String = getString(R.string.msg_highlight_deleted)) :
