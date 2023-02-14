@@ -42,7 +42,6 @@ import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
 
-@PackagePrivate
 @Composable
 fun AppLockKeyboardWithPinView(
     modifier: Modifier = Modifier,

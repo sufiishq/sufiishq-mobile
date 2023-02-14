@@ -16,16 +16,19 @@ import pk.sufiishq.aurora.layout.SIColumn
 @PackagePrivate
 @Composable
 fun ChangePinPrompt(
-    appLockController: AppLockController
+    appLockController: AppLockController,
+    cameFromForgotPin: Boolean
 ) {
     SIBox(modifier = Modifier.fillMaxSize()) {
 
-        AppLockHeader(
-            modifier = Modifier.align(Alignment.TopCenter),
-            onButtonClick = {
-                appLockController.gotoSetting()
-            }
-        )
+        if (!cameFromForgotPin) {
+            AppLockHeader(
+                modifier = Modifier.align(Alignment.TopCenter),
+                onButtonClick = {
+                    appLockController.gotoSetting()
+                }
+            )
+        }
 
         SIColumn(
             modifier = Modifier
@@ -37,7 +40,7 @@ fun ChangePinPrompt(
             SIHeightSpace(value = 24)
             AppLockKeyboardWithPinView(
                 onPinGenerated = { generatedPin ->
-                    appLockController.changePinGenerated(generatedPin)
+                    appLockController.changePinGenerated(generatedPin, cameFromForgotPin)
                 }
             )
         }

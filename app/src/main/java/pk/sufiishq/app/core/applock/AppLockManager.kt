@@ -4,10 +4,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import java.util.Calendar
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import pk.sufiishq.app.models.AppLockStatus
 import pk.sufiishq.app.models.AutoLockDuration
 import pk.sufiishq.app.models.SecurityQuestion
 import pk.sufiishq.app.utils.getFromStorage
@@ -21,11 +20,13 @@ class AppLockManager @Inject constructor(
 
     private val activeState = MutableLiveData<AppLockState>(AppLockState.Setup)
     private val autoLockDuration = MutableLiveData(instantAutoLockDuration())
+    private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
     init { setUpState() }
 
     private fun setUpState() {
         if (userHasAlreadyLockSetUp()) {
+            checkAppLockStatus()
             postAutoLockDuration(fetchAutoLockDuration())
             setState(AppLockState.AuthenticateWithPinOrBiometric(getSavedPin()))
         } else {
@@ -56,7 +57,7 @@ class AppLockManager @Inject constructor(
         removePin()
         setBiometric(false)
         BACKUP_SECURITY_QUESTION.putInStorage("")
-        BACKUP_SECURITY_ANSWER.putInStorage("")
+        //BACKUP_SECURITY_ANSWER.putInStorage("")
         AUTO_LOCK_DURATION.putInStorage("")
         setState(AppLockState.Setup)
     }
@@ -136,6 +137,64 @@ class AppLockManager @Inject constructor(
         return biometricManager.userHasBiometricCapability() && HAS_BIOMETRIC_ENABLE.getFromStorage(false)
     }
 
+    fun forgotPin() {
+        setState(AppLockState.ForgotPin(fetchSecurityQuestion()))
+    }
+
+    fun setExitAppTime() {
+        EXIT_APP_TIME.putInStorage(Calendar.getInstance().timeInMillis)
+    }
+
+    fun getExitAppTime(): Long {
+        return EXIT_APP_TIME.getFromStorage(0L)
+    }
+
+    fun getAppLockStatus(): LiveData<AppLockStatus?> {
+        return appLockStatus
+    }
+
+    fun promptBiometricForVerification(fragmentActivity: FragmentActivity) {
+        biometricManager.prompt(fragmentActivity) {
+            if (it is BiometricStatus.Success) {
+                setAppLockStatus(null)
+            }
+        }
+    }
+
+    private fun checkAppLockStatus() {
+        val autoLockDuration = fetchAutoLockDuration()
+        val exitAppTime = getExitAppTime()
+        val currentTime = Calendar.getInstance().timeInMillis
+
+        if (autoLockDuration.code == 0) {
+            setAppLockStatus(
+                AppLockStatus(
+                    isBiometricEnable = isBiometricEnabled(),
+                    savedPin = getSavedPin(),
+                    securityQuestion = fetchSecurityQuestion()
+                )
+            )
+        } else if (exitAppTime == 0L) {
+            setAppLockStatus(null)
+        } else {
+            if ((autoLockDuration.durationInMillis + exitAppTime) <= currentTime) {
+                setAppLockStatus(
+                    AppLockStatus(
+                        isBiometricEnable = isBiometricEnabled(),
+                        savedPin = getSavedPin(),
+                        securityQuestion = fetchSecurityQuestion()
+                    )
+                )
+            } else {
+                setAppLockStatus(null)
+            }
+        }
+    }
+
+    fun setAppLockStatus(status: AppLockStatus?) {
+        appLockStatus.value = status
+    }
+
     private fun setBiometric(biometricEnable: Boolean) {
         HAS_BIOMETRIC_ENABLE.putInStorage(biometricEnable)
     }
@@ -163,8 +222,10 @@ class AppLockManager @Inject constructor(
     }
 
     private fun setSecurityQuestion(securityQuestion: SecurityQuestion) {
-        BACKUP_SECURITY_QUESTION.putInStorage(securityQuestion.question)
-        BACKUP_SECURITY_ANSWER.putInStorage(securityQuestion.answer)
+        BACKUP_SECURITY_QUESTION.putInStorage(
+            gson.toJson(securityQuestion)
+        )
+        //BACKUP_SECURITY_ANSWER.putInStorage(securityQuestion.answer)
     }
 
     private fun setAutoLockDuration(autoLockDuration: AutoLockDuration) {
@@ -176,11 +237,19 @@ class AppLockManager @Inject constructor(
         return SAVED_PIN.getFromStorage("").trim().isNotEmpty()
     }
 
+    private fun fetchSecurityQuestion(): SecurityQuestion {
+        return BACKUP_SECURITY_QUESTION
+            .getFromStorage("")
+            .let {
+                gson.fromJson(it, SecurityQuestion::class.java)
+            }
+    }
+
     companion object {
         private const val SAVED_PIN = "si_saved_pin"
         private const val HAS_BIOMETRIC_ENABLE = "si_has_biometric_enable"
         private const val BACKUP_SECURITY_QUESTION = "si_backup_security_question"
-        private const val BACKUP_SECURITY_ANSWER = "si_backup_security_answer"
         private const val AUTO_LOCK_DURATION = "si_auto_lock_duration"
+        private const val EXIT_APP_TIME = "si_exit_app_time"
     }
 }

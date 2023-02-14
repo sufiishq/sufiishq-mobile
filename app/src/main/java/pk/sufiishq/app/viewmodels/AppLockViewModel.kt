@@ -74,8 +74,8 @@ class AppLockViewModel @Inject constructor(
         appLockManager.registerNewPin(securityQuestion, generatedPin, biometricVerified)
     }
 
-    override fun userWantChangePin() {
-        appLockManager.setState(AppLockState.ChangePinPrompt)
+    override fun userWantChangePin(cameFromForgotPin: Boolean) {
+        appLockManager.setState(AppLockState.ChangePinPrompt(cameFromForgotPin = cameFromForgotPin))
     }
 
     override fun toggleBiometric(fragmentActivity: FragmentActivity) {
@@ -102,8 +102,8 @@ class AppLockViewModel @Inject constructor(
         appLockManager.removeAppLock()
     }
 
-    override fun changePinGenerated(pin: String) {
-        appLockManager.setState(AppLockState.ConfirmChangePinPrompt(pin))
+    override fun changePinGenerated(pin: String, cameFromForgotPin: Boolean) {
+        appLockManager.setState(AppLockState.ConfirmChangePinPrompt(previousPin = pin, cameFromForgotPin = cameFromForgotPin))
     }
 
     override fun changePinConfirmed(pin: String) {
@@ -111,7 +111,7 @@ class AppLockViewModel @Inject constructor(
     }
 
     override fun forgotPin() {
-        appLockManager.setState(AppLockState.ForgotPin)
+        appLockManager.forgotPin()
     }
 
     override fun promptBiometric(fragmentActivity: FragmentActivity) {

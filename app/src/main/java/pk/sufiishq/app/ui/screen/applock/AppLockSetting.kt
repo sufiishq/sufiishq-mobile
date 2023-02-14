@@ -71,7 +71,7 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockServiceCardWithToggle(
             infoDrawableId = R.drawable.toggle_fingerprint,
-            title = "Toggle Fingerprint",
+            title = "On/Off Fingerprint",
             detail = "You can enable or disable the fingerprint option at any time from here.",
             isCheck = biometricEnable,
             onCheckedChanged = {

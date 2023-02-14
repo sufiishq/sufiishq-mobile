@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import pk.sufiishq.app.core.app.AppManager
+import pk.sufiishq.app.core.applock.AppLockManager
 import pk.sufiishq.app.core.firebase.AuthManager
+import pk.sufiishq.app.core.firebase.MaintenanceManager
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
@@ -28,6 +30,12 @@ open class BaseActivity : FragmentActivity() {
 
     @Inject
     lateinit var authManager: AuthManager
+
+    @Inject
+    lateinit var appLockManager: AppLockManager
+
+    @Inject
+    lateinit var maintenanceManager: MaintenanceManager
 
     private val mainDataProvider: MainViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
@@ -65,16 +73,6 @@ open class BaseActivity : FragmentActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         handleDeeplink(intent)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Timber.d("mint-> onPause called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Timber.d("mint-> onStop called")
     }
 
     private fun handleDeeplink(intent: Intent?) {

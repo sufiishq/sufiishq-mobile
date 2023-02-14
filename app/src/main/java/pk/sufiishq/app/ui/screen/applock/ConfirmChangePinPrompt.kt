@@ -18,16 +18,19 @@ import pk.sufiishq.aurora.layout.SIColumn
 @Composable
 fun ConfirmChangePinPrompt(
     appLockController: AppLockController,
-    previousPin: String
+    previousPin: String,
+    cameFromForgotPin: Boolean
 ) {
     SIBox(modifier = Modifier.fillMaxSize()) {
 
-        AppLockHeader(
-            modifier = Modifier.align(Alignment.TopCenter),
-            onButtonClick = {
-                appLockController.gotoSetting()
-            }
-        )
+        if (!cameFromForgotPin) {
+            AppLockHeader(
+                modifier = Modifier.align(Alignment.TopCenter),
+                onButtonClick = {
+                    appLockController.gotoSetting()
+                }
+            )
+        }
 
         SIColumn(
             modifier = Modifier

@@ -1,5 +1,7 @@
 package pk.sufiishq.app.core.applock
 
+import pk.sufiishq.app.models.SecurityQuestion
+
 sealed interface AppLockState {
 
     // -------------------------------------------------------------------- //
@@ -16,10 +18,10 @@ sealed interface AppLockState {
     // -------------------------------------------------------------------- //
 
     class AuthenticateWithPinOrBiometric(val savedPin: String) : AppLockState
-    object ForgotPin : AppLockState
+    class ForgotPin(val securityQuestion: SecurityQuestion) : AppLockState
     class Setting(val message: String? = null, val biometricEnable: Boolean) : AppLockState
     object ChangeSecurityQuestion : AppLockState
-    object ChangePinPrompt : AppLockState
-    class ConfirmChangePinPrompt(val previousPin: String) : AppLockState
+    class ChangePinPrompt(val cameFromForgotPin: Boolean = false) : AppLockState
+    class ConfirmChangePinPrompt(val previousPin: String, val cameFromForgotPin: Boolean = false) : AppLockState
 
 }
