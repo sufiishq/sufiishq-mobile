@@ -13,6 +13,7 @@ import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.MainViewModel
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -64,6 +65,16 @@ open class BaseActivity : FragmentActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         handleDeeplink(intent)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d("mint-> onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.d("mint-> onStop called")
     }
 
     private fun handleDeeplink(intent: Intent?) {

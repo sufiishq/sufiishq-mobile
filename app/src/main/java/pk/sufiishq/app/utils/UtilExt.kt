@@ -12,6 +12,7 @@ import java.util.*
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.models.AutoLockDuration
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.aurora.models.DataMenuItem
@@ -131,4 +132,8 @@ fun <T> tryWithDefault(default: T, block: () -> T): T {
     }
 }
 
-
+fun instantAutoLockDuration() = AutoLockDuration(
+    code = 0,
+    label = "Instant",
+    durationInMillis = 0
+)

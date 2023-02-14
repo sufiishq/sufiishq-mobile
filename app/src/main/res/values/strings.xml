@@ -70,7 +70,7 @@
     <string name="label_number_hint">Number 03xx</string>
     <string name="label_title">Title</string>
     <string name="label_detail">Detail</string>
-    <string name="label_verify_identity">Verify You Identity</string>
+    <string name="label_verify_identity">Verify Your Identity</string>
 
     <string name="msg_update_available">New update available now</string>
     <string name="msg_no_playlist">No playlist found</string>

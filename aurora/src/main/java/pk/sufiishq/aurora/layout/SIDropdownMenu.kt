@@ -12,6 +12,7 @@ import pk.sufiishq.aurora.theme.validateBackground
 
 @Composable
 fun SIDropdownMenu(
+    modifier: Modifier = Modifier,
     isExpand: MutableState<Boolean>,
     onHide: (() -> Unit)? = null,
     bgColor: AuroraColor = AuroraColor.Background,
@@ -19,7 +20,7 @@ fun SIDropdownMenu(
 ) {
 
     DropdownMenu(
-        modifier = Modifier.background(bgColor.validateBackground().color()),
+        modifier = modifier.background(bgColor.validateBackground().color()),
         expanded = isExpand.value,
         onDismissRequest = {
             isExpand.value = false

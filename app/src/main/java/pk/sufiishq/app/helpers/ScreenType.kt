@@ -251,7 +251,9 @@ sealed interface ScreenType {
             navBackStackEntry: NavBackStackEntry,
             scaffoldState: ScaffoldState
         ) {
-            AppLockScreen()
+            AppLockScreen(
+                scaffoldState = scaffoldState
+            )
         }
     }
 

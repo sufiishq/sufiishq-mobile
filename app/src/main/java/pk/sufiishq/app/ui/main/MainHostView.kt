@@ -19,7 +19,7 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.core.firebase.MaintenanceManager
 import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.ui.components.ContentBackground
-import pk.sufiishq.app.ui.main.player.Player
+import pk.sufiishq.app.ui.main.player.PlayerView
 import pk.sufiishq.app.ui.main.topbar.AboutIconButton
 import pk.sufiishq.app.ui.main.topbar.AppBarOverflowMenu
 import pk.sufiishq.app.utils.optValue
@@ -113,7 +113,7 @@ fun MainHostView(
                 )
             },
             bottomBar = {
-                Player()
+                PlayerView()
             }
         ) {
             ContentBackground {

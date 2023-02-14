@@ -9,6 +9,7 @@ import pk.sufiishq.app.core.firebase.MaintenanceManager
 import pk.sufiishq.app.ui.main.MainHostView
 import pk.sufiishq.aurora.theme.Aurora
 
+
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +22,7 @@ import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
-fun Player(
+fun PlayerView(
     playerDataProvider: PlayerDataProvider = hiltViewModel<PlayerViewModel>(),
 ) {
 
@@ -58,7 +59,7 @@ fun Player(
 @Composable
 fun PlayerPreviewLight() {
     AuroraLight {
-        Player(
+        PlayerView(
             playerDataProvider = fakePlayerDataProvider()
         )
     }
@@ -69,7 +70,7 @@ fun PlayerPreviewLight() {
 @Composable
 fun PlayerPreviewDark() {
     AuroraDark {
-        Player(
+        PlayerView(
             playerDataProvider = fakePlayerDataProvider()
         )
     }

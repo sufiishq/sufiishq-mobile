@@ -21,7 +21,7 @@ class MaintenanceManager @Inject constructor(
     private val maintenance = MutableLiveData<Maintenance?>()
 
     init {
-        fetch()
+        //fetch()
     }
 
     private fun fetch() {

@@ -11,6 +11,7 @@ import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.Uri
 import android.widget.Toast
+import androidx.biometric.BiometricManager
 import java.io.IOException
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -72,4 +73,9 @@ fun Context.launchCallIntent(number: String) {
     Intent(Intent.ACTION_DIAL)
         .setData(Uri.parse("tel:${number}"))
         .apply(this::startActivity)
+}
+
+fun Context.hasBiometricCapability(): Boolean {
+    return BiometricManager.from(this)
+        .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
 }

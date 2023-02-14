@@ -5,6 +5,7 @@ import androidx.compose.material.SliderColors
 import androidx.compose.material.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.zIndex
 import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
@@ -23,7 +24,7 @@ fun SISlider(
     onValueChangeFinished: (() -> Unit)? = null
 ) {
     Slider(
-        modifier = modifier,
+        modifier = modifier.zIndex(100f),
         colors = colors,
         value = value,
         valueRange = valueRange,
