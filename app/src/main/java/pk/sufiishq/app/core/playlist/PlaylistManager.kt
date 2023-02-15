@@ -1,10 +1,8 @@
 package pk.sufiishq.app.core.playlist
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -23,14 +21,13 @@ import kotlin.coroutines.CoroutineContext
 class PlaylistManager @Inject constructor(
     private val playlistRepository: PlaylistRepository,
     private val kalamRepository: KalamRepository,
-    @ApplicationContext private val appContext: Context,
     @IoDispatcher private val dispatcher: CoroutineContext
 ) {
 
     private val showPlaylistDialog = MutableLiveData<Pair<Kalam, List<Playlist>>?>(null)
     private var job: Job? = null
 
-    fun getAllPlaylist(): LiveData<List<Playlist>> {
+    private fun getAllPlaylist(): LiveData<List<Playlist>> {
         return playlistRepository.loadAll()
     }
 

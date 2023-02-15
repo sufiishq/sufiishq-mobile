@@ -8,9 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.AppLockController
 import pk.sufiishq.app.models.SecurityQuestion
 import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.getString
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -37,34 +40,34 @@ fun ForgotPin(
         padding = 12,
     ) {
         SIText(
-            text = "Q. ${securityQuestion.question}",
+            text = optString(R.string.dynamic_ask_security_question, securityQuestion.question),
             textColor = it
         )
     }
     SIHeightSpace(value = 12)
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
-        label = "Answer",
+        label = optString(R.string.label_answer),
         value = answer.value,
         onValueChange = {
             answer.value = it
         },
         maxLength = 30,
-        emptyFieldError = "Answer is required"
+        emptyFieldError = optString(R.string.msg_ans_required)
     )
 
     SIBox(modifier = Modifier.fillMaxWidth()) {
         SIButton(
             modifier = Modifier.align(Alignment.CenterEnd),
-            text = "Done",
+            text = optString(R.string.label_done),
             onClick = {
                 coroutineScope.launch {
                     if (answer.value.trim().isEmpty()) {
-                        scaffoldState.snackbarHostState.showSnackbar("Answer should not be empty")
+                        scaffoldState.snackbarHostState.showSnackbar(getString(R.string.msg_ans_not_empty))
                     } else if (answer.value.trim().lowercase() != securityQuestion.answer.trim()
                             .lowercase()
                     ) {
-                        scaffoldState.snackbarHostState.showSnackbar("Answer not matched")
+                        scaffoldState.snackbarHostState.showSnackbar(getString(R.string.msg_ans_not_matched))
                     } else {
                         appLockController.userWantChangePin(cameFromForgotPin = true)
                     }

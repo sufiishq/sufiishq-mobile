@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.R
 import pk.sufiishq.app.models.AutoLockDuration
 import pk.sufiishq.app.utils.instantAutoLockDuration
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -126,7 +128,7 @@ fun AppLockDurationServiceCard(
         SIBox(modifier = Modifier.align(Alignment.BottomEnd)) {
             SIPopupMenu(
                 isExpanded = isExpanded,
-                data = data.value,
+                data = data.value.reversed(),
                 onClick = {
                     coroutineScope.launch {
                         selectedDuration.value = it as AutoLockDuration
@@ -173,15 +175,16 @@ fun AppLockServiceCard(
     }
 }
 
+@Composable
 private fun getAutoLockDurations(): List<AutoLockDuration> {
     return listOf(
-        instantAutoLockDuration(),
-        AutoLockDuration(1, "30 Seconds", 30000),
-        AutoLockDuration(2, "1 Minute", 60000),
-        AutoLockDuration(3, "3 Minutes", 180000),
-        AutoLockDuration(4, "5 Minutes", 300000),
-        AutoLockDuration(5, "10 Minutes", 600000),
-        AutoLockDuration(6, "30 Minutes", 1800000),
-        AutoLockDuration(7, "1 Hour", 3600000),
+        instantAutoLockDuration(optString(R.string.label_instant)),
+        AutoLockDuration(1, optString(R.string.label_30_seconds), 30000),
+        AutoLockDuration(2, optString(R.string.label_1_minute), 60000),
+        AutoLockDuration(3, optString(R.string.label_3_minutes), 180000),
+        AutoLockDuration(4, optString(R.string.label_5_minutes), 300000),
+        AutoLockDuration(5, optString(R.string.label_10_minutes), 600000),
+        AutoLockDuration(6, optString(R.string.label_30_minutes), 1800000),
+        AutoLockDuration(7, optString(R.string.label_1_hour), 3600000),
     )
 }

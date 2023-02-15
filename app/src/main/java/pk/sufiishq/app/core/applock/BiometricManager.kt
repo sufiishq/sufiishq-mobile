@@ -42,13 +42,12 @@ class BiometricManager @Inject constructor(
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
                 biometricVerified = false
-                Timber.d("Authentication failed for an unknown reason")
+                Timber.d(getString(R.string.msg_biometric_failed_unknown))
                 callback(BiometricStatus.Failed)
             }
 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                Timber.d("Authentication was successful")
                 biometricVerified = true
                 callback(BiometricStatus.Success)
             }
@@ -63,7 +62,11 @@ class BiometricManager @Inject constructor(
         return BiometricPrompt.PromptInfo.Builder()
             .setTitle(getString(R.string.app_name))
             .setConfirmationRequired(false)
-            .setNegativeButtonText(if (allowUsePin) "Use PIN" else "Cancel")
+            .setNegativeButtonText(
+                if (allowUsePin) getString(R.string.label_use_pin) else getString(
+                    R.string.label_cancel
+                )
+            )
             .build()
     }
 }

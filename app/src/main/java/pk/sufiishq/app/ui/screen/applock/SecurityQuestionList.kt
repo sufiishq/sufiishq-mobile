@@ -6,11 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
 import pk.sufiishq.app.models.SecurityQuestion
 import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.getString
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -24,14 +27,19 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 fun SecurityQuestionList(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState,
-    doneButtonLabel: String = "Done",
+    doneButtonLabel: String = optString(R.string.label_done),
     onDoneClick: (item: SecurityQuestion) -> Unit,
     headerButtonClick: () -> Unit
 ) {
 
     val coroutineScope = rememberCoroutineScope()
     val isExpanded = rem(false)
-    val data = rem(getList())
+    val data = rem(
+        stringArrayResource(R.array.array_security_questions)
+            .mapIndexed { index, item ->
+                SecurityQuestion(index, item)
+            }
+    )
     val selection = rem(data.value[0])
     val answer = rem("")
 
@@ -56,13 +64,13 @@ fun SecurityQuestionList(
         if (selection.value.index != 0) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = "Answer",
+                label = optString(R.string.label_answer),
                 value = answer.value,
                 onValueChange = {
                     answer.value = it
                 },
                 maxLength = 30,
-                emptyFieldError = "Answer is required"
+                emptyFieldError = optString(R.string.msg_ans_required)
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
@@ -72,7 +80,7 @@ fun SecurityQuestionList(
                     onClick = {
                         if (answer.value.trim().isEmpty()) {
                             coroutineScope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar("Answer should not be empty")
+                                scaffoldState.snackbarHostState.showSnackbar(getString(R.string.msg_ans_not_empty))
                             }
                         } else {
                             selection.value.answer = answer.value
@@ -93,21 +101,4 @@ fun SecurityQuestionList(
             }
         )
     }
-}
-
-private fun getList(): List<SecurityQuestion> {
-    return listOf(
-        SecurityQuestion(0, "Select Security Question"),
-        SecurityQuestion(1, "What is your mother's maiden name?"),
-        SecurityQuestion(2, "What is the name of your first pet?"),
-        SecurityQuestion(3, "What was your first car?"),
-        SecurityQuestion(4, "What elementary school did you attend?"),
-        SecurityQuestion(5, "What is the name of the town where you were born?"),
-        SecurityQuestion(6, "When you were young, what did you want to be when you grew up?"),
-        SecurityQuestion(7, "Who was your childhood hero?"),
-        SecurityQuestion(8, "Where was your best family vacation as a kid?"),
-        SecurityQuestion(9, "What was your favorite subject in high school?"),
-        SecurityQuestion(10, "What is your employee ID number?"),
-        SecurityQuestion(11, "What is your favorite color?"),
-    )
 }

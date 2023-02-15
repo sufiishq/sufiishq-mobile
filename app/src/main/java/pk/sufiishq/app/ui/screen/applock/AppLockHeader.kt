@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
@@ -21,8 +22,8 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun AppLockHeader(
     modifier: Modifier = Modifier,
-    title: String = "App Lock",
-    buttonTitle: String = "Cancel",
+    title: String = optString(R.string.title_app_lock),
+    buttonTitle: String = optString(R.string.label_cancel),
     onButtonClick: () -> Unit
 ) {
 

@@ -6,6 +6,13 @@
     <string name="title_favorites">Favorites</string>
     <string name="title_playlist">Playlist</string>
     <string name="title_highlight">Setup Highlights</string>
+    <string name="title_under_maintenance">Under Maintenance</string>
+    <string name="title_app_lock">App Lock</string>
+    <string name="title_change_pin">Change PIN</string>
+    <string name="title_toggle_biometric">On/Off Fingerprint</string>
+    <string name="title_update_security_question">Update Security Question</string>
+    <string name="title_remove_app_lock">Remove App Lock</string>
+    <string name="title_hint">Hint</string>
 
     <string name="menu_item_add_to_playlist">Add to Playlist</string>
     <string name="menu_item_mark_as_favorite">Mark as Favorite</string>
@@ -31,6 +38,14 @@
     <string name="menu_item_help">Help</string>
     <string name="menu_item_group_label">Settings</string>
 
+    <string name="label_instant">Instant</string>
+    <string name="label_30_seconds">30 Seconds</string>
+    <string name="label_1_minute">1 Minute</string>
+    <string name="label_3_minutes">3 Minutes</string>
+    <string name="label_5_minutes">5 Minutes</string>
+    <string name="label_10_minutes">10 Minutes</string>
+    <string name="label_30_minutes">30 Minutes</string>
+    <string name="label_1_hour">1 Hour</string>
     <string name="label_back">Back</string>
     <string name="label_no">No</string>
     <string name="label_ok">OK</string>
@@ -71,6 +86,21 @@
     <string name="label_title">Title</string>
     <string name="label_detail">Detail</string>
     <string name="label_verify_identity">Verify Your Identity</string>
+    <string name="label_use_pin">Use PIN</string>
+    <string name="label_answer">Answer</string>
+    <string name="label_reset">Reset</string>
+    <string name="label_set_pin">Set PIN</string>
+    <string name="label_re_enter_pin">Re-enter PIN</string>
+    <string name="label_forgot_pin">Forgot PIN</string>
+    <string name="label_enter_pin">Enter PIN</string>
+    <string name="label_exit">Exit</string>
+    <string name="label_change">Change</string>
+    <string name="label_setting">Setting</string>
+    <string name="label_setup">Setup</string>
+    <string name="label_highlight">Highlight</string>
+    <string name="label_maintenance">Maintenance</string>
+    <string name="label_on">On</string>
+    <string name="label_strict">Strict</string>
 
     <string name="msg_update_available">New update available now</string>
     <string name="msg_no_playlist">No playlist found</string>
@@ -85,6 +115,7 @@
     <string name="msg_authorization_failed">Authorization Failed</string>
     <string name="msg_title_required">Title cannot be empty</string>
     <string name="msg_detail_required">Detail cannot be empty</string>
+    <string name="msg_highlight_ongoing">Highlight is on-going</string>
     <string name="msg_highlight_expired">Highlight has been expired</string>
     <string name="msg_highlight_deleted">Highlight successfully deleted</string>
     <string name="msg_highlight_done">Highlight successfully activated</string>
@@ -92,7 +123,30 @@
     <string name="msg_confirm_delete_highlight">Are you sure you want to remove this highlight</string>
     <string name="msg_confirm_logout">Are you sure you want to logout</string>
     <string name="msg_maintenance_status_done">Maintenance status updated</string>
-    <string name="msg_identification_failed">Identification failed</string>
+    <string name="msg_identification_failed">Authorization failed</string>
+    <string name="msg_pin_successfully_generated">Pin successfully generated, you can also change the app lock time from settings</string>
+    <string name="msg_pin_successfully_changed">Pin successfully changed</string>
+    <string name="msg_biometric_successfully_disable">Fingerprint disable successfully</string>
+    <string name="msg_biometric_successfully_enable">Fingerprint enable successfully</string>
+    <string name="msg_biometric_not_enable">You need to enable the fingerprint option from the mobile setting first</string>
+    <string name="msg_security_question_updated">Security question successfully updated</string>
+    <string name="msg_biometric_failed_unknown">Authentication failed for an unknown reason</string>
+    <string name="msg_ans_required">Answer is required</string>
+    <string name="msg_ans_not_empty">Answer should not be empty</string>
+    <string name="msg_ans_not_matched">Answer not matched</string>
+    <string name="msg_app_lock_removed">App Lock has been removed</string>
+    <string name="msg_under_maintenance">Application is currently under maintenance.</string>
+    <string name="msg_under_maintenance_partial">Application is currently under maintenance some of the features may not work properly.</string>
+    <string name="msg_confirm_remove_app_lock">Are you sure you want to remove App Lock?</string>
+    <string name="msg_kalam_meta_info">Kalam Title: %s\nLocation: %s</string>
+
+    <string name="detail_setup_app_lock">Setup your SufiIshq application lock configuration by setting up the PIN and Fingerprint options with easy steps.</string>
+    <string name="detail_change_pin">Update your pin any time and also make sure to use a strong pin and avoid using a simple pin so that anyone can\'t guess.</string>
+    <string name="detail_toggle_biometric">You can enable or disable the fingerprint option at any time from here.</string>
+    <string name="detail_update_security_question">You can update your security question here at any time from here.</string>
+    <string name="detail_change_app_lock_time">You can change the auto app lock duration at any time.</string>
+    <string name="detail_remove_app_lock">You can remove your pin and fingerprint lock here at any time.</string>
+    <string name="detail_hint">The security question will help to regenerate your pin, in case you forgot your pin.</string>
 
     <string name="dynamic_no_kalam_found">No kalam found in %s</string>
     <string name="dynamic_download_kalam">Download Kalam %s</string>
@@ -111,10 +165,27 @@
     <string name="dynamic_confirm_delete_kalam">Are you sure you want to delete this %s kalam?</string>
     <string name="dynamic_confirm_delete_playlist">Are you sure you want to delete this %s playlist?</string>
     <string name="dynamic_confirm_delete">Are you sure you want to delete this %s?</string>
+    <string name="dynamic_auto_lock_duration_set">Auto lock duration set to %s</string>
+    <string name="dynamic_ask_security_question">Q. %s</string>
+    <string name="dynamic_exception_state_not_handled">%s is not a handled</string>
 
     <string name="loc_karachi">Karachi</string>
     <string name="loc_pakpattan">PakPattan</string>
 
-    <!--<string name="web_client_id">979832092862-vmda56uuuhfrrjhrlds4mroo1d829q67.apps.googleusercontent.com</string>-->
+    <string-array name="array_security_questions">
+        <item>Select Security Question</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What is the name of your first pet?</item>
+        <item>What was your first car?</item>
+        <item>What elementary school did you attend?</item>
+        <item>What is the name of the town where you were born?</item>
+        <item>When you were young, what did you want to be when you grew up?</item>
+        <item>Who was your childhood hero?</item>
+        <item>Where was your best family vacation as a kid?</item>
+        <item>What was your favorite subject in high school?</item>
+        <item>What is your employee ID number?</item>
+        <item>What is your favorite color</item>
+    </string-array>
+
 
 </resources>

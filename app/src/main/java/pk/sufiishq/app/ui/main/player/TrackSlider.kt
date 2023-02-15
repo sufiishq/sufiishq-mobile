@@ -12,7 +12,9 @@ import pk.sufiishq.aurora.components.SISlider
 fun TrackSlider(
     playerDataProvider: PlayerDataProvider,
     modifier: Modifier,
-    kalamInfo: KalamInfo?
+    kalamInfo: KalamInfo?,
+    onValueChange: (Float) -> Unit = {},
+    onValueChangeFinished: (() -> Unit)? = null
 ) {
     SISlider(
         modifier = modifier,
@@ -20,9 +22,11 @@ fun TrackSlider(
         valueRange = 0f..(kalamInfo?.totalDuration?.toFloat() ?: 0f),
         enabled = kalamInfo?.enableSeekbar ?: false,
         onValueChange = {
+            onValueChange(it)
             playerDataProvider.updateSeekbarValue(it)
         },
         onValueChangeFinished = {
+            onValueChangeFinished?.invoke()
             playerDataProvider.onSeekbarChanged(kalamInfo?.currentProgress ?: 0)
         }
     )

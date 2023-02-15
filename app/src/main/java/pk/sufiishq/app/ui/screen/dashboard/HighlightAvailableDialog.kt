@@ -13,10 +13,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
+import pk.sufiishq.app.R
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.utils.addCharAtIndex
 import pk.sufiishq.app.utils.contactsAsListPair
 import pk.sufiishq.app.utils.launchCallIntent
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -34,7 +36,7 @@ fun HighlightAvailableDialog(
 
         SIDialog(
             modifier = Modifier.heightIn(max = 600.dp),
-            title = "Highlight",
+            title = optString(R.string.label_highlight),
             onDismissRequest = {
                 showDialog.value = null
             }

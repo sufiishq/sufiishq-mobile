@@ -35,6 +35,8 @@ import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.screen.applock.AppLockKeyboardWithPinView
+import pk.sufiishq.app.utils.getString
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.utils.toastShort
@@ -155,46 +157,49 @@ private fun SecurityQuestionView(
                 padding = 12,
             ) {
                 SIText(
-                    text = "Q. ${appLockStatus.securityQuestion.question}",
+                    text = optString(
+                        R.string.dynamic_ask_security_question,
+                        appLockStatus.securityQuestion.question
+                    ),
                     textColor = it
                 )
             }
             SIHeightSpace(value = 12)
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = "Answer",
+                label = optString(R.string.label_answer),
                 value = answer.value,
                 onValueChange = {
                     answer.value = it
                 },
                 maxLength = 30,
-                emptyFieldError = "Answer is required"
+                emptyFieldError = optString(R.string.msg_ans_required)
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
                 SIRow(modifier = Modifier.align(Alignment.CenterEnd)) {
                     SIButton(
-                        text = "Cancel",
+                        text = optString(R.string.label_cancel),
                         onClick = {
                             showSecurityQuestion.value = false
                         }
                     )
                     SIWidthSpace(value = 8)
                     SIButton(
-                        text = "Reset",
+                        text = optString(R.string.label_reset),
                         onClick = {
                             coroutineScope.launch {
                                 if (answer.value.trim().isEmpty()) {
-                                    context.toastShort("Answer should not be empty")
+                                    context.toastShort(getString(R.string.msg_ans_not_empty))
                                 } else if (answer.value.trim()
                                         .lowercase() != appLockStatus.securityQuestion.answer.trim()
                                         .lowercase()
                                 ) {
-                                    context.toastShort("Answer not matched")
+                                    context.toastShort(getString(R.string.msg_ans_not_matched))
                                 } else {
                                     appLockManager.removeAppLock()
                                     appLockManager.setAppLockStatus(null)
-                                    context.toastShort("App Lock has been removed")
+                                    context.toastShort(getString(R.string.msg_app_lock_removed))
                                 }
                             }
                         }
@@ -285,7 +290,7 @@ private fun AppLockDetailView(
             ) {
 
                 SIText(
-                    text = "Forgot PIN",
+                    text = optString(R.string.label_forgot_pin),
                     textColor = it,
                     textSize = TextSize.Small,
                     textStyle = LocalTextStyle.current.copy(
@@ -309,7 +314,11 @@ private fun AppLockDetailView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                SIText(text = "Enter PIN", textColor = it, textSize = TextSize.Large)
+                SIText(
+                    text = optString(R.string.label_enter_pin),
+                    textColor = it,
+                    textSize = TextSize.Large
+                )
                 SIHeightSpace(value = 48)
                 AppLockKeyboardWithPinView(
                     onPinGenerated = {
@@ -347,12 +356,12 @@ private fun StrictMaintenanceView(
                     )
                     SIText(
                         textAlign = TextAlign.Center,
-                        text = "Application is currently under maintenance.",
+                        text = optString(R.string.msg_under_maintenance),
                         textColor = it
                     )
                     SIHeightSpace(value = 12)
                     SIButton(
-                        text = "Exit",
+                        text = optString(R.string.label_exit),
                         onClick = {
                             coroutineScope.launch {
                                 (context as Activity).finish()
@@ -372,8 +381,8 @@ private fun PartialMaintenanceDialog(
     val showDialog = rem(true)
     if (maintenance.activeStatus && !maintenance.strictMode && showDialog.value) {
         SIDialog(
-            title = "Under Maintenance",
-            onYesText = "OK",
+            title = optString(R.string.title_under_maintenance),
+            onYesText = optString(R.string.label_ok),
             onYesClick = {
                 showDialog.value = false
             },
@@ -382,7 +391,7 @@ private fun PartialMaintenanceDialog(
             }
         ) {
             SIText(
-                text = "Application is currently under maintenance some of the features may not work properly.",
+                text = optString(R.string.msg_under_maintenance_partial),
                 textColor = it
             )
         }

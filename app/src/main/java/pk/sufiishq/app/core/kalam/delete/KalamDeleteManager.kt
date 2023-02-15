@@ -1,9 +1,7 @@
 package pk.sufiishq.app.core.kalam.delete
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -21,7 +19,6 @@ import kotlin.coroutines.CoroutineContext
 
 class KalamDeleteManager @Inject constructor(
     @AndroidMediaPlayer private val player: AudioPlayer,
-    @ApplicationContext private val appContext: Context,
     @IoDispatcher private val dispatcher: CoroutineContext,
     private val kalamRepository: KalamRepository
 ) {

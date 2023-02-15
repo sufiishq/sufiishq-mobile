@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
+import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -32,13 +34,17 @@ fun AuthenticateWithPinOrBiometric(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SIButton(
-                text = "Forgot PIN",
+                text = optString(R.string.label_forgot_pin),
                 onClick = {
                     appLockController.forgotPin()
                 }
             )
             SIHeightSpace(value = 36)
-            SIText(text = "Verify PIN", textColor = it, textSize = TextSize.Large)
+            SIText(
+                text = optString(R.string.label_enter_pin),
+                textColor = it,
+                textSize = TextSize.Large
+            )
             SIHeightSpace(value = 24)
             AppLockKeyboardWithPinView(
                 onPinGenerated = {

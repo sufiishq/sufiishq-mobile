@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
@@ -32,10 +33,14 @@ fun SecurityHint(
         SIImage(resId = R.drawable.guarantee)
         SIWidthSpace(value = 12)
         SIColumn(modifier = Modifier.fillMaxWidth()) {
-            SIText(text = "Hint", textColor = textColor, fontWeight = FontWeight.Bold)
+            SIText(
+                text = optString(R.string.title_hint),
+                textColor = textColor,
+                fontWeight = FontWeight.Bold
+            )
             SIHeightSpace(value = 8)
             SIText(
-                text = "The security question will help to regenerate your pin, in case you forgot your pin and want to reset your previous pin and generate a new pin.",
+                text = optString(R.string.detail_hint),
                 textColor = textColor,
                 textSize = TextSize.Small
             )

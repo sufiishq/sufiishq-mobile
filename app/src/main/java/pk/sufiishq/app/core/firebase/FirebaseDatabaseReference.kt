@@ -20,6 +20,4 @@ object FirebaseDatabaseReference {
     // reference constant for valid emails
     const val VALID_EMAILS = "valid_emails"
     const val VALID_DEVELOPER_EMAILS = "valid_developer_emails"
-
-
 }

@@ -20,6 +20,8 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.AppLockController
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
+import pk.sufiishq.app.utils.getString
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
@@ -61,9 +63,9 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
             infoDrawableId = R.drawable.change_pin,
-            title = "Change PIN",
-            detail = "Update your pin any time and also make sure to use a strong pin and avoid using a simple pin so that anyone can't guess.",
-            actionButtonTitle = "Change",
+            title = optString(R.string.title_change_pin),
+            detail = optString(R.string.detail_change_pin),
+            actionButtonTitle = optString(R.string.label_change),
             actionButtonClick = {
                 appLockController.userWantChangePin()
             }
@@ -71,8 +73,8 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockServiceCardWithToggle(
             infoDrawableId = R.drawable.toggle_fingerprint,
-            title = "On/Off Fingerprint",
-            detail = "You can enable or disable the fingerprint option at any time from here.",
+            title = optString(R.string.title_toggle_biometric),
+            detail = optString(R.string.detail_toggle_biometric),
             isCheck = biometricEnable,
             onCheckedChanged = {
                 appLockController.toggleBiometric(fragmentActivity)
@@ -81,9 +83,9 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
             infoDrawableId = R.drawable.update_security_question,
-            title = "Update Security Question",
-            detail = "You can update your security question here at any time from here.",
-            actionButtonTitle = "Update",
+            title = optString(R.string.title_update_security_question),
+            detail = optString(R.string.detail_update_security_question),
+            actionButtonTitle = optString(R.string.label_update),
             actionButtonClick = {
                 appLockController.userWantUpdateSecurityQuestion()
             }
@@ -91,8 +93,8 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockDurationServiceCard(
             infoDrawableId = R.drawable.lock_time,
-            title = "Auto Lock",
-            detail = "You can change the auto app lock duration at any time.",
+            title = optString(R.string.title_app_lock),
+            detail = optString(R.string.detail_change_app_lock_time),
             selectedDurationCode = autoLockDuration.value!!.code,
             onDurationChanged = {
                 appLockController.updateAutoLockDuration(it)
@@ -101,11 +103,11 @@ fun AppLockSetting(
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
             infoDrawableId = R.drawable.remove_app_lock,
-            title = "Remove App Lock",
-            detail = "You can remove your pin and fingerprint lock here at any time.",
-            actionButtonTitle = "Remove",
+            title = optString(R.string.title_remove_app_lock),
+            detail = optString(R.string.detail_remove_app_lock),
+            actionButtonTitle = optString(R.string.label_remove),
             actionButtonClick = {
-                param.value = ConfirmDialogParam("Are you sure you want to remove App Lock?") {
+                param.value = ConfirmDialogParam(getString(R.string.msg_confirm_remove_app_lock)) {
                     appLockController.removeAppLock()
                 }
             }
@@ -129,7 +131,7 @@ private fun Header() {
         )
         SIWidthSpace(value = 8)
         SIText(
-            text = "Setting",
+            text = optString(R.string.label_setting),
             textColor = it,
             fontWeight = FontWeight.Bold
         )

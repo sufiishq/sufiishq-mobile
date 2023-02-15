@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.data.providers.KalamDataProvider
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIDialog

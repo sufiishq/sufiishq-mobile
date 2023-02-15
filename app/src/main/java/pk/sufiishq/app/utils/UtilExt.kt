@@ -132,8 +132,8 @@ fun <T> tryWithDefault(default: T, block: () -> T): T {
     }
 }
 
-fun instantAutoLockDuration() = AutoLockDuration(
+fun instantAutoLockDuration(label: String) = AutoLockDuration(
     code = 0,
-    label = "Instant",
+    label = label,
     durationInMillis = 0
 )

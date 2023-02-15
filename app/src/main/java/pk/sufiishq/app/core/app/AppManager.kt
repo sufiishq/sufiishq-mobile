@@ -13,7 +13,7 @@ class AppManager @Inject constructor() {
     fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {
 
         val appName = componentActivity.getString(R.string.app_name)
-        val shareText = "Kalam Title: ${kalam.title}\nLocation: ${kalam.metaInfo()}"
+        val shareText = getString(R.string.msg_kalam_meta_info, kalam.title, kalam.metaInfo())
         Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, kalam.title)

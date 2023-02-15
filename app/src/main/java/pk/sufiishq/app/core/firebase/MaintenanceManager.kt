@@ -43,7 +43,8 @@ class MaintenanceManager @Inject constructor(
     }
 
     suspend fun setActiveStatus(status: Boolean): FirebaseDatabaseStatus {
-        val firebaseDatabaseStatus = adminSettingsRepository.updateMaintenance("active", status)
+        val firebaseDatabaseStatus =
+            adminSettingsRepository.updateMaintenance(FirebaseDatabaseReference.ACTIVE, status)
         maintenance.postValue(
             maintenance.value?.copy(
                 activeStatus = if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !status else status
@@ -55,7 +56,8 @@ class MaintenanceManager @Inject constructor(
 
     suspend fun setStrictMode(mode: Boolean): FirebaseDatabaseStatus {
 
-        val firebaseDatabaseStatus = adminSettingsRepository.updateMaintenance("strict", mode)
+        val firebaseDatabaseStatus =
+            adminSettingsRepository.updateMaintenance(FirebaseDatabaseReference.STRICT, mode)
         maintenance.postValue(
             maintenance.value?.copy(
                 strictMode = if (firebaseDatabaseStatus is FirebaseDatabaseStatus.Failed) !mode else mode

@@ -16,6 +16,7 @@ import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
@@ -49,10 +50,14 @@ fun AppLockSetup(
             SIImage(resId = R.drawable.shield)
             SIWidthSpace(value = 12)
             SIColumn(modifier = Modifier.fillMaxWidth()) {
-                SIText(text = "App Lock", textColor = textColor, fontWeight = FontWeight.Bold)
+                SIText(
+                    text = optString(R.string.title_app_lock),
+                    textColor = textColor,
+                    fontWeight = FontWeight.Bold
+                )
                 SIHeightSpace(value = 12)
                 SIText(
-                    text = "Setup your SufiIshq application lock configuration by setting up the PIN and Fingerprint options with easy steps.",
+                    text = optString(R.string.detail_setup_app_lock),
                     textColor = textColor,
                     textSize = TextSize.Small
                 )
@@ -60,7 +65,7 @@ fun AppLockSetup(
                 SIBox(modifier = Modifier.fillMaxWidth()) {
                     SIButton(
                         modifier = Modifier.align(Alignment.BottomEnd),
-                        text = "Setup",
+                        text = optString(R.string.label_setup),
                         onClick = {
                             coroutineScope.launch {
                                 appLockController.setupBiometricOrPin(context as FragmentActivity)

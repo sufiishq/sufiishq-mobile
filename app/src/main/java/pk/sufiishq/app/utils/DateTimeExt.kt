@@ -12,32 +12,6 @@ fun getTodayDate(pattern: String = "dd-MM-yyyy"): String {
     return dateFormatter.format(time).also { Timber.d(it) }
 }
 
-fun getCurrentTime(pattern: String = "s-m-H"): String = getTodayDate(pattern)
-
-fun getCurrentYear(): Int {
-    return getTodayDate().substringAfterLast("-").toInt()
-}
-
-fun getCurrentMonth(): Int {
-    return getTodayDate().substringAfter("-").substringBefore("-").toInt()
-}
-
-fun getCurrentDay(): Int {
-    return getTodayDate().substringBefore("-").toInt()
-}
-
-fun getCurrentHour(): Int {
-    return getCurrentTime().substringAfterLast("-").toInt()
-}
-
-fun getCurrentMinute(): Int {
-    return getCurrentTime().substringAfter("-").substringBefore("-").toInt()
-}
-
-fun getCurrentSecond(): Int {
-    return getCurrentTime().substringBefore("-").toInt()
-}
-
 @SuppressLint("SimpleDateFormat")
 fun timeAs12HoursFormat(hour: Int, minute: Int, am: String, pm: String): String {
     return SimpleDateFormat("hh:mm").let {

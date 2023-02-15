@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,6 +50,7 @@ fun AppLockKeyboardWithPinView(
 
     val coroutineScope = rememberCoroutineScope()
     val view = LocalView.current
+    val digits = (0..9).toList().map { it.toString() }
     val offsetX = remember { Animatable(0f) }
     val pin = rem("")
 
@@ -77,7 +77,6 @@ fun AppLockKeyboardWithPinView(
         }
     }
 
-
     SIColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,27 +102,27 @@ fun AppLockKeyboardWithPinView(
             modifier = Modifier.fillMaxWidth(0.9f),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            KeyboardButton(label = "1", pin = pin)
-            KeyboardButton(label = "2", pin = pin)
-            KeyboardButton(label = "3", pin = pin)
+            KeyboardButton(label = digits[1], pin = pin)
+            KeyboardButton(label = digits[2], pin = pin)
+            KeyboardButton(label = digits[3], pin = pin)
         }
         SIHeightSpace(value = 16)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            KeyboardButton(label = "4", pin = pin)
-            KeyboardButton(label = "5", pin = pin)
-            KeyboardButton(label = "6", pin = pin)
+            KeyboardButton(label = digits[4], pin = pin)
+            KeyboardButton(label = digits[5], pin = pin)
+            KeyboardButton(label = digits[6], pin = pin)
         }
         SIHeightSpace(value = 16)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            KeyboardButton(label = "7", pin = pin)
-            KeyboardButton(label = "8", pin = pin)
-            KeyboardButton(label = "9", pin = pin)
+            KeyboardButton(label = digits[7], pin = pin)
+            KeyboardButton(label = digits[8], pin = pin)
+            KeyboardButton(label = digits[9], pin = pin)
         }
         SIHeightSpace(value = 16)
         SIRow(
@@ -131,7 +130,7 @@ fun AppLockKeyboardWithPinView(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             KeyboardButton(label = "", pin = pin, bgColor = AuroraColor.Transparent)
-            KeyboardButton(label = "0", pin = pin)
+            KeyboardButton(label = digits[0], pin = pin)
             KeyboardIconButton(resId = R.drawable.round_backspace_24, onClick = {
                 if (pin.value.isNotEmpty()) {
                     pin.value = pin.value.substring(0, pin.value.length - 1)
