@@ -14,9 +14,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.data.controller.PlaylistController
 import pk.sufiishq.app.models.Playlist
-import pk.sufiishq.app.utils.fakePlaylistDataProvider
+import pk.sufiishq.app.utils.fakePlaylistController
 import pk.sufiishq.app.utils.isScrollingUp
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
@@ -30,14 +30,14 @@ import pk.sufiishq.aurora.theme.AuroraLight
 @Composable
 fun PlaylistScreen(
     navController: NavController,
-    playlistDataProvider: PlaylistDataProvider = hiltViewModel<PlaylistViewModel>()
+    playlistController: PlaylistController = hiltViewModel<PlaylistViewModel>()
 ) {
 
     val showAddUpdatePlaylistDialog = rem<Playlist?>(null)
     val showDeletePlaylistDialog = rem<Playlist?>(null)
     val playlist = rem(Playlist(0, ""))
-    val allPlaylist = playlistDataProvider.getAll().observeAsState().optValue(listOf())
-    val popupMenuItems = playlistDataProvider.getPopupMenuItems()
+    val allPlaylist = playlistController.getAll().observeAsState().optValue(listOf())
+    val popupMenuItems = playlistController.getPopupMenuItems()
 
     val listState = rememberLazyListState()
 
@@ -70,13 +70,13 @@ fun PlaylistScreen(
     // add or update playlist dialog
     AddOrUpdatePlaylistDialog(
         showAddUpdatePlaylistDialog = showAddUpdatePlaylistDialog,
-        playlistDataProvider = playlistDataProvider
+        playlistController = playlistController
     )
 
     // playlist confirm delete dialog
     PlaylistConfirmDeleteDialog(
         showDeletePlaylistDialog = showDeletePlaylistDialog,
-        playlistDataProvider = playlistDataProvider
+        playlistController = playlistController
     )
 }
 
@@ -87,7 +87,7 @@ fun PreviewLightPlaylistView() {
     AuroraLight {
         PlaylistScreen(
             navController = rememberNavController(),
-            playlistDataProvider = fakePlaylistDataProvider()
+            playlistController = fakePlaylistController()
         )
     }
 }
@@ -99,7 +99,7 @@ fun PreviewDarkPlaylistView() {
     AuroraDark {
         PlaylistScreen(
             navController = rememberNavController(),
-            playlistDataProvider = fakePlaylistDataProvider()
+            playlistController = fakePlaylistController()
         )
     }
 }

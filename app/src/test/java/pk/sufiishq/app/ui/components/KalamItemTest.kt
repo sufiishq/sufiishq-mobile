@@ -6,23 +6,14 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.performClick
-import io.mockk.every
-import io.mockk.mockkObject
-import io.mockk.slot
-import io.mockk.verify
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
-import pk.sufiishq.app.core.event.events.Event
-import pk.sufiishq.app.core.event.events.PlayerEvents
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.utils.fakeKalamDataProvider
-import pk.sufiishq.app.utils.fakePlayerDataProvider
+import pk.sufiishq.app.ui.screen.tracks.KalamItem
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.formatDateAs
 
 class KalamItemTest : SufiIshqTest() {
@@ -36,9 +27,8 @@ class KalamItemTest : SufiIshqTest() {
         composeTestRule.setContent {
             KalamItem(
                 kalam = getKalam(),
-                trackListType = TrackListType.All,
-                kalamDataProvider = fakeKalamDataProvider(),
-                playerDataProvider = fakePlayerDataProvider()
+                trackListType = TrackListType.All(),
+                kalamController = fakeKalamController(),
             )
         }
     }
@@ -46,7 +36,7 @@ class KalamItemTest : SufiIshqTest() {
     @Ignore("will be fixed later")
     @Test
     fun `test dispatch ChangeTrack even when kalam item gets clicked`() {
-        mockkObject(EventDispatcher)
+        /*mockkObject(EventDispatcher)
 
         val eventSlot = slot<Event>()
         every { EventDispatcher.dispatch(capture(eventSlot)) } returns Unit
@@ -54,7 +44,7 @@ class KalamItemTest : SufiIshqTest() {
         // kalam item should be exists, visible and has click action
         getKalamItemNode().assertExists().assertIsDisplayed().performClick()
 
-       /* with(eventSlot.captured as PlayerEvents.ChangeTrack) {
+        with(eventSlot.captured as PlayerEvents.ChangeTrack) {
             verify { EventDispatcher.dispatch(this@with) }
 
             assertEquals(1, kalam.id)

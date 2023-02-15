@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.flow.collectLatest
 import pk.sufiishq.app.core.firebase.AuthState
-import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.ui.components.dialogs.ShowIndicatorDialog
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.viewmodels.AdminSettingsViewModel
@@ -16,26 +16,26 @@ import pk.sufiishq.app.viewmodels.AdminSettingsViewModel
 @Composable
 fun AdminSettingsScreen(
     scaffoldState: ScaffoldState,
-    adminSettingsDataProvider: AdminSettingsDataProvider = hiltViewModel<AdminSettingsViewModel>()
+    adminController: AdminController = hiltViewModel<AdminSettingsViewModel>()
 ) {
 
-    val authState = adminSettingsDataProvider.checkAuthentication().observeAsState()
+    val authState = adminController.checkAuthentication().observeAsState()
         .optValue(AuthState.Cancelled())
-    val showLoader = adminSettingsDataProvider.showLoader().observeAsState().optValue(false)
+    val showLoader = adminController.showLoader().observeAsState().optValue(false)
 
     when (authState) {
         is AuthState.Success -> {
             HighlightAndMaintenanceForm(
-                adminSettingsDataProvider = adminSettingsDataProvider,
+                adminController = adminController,
                 isDeveloper = authState.userIsDeveloper
             )
         }
         is AuthState.Error, is AuthState.Cancelled, is AuthState.InProgress -> {
             if (authState is AuthState.Error || authState is AuthState.Cancelled) {
-                adminSettingsDataProvider.showSnackbar(authState.message)
+                adminController.showSnackbar(authState.message)
             }
             AdminSignIn(
-                adminSettingsDataProvider = adminSettingsDataProvider
+                adminController = adminController
             )
         }
     }
@@ -45,7 +45,7 @@ fun AdminSettingsScreen(
     }
 
     LaunchedEffect(Unit) {
-        adminSettingsDataProvider.showSnackbar().asFlow().collectLatest {
+        adminController.showSnackbar().asFlow().collectLatest {
             it?.let {
                 scaffoldState.snackbarHostState.showSnackbar(it)
             }

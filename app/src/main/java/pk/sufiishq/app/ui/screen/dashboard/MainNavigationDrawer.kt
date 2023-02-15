@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.NavigationItem
 import pk.sufiishq.app.ui.components.widgets.HijriDate
@@ -26,14 +26,14 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 @Composable
 fun MainNavigationDrawer(
     scaffoldState: ScaffoldState,
-    mainDataProvider: MainDataProvider,
+    mainController: MainController,
     navigationItems: List<NavigationItem>,
     navController: NavController
 ) {
 
     val scope = rememberCoroutineScope()
 
-    HijriDate(mainDataProvider)
+    HijriDate(mainController)
 
     SIColumn(
         modifier = Modifier

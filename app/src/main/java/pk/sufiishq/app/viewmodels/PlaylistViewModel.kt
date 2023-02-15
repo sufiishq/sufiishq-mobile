@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.data.controller.PlaylistController
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
@@ -20,7 +20,7 @@ class PlaylistViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository,
     private val kalamRepository: KalamRepository,
     @PlaylistItemPopupMenuItems private val popupMenu: PopupMenu
-) : ViewModel(), PlaylistDataProvider {
+) : ViewModel(), PlaylistController {
 
     private val showAddUpdatePlaylistDialog = MutableLiveData<Playlist?>(null)
     private val showConfirmPlaylistDeleteDialog = MutableLiveData<Playlist?>(null)

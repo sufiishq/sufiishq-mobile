@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
 import pk.sufiishq.app.utils.getString

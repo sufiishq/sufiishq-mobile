@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -25,12 +25,12 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun MaintenanceView(
-    adminSettingsDataProvider: AdminSettingsDataProvider
+    adminController: AdminController
 ) {
 
     val active = rem(false)
     val strict = rem(false)
-    val maintenance = adminSettingsDataProvider.getMaintenance().observeAsState().value
+    val maintenance = adminController.getMaintenance().observeAsState().value
     active.value = maintenance?.activeStatus ?: false
     strict.value = maintenance?.strictMode ?: false
 
@@ -45,14 +45,14 @@ fun MaintenanceView(
             label = optString(R.string.label_on),
             status = active,
             scope = this,
-            onStatusChanged = adminSettingsDataProvider::setMaintenanceStatus
+            onStatusChanged = adminController::setMaintenanceStatus
         )
         SIWidthSpace(value = 8)
         MaintenanceSwitch(
             label = optString(R.string.label_strict),
             status = strict,
             scope = this,
-            onStatusChanged = adminSettingsDataProvider::setMaintenanceStrict
+            onStatusChanged = adminController::setMaintenanceStrict
         )
     }
 }

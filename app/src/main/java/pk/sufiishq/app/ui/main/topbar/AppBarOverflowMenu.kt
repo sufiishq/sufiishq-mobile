@@ -10,10 +10,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
-import pk.sufiishq.app.utils.fakeMainDataProvider
+import pk.sufiishq.app.utils.fakeMainController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.viewmodels.MainViewModel
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
@@ -27,7 +27,7 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 fun AppBarOverflowMenu(
     navController: NavController,
     iconColor: AuroraColor? = null,
-    mainDataProvider: MainDataProvider = hiltViewModel<MainViewModel>()
+    mainController: MainController = hiltViewModel<MainViewModel>()
 ) {
 
     val context = LocalContext.current
@@ -35,23 +35,23 @@ fun AppBarOverflowMenu(
     SIPopupMenu(
         resId = R.drawable.ic_baseline_more_vert_24,
         iconTint = iconColor,
-        data = mainDataProvider.popupMenuItems(),
+        data = mainController.popupMenuItems(),
         onClick = {
-            handleClick(mainDataProvider, it, context, navController)
+            handleClick(mainController, it, context, navController)
         }
     )
 }
 
 private fun handleClick(
-    mainDataProvider: MainDataProvider,
+    mainController: MainController,
     popupMenuItem: DataMenuItem,
     context: Context,
     navController: NavController
 ) {
     when (popupMenuItem) {
-        is PopupMenuItem.Share -> mainDataProvider.shareApp(context as ComponentActivity)
+        is PopupMenuItem.Share -> mainController.shareApp(context as ComponentActivity)
         is PopupMenuItem.Facebook -> {
-            mainDataProvider.openFacebookGroup(
+            mainController.openFacebookGroup(
                 context,
                 "https://www.facebook.com/groups/375798102574085"
             )
@@ -79,7 +79,7 @@ fun AppBarOverflowMenuPreviewLight() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            fakeMainDataProvider()
+            fakeMainController()
         )
     }
 }
@@ -92,7 +92,7 @@ fun AppBarOverflowMenuPreviewDark() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            fakeMainDataProvider()
+            fakeMainController()
         )
     }
 }

@@ -12,10 +12,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.fakeKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.viewmodels.KalamViewModel
 import pk.sufiishq.aurora.layout.SIColumn
@@ -25,19 +25,19 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun TracksScreen(
-    kalamDataProvider: KalamDataProvider = hiltViewModel<KalamViewModel>(),
+    kalamController: KalamController = hiltViewModel<KalamViewModel>(),
     trackListType: TrackListType
 ) {
 
-    kalamDataProvider.searchKalam("", trackListType)
+    kalamController.searchKalam("", trackListType)
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
-        kalamDataProvider.getKalamDataFlow().collectAsLazyPagingItems()
+        kalamController.getKalamDataFlow().collectAsLazyPagingItems()
 
     SIColumn { textColor ->
 
         SearchTextField(
-            textColor, lazyKalamItems, trackListType, kalamDataProvider
+            textColor, lazyKalamItems, trackListType, kalamController
         )
 
         SILazyColumn(
@@ -52,7 +52,7 @@ fun TracksScreen(
                     KalamItem(
                         kalam = track,
                         trackListType = trackListType,
-                        kalamDataProvider = kalamDataProvider
+                        kalamController = kalamController
                     )
                 }
             }
@@ -61,22 +61,22 @@ fun TracksScreen(
 
     // kalam confirm delete dialog
     KalamConfirmDeleteDialog(
-        kalamDataProvider = kalamDataProvider
+        kalamController = kalamController
     )
 
     // kalam split dialog
     KalamSplitDialog(
-        kalamDataProvider = kalamDataProvider
+        kalamController = kalamController
     )
 
     // kalam download dialog
     KalamDownloadDialog(
-        kalamDataProvider = kalamDataProvider
+        kalamController = kalamController
     )
 
     // playlist dialog
     PlaylistDialog(
-        kalamDataProvider = kalamDataProvider,
+        kalamController = kalamController,
     )
 }
 
@@ -86,7 +86,7 @@ fun TracksScreen(
 fun TracksPreviewLight() {
     AuroraLight {
         TracksScreen(
-            kalamDataProvider = fakeKalamDataProvider(),
+            kalamController = fakeKalamController(),
             trackListType = TrackListType.All(optString(R.string.title_all_kalam))
         )
     }
@@ -98,7 +98,7 @@ fun TracksPreviewLight() {
 fun TracksPreviewDark() {
     AuroraDark {
         TracksScreen(
-            kalamDataProvider = fakeKalamDataProvider(),
+            kalamController = fakeKalamController(),
             trackListType = TrackListType.All(optString(R.string.title_all_kalam))
         )
     }

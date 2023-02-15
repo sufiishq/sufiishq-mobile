@@ -1,8 +1,8 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import kotlinx.coroutines.flow.Flow
 import pk.sufiishq.app.models.HelpContent
 
-interface HelpDataProvider {
+interface HelpController {
     fun getHelpContent(): Flow<List<HelpContent>>
 }

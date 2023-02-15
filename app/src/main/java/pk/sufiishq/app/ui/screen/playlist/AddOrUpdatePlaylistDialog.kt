@@ -6,7 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.data.controller.PlaylistController
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
@@ -18,7 +18,7 @@ import pk.sufiishq.aurora.layout.SIDialog
 @PackagePrivate
 @Composable
 fun AddOrUpdatePlaylistDialog(
-    playlistDataProvider: PlaylistDataProvider,
+    playlistController: PlaylistController,
     showAddUpdatePlaylistDialog: MutableState<Playlist?>
 ) {
 
@@ -40,7 +40,7 @@ fun AddOrUpdatePlaylistDialog(
 
                 addOrUpdatePlaylist(
                     showAddUpdatePlaylistDialog,
-                    playlistDataProvider,
+                    playlistController,
                     Playlist(id, playlistTitle.value.trim())
                 )
             }
@@ -63,7 +63,7 @@ fun AddOrUpdatePlaylistDialog(
 
 private fun addOrUpdatePlaylist(
     showAddUpdatePlaylistDialog: MutableState<Playlist?>,
-    playlistDataProvider: PlaylistDataProvider,
+    playlistController: PlaylistController,
     playlist: Playlist
 ) {
 
@@ -71,9 +71,9 @@ private fun addOrUpdatePlaylist(
         quickToast(R.string.msg_kalam_title_required)
     } else {
         if (playlist.id == 0) {
-            playlistDataProvider.add(playlist)
+            playlistController.add(playlist)
         } else {
-            playlistDataProvider.update(playlist)
+            playlistController.update(playlist)
         }
         dismissDialog(showAddUpdatePlaylistDialog)
     }

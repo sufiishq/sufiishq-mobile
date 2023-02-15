@@ -1,10 +1,10 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import androidx.lifecycle.LiveData
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
-interface PlaylistDataProvider {
+interface PlaylistController {
     fun getPopupMenuItems(): List<DataMenuItem>
     fun showAddUpdatePlaylistDialog(): LiveData<Playlist?>
     fun showConfirmDeletePlaylistDialog(): LiveData<Playlist?>

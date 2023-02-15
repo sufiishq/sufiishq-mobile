@@ -5,11 +5,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.fakeKalam
-import pk.sufiishq.app.utils.fakeKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
@@ -22,7 +22,7 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 fun KalamItem(
     kalam: Kalam,
     trackListType: TrackListType,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
     val isExpanded = rem(false)
@@ -35,13 +35,13 @@ fun KalamItem(
 
             KalamItemPopupMenu(
                 isExpanded = isExpanded,
-                kalamDataProvider = kalamDataProvider,
+                kalamController = kalamController,
                 kalam = kalam,
                 trackListType = trackListType
             )
         },
         onClick = {
-            kalamDataProvider.changeTrack(kalam, trackListType)
+            kalamController.changeTrack(kalam, trackListType)
         },
         title = kalam.title,
         subTitle = "${kalam.location} ${kalam.recordeDate.formatDateAs(prefix = "- ")}"
@@ -56,7 +56,7 @@ fun KalamItemPreviewLight() {
         KalamItem(
             kalam = fakeKalam(),
             trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
-            kalamDataProvider = fakeKalamDataProvider()
+            kalamController = fakeKalamController()
         )
     }
 }
@@ -69,7 +69,7 @@ fun KalamItemPreviewDark() {
         KalamItem(
             kalam = fakeKalam(),
             trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
-            kalamDataProvider = fakeKalamDataProvider()
+            kalamController = fakeKalamController()
         )
     }
 }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.models.Kalam
@@ -20,7 +20,7 @@ import pk.sufiishq.aurora.models.DataMenuItem
 fun KalamItemPopupMenu(
     isExpanded: MutableState<Boolean>,
     kalam: Kalam,
-    kalamDataProvider: KalamDataProvider,
+    kalamController: KalamController,
     trackListType: TrackListType,
 ) {
     val context = LocalContext.current
@@ -29,14 +29,14 @@ fun KalamItemPopupMenu(
         isExpanded.value = false
     }) { menuItemColor ->
 
-        kalamDataProvider.popupMenuItems(kalam, trackListType.type).forEach {
+        kalamController.popupMenuItems(kalam, trackListType.type).forEach {
             SIDropdownMenuItem(label = it.label,
                 labelColor = menuItemColor,
                 iconTint = null,
                 resId = it.resId,
                 onClick = {
                     isExpanded.value = false
-                    handleClick(it, kalam, trackListType, context, kalamDataProvider)
+                    handleClick(it, kalam, trackListType, context, kalamController)
                 })
         }
     }
@@ -47,16 +47,16 @@ private fun handleClick(
     kalam: Kalam,
     trackListType: TrackListType,
     context: Context,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
     when (popupMenuItem) {
-        is PopupMenuItem.AddToPlaylist -> kalamDataProvider.showPlaylistDialog(kalam)
-        is PopupMenuItem.MarkAsFavorite -> kalamDataProvider.markAsFavorite(kalam)
-        is PopupMenuItem.MarkAsNotFavorite -> kalamDataProvider.removeFavorite(kalam)
-        is PopupMenuItem.Download -> kalamDataProvider.startDownload(kalam)
-        is PopupMenuItem.Split -> kalamDataProvider.showKalamSplitDialog(kalam)
-        is PopupMenuItem.Share -> kalamDataProvider.shareKalam(kalam, context as ComponentActivity)
-        is PopupMenuItem.Delete -> kalamDataProvider.showKalamConfirmDeleteDialog(
+        is PopupMenuItem.AddToPlaylist -> kalamController.showPlaylistDialog(kalam)
+        is PopupMenuItem.MarkAsFavorite -> kalamController.markAsFavorite(kalam)
+        is PopupMenuItem.MarkAsNotFavorite -> kalamController.removeFavorite(kalam)
+        is PopupMenuItem.Download -> kalamController.startDownload(kalam)
+        is PopupMenuItem.Split -> kalamController.showKalamSplitDialog(kalam)
+        is PopupMenuItem.Share -> kalamController.shareKalam(kalam, context as ComponentActivity)
+        is PopupMenuItem.Delete -> kalamController.showKalamConfirmDeleteDialog(
             KalamDeleteItem(
                 kalam, trackListType
             )

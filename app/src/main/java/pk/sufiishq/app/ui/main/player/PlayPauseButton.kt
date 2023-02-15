@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.player.PlayerState
-import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.controller.PlayerController
 import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
@@ -28,7 +28,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun PlayPauseButton(
-    playerDataProvider: PlayerDataProvider,
+    playerController: PlayerController,
     kalamInfo: State<KalamInfo?>,
     boxScope: BoxScope
 ) {
@@ -52,7 +52,7 @@ fun PlayPauseButton(
                             .fillMaxSize(0.75f)
                             .clip(CircleShape)
                             .clickable {
-                                playerDataProvider.doPlayOrPause()
+                                playerController.doPlayOrPause()
                             },
                         elevation = 0.dp,
                         bgColor = AuroraColor.Background

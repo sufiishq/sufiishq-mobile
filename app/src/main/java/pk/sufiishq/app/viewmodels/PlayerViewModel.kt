@@ -14,7 +14,7 @@ import pk.sufiishq.app.core.player.state.mapToLoadingState
 import pk.sufiishq.app.core.player.state.mapToPauseState
 import pk.sufiishq.app.core.player.state.mapToPlayingState
 import pk.sufiishq.app.core.player.state.mapToResumeState
-import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.controller.PlayerController
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.models.KalamInfo
 
@@ -22,7 +22,7 @@ import pk.sufiishq.app.models.KalamInfo
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     @AndroidMediaPlayer private val player: AudioPlayer,
-) : ViewModel(), PlayerDataProvider, PlayerStateListener {
+) : ViewModel(), PlayerController, PlayerStateListener {
 
     private val kalamInfo = MutableLiveData<KalamInfo?>(null)
     private var seekbarEnableOnPlaying = true

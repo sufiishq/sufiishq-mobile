@@ -11,18 +11,15 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import dagger.hilt.android.testing.HiltTestApplication
 import io.mockk.every
-import io.mockk.mockkObject
-import io.mockk.slot
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
-import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.utils.fakeKalamDataProvider
+import pk.sufiishq.app.ui.screen.tracks.KalamItemPopupMenu
+import pk.sufiishq.app.utils.fakeKalamController
 
 class KalamItemPopupMenuTest : SufiIshqTest() {
 
@@ -50,7 +47,6 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
     @Ignore("will fixed later")
     @Test
     fun `test dispatch ShowPlayListDialog event when add to play list menu item clicked`() {
-        mockkObject(EventDispatcher)
 
         val isExpanded = mutableStateOf(true)
         setContent(
@@ -58,10 +54,7 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
             trackListType = TrackListType.Downloads()
         )
 
-        val eventSlot = slot<Event>()
-        every { EventDispatcher.dispatch(capture(eventSlot)) } returns Unit
-/*
-        menuItems
+        /*menuItems
             .zip(
                 listOf(
                     PlayerEvents.ShowPlaylistDialog::class.java,
@@ -85,7 +78,7 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
 
                 // verify dispatched event should be correct
                 verify { eventDispatcher.dispatch(entry.second.cast(eventSlot.captured)) }
-            }*/
+            } */
     }
 
     private fun performClickOnMenuItem(testTag: String) {
@@ -111,7 +104,7 @@ class KalamItemPopupMenuTest : SufiIshqTest() {
             KalamItemPopupMenu(
                 isExpanded = isExpanded,
                 kalam = getKalam(),
-                kalamDataProvider = fakeKalamDataProvider(),
+                kalamController = fakeKalamController(),
                 trackListType = trackListType
             )
         }

@@ -15,7 +15,7 @@ import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitStatus
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.formatTime
@@ -37,18 +37,18 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun KalamSplitDialog(
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
-    val showSplitDialog = kalamDataProvider.showKalamSplitDialog().observeAsState()
+    val showSplitDialog = kalamController.showKalamSplitDialog().observeAsState()
 
     showSplitDialog.value?.apply {
 
         when (val status = splitStatus) {
-            is SplitStatus.Start -> StartSplitView(this, kalamDataProvider)
+            is SplitStatus.Start -> StartSplitView(this, kalamController)
             is SplitStatus.InProgress -> SplitInProgressView(this)
-            is SplitStatus.Done -> SplitDoneView(this, kalamDataProvider)
-            is SplitStatus.Completed -> SplitCompletedView(this, kalamDataProvider)
+            is SplitStatus.Done -> SplitDoneView(this, kalamController)
+            is SplitStatus.Completed -> SplitCompletedView(this, kalamController)
             is SplitStatus.Error -> quickToast(status.error)
         }
     }
@@ -56,18 +56,18 @@ fun KalamSplitDialog(
 
 @Composable
 private fun StartSplitView(
-    splitKalamInfo: SplitKalamInfo, kalamDataProvider: KalamDataProvider
+    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
 ) {
 
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_cancel),
         onNoClick = {
-            dismissDialog(kalamDataProvider)
+            dismissDialog(kalamController)
         },
         onYesText = optString(R.string.label_preview),
         onYesClick = {
-            startSplitting(kalamDataProvider)
+            startSplitting(kalamController)
         }
     ) { textColor ->
 
@@ -83,8 +83,8 @@ private fun StartSplitView(
                     (start == end) -> end = end.plus(1000)
                 }
 
-                kalamDataProvider.setSplitStart(start)
-                kalamDataProvider.setSplitEnd(end)
+                kalamController.setSplitStart(start)
+                kalamController.setSplitEnd(end)
             },
             valueRange = 0f..splitKalamInfo.kalamLength.toFloat()
         )
@@ -109,7 +109,7 @@ private fun StartSplitView(
 
 @Composable
 private fun SplitCompletedView(
-    splitKalamInfo: SplitKalamInfo, kalamDataProvider: KalamDataProvider
+    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
 ) {
 
     val kalamTitle = rem("")
@@ -118,11 +118,11 @@ private fun SplitCompletedView(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_back),
         onNoClick = {
-            backToDone(kalamDataProvider)
+            backToDone(kalamController)
         },
         onYesText = optString(R.string.label_save),
         onYesClick = {
-            saveKalam(kalamTitle.value.trim(), splitKalamInfo, kalamDataProvider)
+            saveKalam(kalamTitle.value.trim(), splitKalamInfo, kalamController)
         }
     ) {
         OutlinedTextField(
@@ -140,7 +140,7 @@ private fun SplitCompletedView(
 
 @Composable
 private fun SplitDoneView(
-    splitKalamInfo: SplitKalamInfo, kalamDataProvider: KalamDataProvider
+    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
 ) {
 
     val previewPlayStart = splitKalamInfo.previewPlayStart
@@ -151,11 +151,11 @@ private fun SplitDoneView(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_back),
         onNoClick = {
-            backToStart(kalamDataProvider)
+            backToStart(kalamController)
         },
         onYesText = optString(R.string.label_done),
         onYesClick = {
-            done(kalamDataProvider)
+            done(kalamController)
         }
     ) { textColor ->
 
@@ -166,7 +166,7 @@ private fun SplitDoneView(
                 modifier = Modifier
                     .width(35.dp)
                     .clickable {
-                        kalamDataProvider.playSplitKalamPreview()
+                        kalamController.playSplitKalamPreview()
                     },
                 resId = if (previewPlayStart) R.drawable.ic_pause else R.drawable.ic_play,
                 tintColor = textColor,
@@ -177,7 +177,7 @@ private fun SplitDoneView(
                 valueRange = 0f..kalamPreviewLength.toFloat(),
                 enabled = true,
                 onValueChange = {
-                    kalamDataProvider.updateSplitSeekbarValue(it)
+                    kalamController.updateSplitSeekbarValue(it)
                 })
         }
 
@@ -238,40 +238,40 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDialog(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.dismissKalamSplitDialog()
+private fun dismissDialog(kalamController: KalamController) {
+    kalamController.dismissKalamSplitDialog()
 }
 
-private fun startSplitting(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.startSplitting()
+private fun startSplitting(kalamController: KalamController) {
+    kalamController.startSplitting()
 }
 
-private fun backToStart(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.setSplitStatus(SplitStatus.Start)
+private fun backToStart(kalamController: KalamController) {
+    kalamController.setSplitStatus(SplitStatus.Start)
 }
 
-private fun done(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.setSplitStatus(SplitStatus.Completed)
+private fun done(kalamController: KalamController) {
+    kalamController.setSplitStatus(SplitStatus.Completed)
 }
 
-private fun backToDone(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.setSplitStatus(SplitStatus.Done)
+private fun backToDone(kalamController: KalamController) {
+    kalamController.setSplitStatus(SplitStatus.Done)
 }
 
 private fun saveKalam(
     kalamTitle: String,
     splitKalamInfo: SplitKalamInfo,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
     if (kalamTitle.isEmpty()) {
         quickToast(R.string.msg_kalam_title_required)
     } else {
 
-        kalamDataProvider.saveSplitKalam(
+        kalamController.saveSplitKalam(
             sourceKalam = splitKalamInfo.kalam, kalamTitle
         )
 
-        dismissDialog(kalamDataProvider)
+        dismissDialog(kalamController)
     }
 }

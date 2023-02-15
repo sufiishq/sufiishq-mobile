@@ -21,7 +21,7 @@ import okhttp3.internal.format
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.kalam.downloader.FileInfo
 import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SILinearProgressIndicator
 import pk.sufiishq.aurora.components.SIText
@@ -34,29 +34,29 @@ import timber.log.Timber
 @PackagePrivate
 @Composable
 fun KalamDownloadDialog(
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
-    val kalamDownloadState = kalamDataProvider.getKalamDownloadState().observeAsState()
+    val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
     kalamDownloadState.value?.apply {
 
         when (this) {
             is KalamDownloadState.Started -> KalamDownloadStartedDialog(
                 this,
-                kalamDataProvider
+                kalamController
             )
             is KalamDownloadState.InProgress -> KalamDownloadInProgressDialog(
                 this,
-                kalamDataProvider
+                kalamController
             )
             is KalamDownloadState.Error -> KalamDownloadErrorDialog(
                 this,
-                kalamDataProvider
+                kalamController
             )
             is KalamDownloadState.Completed -> KalamDownloadCompletedDialog(
                 this,
-                kalamDataProvider
+                kalamController
             )
             else -> Timber.d("$this state is used for only hide dialog")
         }
@@ -66,13 +66,13 @@ fun KalamDownloadDialog(
 @Composable
 private fun KalamDownloadStartedDialog(
     kalamDownloadState: KalamDownloadState.Started,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
         onNoText = optString(R.string.label_cancel),
         onNoClick = {
-            dismissDownload(kalamDataProvider)
+            dismissDownload(kalamController)
         }
     ) {
 
@@ -87,7 +87,7 @@ private fun KalamDownloadStartedDialog(
 @Composable
 private fun KalamDownloadInProgressDialog(
     kalamDownloadState: KalamDownloadState.InProgress,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
@@ -104,7 +104,7 @@ private fun KalamDownloadInProgressDialog(
         title = title,
         onNoText = optString(R.string.label_cancel),
         onNoClick = {
-            dismissDownload(kalamDataProvider)
+            dismissDownload(kalamController)
         }
     ) { textColor ->
 
@@ -137,7 +137,7 @@ private fun KalamDownloadInProgressDialog(
 @Composable
 private fun KalamDownloadCompletedDialog(
     kalamDownloadState: KalamDownloadState.Completed,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
     val kalam = kalamDownloadState.kalam
@@ -146,7 +146,7 @@ private fun KalamDownloadCompletedDialog(
         title = kalam.title,
         onYesText = optString(R.string.label_ok),
         onYesClick = {
-            dismissDownload(kalamDataProvider)
+            dismissDownload(kalamController)
         }
     ) { textColor ->
 
@@ -167,7 +167,7 @@ private fun KalamDownloadCompletedDialog(
 @Composable
 private fun KalamDownloadErrorDialog(
     kalamDownloadState: KalamDownloadState.Error,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
     val kalam = kalamDownloadState.kalam
@@ -177,7 +177,7 @@ private fun KalamDownloadErrorDialog(
         title = kalam.title,
         onYesText = optString(R.string.label_ok),
         onYesClick = {
-            dismissDownload(kalamDataProvider)
+            dismissDownload(kalamController)
         }
     ) { textColor ->
 
@@ -215,6 +215,6 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDownload(kalamDataProvider: KalamDataProvider) {
-    kalamDataProvider.dismissDownload()
+private fun dismissDownload(kalamController: KalamController) {
+    kalamController.dismissDownload()
 }

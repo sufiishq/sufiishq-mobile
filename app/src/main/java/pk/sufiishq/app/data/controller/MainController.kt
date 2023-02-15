@@ -1,4 +1,4 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import pk.sufiishq.app.models.HijriDate
 import pk.sufiishq.aurora.models.DataMenuItem
 
-interface MainDataProvider {
+interface MainController {
 
     fun checkUpdate(activity: ComponentActivity)
     fun showUpdateButton(): LiveData<Boolean>

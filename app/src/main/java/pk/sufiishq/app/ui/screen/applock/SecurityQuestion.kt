@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.aurora.layout.SIBox
 
 @PackagePrivate

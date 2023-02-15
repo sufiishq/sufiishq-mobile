@@ -36,7 +36,7 @@ open class BaseActivity : FragmentActivity() {
     @Inject
     lateinit var maintenanceManager: MaintenanceManager
 
-    private val mainDataProvider: MainViewModel by viewModels()
+    private val mainController: MainViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -48,7 +48,7 @@ open class BaseActivity : FragmentActivity() {
         startService(playerIntent)
 
         // check any incoming update from play-store
-        mainDataProvider.checkUpdate(this@BaseActivity)
+        mainController.checkUpdate(this@BaseActivity)
 
         authManager.registerActivityResultListener(this)
     }
@@ -57,7 +57,7 @@ open class BaseActivity : FragmentActivity() {
         super.onDestroy()
 
         runCatching {
-            mainDataProvider.unregisterListener(this)
+            mainController.unregisterListener(this)
         }
 
         if (!player.isPlaying()) {

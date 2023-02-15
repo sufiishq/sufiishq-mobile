@@ -11,7 +11,7 @@ import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import pk.sufiishq.app.core.app.AppManager
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
 import pk.sufiishq.app.core.update.InAppUpdateManager
 import pk.sufiishq.app.data.repository.HijriDateRepository
@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
     private val hijriDateRepository: HijriDateRepository,
     private val inAppUpdateManager: InAppUpdateManager,
     private val appManager: AppManager
-) : ViewModel(), MainDataProvider {
+) : ViewModel(), MainController {
 
     private val showUpdateDialog = MutableLiveData(false)
 

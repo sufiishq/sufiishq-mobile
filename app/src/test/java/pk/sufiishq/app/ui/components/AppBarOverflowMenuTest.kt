@@ -11,18 +11,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptionsBuilder
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.slot
 import io.mockk.verify
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.event.dispatcher.EventDispatcher
-import pk.sufiishq.app.core.event.events.Event
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.ui.screen.admin.AdminHeader
-import pk.sufiishq.app.utils.fakeMainDataProvider
+import pk.sufiishq.app.ui.main.topbar.AppBarOverflowMenu
+import pk.sufiishq.app.utils.fakeMainController
 
 @Ignore("will be fixed later")
 class AppBarOverflowMenuTest : SufiIshqTest() {
@@ -34,7 +30,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test overflow menu button should be exists and visible by default`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), mainDataProvider = fakeMainDataProvider())
+            AppBarOverflowMenu(mockk(), mainController = fakeMainController())
         }
 
         // acquire overflow menu button node
@@ -54,7 +50,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     fun `test dropdown menu should be visible when overflow menu button clicked`() {
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), mainDataProvider = fakeMainDataProvider())
+            AppBarOverflowMenu(mockk(), mainController = fakeMainController())
         }
 
         // acquire dropdown menu node
@@ -74,14 +70,9 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     @Test
     fun `test dispatch even should be as ShareApp when ShareApp menu item clicked`() {
 
-        mockkObject(EventDispatcher)
-
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), mainDataProvider = fakeMainDataProvider())
+            AppBarOverflowMenu(mockk(), mainController = fakeMainController())
         }
-
-        val eventSlot = slot<Event>()
-        every { EventDispatcher.dispatch(capture(eventSlot)) } returns Unit
 
         // show menu bar
         getOverflowMenuButtonNode().performClick()
@@ -100,14 +91,14 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
     @Test
     fun `test dispatch even should be as OpenFacebookGroup when OpenFacebookGroup menu item clicked`() {
 
-        mockkObject(EventDispatcher)
+        /*mockkObject(EventDispatcher)
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), mainDataProvider = fakeMainDataProvider())
+            AppBarOverflowMenu(mockk(), mainController = fakeMainController())
         }
 
         val eventSlot = slot<Event>()
-        every { EventDispatcher.dispatch(capture(eventSlot)) } returns Unit
+        every { EventDispatcher.dispatch(capture(eventSlot)) } returns Unit*/
 
         // show menu bar
         getOverflowMenuButtonNode().performClick()
@@ -130,7 +121,7 @@ class AppBarOverflowMenuTest : SufiIshqTest() {
         }
 
         composeTestRule.setContent {
-            AppBarOverflowMenu(mockk(), mainDataProvider = fakeMainDataProvider())
+            AppBarOverflowMenu(mockk(), mainController = fakeMainController())
         }
 
         // show menu bar

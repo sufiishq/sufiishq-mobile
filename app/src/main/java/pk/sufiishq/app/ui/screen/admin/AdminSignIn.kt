@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -19,7 +19,7 @@ import pk.sufiishq.aurora.layout.SIColumn
 @PackagePrivate
 @Composable
 fun AdminSignIn(
-    adminSettingsDataProvider: AdminSettingsDataProvider
+    adminController: AdminController
 ) {
 
     val context = LocalContext.current
@@ -35,7 +35,7 @@ fun AdminSignIn(
                 text = optString(R.string.label_verify_identity),
                 leadingIcon = R.drawable.key,
                 onClick = {
-                    adminSettingsDataProvider.signIn(context as ComponentActivity)
+                    adminController.signIn(context as ComponentActivity)
                 }
             )
         }

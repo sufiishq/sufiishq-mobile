@@ -1,4 +1,4 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData

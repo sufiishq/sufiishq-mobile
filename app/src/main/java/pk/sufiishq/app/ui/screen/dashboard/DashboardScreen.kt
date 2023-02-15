@@ -16,12 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.DashboardDataProvider
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.DashboardController
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.models.Highlight
-import pk.sufiishq.app.utils.fakeDashboardDataProvider
-import pk.sufiishq.app.utils.fakeMainDataProvider
+import pk.sufiishq.app.utils.fakeDashboardController
+import pk.sufiishq.app.utils.fakeMainController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
@@ -40,8 +40,8 @@ import pk.sufiishq.aurora.theme.AuroraLight
 @Composable
 fun DashboardScreen(
     navController: NavController,
-    mainDataProvider: MainDataProvider = hiltViewModel<MainViewModel>(),
-    dashboardDataProvider: DashboardDataProvider = hiltViewModel<DashboardViewModel>()
+    mainController: MainController = hiltViewModel<MainViewModel>(),
+    dashboardController: DashboardController = hiltViewModel<DashboardViewModel>()
 ) {
 
     val all = rem(stringResource(R.string.title_all_kalam))
@@ -54,8 +54,8 @@ fun DashboardScreen(
         drawer = {
             MainNavigationDrawer(
                 scaffoldState = scaffoldState,
-                mainDataProvider = mainDataProvider,
-                navigationItems = dashboardDataProvider.getMainNavigationItems(),
+                mainController = mainController,
+                navigationItems = dashboardController.getMainNavigationItems(),
                 navController = navController
             )
         },
@@ -74,9 +74,9 @@ fun DashboardScreen(
 
             UpdateAvailableDialog(
                 isUpdateAvailable = rem(
-                    mainDataProvider.showUpdateButton().observeAsState().optValue(false)
+                    mainController.showUpdateButton().observeAsState().optValue(false)
                 ),
-                mainDataProvider = mainDataProvider
+                mainController = mainController
             )
 
             SIConstraintLayout(
@@ -111,7 +111,7 @@ fun DashboardScreen(
                         bottom.linkTo(buttonBox.top)
                     },
                     highlightDialogControl = showHighlightDialog,
-                    dashboardDataProvider = dashboardDataProvider
+                    dashboardController = dashboardController
                 )
 
                 if (BuildConfig.DEBUG) {
@@ -140,7 +140,7 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = all.value,
-                                count = dashboardDataProvider.countAll().observeAsState()
+                                count = dashboardController.countAll().observeAsState()
                                     .optValue(0),
                                 icon = R.drawable.ic_outline_check_circle_24,
                                 paddingModifier = Modifier.padding(0.dp, 0.dp, 6.dp, 6.dp),
@@ -157,7 +157,7 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = favorites.value,
-                                count = dashboardDataProvider.countFavorites().observeAsState()
+                                count = dashboardController.countFavorites().observeAsState()
                                     .optValue(0),
                                 icon = R.drawable.ic_round_favorite_border_24,
                                 paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
@@ -180,7 +180,7 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = downloads.value,
-                                count = dashboardDataProvider.countDownloads().observeAsState()
+                                count = dashboardController.countDownloads().observeAsState()
                                     .optValue(0),
                                 icon = R.drawable.ic_outline_cloud_download_24,
                                 paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
@@ -197,7 +197,7 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = playlist.value,
-                                count = dashboardDataProvider.countPlaylist().observeAsState()
+                                count = dashboardController.countPlaylist().observeAsState()
                                     .optValue(0),
                                 icon = R.drawable.ic_outline_playlist_play_24,
                                 paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
@@ -223,8 +223,8 @@ fun LightPreviewDashboardView() {
     AuroraLight {
         DashboardScreen(
             navController = rememberNavController(),
-            mainDataProvider = fakeMainDataProvider(),
-            dashboardDataProvider = fakeDashboardDataProvider()
+            mainController = fakeMainController(),
+            dashboardController = fakeDashboardController()
         )
     }
 }
@@ -236,8 +236,8 @@ fun DarkPreviewDashboardView() {
     AuroraDark {
         DashboardScreen(
             navController = rememberNavController(),
-            mainDataProvider = fakeMainDataProvider(),
-            dashboardDataProvider = fakeDashboardDataProvider()
+            mainController = fakeMainController(),
+            dashboardController = fakeDashboardController()
         )
     }
 }

@@ -1,9 +1,9 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import androidx.lifecycle.LiveData
 import pk.sufiishq.app.models.KalamInfo
 
-interface PlayerDataProvider {
+interface PlayerController {
 
     fun getKalamInfo(): LiveData<KalamInfo?>
     fun updateSeekbarValue(value: Float)

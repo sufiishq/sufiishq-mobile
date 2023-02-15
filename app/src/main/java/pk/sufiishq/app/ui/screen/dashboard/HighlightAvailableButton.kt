@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.DashboardDataProvider
+import pk.sufiishq.app.data.controller.DashboardController
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.utils.shake
 import pk.sufiishq.aurora.components.SIIcon
@@ -26,12 +26,12 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun HighlightAvailableButton(
     modifier: Modifier = Modifier,
     highlightDialogControl: MutableState<Highlight?>,
-    dashboardDataProvider: DashboardDataProvider
+    dashboardController: DashboardController
 ) {
 
     val coroutineScope = rememberCoroutineScope()
 
-    dashboardDataProvider.getHighlightAvailable()
+    dashboardController.getHighlightAvailable()
         .observeAsState()
         .value
         ?.apply {

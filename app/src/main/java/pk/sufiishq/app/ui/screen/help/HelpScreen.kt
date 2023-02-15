@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.HelpDataProvider
-import pk.sufiishq.app.utils.fakeHelpDataProvider
+import pk.sufiishq.app.data.controller.HelpController
+import pk.sufiishq.app.utils.fakeHelpController
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.app.viewmodels.HelpViewModel
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
@@ -27,9 +27,9 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun HelpScreen(
-    helpDataProvider: HelpDataProvider = hiltViewModel<HelpViewModel>()
+    helpController: HelpController = hiltViewModel<HelpViewModel>()
 ) {
-    val helpContent = helpDataProvider.getHelpContent().collectAsState(listOf())
+    val helpContent = helpController.getHelpContent().collectAsState(listOf())
 
     SIColumn(
         modifier = Modifier
@@ -103,7 +103,7 @@ fun HelpScreen(
 fun PreviewLightHelpView() {
     AuroraLight {
         HelpScreen(
-            helpDataProvider = fakeHelpDataProvider()
+            helpController = fakeHelpController()
         )
     }
 }
@@ -114,7 +114,7 @@ fun PreviewLightHelpView() {
 fun PreviewDarkHelpView() {
     AuroraDark {
         HelpScreen(
-            helpDataProvider = fakeHelpDataProvider()
+            helpController = fakeHelpController()
         )
     }
 }

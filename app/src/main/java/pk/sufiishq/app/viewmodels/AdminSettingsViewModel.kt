@@ -21,7 +21,7 @@ import pk.sufiishq.app.core.firebase.FirebaseDatabaseStatus
 import pk.sufiishq.app.core.firebase.HighlightManager
 import pk.sufiishq.app.core.firebase.HighlightStatus
 import pk.sufiishq.app.core.firebase.MaintenanceManager
-import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.isNetworkAvailable
@@ -33,7 +33,7 @@ class AdminSettingsViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val highlightManager: HighlightManager,
     private val maintenanceManager: MaintenanceManager
-) : ViewModel(), AdminSettingsDataProvider {
+) : ViewModel(), AdminController {
 
     private val showSnackbar = MutableLiveData<String?>(null)
     private val showLoader = MutableLiveData(false)

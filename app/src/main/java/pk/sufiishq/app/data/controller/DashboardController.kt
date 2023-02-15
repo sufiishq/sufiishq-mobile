@@ -1,10 +1,10 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import androidx.lifecycle.LiveData
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.NavigationItem
 
-interface DashboardDataProvider {
+interface DashboardController {
 
     fun getMainNavigationItems(): List<NavigationItem>
     fun countAll(): LiveData<Int>

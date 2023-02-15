@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.app.models.SecurityQuestion
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.getString

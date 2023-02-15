@@ -14,7 +14,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import javax.inject.Inject
 import javax.inject.Singleton
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.utils.getString
 
 @Singleton
@@ -24,7 +24,7 @@ class InAppUpdateManager @Inject constructor() {
     private lateinit var activity: ComponentActivity
     private lateinit var appUpdateInfo: AppUpdateInfo
 
-    fun checkInAppUpdate(activity: ComponentActivity, mainDataProvider: MainDataProvider) {
+    fun checkInAppUpdate(activity: ComponentActivity, mainController: MainController) {
 
         val appUpdateManager = AppUpdateManagerFactory.create(activity)
 
@@ -40,7 +40,7 @@ class InAppUpdateManager @Inject constructor() {
                 this.appUpdateInfo = appUpdateInfo
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    mainDataProvider.showUpdateButton(true)
+                    mainController.showUpdateButton(true)
                 } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                     popupSnackbarForCompleteUpdate(activity)
                 }

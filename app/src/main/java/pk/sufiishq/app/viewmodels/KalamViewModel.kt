@@ -22,7 +22,7 @@ import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitStatus
 import pk.sufiishq.app.core.player.PlayerManager
 import pk.sufiishq.app.core.playlist.PlaylistManager
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.di.qualifier.KalamItemPopupMenuItems
 import pk.sufiishq.app.helpers.TrackListType
@@ -45,7 +45,7 @@ class KalamViewModel @Inject constructor(
     private val favoriteManager: FavoriteManager,
     private val playerManager: PlayerManager,
     private val appManager: AppManager
-) : ViewModel(), KalamDataProvider {
+) : ViewModel(), KalamController {
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow

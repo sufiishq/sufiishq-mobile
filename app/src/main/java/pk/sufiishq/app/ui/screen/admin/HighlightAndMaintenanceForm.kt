@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import java.util.*
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.AdminSettingsDataProvider
+import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
@@ -41,20 +41,20 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun HighlightAndMaintenanceForm(
-    adminSettingsDataProvider: AdminSettingsDataProvider,
+    adminController: AdminController,
     isDeveloper: Boolean
 ) {
 
     val context = LocalContext.current
-    val title = adminSettingsDataProvider.getTitle().observeAsState().optValue("")
-    val detail = adminSettingsDataProvider.getDetail().observeAsState().optValue("")
-    val contacts = adminSettingsDataProvider.getContacts().observeAsState()
+    val title = adminController.getTitle().observeAsState().optValue("")
+    val detail = adminController.getDetail().observeAsState().optValue("")
+    val contacts = adminController.getContacts().observeAsState()
     val confirmDialog = rem<ConfirmDialogParam?>(null)
     val saveBtnText = rem("")
     saveBtnText.value = optString(R.string.label_save)
 
     LaunchedEffect(Unit) {
-        adminSettingsDataProvider.fetchHighlight()
+        adminController.fetchHighlight()
     }
 
     ConfirmationDialog(state = confirmDialog)
@@ -66,7 +66,7 @@ fun HighlightAndMaintenanceForm(
     ) {
 
 
-        adminSettingsDataProvider.highlightStatus().observeAsState().value?.let { status ->
+        adminController.highlightStatus().observeAsState().value?.let { status ->
             saveBtnText.value = optString(R.string.label_update)
             SICard(
                 bgColor = status.bgColor,
@@ -96,7 +96,7 @@ fun HighlightAndMaintenanceForm(
                         onClick = {
                             confirmDialog.value =
                                 ConfirmDialogParam(getString(R.string.msg_confirm_delete_highlight)) {
-                                    adminSettingsDataProvider.deleteHighlight()
+                                    adminController.deleteHighlight()
                                 }
                         }
                     )
@@ -107,20 +107,20 @@ fun HighlightAndMaintenanceForm(
 
         AdminHeader(optString(R.string.title_highlight))
 
-        StartDateTimeView(adminSettingsDataProvider)
-        EndDateTimeView(adminSettingsDataProvider)
+        StartDateTimeView(adminController)
+        EndDateTimeView(adminController)
 
         AdminTextView(
             modifier = Modifier.fillMaxWidth(),
             label = optString(R.string.label_title),
             text = title,
             maxLength = 256,
-            onValueChange = adminSettingsDataProvider::setTitle
+            onValueChange = adminController::setTitle
         )
 
         DetailView(
             text = detail,
-            onValueChange = adminSettingsDataProvider::setDetail
+            onValueChange = adminController::setDetail
         )
 
         contacts.value?.forEachIndexed { index, pair ->
@@ -151,7 +151,7 @@ fun HighlightAndMaintenanceForm(
                 onClick = {
                     confirmDialog.value =
                         ConfirmDialogParam(getString(R.string.msg_confirm_logout)) {
-                            adminSettingsDataProvider.signOut(context as ComponentActivity)
+                            adminController.signOut(context as ComponentActivity)
                         }
                 }
             )
@@ -166,13 +166,13 @@ fun HighlightAndMaintenanceForm(
                             saveBtnText.value
                         )
                     ) {
-                        adminSettingsDataProvider.addOrUpdateHighlight()
+                        adminController.addOrUpdateHighlight()
                     }
                 }
             )
         }
 
-        if (isDeveloper) MaintenanceView(adminSettingsDataProvider)
+        if (isDeveloper) MaintenanceView(adminController)
     }
 }
 
@@ -198,13 +198,13 @@ private fun DetailView(
 
 @Composable
 private fun StartDateTimeView(
-    adminSettingsDataProvider: AdminSettingsDataProvider
+    adminController: AdminController
 ) {
 
     val minDate = rem(Calendar.getInstance())
     val maxDate = rem(Calendar.getInstance().nextYear())
-    val selectedDate = adminSettingsDataProvider.startDate().observeAsState()
-    val startTime = adminSettingsDataProvider.startTime().observeAsState()
+    val selectedDate = adminController.startDate().observeAsState()
+    val startTime = adminController.startTime().observeAsState()
 
     HighlightDateTimeView(
         label = optString(R.string.label_start),
@@ -212,20 +212,20 @@ private fun StartDateTimeView(
         selectedTime = startTime,
         minDate = minDate,
         maxDate = maxDate,
-        onDateChanged = adminSettingsDataProvider::startDateChanged,
-        onTimeChanged = adminSettingsDataProvider::startTimeChanged
+        onDateChanged = adminController::startDateChanged,
+        onTimeChanged = adminController::startTimeChanged
     )
 }
 
 @Composable
 private fun EndDateTimeView(
-    adminSettingsDataProvider: AdminSettingsDataProvider
+    adminController: AdminController
 ) {
 
-    val selectedDate = adminSettingsDataProvider.endDate().observeAsState()
-    val minDate = adminSettingsDataProvider.minEndDate().observeAsState()
+    val selectedDate = adminController.endDate().observeAsState()
+    val minDate = adminController.minEndDate().observeAsState()
     val maxDate = rem(Calendar.getInstance().nextYear(2))
-    val endTime = adminSettingsDataProvider.endTime().observeAsState()
+    val endTime = adminController.endTime().observeAsState()
 
     HighlightDateTimeView(
         label = optString(R.string.label_end),
@@ -233,8 +233,8 @@ private fun EndDateTimeView(
         selectedTime = endTime,
         minDate = minDate,
         maxDate = maxDate,
-        onDateChanged = adminSettingsDataProvider::endDateChanged,
-        onTimeChanged = adminSettingsDataProvider::endTimeChanged
+        onDateChanged = adminController::endDateChanged,
+        onTimeChanged = adminController::endTimeChanged
     )
 }
 

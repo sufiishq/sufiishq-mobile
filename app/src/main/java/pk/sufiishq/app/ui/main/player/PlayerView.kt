@@ -17,9 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.PlayerDataProvider
+import pk.sufiishq.app.data.controller.PlayerController
 import pk.sufiishq.app.ui.components.ContentBackground
-import pk.sufiishq.app.utils.fakePlayerDataProvider
+import pk.sufiishq.app.utils.fakePlayerController
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.app.viewmodels.PlayerViewModel
 import pk.sufiishq.aurora.components.SIText
@@ -31,7 +31,7 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun PlayerView(
-    playerDataProvider: PlayerDataProvider = hiltViewModel<PlayerViewModel>(),
+    playerController: PlayerController = hiltViewModel<PlayerViewModel>(),
 ) {
 
     val showSliderLabel = remember {
@@ -39,7 +39,7 @@ fun PlayerView(
             mutableStateOf(false)
         }
     }
-    val kalamInfo = playerDataProvider.getKalamInfo().observeAsState()
+    val kalamInfo = playerController.getKalamInfo().observeAsState()
 
     ContentBackground(modifier = Modifier.height(90.dp)) {
         SIBox(modifier = Modifier.fillMaxSize()) {
@@ -50,14 +50,14 @@ fun PlayerView(
                 TrackInfo(kalamInfo = kalamInfo.value)
 
                 PlayPauseButton(
-                    playerDataProvider = playerDataProvider,
+                    playerController = playerController,
                     kalamInfo = kalamInfo,
                     boxScope = this
                 )
             }
 
             TrackSlider(
-                playerDataProvider = playerDataProvider,
+                playerController = playerController,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
@@ -103,7 +103,7 @@ fun PlayerView(
 fun PlayerPreviewLight() {
     AuroraLight {
         PlayerView(
-            playerDataProvider = fakePlayerDataProvider()
+            playerController = fakePlayerController()
         )
     }
 }
@@ -114,7 +114,7 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     AuroraDark {
         PlayerView(
-            playerDataProvider = fakePlayerDataProvider()
+            playerController = fakePlayerController()
         )
     }
 }

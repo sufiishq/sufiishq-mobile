@@ -14,12 +14,12 @@ import pk.sufiishq.app.core.help.HelpData
 import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
 import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitStatus
-import pk.sufiishq.app.data.providers.DashboardDataProvider
-import pk.sufiishq.app.data.providers.HelpDataProvider
-import pk.sufiishq.app.data.providers.KalamDataProvider
-import pk.sufiishq.app.data.providers.MainDataProvider
-import pk.sufiishq.app.data.providers.PlayerDataProvider
-import pk.sufiishq.app.data.providers.PlaylistDataProvider
+import pk.sufiishq.app.data.controller.DashboardController
+import pk.sufiishq.app.data.controller.HelpController
+import pk.sufiishq.app.data.controller.KalamController
+import pk.sufiishq.app.data.controller.MainController
+import pk.sufiishq.app.data.controller.PlayerController
+import pk.sufiishq.app.data.controller.PlaylistController
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.HelpContent
 import pk.sufiishq.app.models.Highlight
@@ -36,7 +36,7 @@ import pk.sufiishq.aurora.models.DataMenuItem
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakeDashboardDataProvider() = object : DashboardDataProvider {
+fun fakeDashboardController() = object : DashboardController {
     override fun getMainNavigationItems(): List<NavigationItem> = listOf()
     override fun countAll(): LiveData<Int> = MutableLiveData(150)
     override fun countFavorites(): LiveData<Int> = MutableLiveData(15)
@@ -50,7 +50,7 @@ fun fakeDashboardDataProvider() = object : DashboardDataProvider {
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakePlayerDataProvider() = object : PlayerDataProvider {
+fun fakePlayerController() = object : PlayerController {
 
     override fun getKalamInfo(): LiveData<KalamInfo?> = MutableLiveData(null)
     override fun updateSeekbarValue(value: Float) = Unit
@@ -63,7 +63,7 @@ fun fakePlayerDataProvider() = object : PlayerDataProvider {
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakeKalamDataProvider() = object : KalamDataProvider {
+fun fakeKalamController() = object : KalamController {
 
     override fun getKalamDataFlow(): Flow<PagingData<Kalam>> = flow {
         PagingData.from(
@@ -120,7 +120,7 @@ fun fakeKalam() = Kalam(1, "Kalam Title", 2, "1993", "Karachi", "", "", 0, 0)
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakePlaylistDataProvider() = object : PlaylistDataProvider {
+fun fakePlaylistController() = object : PlaylistController {
 
     override fun getPopupMenuItems(): List<DataMenuItem> = listOf()
     override fun showAddUpdatePlaylistDialog(): LiveData<Playlist?> = MutableLiveData(null)
@@ -147,7 +147,7 @@ fun fakePlaylist() = Playlist(1, "Karachi")
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakeMainDataProvider() = object : MainDataProvider {
+fun fakeMainController() = object : MainController {
 
     override fun popupMenuItems(): List<DataMenuItem> = listOf()
     override fun showUpdateButton(): LiveData<Boolean> = MutableLiveData(false)
@@ -165,7 +165,7 @@ fun fakeMainDataProvider() = object : MainDataProvider {
 // ---------------------------------------------------------------------------------- //
 
 @ExcludeFromJacocoGeneratedReport
-fun fakeHelpDataProvider() = object : HelpDataProvider {
+fun fakeHelpController() = object : HelpController {
 
     override fun getHelpContent(): Flow<List<HelpContent>> = MutableStateFlow(
         listOf(

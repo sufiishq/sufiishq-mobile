@@ -7,10 +7,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.fakeKalamDataProvider
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SITextField
@@ -24,7 +24,7 @@ fun SearchTextField(
     textColor: AuroraColor,
     lazyKalamItems: LazyPagingItems<Kalam>,
     trackListType: TrackListType,
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
     val searchText = rem("")
@@ -35,7 +35,7 @@ fun SearchTextField(
         placeholderText = trackListType.title,
         onValueChange = {
             searchText.value = it
-            kalamDataProvider.searchKalam(it, trackListType)
+            kalamController.searchKalam(it, trackListType)
             lazyKalamItems.refresh()
         }
     )
@@ -47,12 +47,12 @@ fun SearchTextField(
 @Composable
 fun SearchTextFieldPreviewLight() {
     AuroraLight {
-        val data = fakeKalamDataProvider()
+        val data = fakeKalamController()
         SearchTextField(
             AuroraColor.OnBackground,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
             TrackListType.All(optString(R.string.title_all_kalam)),
-            fakeKalamDataProvider()
+            fakeKalamController()
         )
     }
 }
@@ -62,12 +62,12 @@ fun SearchTextFieldPreviewLight() {
 @Composable
 fun SearchTextFieldPreviewDark() {
     AuroraDark {
-        val data = fakeKalamDataProvider()
+        val data = fakeKalamController()
         SearchTextField(
             AuroraColor.OnBackground,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
             TrackListType.All(optString(R.string.title_all_kalam)),
-            fakeKalamDataProvider()
+            fakeKalamController()
         )
     }
 }

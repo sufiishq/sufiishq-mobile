@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.KalamDataProvider
+import pk.sufiishq.app.data.controller.KalamController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIDivider
 import pk.sufiishq.aurora.layout.SIDialog
@@ -20,10 +20,10 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 @PackagePrivate
 @Composable
 fun PlaylistDialog(
-    kalamDataProvider: KalamDataProvider
+    kalamController: KalamController
 ) {
 
-    kalamDataProvider
+    kalamController
         .showPlaylistDialog()
         .observeAsState()
         .value
@@ -35,7 +35,7 @@ fun PlaylistDialog(
             SIDialog(
                 title = optString(R.string.title_playlist),
                 onDismissRequest = {
-                    kalamDataProvider.dismissPlaylistDialog()
+                    kalamController.dismissPlaylistDialog()
                 }
             ) {
 
@@ -51,7 +51,7 @@ fun PlaylistDialog(
                                 title = item.title,
                                 rowHeight = 50,
                                 onClick = {
-                                    kalamDataProvider.addToPlaylist(kalam, item)
+                                    kalamController.addToPlaylist(kalam, item)
                                 }
                             )
 

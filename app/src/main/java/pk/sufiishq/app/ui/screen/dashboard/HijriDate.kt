@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.providers.MainDataProvider
+import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
@@ -20,10 +20,10 @@ import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
 fun HijriDate(
-    mainDataProvider: MainDataProvider
+    mainController: MainController
 ) {
 
-    val hijriDate = mainDataProvider.getHijriDate().observeAsState()
+    val hijriDate = mainController.getHijriDate().observeAsState()
 
     SIBox(
         bgColor = AuroraColor.SecondaryVariant,

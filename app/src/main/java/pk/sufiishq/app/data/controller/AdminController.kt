@@ -1,4 +1,4 @@
-package pk.sufiishq.app.data.providers
+package pk.sufiishq.app.data.controller
 
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
@@ -7,7 +7,7 @@ import pk.sufiishq.app.core.firebase.AuthState
 import pk.sufiishq.app.core.firebase.HighlightStatus
 import pk.sufiishq.app.models.Maintenance
 
-interface AdminSettingsDataProvider {
+interface AdminController {
 
     // -------------------------------------------------------------------- //
     // signatures for base functionality

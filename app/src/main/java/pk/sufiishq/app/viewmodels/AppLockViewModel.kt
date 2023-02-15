@@ -9,7 +9,7 @@ import pk.sufiishq.app.core.applock.AppLockManager
 import pk.sufiishq.app.core.applock.AppLockState
 import pk.sufiishq.app.core.applock.BiometricManager
 import pk.sufiishq.app.core.applock.BiometricStatus
-import pk.sufiishq.app.data.providers.AppLockController
+import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.app.models.AutoLockDuration
 import pk.sufiishq.app.models.SecurityQuestion
 
