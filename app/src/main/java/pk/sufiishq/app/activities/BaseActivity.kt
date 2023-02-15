@@ -15,7 +15,6 @@ import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
 import pk.sufiishq.app.viewmodels.MainViewModel
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -51,9 +50,6 @@ open class BaseActivity : FragmentActivity() {
         // check any incoming update from play-store
         mainDataProvider.checkUpdate(this@BaseActivity)
 
-        // handle all incoming deep links and extract the kalam-id and play
-        handleDeeplink(intent)
-
         authManager.registerActivityResultListener(this)
     }
 
@@ -70,12 +66,4 @@ open class BaseActivity : FragmentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        handleDeeplink(intent)
-    }
-
-    private fun handleDeeplink(intent: Intent?) {
-        appManager.handleShareKalamDeepLink(intent, this)
-    }
 }

@@ -78,7 +78,6 @@ fun fakeKalamDataProvider() = object : KalamDataProvider {
 
     override fun changeTrack(kalam: Kalam, trackListType: TrackListType) = Unit
 
-    override fun showKalamShareIndicatorDialog(): LiveData<Boolean> = MutableLiveData(false)
     override fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) = Unit
 
     override fun markAsFavorite(kalam: Kalam) = Unit

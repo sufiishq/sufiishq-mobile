@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
 
         setContent {
             Aurora {
-                MainHostView(maintenanceManager, appLockManager)
+                MainHostView(maintenanceManager, appLockManager, player)
             }
         }
     }

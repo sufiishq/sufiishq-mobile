@@ -81,14 +81,6 @@ class KalamViewModel @Inject constructor(
         playerManager.changeTrack(kalam, trackListType)
     }
 
-    // -------------------------------------------------------------------- //
-    // kalam share functionality
-    // -------------------------------------------------------------------- //
-
-    override fun showKalamShareIndicatorDialog(): LiveData<Boolean> {
-        return appManager.showKalamShareIndicatorDialog()
-    }
-
     override fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {
         appManager.shareKalam(kalam, componentActivity)
     }

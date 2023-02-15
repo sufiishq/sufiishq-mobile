@@ -7,16 +7,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import pk.sufiishq.app.core.applock.AppLockManager
 import pk.sufiishq.app.core.applock.AppLockState
-import pk.sufiishq.app.data.providers.AppLockController
-import pk.sufiishq.app.models.SecurityQuestion
 import pk.sufiishq.app.core.applock.BiometricManager
 import pk.sufiishq.app.core.applock.BiometricStatus
+import pk.sufiishq.app.data.providers.AppLockController
 import pk.sufiishq.app.models.AutoLockDuration
+import pk.sufiishq.app.models.SecurityQuestion
 
 @HiltViewModel
 class AppLockViewModel @Inject constructor(
-    private val appLockManager: AppLockManager,
-    private val bioMetricManager: BiometricManager
+    private val appLockManager: AppLockManager, private val bioMetricManager: BiometricManager
 ) : ViewModel(), AppLockController {
 
     private var biometricVerified = false
@@ -45,7 +44,8 @@ class AppLockViewModel @Inject constructor(
                     is BiometricStatus.UsePin -> {
                         setState(AppLockState.NewPinPrompt)
                     }
-                    else -> { /* do nothing otherwise */ }
+                    else -> { /* do nothing otherwise */
+                    }
                 }
             }
         } else {
@@ -103,7 +103,11 @@ class AppLockViewModel @Inject constructor(
     }
 
     override fun changePinGenerated(pin: String, cameFromForgotPin: Boolean) {
-        appLockManager.setState(AppLockState.ConfirmChangePinPrompt(previousPin = pin, cameFromForgotPin = cameFromForgotPin))
+        appLockManager.setState(
+            AppLockState.ConfirmChangePinPrompt(
+                previousPin = pin, cameFromForgotPin = cameFromForgotPin
+            )
+        )
     }
 
     override fun changePinConfirmed(pin: String) {

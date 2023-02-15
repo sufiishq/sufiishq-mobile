@@ -33,7 +33,6 @@ interface KalamDataProvider {
     // signatures for share kalam
     // -------------------------------------------------------------------- //
 
-    fun showKalamShareIndicatorDialog(): LiveData<Boolean>
     fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity)
 
     // -------------------------------------------------------------------- //

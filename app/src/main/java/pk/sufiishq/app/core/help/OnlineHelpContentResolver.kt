@@ -10,6 +10,8 @@ import org.json.JSONObject
 import pk.sufiishq.app.di.qualifier.HelpJson
 import pk.sufiishq.app.models.HelpContent
 
+private const val HELP_URL = "https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/app/src/main/assets/help/help.json"
+
 class OnlineHelpContentResolver @Inject constructor(
     @HelpJson private val helpJson: JSONObject,
     private val helpContentService: HelpContentService,
@@ -21,7 +23,7 @@ class OnlineHelpContentResolver @Inject constructor(
         return flow {
 
             try {
-                val result = helpContentService.getHelp().execute()
+                val result = helpContentService.getHelp(HELP_URL).execute()
                 if (result.isSuccessful) {
                     emit(transformer.transform(JSONObject(result.body()!!.string())))
                 } else {

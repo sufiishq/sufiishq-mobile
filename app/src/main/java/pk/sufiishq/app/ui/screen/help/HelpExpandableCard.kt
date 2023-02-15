@@ -29,7 +29,6 @@ import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIExpandableCard
-import pk.sufiishq.aurora.widgets.SIZoomableDialog
 
 @PackagePrivate
 @Composable
@@ -64,14 +63,13 @@ fun HelpExpandableCard(
                     textColor = textColor,
                     textSize = TextSize.Small
                 )
-                is HelpData.Photo -> SIZoomableDialog {
-                    NetworkImage(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp),
-                        url = it.path,
-                    )
-                }
+                is HelpData.Photo -> NetworkImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp),
+                    url = it.path,
+                )
+
                 is HelpData.Divider -> Divider(
                     thickness = it.height.dp,
                     modifier = Modifier

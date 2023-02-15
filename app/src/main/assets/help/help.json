@@ -27,7 +27,7 @@
             "content": [
                 "{'image': 'https://www.sufiishq.pk/media/help/images/dashboard_buttons.jpg'}",
                 "{'spacer': 15}",
-                "There are four main button available on the dashboard.",
+                "There are five main button available on the dashboard.",
                 "{'spacer': 15}",
                 "**• All Kalam** this button is showing the total count of all of kalam in the application and when will take you to the __All Kalam__ screen when you clicked.",
                 "{'spacer': 10}",
@@ -35,7 +35,9 @@
                 "{'spacer': 10}",
                 "**• Favorite** this button is showing only the favorite kalam count and that will take you to the __Favorite Kalam__ screen when you clicked.",
                 "{'spacer': 10}",
-                "**• Playlist** this button is showing a count of playlists which is created by the user and when will take you to the __Playlist__ screen when you clicked."
+                "**• Playlist** this button is showing a count of playlists which is created by the user and when will take you to the __Playlist__ screen when you clicked.",
+                "{'spacer': 10}",
+                "**• Navigation** this button will be used to open a navigation menu drawer."
             ]
         },
         {

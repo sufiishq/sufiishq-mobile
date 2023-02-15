@@ -27,3 +27,10 @@ fun Kalam.offlineFile(): File? {
         })
     }
 }
+
+fun Kalam.metaInfo(): String {
+    return buildString {
+        append(location)
+        if (recordeDate.isNotEmpty()) append(" - $recordeDate")
+    }
+}

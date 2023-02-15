@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.applock.BiometricStatus
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.hasBiometricCapability
 import timber.log.Timber
@@ -60,17 +59,9 @@ class BiometricManager @Inject constructor(
         biometricPrompt.authenticate(createPromptInfo(allowUsePin))
     }
 
-    fun isBiometricVerified(): Boolean {
-        return biometricVerified
-    }
-
     private fun createPromptInfo(allowUsePin: Boolean): BiometricPrompt.PromptInfo {
         return BiometricPrompt.PromptInfo.Builder()
             .setTitle(getString(R.string.app_name))
-            .setSubtitle("setup fingerprint")
-            //.setDescription(getString(R.string.prompt_info_description))
-            // Authenticate without requiring the user to press a "confirm"
-            // button after satisfying the biometric check
             .setConfirmationRequired(false)
             .setNegativeButtonText(if (allowUsePin) "Use PIN" else "Cancel")
             .build()

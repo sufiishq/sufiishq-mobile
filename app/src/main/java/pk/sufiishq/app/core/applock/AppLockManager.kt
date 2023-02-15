@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import java.util.Calendar
+import java.util.*
 import javax.inject.Inject
 import pk.sufiishq.app.models.AppLockStatus
 import pk.sufiishq.app.models.AutoLockDuration
@@ -16,13 +16,15 @@ import pk.sufiishq.app.utils.putInStorage
 class AppLockManager @Inject constructor(
     private val gson: Gson,
     private val biometricManager: BiometricManager
-){
+) {
 
     private val activeState = MutableLiveData<AppLockState>(AppLockState.Setup)
     private val autoLockDuration = MutableLiveData(instantAutoLockDuration())
     private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
-    init { setUpState() }
+    init {
+        setUpState()
+    }
 
     private fun setUpState() {
         if (userHasAlreadyLockSetUp()) {
@@ -42,7 +44,11 @@ class AppLockManager @Inject constructor(
         activeState.postValue(newState)
     }
 
-    fun registerNewPin(securityQuestion: SecurityQuestion, generatedPin: String, biometricEnable: Boolean) {
+    fun registerNewPin(
+        securityQuestion: SecurityQuestion,
+        generatedPin: String,
+        biometricEnable: Boolean
+    ) {
         savePin(generatedPin)
         setBiometric(biometricEnable)
         setSecurityQuestion(securityQuestion)
@@ -57,12 +63,11 @@ class AppLockManager @Inject constructor(
         removePin()
         setBiometric(false)
         BACKUP_SECURITY_QUESTION.putInStorage("")
-        //BACKUP_SECURITY_ANSWER.putInStorage("")
         AUTO_LOCK_DURATION.putInStorage("")
         setState(AppLockState.Setup)
     }
 
-    fun changePinConfirmed(pin: String){
+    fun changePinConfirmed(pin: String) {
         SAVED_PIN.putInStorage(pin)
         setSettingState(
             message = "Pin successfully changed",
@@ -86,10 +91,10 @@ class AppLockManager @Inject constructor(
                     }
                 }
             } else {
-               setSettingState(
-                   message = "You need to enable the fingerprint option from the mobile setting first.",
-                   biometricEnable = false
-               )
+                setSettingState(
+                    message = "You need to enable the fingerprint option from the mobile setting first.",
+                    biometricEnable = false
+                )
             }
         }
     }
@@ -134,7 +139,9 @@ class AppLockManager @Inject constructor(
     }
 
     fun isBiometricEnabled(): Boolean {
-        return biometricManager.userHasBiometricCapability() && HAS_BIOMETRIC_ENABLE.getFromStorage(false)
+        return biometricManager.userHasBiometricCapability() && HAS_BIOMETRIC_ENABLE.getFromStorage(
+            false
+        )
     }
 
     fun forgotPin() {
@@ -143,10 +150,6 @@ class AppLockManager @Inject constructor(
 
     fun setExitAppTime() {
         EXIT_APP_TIME.putInStorage(Calendar.getInstance().timeInMillis)
-    }
-
-    fun getExitAppTime(): Long {
-        return EXIT_APP_TIME.getFromStorage(0L)
     }
 
     fun getAppLockStatus(): LiveData<AppLockStatus?> {
@@ -159,6 +162,10 @@ class AppLockManager @Inject constructor(
                 setAppLockStatus(null)
             }
         }
+    }
+
+    private fun getExitAppTime(): Long {
+        return EXIT_APP_TIME.getFromStorage(0L)
     }
 
     private fun checkAppLockStatus() {
