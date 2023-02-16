@@ -37,7 +37,7 @@ class AdminSettingsRepository @Inject constructor(
                     .getValue(Long::class.java)!!,
                 endDateTime = data.child(FirebaseDatabaseReference.END_DATE_TIME)
                     .getValue(Long::class.java)!!,
-                title = data.child(FirebaseDatabaseReference.TITLE).getValue(String::class.java)!!,
+                title = data.child(FirebaseDatabaseReference.TITLE).getValue(String::class.java),
                 detail = data.child(FirebaseDatabaseReference.DETAIL)
                     .getValue(String::class.java)!!,
                 contacts = resolveContacts(data)

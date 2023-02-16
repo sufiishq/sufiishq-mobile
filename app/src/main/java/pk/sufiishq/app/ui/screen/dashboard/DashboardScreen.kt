@@ -142,7 +142,7 @@ fun DashboardScreen(
                                 title = all.value,
                                 count = dashboardController.countAll().observeAsState()
                                     .optValue(0),
-                                icon = R.drawable.ic_outline_check_circle_24,
+                                icon = R.drawable.round_check_circle_24,
                                 paddingModifier = Modifier.padding(0.dp, 0.dp, 6.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -159,7 +159,7 @@ fun DashboardScreen(
                                 title = favorites.value,
                                 count = dashboardController.countFavorites().observeAsState()
                                     .optValue(0),
-                                icon = R.drawable.ic_round_favorite_border_24,
+                                icon = R.drawable.round_favorite_24,
                                 paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
                                 navigate = {
                                     navController.navigate(
@@ -182,7 +182,7 @@ fun DashboardScreen(
                                 title = downloads.value,
                                 count = dashboardController.countDownloads().observeAsState()
                                     .optValue(0),
-                                icon = R.drawable.ic_outline_cloud_download_24,
+                                icon = R.drawable.round_cloud_download_24,
                                 paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -199,7 +199,7 @@ fun DashboardScreen(
                                 title = playlist.value,
                                 count = dashboardController.countPlaylist().observeAsState()
                                     .optValue(0),
-                                icon = R.drawable.ic_outline_playlist_play_24,
+                                icon = R.drawable.round_format_list_bulleted_24,
                                 paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
                                 navigate = {
                                     navController.navigate(ScreenType.Playlist.buildRoute())

@@ -45,17 +45,9 @@
             "content": [
                 "{'image': 'https://www.sufiishq.pk/media/help/images/player.jpg'}",
                 "{'spacer': 15}",
-                "The player having multiple options to manage the playing kalam.",
-                "{'spacer': 15}",
-                "**1.** you can enable the shuffle option which will select random kalam on next from the active play type list.",
+                "The player having minimal options to manage the playing kalam.",
                 "{'spacer': 10}",
-                "**2.** you can press the left arrow button to play the previous kalam.",
-                "{'spacer': 10}",
-                "**3.** Play/Pause button you can play and pause active kalam with this button.",
-                "{'spacer': 10}",
-                "**4.** you can press the right arrow button to play the next kalam.",
-                "{'spacer': 10}",
-                "**5.** you can show menu items by clicking the three-dot vertical button."
+                "**1.** Play/Pause button you can play and pause active kalam with this button."
             ]
         },
         {

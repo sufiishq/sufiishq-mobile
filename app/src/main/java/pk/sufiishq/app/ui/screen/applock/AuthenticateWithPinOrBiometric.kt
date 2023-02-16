@@ -12,7 +12,6 @@ import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.app.utils.optString
-import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize
@@ -27,18 +26,21 @@ fun AuthenticateWithPinOrBiometric(
 ) {
     SIBox(modifier = Modifier.fillMaxSize()) {
 
+        AppLockHeader(
+            modifier = Modifier.align(Alignment.TopCenter),
+            buttonTitle = optString(R.string.label_forgot_pin),
+            onButtonClick = {
+                appLockController.forgotPin()
+            }
+        )
+
         SIColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SIButton(
-                text = optString(R.string.label_forgot_pin),
-                onClick = {
-                    appLockController.forgotPin()
-                }
-            )
+
             SIHeightSpace(value = 36)
             SIText(
                 text = optString(R.string.label_enter_pin),

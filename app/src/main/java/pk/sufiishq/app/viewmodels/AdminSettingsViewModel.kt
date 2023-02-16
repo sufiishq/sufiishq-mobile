@@ -212,13 +212,6 @@ class AdminSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun validateTitle(block: () -> Unit) {
-        getTitle()
-            .takeIf { it.value?.trim()?.isNotEmpty() == true }
-            ?.apply { block() }
-            ?: showSnackbar(getString(R.string.msg_title_required))
-    }
-
     private fun validateDetail(block: () -> Unit) {
         getDetail()
             .takeIf { it.value?.trim()?.isNotEmpty() == true }
@@ -227,11 +220,9 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     private fun launchWithValidation(block: suspend CoroutineScope.() -> Unit) {
-        validateTitle {
-            validateDetail {
-                launchAsyncWithOnline {
-                    block()
-                }
+        validateDetail {
+            launchAsyncWithOnline {
+                block()
             }
         }
     }

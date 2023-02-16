@@ -38,14 +38,14 @@ fun PlaylistScreen(
     val playlist = rem(Playlist(0, ""))
     val allPlaylist = playlistController.getAll().observeAsState().optValue(listOf())
     val popupMenuItems = playlistController.getPopupMenuItems()
-
     val listState = rememberLazyListState()
+    val fabEnable = allPlaylist.size < 20
 
     SIScaffold(
-        onFloatingButtonAction = {
-            showAddUpdatePlaylistDialog.value = playlist.value
+        onFloatingButtonAction = fabEnable.takeIf { it }?.let {
+            { showAddUpdatePlaylistDialog.value = playlist.value }
         },
-        isVisibleFAB = listState.isScrollingUp()
+        isVisibleFAB = fabEnable && listState.isScrollingUp()
     ) {
         SILazyColumn(
             modifier = Modifier.fillMaxSize(),

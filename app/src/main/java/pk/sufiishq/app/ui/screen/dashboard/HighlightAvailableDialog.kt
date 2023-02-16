@@ -45,12 +45,16 @@ fun HighlightAvailableDialog(
             val context = LocalContext.current
             val highlight = this@apply
 
-            SIText(
-                text = highlight.title,
-                textColor = it,
-                fontWeight = FontWeight.Bold
-            )
-            SIHeightSpace(value = 12)
+            highlight.title?.apply {
+
+                SIText(
+                    text = highlight.title,
+                    textColor = it,
+                    fontWeight = FontWeight.Bold
+                )
+                SIHeightSpace(value = 12)
+            }
+
             SIText(
                 modifier = Modifier
                     .heightIn(max = 250.dp)

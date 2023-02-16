@@ -119,7 +119,7 @@ class HighlightManager @Inject constructor(
         return contacts
     }
 
-    fun setTitle(newTitle: String) {
+    fun setTitle(newTitle: String?) {
         title.value = newTitle
     }
 
@@ -167,7 +167,7 @@ class HighlightManager @Inject constructor(
         val highlight = Highlight(
             startDateTime = buildDateTime(startDate.value!!, startTime.value!!),
             endDateTime = buildDateTime(endDate.value!!, endTime.value!!),
-            title = title.value!!,
+            title = title.value,
             detail = detail.value!!,
             contacts = resolveContacts()
         )

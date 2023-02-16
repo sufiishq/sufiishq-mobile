@@ -50,6 +50,8 @@ fun AppLockSetting(
         }
     }
 
+    Header()
+
     SIColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +61,7 @@ fun AppLockSetting(
         val param = rem<ConfirmDialogParam?>(null)
         ConfirmationDialog(state = param)
 
-        Header()
+
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
             infoDrawableId = R.drawable.change_pin,
