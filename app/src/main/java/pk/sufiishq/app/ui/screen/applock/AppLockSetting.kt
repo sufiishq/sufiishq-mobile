@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,30 +53,23 @@ fun AppLockSetting(
     appLockController: AppLockController,
     scaffoldState: ScaffoldState,
     snackbarMessage: String?,
-    biometricEnable: Boolean
+    biometricEnable: Boolean,
 ) {
-
     val fragmentActivity = LocalContext.current as FragmentActivity
     val autoLockDuration = appLockController.getAutoLockDuration()
 
     snackbarMessage?.let {
         val scope = rememberCoroutineScope()
-        scope.launch {
-            scaffoldState.snackbarHostState.showSnackbar(snackbarMessage)
-        }
+        scope.launch { scaffoldState.snackbarHostState.showSnackbar(snackbarMessage) }
     }
 
     Header()
 
     SIColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
     ) {
-
         val param = rem<ConfirmDialogParam?>(null)
         ConfirmationDialog(state = param)
-
 
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
@@ -68,9 +77,7 @@ fun AppLockSetting(
             title = optString(R.string.title_change_pin),
             detail = optString(R.string.detail_change_pin),
             actionButtonTitle = optString(R.string.label_change),
-            actionButtonClick = {
-                appLockController.userWantChangePin()
-            }
+            actionButtonClick = { appLockController.userWantChangePin() },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithToggle(
@@ -78,9 +85,7 @@ fun AppLockSetting(
             title = optString(R.string.title_toggle_biometric),
             detail = optString(R.string.detail_toggle_biometric),
             isCheck = biometricEnable,
-            onCheckedChanged = {
-                appLockController.toggleBiometric(fragmentActivity)
-            }
+            onCheckedChanged = { appLockController.toggleBiometric(fragmentActivity) },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
@@ -88,9 +93,7 @@ fun AppLockSetting(
             title = optString(R.string.title_update_security_question),
             detail = optString(R.string.detail_update_security_question),
             actionButtonTitle = optString(R.string.label_update),
-            actionButtonClick = {
-                appLockController.userWantUpdateSecurityQuestion()
-            }
+            actionButtonClick = { appLockController.userWantUpdateSecurityQuestion() },
         )
         SIHeightSpace(value = 12)
         AppLockDurationServiceCard(
@@ -98,9 +101,7 @@ fun AppLockSetting(
             title = optString(R.string.title_app_lock),
             detail = optString(R.string.detail_change_app_lock_time),
             selectedDurationCode = autoLockDuration.value!!.code,
-            onDurationChanged = {
-                appLockController.updateAutoLockDuration(it)
-            }
+            onDurationChanged = { appLockController.updateAutoLockDuration(it) },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
@@ -109,10 +110,11 @@ fun AppLockSetting(
             detail = optString(R.string.detail_remove_app_lock),
             actionButtonTitle = optString(R.string.label_remove),
             actionButtonClick = {
-                param.value = ConfirmDialogParam(getString(R.string.msg_confirm_remove_app_lock)) {
-                    appLockController.removeAppLock()
-                }
-            }
+                param.value =
+                    ConfirmDialogParam(getString(R.string.msg_confirm_remove_app_lock)) {
+                        appLockController.removeAppLock()
+                    }
+            },
         )
     }
 }
@@ -120,8 +122,7 @@ fun AppLockSetting(
 @Composable
 private fun Header() {
     SIRow(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         bgColor = AuroraColor.SecondaryVariant,
         padding = 12,
         radius = 4,
@@ -129,13 +130,13 @@ private fun Header() {
     ) {
         SIImage(
             modifier = Modifier.height(30.dp),
-            resId = R.drawable.shield
+            resId = R.drawable.shield,
         )
         SIWidthSpace(value = 8)
         SIText(
             text = optString(R.string.label_setting),
             textColor = it,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.utils
 
 import android.content.Context
@@ -20,7 +36,7 @@ class UtilExtTest : SufiIshqTest() {
     @Test
     fun testApp_shouldReturn_nonNull() {
         mockApp()
-        assertNotNull(app())
+        assertNotNull(getApp())
     }
 
     @Test
@@ -38,7 +54,7 @@ class UtilExtTest : SufiIshqTest() {
     @Test
     fun testCopyAsNew_shouldReturn_deepCopyAlongWithDefaultValue() {
         val kalam = sampleKalam()
-        val copyKalam = kalam.copyWithDefaults()
+        val copyKalam = kalam.copy()
 
         assertEquals(kalam.hashCode(), copyKalam.hashCode())
 
@@ -49,17 +65,18 @@ class UtilExtTest : SufiIshqTest() {
     @Test
     fun testCopyAsNew_shouldReturn_deepCopyAlongWithUserDefinedValue() {
         val kalam = sampleKalam()
-        val copyKalam = kalam.copyWithDefaults(
-            id = 2,
-            title = "new-title",
-            code = 2,
-            recordedDate = "1999",
-            location = "Lahore",
-            onlineSource = "online-src",
-            offlineSource = "offline-src",
-            isFavorite = 0,
-            playlistId = 2
-        )
+        val copyKalam =
+            kalam.copy(
+                id = 2,
+                title = "new-title",
+                code = 2,
+                recordeDate = "1999",
+                location = "Lahore",
+                onlineSource = "online-src",
+                offlineSource = "offline-src",
+                isFavorite = 0,
+                playlistId = 2,
+            )
 
         // both object should point different memory reference
         assertNotEquals(kalam.hashCode(), copyKalam.hashCode())
@@ -69,44 +86,14 @@ class UtilExtTest : SufiIshqTest() {
     }
 
     @Test
-    fun testObserveOnce_shouldObserve_onlyOneTime() {
-        val data = MutableLiveData("data")
-        data.observeOnce(mockLifecycleOwner()) {
-            assertEquals("data", it)
-        }
-        data.postValue("new data")
-    }
-
-    @Test
-    fun testCheckValue_shouldReturn_notEmptyValue() {
-        assertEquals("not_empty", "data".checkValue("not_empty", "empty"))
-    }
-
-    @Test
-    fun testCheckValue_shouldReturn_emptyValue() {
-        assertEquals("empty", "".checkValue("not_empty", "empty"))
-    }
-
-    @Test
-    fun testIfNotEmpty_shouldPost_callbackWithTrimValue() {
-        "    data     ".ifNotEmpty {
-            assertEquals("data", it)
-        }
-    }
-
-    @Test
     fun testHasOfflineSource_shouldReturn_true() {
-        val kalam = mockk<Kalam> {
-            every { offlineSource } returns "offline-src"
-        }
+        val kalam = mockk<Kalam> { every { offlineSource } returns "offline-src" }
         assertTrue(kalam.hasOfflineSource())
     }
 
     @Test
     fun testHasOfflineSource_shouldReturn_false() {
-        val kalam = mockk<Kalam> {
-            every { offlineSource } returns ""
-        }
+        val kalam = mockk<Kalam> { every { offlineSource } returns "" }
         assertFalse(kalam.hasOfflineSource())
     }
 
@@ -115,13 +102,9 @@ class UtilExtTest : SufiIshqTest() {
         mockkStatic(Context::isNetworkAvailable)
         mockkStatic(Kalam::hasOfflineSource)
 
-        val context = mockk<Context> {
-            every { isNetworkAvailable() } returns true
-        }
+        val context = mockk<Context> { every { isNetworkAvailable() } returns true }
 
-        val kalam = mockk<Kalam> {
-            every { hasOfflineSource() } returns true
-        }
+        val kalam = mockk<Kalam> { every { hasOfflineSource() } returns true }
 
         assertTrue(kalam.canPlay(context))
     }
@@ -132,14 +115,13 @@ class UtilExtTest : SufiIshqTest() {
         mockkStatic(Context::toast)
         mockkStatic(Kalam::hasOfflineSource)
 
-        val context = mockk<Context> {
-            every { isNetworkAvailable() } returns false
-            every { toast(any()) } returns Unit
-        }
+        val context =
+            mockk<Context> {
+                every { isNetworkAvailable() } returns false
+                every { toast(any()) } returns mockk()
+            }
 
-        val kalam = mockk<Kalam> {
-            every { hasOfflineSource() } returns false
-        }
+        val kalam = mockk<Kalam> { every { hasOfflineSource() } returns false }
 
         assertFalse(kalam.canPlay(context))
     }
@@ -159,7 +141,7 @@ class UtilExtTest : SufiIshqTest() {
     private fun verifyKalamAssertion(
         expectedKalam: Kalam,
         actualKalam: Kalam,
-        checkEquality: Boolean
+        checkEquality: Boolean,
     ) {
         if (checkEquality) {
             assertEquals(expectedKalam.id, actualKalam.id)

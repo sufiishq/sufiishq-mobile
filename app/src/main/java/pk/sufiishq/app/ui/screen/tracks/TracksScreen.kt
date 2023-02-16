@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.foundation.layout.Arrangement
@@ -26,33 +42,33 @@ import pk.sufiishq.aurora.theme.AuroraLight
 @Composable
 fun TracksScreen(
     kalamController: KalamController = hiltViewModel<KalamViewModel>(),
-    trackListType: TrackListType
+    trackListType: TrackListType,
 ) {
-
     kalamController.searchKalam("", trackListType)
 
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamController.getKalamDataFlow().collectAsLazyPagingItems()
 
     SIColumn { textColor ->
-
         SearchTextField(
-            textColor, lazyKalamItems, trackListType, kalamController
+            textColor,
+            lazyKalamItems,
+            trackListType,
+            kalamController,
         )
 
         SILazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             hasItems = lazyKalamItems.itemCount > 0,
-            noItemText = optString(R.string.dynamic_no_kalam_found, trackListType.title)
+            noItemText = optString(R.string.dynamic_no_kalam_found, trackListType.title),
         ) {
             items(lazyKalamItems) { track ->
                 track?.run {
-
                     KalamItem(
                         kalam = track,
                         trackListType = trackListType,
-                        kalamController = kalamController
+                        kalamController = kalamController,
                     )
                 }
             }
@@ -61,17 +77,17 @@ fun TracksScreen(
 
     // kalam confirm delete dialog
     KalamConfirmDeleteDialog(
-        kalamController = kalamController
+        kalamController = kalamController,
     )
 
     // kalam split dialog
     KalamSplitDialog(
-        kalamController = kalamController
+        kalamController = kalamController,
     )
 
     // kalam download dialog
     KalamDownloadDialog(
-        kalamController = kalamController
+        kalamController = kalamController,
     )
 
     // playlist dialog
@@ -87,7 +103,7 @@ fun TracksPreviewLight() {
     AuroraLight {
         TracksScreen(
             kalamController = fakeKalamController(),
-            trackListType = TrackListType.All(optString(R.string.title_all_kalam))
+            trackListType = TrackListType.All(optString(R.string.title_all_kalam)),
         )
     }
 }
@@ -99,8 +115,7 @@ fun TracksPreviewDark() {
     AuroraDark {
         TracksScreen(
             kalamController = fakeKalamController(),
-            trackListType = TrackListType.All(optString(R.string.title_all_kalam))
+            trackListType = TrackListType.All(optString(R.string.title_all_kalam)),
         )
     }
 }
-

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player.state
 
 import pk.sufiishq.app.core.player.PlayerState
@@ -14,22 +30,21 @@ sealed class MediaState(val kalam: Kalam, val trackListType: TrackListType) {
         kalam: Kalam,
         val currentProgress: Int,
         val totalDuration: Int,
-        trackListType: TrackListType
-    ) :
-        MediaState(kalam, trackListType)
+        trackListType: TrackListType,
+    ) : MediaState(kalam, trackListType)
 
     class Pause(
         kalam: Kalam,
         val currentProgress: Int,
         val totalDuration: Int,
-        trackListType: TrackListType
+        trackListType: TrackListType,
     ) : MediaState(kalam, trackListType)
 
     class Resume(
         kalam: Kalam,
         val currentProgress: Int,
         val totalDuration: Int,
-        trackListType: TrackListType
+        trackListType: TrackListType,
     ) : MediaState(kalam, trackListType)
 
     class Complete(kalam: Kalam, trackListType: TrackListType) : MediaState(kalam, trackListType)
@@ -39,13 +54,11 @@ sealed class MediaState(val kalam: Kalam, val trackListType: TrackListType) {
         val what: Int,
         val extra: Int,
         val message: String,
-        trackListType: TrackListType
-    ) :
-        MediaState(kalam, trackListType)
+        trackListType: TrackListType,
+    ) : MediaState(kalam, trackListType)
 }
 
 fun MediaState.mapToIdleState(): KalamInfo {
-
     if (this is MediaState.Error) {
         quickToast(this.message)
     }
@@ -56,7 +69,7 @@ fun MediaState.mapToIdleState(): KalamInfo {
         0,
         0,
         false,
-        this.trackListType
+        this.trackListType,
     )
 }
 
@@ -65,13 +78,13 @@ fun MediaState.mapToLoadingState(kalamInfo: KalamInfo): KalamInfo {
         playerState = PlayerState.LOADING,
         kalam = this.kalam,
         enableSeekbar = false,
-        trackListType = this.trackListType
+        trackListType = this.trackListType,
     )
 }
 
 fun MediaState.Playing.mapToPlayingState(
     kalamInfo: KalamInfo?,
-    seekbarEnableOnPlaying: Boolean
+    seekbarEnableOnPlaying: Boolean,
 ): KalamInfo {
     return if (seekbarEnableOnPlaying) {
         KalamInfo(
@@ -80,7 +93,7 @@ fun MediaState.Playing.mapToPlayingState(
             this.currentProgress,
             this.totalDuration,
             true,
-            this.trackListType
+            this.trackListType,
         )
     } else {
         kalamInfo!!
@@ -94,7 +107,7 @@ fun MediaState.Pause.mapToPauseState(): KalamInfo {
         this.currentProgress,
         this.totalDuration,
         false,
-        this.trackListType
+        this.trackListType,
     )
 }
 
@@ -105,6 +118,6 @@ fun MediaState.Resume.mapToResumeState(): KalamInfo {
         this.currentProgress,
         this.totalDuration,
         true,
-        this.trackListType
+        this.trackListType,
     )
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player
 
 import android.content.Context
@@ -7,7 +23,6 @@ import android.media.MediaPlayer
 import android.media.PlaybackParams
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
@@ -16,13 +31,19 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
+import javax.inject.Inject
 
-class SufiishqMediaPlayer @Inject constructor(
+class SufiishqMediaPlayer
+@Inject
+constructor(
     @ApplicationContext private val appContext: Context,
     private val mediaPlayer: AppMediaPlayer,
     private val audioManager: AudioManager,
-    private val audioFocusRequestBuilder: AudioFocusRequest.Builder?
-) : AudioPlayer, AppMediaPlayer.OnProgressChangeListener, MediaPlayer.OnCompletionListener,
+    private val audioFocusRequestBuilder: AudioFocusRequest.Builder?,
+) :
+    AudioPlayer,
+    AppMediaPlayer.OnProgressChangeListener,
+    MediaPlayer.OnCompletionListener,
     MediaPlayer.OnPreparedListener,
     MediaPlayer.OnErrorListener,
     AudioManager.OnAudioFocusChangeListener {
@@ -46,16 +67,17 @@ class SufiishqMediaPlayer @Inject constructor(
         mediaPlayer.setOnErrorListener(this)
 
         when {
-            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) -> audioManager.requestAudioFocus(
-                audioFocusRequestBuilder!!.setOnAudioFocusChangeListener(this).build().also {
-                    audioFocusRequest = it
-                }
-            )
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ->
+                audioManager.requestAudioFocus(
+                    audioFocusRequestBuilder!!.setOnAudioFocusChangeListener(this).build().also {
+                        audioFocusRequest = it
+                    },
+                )
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) -> {
                 audioManager.requestAudioFocus(
                     this,
                     AudioManager.STREAM_MUSIC,
-                    AudioManager.AUDIOFOCUS_GAIN
+                    AudioManager.AUDIOFOCUS_GAIN,
                 )
             }
         }
@@ -63,9 +85,7 @@ class SufiishqMediaPlayer @Inject constructor(
 
     private fun changeState(state: MediaState) {
         activeState = state
-        listeners.forEach { listener ->
-            listener.onStateChange(activeState!!)
-        }
+        listeners.forEach { listener -> listener.onStateChange(activeState!!) }
     }
 
     private fun play() {
@@ -80,8 +100,8 @@ class SufiishqMediaPlayer @Inject constructor(
                 activeKalam,
                 mediaPlayer.currentPosition,
                 mediaPlayer.duration,
-                trackListType
-            )
+                trackListType,
+            ),
         )
     }
 
@@ -92,8 +112,8 @@ class SufiishqMediaPlayer @Inject constructor(
                 activeKalam,
                 mediaPlayer.currentPosition,
                 mediaPlayer.duration,
-                trackListType
-            )
+                trackListType,
+            ),
         )
     }
 
@@ -116,12 +136,13 @@ class SufiishqMediaPlayer @Inject constructor(
     }
 
     override fun doPlayOrPause() {
-
         when (activeState) {
             is MediaState.Idle -> play()
             is MediaState.Playing -> pause()
             is MediaState.Pause -> resume()
-            is MediaState.Complete, is MediaState.Error -> rePlay()
+            is MediaState.Complete,
+            is MediaState.Error,
+            -> rePlay()
             else -> Timber.w("why we get this state $activeState, please check something wrong happening")
         }
     }
@@ -141,9 +162,10 @@ class SufiishqMediaPlayer @Inject constructor(
             mediaPlayer.reset()
             changeState(MediaState.Stop(activeKalam, trackListType))
             when {
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) -> audioManager.abandonAudioFocusRequest(
-                    audioFocusRequest!!
-                )
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ->
+                    audioManager.abandonAudioFocusRequest(
+                        audioFocusRequest!!,
+                    )
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) -> audioManager.abandonAudioFocus(this)
             }
         } catch (ex: Exception) {
@@ -182,8 +204,8 @@ class SufiishqMediaPlayer @Inject constructor(
                     what,
                     extra,
                     getString(R.string.label_something_went_wrong),
-                    trackListType
-                )
+                    trackListType,
+                ),
             )
         }
         return true

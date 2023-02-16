@@ -1,22 +1,40 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import pk.sufiishq.app.core.firebase.HighlightManager
 import pk.sufiishq.app.data.controller.DashboardController
 import pk.sufiishq.app.data.repository.KalamRepository
 import pk.sufiishq.app.data.repository.PlaylistRepository
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.NavigationItem
+import javax.inject.Inject
 
 @HiltViewModel
-class DashboardViewModel @Inject constructor(
+class DashboardViewModel
+@Inject
+constructor(
     private val kalamRepository: KalamRepository,
     private val highlightManager: HighlightManager,
     private val playlistRepository: PlaylistRepository,
-    private val mainNavigationItems: List<NavigationItem>
+    private val mainNavigationItems: List<NavigationItem>,
 ) : ViewModel(), DashboardController {
 
     override fun getMainNavigationItems(): List<NavigationItem> = mainNavigationItems

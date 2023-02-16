@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.helpers
 
 import androidx.core.os.bundleOf
@@ -47,23 +63,22 @@ class ScreenTypeTest : SufiIshqTest() {
         assertEquals("screen_tracks/{trackType}/{title}/{playlistId}", tracksType.buildRoute())
         assertEquals(0, tracksType.deepLinks().size)
 
-
         val args = tracksType.arguments()
         assertEquals(3, args.size)
         assertEquals("trackType", args[0].name)
         assertEquals("title", args[1].name)
         assertEquals("playlistId", args[2].name)
 
-        val withArgs = tracksType.buildRoute(
-            ScreenType.Tracks.FAVORITES,
-            "Favorites",
-            "0"
-        )
+        val withArgs =
+            tracksType.buildRoute(
+                ScreenType.Tracks.FAVORITES,
+                "Favorites",
+                "0",
+            )
 
         assertEquals("screen_tracks/favorites/Favorites/0", withArgs)
 
-        val tracksListTypeAll =
-            getTrackListType(tracksType, getNavBackStackEntry("all", "All Kalam"))
+        val tracksListTypeAll = getTrackListType(tracksType, getNavBackStackEntry("all", "All Kalam"))
         assertTrue(tracksListTypeAll is TrackListType.All)
 
         val tracksListTypeDownload =
@@ -84,26 +99,29 @@ class ScreenTypeTest : SufiIshqTest() {
     private fun getNavBackStackEntry(
         trackType: String,
         title: String,
-        playlistId: Int = 0
+        playlistId: Int = 0,
     ): NavBackStackEntry {
         return mockk {
-            every { arguments } returns bundleOf(
-                "trackType" to trackType,
-                "title" to title,
-                "playlistId" to playlistId
-            )
+            every { arguments } returns
+                bundleOf(
+                    "trackType" to trackType,
+                    "title" to title,
+                    "playlistId" to playlistId,
+                )
         }
     }
 
     private fun getTrackListType(
         tracksType: ScreenType.Tracks,
-        navBackStackEntry: NavBackStackEntry
+        navBackStackEntry: NavBackStackEntry,
     ): TrackListType {
         return callInstanceMethod(
-            tracksType, "getTrackListType", ReflectionHelpers.ClassParameter(
+            tracksType,
+            "getTrackListType",
+            ReflectionHelpers.ClassParameter(
                 NavBackStackEntry::class.java,
-                navBackStackEntry
-            )
+                navBackStackEntry,
+            ),
         )
     }
 }

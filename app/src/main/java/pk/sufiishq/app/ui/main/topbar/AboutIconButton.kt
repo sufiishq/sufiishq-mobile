@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.main.topbar
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,17 +54,14 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun AboutIconButton(
-    onColor: AuroraColor
+    onColor: AuroraColor,
 ) {
-
     val showDialog = rem(false)
 
     SIIcon(
         resId = R.drawable.ic_outline_info_24,
         tint = onColor,
-        onClick = {
-            showDialog.value = true
-        }
+        onClick = { showDialog.value = true },
     )
 
     AboutDialog(showDialog = showDialog)
@@ -57,41 +70,36 @@ fun AboutIconButton(
 @Composable
 private fun AboutDialog(showDialog: MutableState<Boolean>) {
     if (showDialog.value) {
-
         SIDialog(
             bgColor = AuroraColor.Transparent,
-            onDismissRequest = {
-                showDialog.value = false
-            }
+            onDismissRequest = { showDialog.value = false },
         ) {
-
             SIConstraintLayout {
-
                 val (icon, content) = createRefs()
 
                 SISurface(
                     color = AuroraColor.Background,
                     shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier.constrainAs(content) {
+                    modifier =
+                    Modifier.constrainAs(content) {
                         start.linkTo(parent.start)
                         top.linkTo(parent.top, 50.dp)
                         end.linkTo(parent.end)
-                    }
+                    },
                 ) {
                     SIColumn(
-                        padding = 12
+                        padding = 12,
                     ) { textColor ->
-
                         SIHeightSpace(value = 50)
 
                         SIBox(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) { textColor ->
                             SIText(
                                 text = stringResource(id = R.string.app_name),
                                 textColor = textColor,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                         }
 
@@ -99,9 +107,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
 
                         val linkColor = AuroraColor.SecondaryVariant.color()
                         val annotatedString = buildAnnotatedString {
-
                             withStyle(style = SpanStyle(color = textColor.color())) {
-
                                 // creating a string to display in the Text
                                 val mStr = "Please use Sufi Ishq facebook page for any "
 
@@ -111,10 +117,13 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
 
                                 append(mStr)
                                 addStyle(
-                                    style = SpanStyle(
+                                    style =
+                                    SpanStyle(
                                         color = linkColor,
-                                        textDecoration = TextDecoration.Underline
-                                    ), start = mStartIndex, end = mEndIndex
+                                        textDecoration = TextDecoration.Underline,
+                                    ),
+                                    start = mStartIndex,
+                                    end = mEndIndex,
                                 )
 
                                 // attach a string annotation that
@@ -123,16 +132,14 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                     tag = "FACEBOOK_PAGE",
                                     annotation = "https://www.facebook.com/sufiishq.pk",
                                     start = mStartIndex,
-                                    end = mEndIndex
+                                    end = mEndIndex,
                                 )
 
                                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                     append("Issues, Problems ")
                                 }
                                 append("or ")
-                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                    append("Suggestion ")
-                                }
+                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) { append("Suggestion ") }
 
                                 append("\n\n")
 
@@ -140,23 +147,28 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                     append("Are you a Developer? \n")
                                 }
 
-                                append("You can contribute by joining the organization check the repository on Github ")
+                                append(
+                                    "You can contribute by joining the organization check the repository on Github ",
+                                )
 
                                 mStartIndex = toAnnotatedString().indexOf("Github")
                                 mEndIndex = mStartIndex + 6
 
                                 addStyle(
-                                    style = SpanStyle(
+                                    style =
+                                    SpanStyle(
                                         color = linkColor,
-                                        textDecoration = TextDecoration.Underline
-                                    ), start = mStartIndex, end = mEndIndex
+                                        textDecoration = TextDecoration.Underline,
+                                    ),
+                                    start = mStartIndex,
+                                    end = mEndIndex,
                                 )
 
                                 addStringAnnotation(
                                     tag = "GITHUB_REPO",
                                     annotation = "https://github.com/sufiishq/sufiishq-mobile",
                                     start = mStartIndex,
-                                    end = mEndIndex
+                                    end = mEndIndex,
                                 )
 
                                 append("join the Sufi Ishq slack workspace for developer conversation")
@@ -165,19 +177,22 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                 mEndIndex = mStartIndex + 9
 
                                 addStyle(
-                                    style = SpanStyle(
+                                    style =
+                                    SpanStyle(
                                         color = linkColor,
-                                        textDecoration = TextDecoration.Underline
-                                    ), start = mStartIndex, end = mEndIndex
+                                        textDecoration = TextDecoration.Underline,
+                                    ),
+                                    start = mStartIndex,
+                                    end = mEndIndex,
                                 )
 
                                 addStringAnnotation(
                                     tag = "SLACK_WORKSPACE",
-                                    annotation = "https://join.slack.com/t/sufiishq/shared_invite/zt-1eu7kr4ap-1q7BSwHLOlco62l3ZUgJ7g",
+                                    annotation =
+                                    "https://join.slack.com/t/sufiishq/shared_invite/zt-1eu7kr4ap-1q7BSwHLOlco62l3ZUgJ7g",
                                     start = mStartIndex,
-                                    end = mEndIndex
+                                    end = mEndIndex,
                                 )
-
                             }
                         }
 
@@ -188,22 +203,19 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                             onClick = {
                                 annotatedString
                                     .getStringAnnotations("FACEBOOK_PAGE", it, it)
-                                    .firstOrNull()?.let { stringAnnotation ->
-                                        mUriHandler.openUri(stringAnnotation.item)
-                                    }
+                                    .firstOrNull()
+                                    ?.let { stringAnnotation -> mUriHandler.openUri(stringAnnotation.item) }
 
-                                annotatedString
-                                    .getStringAnnotations("GITHUB_REPO", it, it)
-                                    .firstOrNull()?.let { stringAnnotation ->
-                                        mUriHandler.openUri(stringAnnotation.item)
-                                    }
+                                annotatedString.getStringAnnotations("GITHUB_REPO", it, it).firstOrNull()?.let {
+                                        stringAnnotation ->
+                                    mUriHandler.openUri(stringAnnotation.item)
+                                }
 
                                 annotatedString
                                     .getStringAnnotations("SLACK_WORKSPACE", it, it)
-                                    .firstOrNull()?.let { stringAnnotation ->
-                                        mUriHandler.openUri(stringAnnotation.item)
-                                    }
-                            }
+                                    .firstOrNull()
+                                    ?.let { stringAnnotation -> mUriHandler.openUri(stringAnnotation.item) }
+                            },
                         )
                     }
                 }
@@ -211,25 +223,21 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                 SIBox(
                     padding = 3,
                     bgColor = AuroraColor.Background,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .constrainAs(icon) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                        },
-                    contentAlignment = Alignment.Center
+                    modifier =
+                    Modifier.size(100.dp).clip(CircleShape).constrainAs(icon) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                    },
+                    contentAlignment = Alignment.Center,
                 ) {
                     SIBox(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape),
-                        contentAlignment = Alignment.Center
+                        modifier = Modifier.size(100.dp).clip(CircleShape),
+                        contentAlignment = Alignment.Center,
                     ) {
                         SIImage(
                             resId = R.drawable.sarkar,
-                            contentScale = ContentScale.FillWidth
+                            contentScale = ContentScale.FillWidth,
                         )
                     }
                 }
@@ -242,16 +250,12 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
 @Preview(showBackground = true)
 @Composable
 fun LightPreviewAboutDialog() {
-    AuroraLight {
-        AboutDialog(showDialog = rem(true))
-    }
+    AuroraLight { AboutDialog(showDialog = rem(true)) }
 }
 
 @ExcludeFromJacocoGeneratedReport
 @Preview(showBackground = true)
 @Composable
 fun DarkPreviewAboutDialog() {
-    AuroraDark {
-        AboutDialog(showDialog = rem(true))
-    }
+    AuroraDark { AboutDialog(showDialog = rem(true)) }
 }

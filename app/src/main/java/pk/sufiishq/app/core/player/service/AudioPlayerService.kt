@@ -1,10 +1,25 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player.service
 
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
@@ -20,24 +35,20 @@ import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-
 
 @AndroidEntryPoint
 class AudioPlayerService : LifecycleService(), PlayerStateListener {
 
-    @Inject
-    @AndroidMediaPlayer
+    @Inject @AndroidMediaPlayer
     lateinit var player: AudioPlayer
 
-    @Inject
-    lateinit var kalamRepository: KalamRepository
+    @Inject lateinit var kalamRepository: KalamRepository
 
-    @Inject
-    lateinit var activePlay: LastKalamPlayLiveData
+    @Inject lateinit var activePlay: LastKalamPlayLiveData
 
-    @IoDispatcher
-    @Inject
+    @IoDispatcher @Inject
     lateinit var dispatcher: CoroutineContext
 
     private val notification: PlayerNotification by lazy { PlayerNotification(this) }
@@ -51,22 +62,22 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
         job = null
         player.registerListener(this)
 
-        lifecycleScope.launch {
-            activePlay.asFlow().collectLatest(::kalamInfoCollected)
-        }
+        lifecycleScope.launch { activePlay.asFlow().collectLatest(::kalamInfoCollected) }
     }
 
     override fun onStateChange(mediaState: MediaState) {
         when (mediaState) {
-
             // start foreground notification when received state is prepared or resume
             is MediaState.Resume -> buildNotification(mediaState.kalam)
 
             // remove foreground notification when received state is pause or idle
-            is MediaState.Idle, is MediaState.Pause -> removeNotification()
+            is MediaState.Idle,
+            is MediaState.Pause,
+            -> removeNotification()
 
             // received different states
-            else -> { /* do nothing */
+            else -> {
+                /* do nothing */
             }
         }
     }
@@ -81,15 +92,12 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
 
     private fun kalamInfoCollected(kalamInfo: KalamInfo?) {
         kalamInfo?.let {
-            job = CoroutineScope(dispatcher).launch {
-                kalamRepository
-                    .getKalam(kalamInfo.kalam.id)
-                    .asFlow()
-                    .cancellable()
-                    .collectLatest {
+            job =
+                CoroutineScope(dispatcher).launch {
+                    kalamRepository.getKalam(kalamInfo.kalam.id).asFlow().cancellable().collectLatest {
                         kalamCollected(it, kalamInfo)
                     }
-            }
+                }
         }
     }
 

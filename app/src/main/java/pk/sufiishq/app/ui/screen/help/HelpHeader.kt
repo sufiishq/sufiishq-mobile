@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.help
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,59 +40,50 @@ fun HelpHeader(
     scaleAndVisibility: State<Float>,
 ) {
     SIBox(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(240.dp)
+        modifier = Modifier.fillMaxWidth().height(240.dp),
     ) {
-
         SIRow(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             SIBox(
                 padding = 6,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
+                modifier = Modifier.fillMaxSize().weight(1f),
             ) {
                 SIBox(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .graphicsLayer {
-                            translationY = firstItemTranslationY.value * 0.25f
-                            translationX = (firstItemTranslationY.value * 0.67f) * -1f
-                            scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                            scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                            alpha = scaleX
-                        }
+                    modifier =
+                    Modifier.align(Alignment.BottomEnd).graphicsLayer {
+                        translationY = firstItemTranslationY.value * 0.25f
+                        translationX = (firstItemTranslationY.value * 0.67f) * -1f
+                        scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                        scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                        alpha = scaleX
+                    },
                 ) {
                     SIImage(
                         resId = R.drawable.help_left_hand,
-                        tintColor = AuroraColor.SecondaryVariant
+                        tintColor = AuroraColor.SecondaryVariant,
                     )
                     SIImage(resId = R.drawable.help_left_hand_front)
                 }
-
             }
             SIBox(
                 padding = 6,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
+                modifier = Modifier.fillMaxSize().weight(1f),
             ) {
                 SIBox(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationY = firstItemTranslationY.value * 0.25f
-                            translationX = firstItemTranslationY.value * 0.67f
-                            scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                            scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                            alpha = scaleX
-                        }
-                        .align(Alignment.BottomStart)
+                    modifier =
+                    Modifier.graphicsLayer {
+                        translationY = firstItemTranslationY.value * 0.25f
+                        translationX = firstItemTranslationY.value * 0.67f
+                        scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                        scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                        alpha = scaleX
+                    }
+                        .align(Alignment.BottomStart),
                 ) {
                     SIImage(
                         resId = R.drawable.help_right_hand,
-                        tintColor = AuroraColor.SecondaryVariant
+                        tintColor = AuroraColor.SecondaryVariant,
                     )
                     SIImage(resId = R.drawable.help_right_hand_front)
                 }
@@ -84,15 +91,15 @@ fun HelpHeader(
         }
 
         SIBox(
-            modifier = Modifier
-                .graphicsLayer {
-                    translationY = firstItemTranslationY.value * 0.6f
-                    scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                    scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
-                    alpha = scaleX
-                }
+            modifier =
+            Modifier.graphicsLayer {
+                translationY = firstItemTranslationY.value * 0.6f
+                scaleX = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                scaleY = (1f - scaleAndVisibility.value).coerceIn(0f, 1f)
+                alpha = scaleX
+            }
                 .align(Alignment.TopCenter)
-                .padding(30.dp)
+                .padding(30.dp),
         ) {
             SIImage(resId = R.drawable.help_main, tintColor = AuroraColor.SecondaryVariant)
             SIImage(resId = R.drawable.help_main_front)

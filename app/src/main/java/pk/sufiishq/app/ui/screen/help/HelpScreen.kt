@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.help
 
 import androidx.compose.foundation.layout.Arrangement
@@ -27,15 +43,13 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun HelpScreen(
-    helpController: HelpController = hiltViewModel<HelpViewModel>()
+    helpController: HelpController = hiltViewModel<HelpViewModel>(),
 ) {
     val helpContent = helpController.getHelpContent().collectAsState(listOf())
 
     SIColumn(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
-
         val lazyListState = rememberLazyListState()
 
         val firstItemTranslationY = remember {
@@ -63,16 +77,14 @@ fun HelpScreen(
         val expandedIndex = rem(0)
 
         SILazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            state = lazyListState
+            state = lazyListState,
         ) {
-
             item {
                 HelpHeader(
                     firstItemTranslationY = firstItemTranslationY,
-                    scaleAndVisibility = scaleAndVisibility
+                    scaleAndVisibility = scaleAndVisibility,
                 )
             }
 
@@ -80,7 +92,7 @@ fun HelpScreen(
                 item {
                     SIBox(modifier = Modifier.fillMaxWidth()) {
                         SICircularProgressIndicator(
-                            strokeWidth = 2
+                            strokeWidth = 2,
                         )
                     }
                 }
@@ -103,7 +115,7 @@ fun HelpScreen(
 fun PreviewLightHelpView() {
     AuroraLight {
         HelpScreen(
-            helpController = fakeHelpController()
+            helpController = fakeHelpController(),
         )
     }
 }
@@ -114,7 +126,7 @@ fun PreviewLightHelpView() {
 fun PreviewDarkHelpView() {
     AuroraDark {
         HelpScreen(
-            helpController = fakeHelpController()
+            helpController = fakeHelpController(),
         )
     }
 }

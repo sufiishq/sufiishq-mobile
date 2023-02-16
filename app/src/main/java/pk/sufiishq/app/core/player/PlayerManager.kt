@@ -1,19 +1,37 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player
 
 import android.content.Context
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
 import pk.sufiishq.app.utils.canPlay
 import pk.sufiishq.app.utils.putInStorage
+import javax.inject.Inject
 
-class PlayerManager @Inject constructor(
+class PlayerManager
+@Inject
+constructor(
     @ApplicationContext private val appContext: Context,
-    private val gson: Gson
+    private val gson: Gson,
 ) {
 
     fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
@@ -32,8 +50,8 @@ class PlayerManager @Inject constructor(
                     totalDuration = 0,
                     false,
                     trackListType,
-                )
-            )
+                ),
+            ),
         )
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.foundation.clickable
@@ -37,13 +53,11 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun KalamSplitDialog(
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     val showSplitDialog = kalamController.showKalamSplitDialog().observeAsState()
 
     showSplitDialog.value?.apply {
-
         when (val status = splitStatus) {
             is SplitStatus.Start -> StartSplitView(this, kalamController)
             is SplitStatus.InProgress -> SplitInProgressView(this)
@@ -56,21 +70,16 @@ fun KalamSplitDialog(
 
 @Composable
 private fun StartSplitView(
-    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
+    splitKalamInfo: SplitKalamInfo,
+    kalamController: KalamController,
 ) {
-
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_cancel),
-        onNoClick = {
-            dismissDialog(kalamController)
-        },
+        onNoClick = { dismissDialog(kalamController) },
         onYesText = optString(R.string.label_preview),
-        onYesClick = {
-            startSplitting(kalamController)
-        }
+        onYesClick = { startSplitting(kalamController) },
     ) { textColor ->
-
         SIRangeSlider(
             value = splitKalamInfo.splitStart.toFloat()..splitKalamInfo.splitEnd.toFloat(),
             onValueChange = {
@@ -86,22 +95,23 @@ private fun StartSplitView(
                 kalamController.setSplitStart(start)
                 kalamController.setSplitEnd(end)
             },
-            valueRange = 0f..splitKalamInfo.kalamLength.toFloat()
+            valueRange = 0f..splitKalamInfo.kalamLength.toFloat(),
         )
 
         SIRow(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             SIText(
                 text = splitKalamInfo.splitStart.formatTime,
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
 
             SIText(
                 text = splitKalamInfo.splitEnd.formatTime,
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
         }
     }
@@ -109,40 +119,34 @@ private fun StartSplitView(
 
 @Composable
 private fun SplitCompletedView(
-    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
+    splitKalamInfo: SplitKalamInfo,
+    kalamController: KalamController,
 ) {
-
     val kalamTitle = rem("")
 
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_back),
-        onNoClick = {
-            backToDone(kalamController)
-        },
+        onNoClick = { backToDone(kalamController) },
         onYesText = optString(R.string.label_save),
-        onYesClick = {
-            saveKalam(kalamTitle.value.trim(), splitKalamInfo, kalamController)
-        }
+        onYesClick = { saveKalam(kalamTitle.value.trim(), splitKalamInfo, kalamController) },
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = kalamTitle.value,
-            onValueChange = {
-                kalamTitle.value = it
-            },
+            onValueChange = { kalamTitle.value = it },
             label = optString(R.string.label_kalam_title),
             emptyFieldError = optString(R.string.msg_kalam_title_required),
-            maxLength = KALAM_TITLE_LENGTH
+            maxLength = KALAM_TITLE_LENGTH,
         )
     }
 }
 
 @Composable
 private fun SplitDoneView(
-    splitKalamInfo: SplitKalamInfo, kalamController: KalamController
+    splitKalamInfo: SplitKalamInfo,
+    kalamController: KalamController,
 ) {
-
     val previewPlayStart = splitKalamInfo.previewPlayStart
     val previewKalamProgress = splitKalamInfo.previewKalamProgress
     val kalamPreviewLength = splitKalamInfo.previewKalamLength
@@ -150,51 +154,43 @@ private fun SplitDoneView(
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
         onNoText = optString(R.string.label_back),
-        onNoClick = {
-            backToStart(kalamController)
-        },
+        onNoClick = { backToStart(kalamController) },
         onYesText = optString(R.string.label_done),
-        onYesClick = {
-            done(kalamController)
-        }
+        onYesClick = { done(kalamController) },
     ) { textColor ->
-
         SIRow(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SIImage(
-                modifier = Modifier
-                    .width(35.dp)
-                    .clickable {
-                        kalamController.playSplitKalamPreview()
-                    },
+                modifier = Modifier.width(35.dp).clickable { kalamController.playSplitKalamPreview() },
                 resId = if (previewPlayStart) R.drawable.ic_pause else R.drawable.ic_play,
                 tintColor = textColor,
             )
 
-            SISlider(modifier = Modifier.padding(start = 8.dp),
+            SISlider(
+                modifier = Modifier.padding(start = 8.dp),
                 value = previewKalamProgress.toFloat(),
                 valueRange = 0f..kalamPreviewLength.toFloat(),
                 enabled = true,
-                onValueChange = {
-                    kalamController.updateSplitSeekbarValue(it)
-                })
+                onValueChange = { kalamController.updateSplitSeekbarValue(it) },
+            )
         }
 
         SIHeightSpace(value = 8)
 
         SIRow(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             SIText(
                 text = previewKalamProgress.formatTime,
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
             SIText(
                 text = kalamPreviewLength.formatTime,
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
         }
     }
@@ -208,10 +204,10 @@ private fun SplitInProgressView(
         splitKalamInfo = splitKalamInfo,
     ) {
         SIBox(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             SICircularProgressIndicator(
-                strokeWidth = 2
+                strokeWidth = 2,
             )
         }
     }
@@ -224,7 +220,7 @@ private fun ShowDialog(
     onNoClick: () -> Unit = {},
     onYesText: String? = null,
     onYesClick: () -> Unit = {},
-    content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit
+    content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     SIDialog(
         title = optString(R.string.dynamic_title_split_kalam, splitKalamInfo.kalam.title),
@@ -233,7 +229,6 @@ private fun ShowDialog(
         onYesText = onYesText,
         onYesClick = onYesClick,
     ) { textColor ->
-
         content(textColor)
     }
 }
@@ -261,15 +256,14 @@ private fun backToDone(kalamController: KalamController) {
 private fun saveKalam(
     kalamTitle: String,
     splitKalamInfo: SplitKalamInfo,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     if (kalamTitle.isEmpty()) {
         quickToast(R.string.msg_kalam_title_required)
     } else {
-
         kalamController.saveSplitKalam(
-            sourceKalam = splitKalamInfo.kalam, kalamTitle
+            sourceKalam = splitKalamInfo.kalam,
+            kalamTitle,
         )
 
         dismissDialog(kalamController)

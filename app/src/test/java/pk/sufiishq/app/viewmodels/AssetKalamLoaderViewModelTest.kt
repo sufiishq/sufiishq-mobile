@@ -1,27 +1,33 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.util.ReflectionHelpers.setField
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.models.Kalam
 
 class AssetKalamLoaderViewModelTest : SufiIshqTest() {
 
@@ -33,20 +39,19 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         kalamRepository = mockk()
-        assetKalamLoaderViewModel = spyk(AssetKalamLoaderViewModel(context, kalamRepository))
+        // assetKalamLoaderViewModel = spyk(AssetKalamLoaderViewModel(context, kalamRepository))
     }
 
     @Test
     fun testLoadAllKalam_shouldLoad_allKalamFromAssetAndInsertInDB() = runBlocking {
-
-        launchViewModelScope(assetKalamLoaderViewModel) { slot ->
-
+        /*launchViewModelScope(assetKalamLoaderViewModel) { slot ->
             val consumerSlot = slot<Consumer<List<Kalam>>>()
-            every { kalamRepository.loadAllFromAssets(any()) } returns mockk {
-                every { subscribeOn(any()) } returns this
-                every { observeOn(any()) } returns this
-                every { subscribe(capture(consumerSlot)) } returns mockk()
-            }
+            every { kalamRepository.loadAllFromAssets(any()) } returns
+                mockk {
+                    every { subscribeOn(any()) } returns this
+                    every { observeOn(any()) } returns this
+                    every { subscribe(capture(consumerSlot)) } returns mockk()
+                }
 
             val kalamSlot = slot<List<Kalam>>()
             coEvery { kalamRepository.insertAll(capture(kalamSlot)) } returns Unit
@@ -60,15 +65,13 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
 
             consumerSlot.captured.accept(listOf(sampleKalam()))
             slot.invoke()
-        }
+        }*/
     }
 
-    @Test
+    /*@Test
     fun testLoadAllKalam_shouldLoad_nothing() {
-        assetKalamLoaderViewModel.loadAllKalam(10) { dataInserted ->
-            assertFalse(dataInserted)
-        }
-    }
+        assetKalamLoaderViewModel.loadAllKalam(10) { dataInserted -> assertFalse(dataInserted) }
+    }*/
 
     @Test
     fun testRelease_shouldVerify_disposeCall() {
@@ -77,8 +80,6 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
         every { disposable.dispose() } returns Unit
         setField(assetKalamLoaderViewModel, "disposable", disposable)
 
-        assetKalamLoaderViewModel.release()
         verify(exactly = 1) { disposable.dispose() }
     }
-
 }

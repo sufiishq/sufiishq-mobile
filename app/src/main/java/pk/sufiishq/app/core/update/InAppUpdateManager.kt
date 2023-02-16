@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.update
 
 import android.view.View
@@ -11,11 +27,11 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import javax.inject.Inject
-import javax.inject.Singleton
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.controller.MainController
 import pk.sufiishq.app.utils.getString
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class InAppUpdateManager @Inject constructor() {
@@ -25,7 +41,6 @@ class InAppUpdateManager @Inject constructor() {
     private lateinit var appUpdateInfo: AppUpdateInfo
 
     fun checkInAppUpdate(activity: ComponentActivity, mainController: MainController) {
-
         val appUpdateManager = AppUpdateManagerFactory.create(activity)
 
         this.activity = activity
@@ -35,16 +50,15 @@ class InAppUpdateManager @Inject constructor() {
         // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
-        appUpdateInfoTask
-            .addOnSuccessListener { appUpdateInfo ->
-                this.appUpdateInfo = appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            this.appUpdateInfo = appUpdateInfo
 
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    mainController.showUpdateButton(true)
-                } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    popupSnackbarForCompleteUpdate(activity)
-                }
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                mainController.showUpdateButton(true)
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate(activity)
             }
+        }
     }
 
     fun startUpdateFlow() {
@@ -55,7 +69,7 @@ class InAppUpdateManager @Inject constructor() {
                 appUpdateInfo,
                 AppUpdateType.FLEXIBLE,
                 activity,
-                99
+                99,
             )
         }
     }
@@ -68,14 +82,15 @@ class InAppUpdateManager @Inject constructor() {
         Snackbar.make(
             activity.findViewById<View>(android.R.id.content).rootView,
             getString(R.string.label_update_downloaded),
-            Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction(getString(R.string.label_restart_all_caps)) {
-                AppUpdateManagerFactory.create(activity).completeUpdate()
+            Snackbar.LENGTH_INDEFINITE,
+        )
+            .apply {
+                setAction(getString(R.string.label_restart_all_caps)) {
+                    AppUpdateManagerFactory.create(activity).completeUpdate()
+                }
+                setActionTextColor(ContextCompat.getColor(activity, R.color.dark_secondary))
+                show()
             }
-            setActionTextColor(ContextCompat.getColor(activity, R.color.dark_secondary))
-            show()
-        }
     }
 
     private inner class Listener(val activity: ComponentActivity) : InstallStateUpdatedListener {

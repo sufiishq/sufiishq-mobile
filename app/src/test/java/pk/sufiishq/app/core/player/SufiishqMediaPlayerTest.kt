@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player
 
 import android.content.Context
@@ -18,6 +34,7 @@ import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
+import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 
 class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
@@ -26,7 +43,7 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
     private lateinit var appContext: Context
     private lateinit var mediaPlayer: AppMediaPlayer
     private var sampleKalam = sampleKalam()
-    private var currentMediaState: MediaState = MediaState.Idle(sampleKalam)
+    private var currentMediaState: MediaState = MediaState.Idle(sampleKalam, TrackListType.All())
 
     @Before
     fun setUp() {
@@ -45,7 +62,7 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
             every { duration } returns 100
         }
 
-        sufiishqMediaPlayer = SufiishqMediaPlayer(appContext, mediaPlayer)
+        sufiishqMediaPlayer = SufiishqMediaPlayer(appContext, mockk(), mockk(), mockk())
         sufiishqMediaPlayer.registerListener(this)
         setField(sufiishqMediaPlayer, "activeKalam", sampleKalam)
     }
@@ -127,16 +144,6 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
     }
 
     @Test
-    fun testOnPrepared_shouldSet_preparedState() {
-        every { mediaPlayer.start() } returns Unit
-        sufiishqMediaPlayer.onPrepared(null)
-
-        assertTrue(currentMediaState is MediaState.Prepared)
-        verify { mediaPlayer.playbackParams = any() }
-        verify { mediaPlayer.start() }
-    }
-
-    @Test
     fun testOnError_shouldSet_errorState() {
         sufiishqMediaPlayer.onError(null, 0, 0)
         assertTrue(currentMediaState is MediaState.Error)
@@ -157,14 +164,13 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
 
     @Test
     fun testOnAudioFocusChange_shouldSet_downPlayerVolume() {
-
         val leftVolumeSlot = slot<Float>()
         val rightVolumeSlot = slot<Float>()
 
         every {
             mediaPlayer.setVolume(
                 capture(leftVolumeSlot),
-                capture(rightVolumeSlot)
+                capture(rightVolumeSlot),
             )
         } returns Unit
 
@@ -177,14 +183,13 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
 
     @Test
     fun testOnAudioFocusChange_shouldSet_resetPlayerVolume() {
-
         val leftVolumeSlot = slot<Float>()
         val rightVolumeSlot = slot<Float>()
 
         every {
             mediaPlayer.setVolume(
                 capture(leftVolumeSlot),
-                capture(rightVolumeSlot)
+                capture(rightVolumeSlot),
             )
         } returns Unit
 

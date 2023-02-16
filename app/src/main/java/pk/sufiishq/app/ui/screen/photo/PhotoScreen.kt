@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.photo
 
 import androidx.compose.animation.core.LinearEasing
@@ -27,7 +43,7 @@ import pk.sufiishq.aurora.widgets.SITransformableImage
 
 @Composable
 fun PhotoScreen(
-    photoId: Int
+    photoId: Int,
 ) {
     SIBox(modifier = Modifier.padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)) {
         SITransformableImage(
@@ -36,55 +52,55 @@ fun PhotoScreen(
 
         val targetValue = rem(1f)
 
-        val alphaAnimate = animateFloatAsState(
-            targetValue = targetValue.value,
-            animationSpec = tween(
-                durationMillis = 1000,
-                delayMillis = 4000,
-                easing = LinearEasing
+        val alphaAnimate =
+            animateFloatAsState(
+                targetValue = targetValue.value,
+                animationSpec =
+                tween(
+                    durationMillis = 1000,
+                    delayMillis = 4000,
+                    easing = LinearEasing,
+                ),
             )
-        )
 
         SideEffect { targetValue.value = 0f }
 
-        SIBox(modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.BottomCenter)
-            .graphicsLayer {
+        SIBox(
+            modifier =
+            Modifier.fillMaxWidth().align(Alignment.BottomCenter).graphicsLayer {
                 alpha = alphaAnimate.value
-            }
+            },
         ) {
             SIRow(
-                modifier = Modifier
-                    .fillMaxWidth(0.7f),
+                modifier = Modifier.fillMaxWidth(0.7f),
                 bgColor = AuroraColor.SecondaryVariant,
                 padding = 6,
                 radius = 4,
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) { tint ->
                 SIIcon(
                     modifier = Modifier.size(30.dp),
                     resId = R.drawable.zoom_in,
-                    tint = tint
+                    tint = tint,
                 )
                 SIWidthSpace(value = 6)
                 SIText(
                     text = optString(R.string.label_zoom_in_out),
                     textColor = tint,
-                    textSize = TextSize.Small
+                    textSize = TextSize.Small,
                 )
                 SIWidthSpace(value = 30)
                 SIIcon(
                     modifier = Modifier.size(34.dp),
                     resId = R.drawable.drag,
-                    tint = tint
+                    tint = tint,
                 )
                 SIWidthSpace(value = 2)
                 SIText(
                     text = optString(R.string.label_drag),
                     textColor = tint,
-                    textSize = TextSize.Small
+                    textSize = TextSize.Small,
                 )
             }
         }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.firebase
 
 import android.app.Activity
@@ -14,8 +30,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -25,15 +39,19 @@ import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.tryAsyncWithDefault
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 
 @Singleton
-class AuthManager @Inject constructor(
+class AuthManager
+@Inject
+constructor(
     private val adminSettingsRepository: AdminSettingsRepository,
     private val auth: FirebaseAuth,
     private val gso: GoogleSignInOptions,
     private val authUI: AuthUI,
-    @IoDispatcher private val dispatcher: CoroutineContext
+    @IoDispatcher private val dispatcher: CoroutineContext,
 ) {
 
     private val authState = MutableLiveData<AuthState>(AuthState.Cancelled(null))
@@ -45,7 +63,7 @@ class AuthManager @Inject constructor(
         safeCall {
             auth.currentUser?.let {
                 authState.postValue(
-                    AuthState.Success(it, userIsDeveloper(it))
+                    AuthState.Success(it, userIsDeveloper(it)),
                 )
             }
         }
@@ -53,11 +71,10 @@ class AuthManager @Inject constructor(
 
     fun registerActivityResultListener(activity: ComponentActivity) {
         resultLauncher =
-            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    safeCall {
-                        onActivityResult(result.data)
-                    }
+                    safeCall { onActivityResult(result.data) }
                 } else {
                     setState(AuthState.Cancelled(getString(R.string.label_cancelled)))
                 }
@@ -69,25 +86,17 @@ class AuthManager @Inject constructor(
     }
 
     fun signIn(activity: ComponentActivity) {
-
         setState(AuthState.InProgress)
-        GoogleSignIn.getClient(activity, gso)
-            .apply { resultLauncher?.launch(signInIntent) }
+        GoogleSignIn.getClient(activity, gso).apply { resultLauncher?.launch(signInIntent) }
     }
 
     fun signOut(componentActivity: ComponentActivity?) {
         componentActivity?.apply {
             authUI
                 .signOut(this)
-                .addOnSuccessListener {
-                    setState(AuthState.Cancelled())
-                }
-                .addOnFailureListener {
-                    Timber.e(it)
-                }
-                .also {
-                    activity = this
-                }
+                .addOnSuccessListener { setState(AuthState.Cancelled()) }
+                .addOnFailureListener { Timber.e(it) }
+                .also { activity = this }
         }
     }
 
@@ -98,22 +107,22 @@ class AuthManager @Inject constructor(
     }
 
     private suspend fun firebaseAuthWithGoogle(idToken: String) {
-
         // start authenticate with firebase
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).await()
 
         // get valid emails
-        val userIsValid = adminSettingsRepository.getValidEmails()
-            .split(",")
-            .any { it.trim() == auth.currentUser?.email }
+        val userIsValid =
+            adminSettingsRepository.getValidEmails().split(",").any {
+                it.trim() == auth.currentUser?.email
+            }
 
         if (userIsValid) {
             setState(
                 AuthState.Success(
                     auth.currentUser!!,
-                    userIsDeveloper = userIsDeveloper(auth.currentUser)
-                )
+                    userIsDeveloper = userIsDeveloper(auth.currentUser),
+                ),
             )
         } else {
             setState(AuthState.Error(null, getString(R.string.msg_identification_failed)))
@@ -127,9 +136,9 @@ class AuthManager @Inject constructor(
 
     private suspend fun userIsDeveloper(firebaseUser: FirebaseUser?): Boolean {
         return tryAsyncWithDefault(false) {
-            adminSettingsRepository.getValidDeveloperEmails()
-                .split(",")
-                .any { it.trim() == firebaseUser?.email }
+            adminSettingsRepository.getValidDeveloperEmails().split(",").any {
+                it.trim() == firebaseUser?.email
+            }
         }
     }
 

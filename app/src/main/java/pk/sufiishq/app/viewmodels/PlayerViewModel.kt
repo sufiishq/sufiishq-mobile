@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import android.annotation.SuppressLint
@@ -5,7 +21,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import pk.sufiishq.app.core.player.AudioPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
@@ -17,10 +32,13 @@ import pk.sufiishq.app.core.player.state.mapToResumeState
 import pk.sufiishq.app.data.controller.PlayerController
 import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.models.KalamInfo
+import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
-class PlayerViewModel @Inject constructor(
+class PlayerViewModel
+@Inject
+constructor(
     @AndroidMediaPlayer private val player: AudioPlayer,
 ) : ViewModel(), PlayerController, PlayerStateListener {
 
@@ -38,9 +56,10 @@ class PlayerViewModel @Inject constructor(
     override fun updateSeekbarValue(value: Float) {
         seekbarEnableOnPlaying = false
 
-        kalamInfo.value = kalamInfo.value?.copy(
-            currentProgress = value.toInt()
-        )
+        kalamInfo.value =
+            kalamInfo.value?.copy(
+                currentProgress = value.toInt(),
+            )
     }
 
     override fun onSeekbarChanged(value: Int) {
@@ -57,18 +76,22 @@ class PlayerViewModel @Inject constructor(
     }
 
     override fun onStateChange(mediaState: MediaState) {
-
-        val newKalamInfo = when (mediaState) {
-
-            is MediaState.Loading -> mediaState.mapToLoadingState(kalamInfo.value!!)
-            is MediaState.Playing -> mediaState.mapToPlayingState(
-                kalamInfo.value,
-                seekbarEnableOnPlaying
-            )
-            is MediaState.Pause -> mediaState.mapToPauseState()
-            is MediaState.Resume -> mediaState.mapToResumeState()
-            is MediaState.Idle, is MediaState.Stop, is MediaState.Complete, is MediaState.Error -> mediaState.mapToIdleState()
-        }
+        val newKalamInfo =
+            when (mediaState) {
+                is MediaState.Loading -> mediaState.mapToLoadingState(kalamInfo.value!!)
+                is MediaState.Playing ->
+                    mediaState.mapToPlayingState(
+                        kalamInfo.value,
+                        seekbarEnableOnPlaying,
+                    )
+                is MediaState.Pause -> mediaState.mapToPauseState()
+                is MediaState.Resume -> mediaState.mapToResumeState()
+                is MediaState.Idle,
+                is MediaState.Stop,
+                is MediaState.Complete,
+                is MediaState.Error,
+                -> mediaState.mapToIdleState()
+            }
 
         updateKalamInfo(newKalamInfo)
     }

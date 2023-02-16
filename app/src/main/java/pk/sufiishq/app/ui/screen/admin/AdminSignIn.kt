@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.admin
 
 import androidx.activity.ComponentActivity
@@ -19,24 +35,21 @@ import pk.sufiishq.aurora.layout.SIColumn
 @PackagePrivate
 @Composable
 fun AdminSignIn(
-    adminController: AdminController
+    adminController: AdminController,
 ) {
-
     val context = LocalContext.current
 
     SIBox(modifier = Modifier.fillMaxSize()) {
         SIColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-
             SIImage(
-                resId = R.drawable.authentication_full, tintColor = it
+                resId = R.drawable.authentication_full,
+                tintColor = it,
             )
             SIHeightSpace(value = 12)
             SIButton(
                 text = optString(R.string.label_verify_identity),
                 leadingIcon = R.drawable.key,
-                onClick = {
-                    adminController.signIn(context as ComponentActivity)
-                }
+                onClick = { adminController.signIn(context as ComponentActivity) },
             )
         }
     }

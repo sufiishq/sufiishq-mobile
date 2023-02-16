@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.help
 
 import androidx.compose.foundation.layout.Spacer
@@ -37,50 +53,46 @@ fun HelpExpandableCard(
     index: Int,
     item: HelpContent,
 ) {
-
     SIExpandableCard(
         header = { textColor ->
             SIIcon(
                 resId = R.drawable.ic_baseline_circle_24,
                 tint = AuroraColor.Background,
-                modifier = Modifier.size(12.dp)
+                modifier = Modifier.size(12.dp),
             )
             SIWidthSpace(value = 12)
             SIText(
                 text = item.title,
                 textColor = textColor,
                 fontWeight = FontWeight.Medium,
-                textSize = TextSize.Regular
+                textSize = TextSize.Regular,
             )
         },
         isExpanded = expandedIndex.value == index,
-        onHeaderClick = { expandedIndex.value = index }
+        onHeaderClick = { expandedIndex.value = index },
     ) { textColor ->
         item.content.onEach {
             when (it) {
-                is HelpData.Paragraph -> SIText(
-                    text = it.text,
-                    textColor = textColor,
-                    textSize = TextSize.Small
-                )
-                is HelpData.Photo -> NetworkImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp),
-                    url = it.path,
-                )
-
-                is HelpData.Divider -> Divider(
-                    thickness = it.height.dp,
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .testTag("divider_tag")
-                )
-                is HelpData.Spacer -> Spacer(
-                    modifier = Modifier
-                        .height(it.height.dp)
-                        .testTag("spacer_tag")
-                )
+                is HelpData.Paragraph ->
+                    SIText(
+                        text = it.text,
+                        textColor = textColor,
+                        textSize = TextSize.Small,
+                    )
+                is HelpData.Photo ->
+                    NetworkImage(
+                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                        url = it.path,
+                    )
+                is HelpData.Divider ->
+                    Divider(
+                        thickness = it.height.dp,
+                        modifier = Modifier.padding(top = 12.dp).testTag("divider_tag"),
+                    )
+                is HelpData.Spacer ->
+                    Spacer(
+                        modifier = Modifier.height(it.height.dp).testTag("spacer_tag"),
+                    )
             }
         }
     }
@@ -94,11 +106,13 @@ fun LightExpandableCard() {
         HelpExpandableCard(
             expandedIndex = rem(0),
             index = 0,
-            item = HelpContent(
-                "The Title", listOf(
-                    HelpData.Paragraph(buildAnnotatedString { "This is some text" })
-                )
-            )
+            item =
+            HelpContent(
+                "The Title",
+                listOf(
+                    HelpData.Paragraph(buildAnnotatedString { "This is some text" }),
+                ),
+            ),
         )
     }
 }
@@ -111,11 +125,13 @@ fun DarkExpandableCard() {
         HelpExpandableCard(
             expandedIndex = rem(0),
             index = 0,
-            item = HelpContent(
-                "The Title", listOf(
-                    HelpData.Paragraph(buildAnnotatedString { "This is some text" })
-                )
-            )
+            item =
+            HelpContent(
+                "The Title",
+                listOf(
+                    HelpData.Paragraph(buildAnnotatedString { "This is some text" }),
+                ),
+            ),
         )
     }
 }

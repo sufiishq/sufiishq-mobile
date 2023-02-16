@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.dashboard
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,64 +45,51 @@ import pk.sufiishq.aurora.layout.SIRow
 @PackagePrivate
 @Composable
 fun HighlightAvailableDialog(
-    showDialog: MutableState<Highlight?>
+    showDialog: MutableState<Highlight?>,
 ) {
-
     showDialog.value?.apply {
-
         SIDialog(
             modifier = Modifier.heightIn(max = 600.dp),
             title = optString(R.string.label_highlight),
-            onDismissRequest = {
-                showDialog.value = null
-            }
+            onDismissRequest = { showDialog.value = null },
         ) {
-
             val context = LocalContext.current
             val highlight = this@apply
 
             highlight.title?.apply {
-
                 SIText(
                     text = highlight.title,
                     textColor = it,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 SIHeightSpace(value = 12)
             }
 
             SIText(
-                modifier = Modifier
-                    .heightIn(max = 250.dp)
-                    .verticalScroll(rememberScrollState()),
+                modifier = Modifier.heightIn(max = 250.dp).verticalScroll(rememberScrollState()),
                 text = highlight.detail,
-                textColor = it
+                textColor = it,
             )
             Divider()
             SIHeightSpace(value = 12)
 
-            highlight
-                .contactsAsListPair()
-                ?.forEach { pair ->
-
-                    SIRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) { textColor ->
-                        SIText(
-                            modifier = Modifier.weight(1f),
-                            text = pair.first,
-                            textColor = textColor,
-                            textSize = TextSize.Small
-                        )
-                        SIButton(
-                            text = pair.second.addCharAtIndex('-', 4),
-                            onClick = {
-                                context.launchCallIntent(pair.second)
-                            }
-                        )
-                    }
+            highlight.contactsAsListPair()?.forEach { pair ->
+                SIRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) { textColor ->
+                    SIText(
+                        modifier = Modifier.weight(1f),
+                        text = pair.first,
+                        textColor = textColor,
+                        textSize = TextSize.Small,
+                    )
+                    SIButton(
+                        text = pair.second.addCharAtIndex('-', 4),
+                        onClick = { context.launchCallIntent(pair.second) },
+                    )
                 }
+            }
         }
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.player.helper
 
 import android.content.Context
@@ -5,8 +21,11 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.*
-import java.io.File
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.annotation.Config
@@ -16,6 +35,7 @@ import org.robolectric.util.ReflectionHelpers.getField
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.player.helper.AppMediaPlayer.Companion.UPDATE_DELAY
 import pk.sufiishq.app.models.Kalam
+import java.io.File
 
 @Config(shadows = [AppMediaPlayerTest.ShadowPlayer::class])
 class AppMediaPlayerTest : SufiIshqTest() {
@@ -34,11 +54,16 @@ class AppMediaPlayerTest : SufiIshqTest() {
     fun testSetDataSource_shouldSet_offlineDataSource() {
         every { appMediaPlayer.setDataSource(any<String>()) } returns Unit
 
-        appMediaPlayer.setDataSource(context, mockk<Kalam> {
-            every { offlineSource } returns "kalam/test.mp3"
-        })
+        appMediaPlayer.setDataSource(
+            context,
+            mockk<Kalam> { every { offlineSource } returns "kalam/test.mp3" },
+        )
 
-        verify { appMediaPlayer.setDataSource(context.filesDir.absolutePath + File.separator + "kalam/test.mp3") }
+        verify {
+            appMediaPlayer.setDataSource(
+                context.filesDir.absolutePath + File.separator + "kalam/test.mp3",
+            )
+        }
     }
 
     @Test
@@ -46,10 +71,13 @@ class AppMediaPlayerTest : SufiIshqTest() {
         every { appMediaPlayer.setDataSource(any(), any<Uri>()) } returns Unit
 
         val onlineUrl = "https://www.sufiishq.pk/media/kalam/mix/pk_1.mp3"
-        appMediaPlayer.setDataSource(context, mockk<Kalam> {
-            every { offlineSource } returns ""
-            every { onlineSource } returns onlineUrl
-        })
+        appMediaPlayer.setDataSource(
+            context,
+            mockk<Kalam> {
+                every { offlineSource } returns ""
+                every { onlineSource } returns onlineUrl
+            },
+        )
 
         verify { appMediaPlayer.setDataSource(context, Uri.parse(onlineUrl)) }
     }
@@ -90,7 +118,6 @@ class AppMediaPlayerTest : SufiIshqTest() {
 
     @Test
     fun testSetOnCompletionListener_shouldRemove_handlerCallbackAndVerifyCompletion() {
-
         val listener = mockk<MediaPlayer.OnCompletionListener>()
         val runnableSlot = slot<Runnable>()
 
@@ -105,7 +132,6 @@ class AppMediaPlayerTest : SufiIshqTest() {
 
     @Test
     fun testRunnable_shouldCall_progressChangeAndPostDelayed() {
-
         val positionSlot = slot<Int>()
         val listener = mockk<AppMediaPlayer.OnProgressChangeListener>()
 

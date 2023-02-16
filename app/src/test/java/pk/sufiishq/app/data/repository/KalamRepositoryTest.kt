@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.data.repository
 
 import android.content.Context
@@ -14,6 +30,7 @@ import io.mockk.spyk
 import io.mockk.verify
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -37,7 +54,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     @Before
     fun setUp() {
         kalamDao = mockk()
-        kalamRepository = KalamRepository(kalamDao)
+        kalamRepository = KalamRepository(kalamDao, Dispatchers.Main)
     }
 
     @Test
@@ -122,7 +139,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         every {
             kalamDao.getPlaylistKalam(
                 capture(playlistIdSlot),
-                capture(searchSlot)
+                capture(searchSlot),
             )
         } returns mockk()
 
@@ -133,7 +150,7 @@ class KalamRepositoryTest : SufiIshqTest() {
         verify(exactly = 1) {
             kalamDao.getPlaylistKalam(
                 playlistIdSlot.captured,
-                searchSlot.captured
+                searchSlot.captured,
             )
         }
         assertEquals(3, playlistIdSlot.captured)
@@ -143,9 +160,10 @@ class KalamRepositoryTest : SufiIshqTest() {
     @Test
     fun testLoadAllPlaylistKalam_shouldReturn_listOfKalam() {
         val playlistIdSlot = slot<Int>()
-        every { kalamDao.getAllPlaylistKalam(capture(playlistIdSlot)) } returns MutableLiveData(
-            listOf(mockk(), mockk())
-        )
+        every { kalamDao.getAllPlaylistKalam(capture(playlistIdSlot)) } returns
+            MutableLiveData(
+                listOf(mockk(), mockk()),
+            )
 
         kalamRepository.loadAllPlaylistKalam(2).observe(mockLifecycleOwner()) {
             assertEquals(2, it.size)
@@ -168,17 +186,17 @@ class KalamRepositoryTest : SufiIshqTest() {
         val spyKalamRepository = spyk(kalamRepository)
         val trackListTypeSlot = slot<TrackListType>()
 
-        every { spyKalamRepository.getRandomKalam(capture(trackListTypeSlot)) } returns MutableLiveData(
-            sampleKalam()
-        )
+        every { spyKalamRepository.getRandomKalam(capture(trackListTypeSlot)) } returns
+            MutableLiveData(
+                sampleKalam(),
+            )
 
-        spyKalamRepository.getPreviousKalam(0, TrackListType.Downloads(), true)
-            .observe(mockLifecycleOwner()) {
-                assertEquals(sampleKalam().id, it?.id)
-                verify(exactly = 1) { spyKalamRepository.getRandomKalam(trackListTypeSlot.captured) }
-            }
-
-
+        spyKalamRepository.getPreviousKalam(0, TrackListType.Downloads(), true).observe(
+            mockLifecycleOwner(),
+        ) {
+            assertEquals(sampleKalam().id, it?.id)
+            verify(exactly = 1) { spyKalamRepository.getRandomKalam(trackListTypeSlot.captured) }
+        }
     }
 
     @Test
@@ -186,10 +204,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyNextKalamQuery(
             id = 1,
             trackListType = TrackListType.Downloads(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID < 1 AND $OFFLINE_SRC != '' " +
-                    "ORDER BY $ID DESC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID < 1 AND $OFFLINE_SRC != '' " +
+                "ORDER BY $ID DESC " +
+                "LIMIT 1",
         )
     }
 
@@ -198,10 +217,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyNextKalamQuery(
             id = 1,
             trackListType = TrackListType.Favorites(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID < 1 AND $FAVORITE = 1 " +
-                    "ORDER BY $ID DESC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID < 1 AND $FAVORITE = 1 " +
+                "ORDER BY $ID DESC " +
+                "LIMIT 1",
         )
     }
 
@@ -210,10 +230,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyNextKalamQuery(
             id = 1,
             trackListType = TrackListType.Playlist("", 2),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID < 1 AND $PLAYLIST_ID = 2 " +
-                    "ORDER BY $ID DESC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID < 1 AND $PLAYLIST_ID = 2 " +
+                "ORDER BY $ID DESC " +
+                "LIMIT 1",
         )
     }
 
@@ -222,10 +243,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyNextKalamQuery(
             id = 1,
             trackListType = TrackListType.All(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID < 1 " +
-                    "ORDER BY $ID DESC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID < 1 " +
+                "ORDER BY $ID DESC " +
+                "LIMIT 1",
         )
     }
 
@@ -234,10 +256,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyPreviousKalamQuery(
             id = 1,
             trackListType = TrackListType.Downloads(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID > 1 AND $OFFLINE_SRC != '' " +
-                    "ORDER BY $ID ASC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID > 1 AND $OFFLINE_SRC != '' " +
+                "ORDER BY $ID ASC " +
+                "LIMIT 1",
         )
     }
 
@@ -246,10 +269,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyPreviousKalamQuery(
             id = 1,
             trackListType = TrackListType.Favorites(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID > 1 AND $FAVORITE = 1 " +
-                    "ORDER BY $ID ASC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID > 1 AND $FAVORITE = 1 " +
+                "ORDER BY $ID ASC " +
+                "LIMIT 1",
         )
     }
 
@@ -258,10 +282,11 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyPreviousKalamQuery(
             id = 1,
             trackListType = TrackListType.Playlist("", 2),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID > 1 AND $PLAYLIST_ID = 2 " +
-                    "ORDER BY $ID ASC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $ID > 1 AND $PLAYLIST_ID = 2 " +
+                "ORDER BY $ID ASC " +
+                "LIMIT 1",
         )
     }
 
@@ -270,10 +295,8 @@ class KalamRepositoryTest : SufiIshqTest() {
         verifyPreviousKalamQuery(
             id = 1,
             trackListType = TrackListType.All(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $ID > 1 " +
-                    "ORDER BY $ID ASC " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " + "WHERE $ID > 1 " + "ORDER BY $ID ASC " + "LIMIT 1",
         )
     }
 
@@ -281,10 +304,11 @@ class KalamRepositoryTest : SufiIshqTest() {
     fun testGetRandomKalam_shouldReturnKalam_fromDownloads() {
         verifyRandomKalamQuery(
             trackListType = TrackListType.Downloads(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $OFFLINE_SRC != '' " +
-                    "ORDER BY random() " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $OFFLINE_SRC != '' " +
+                "ORDER BY random() " +
+                "LIMIT 1",
         )
     }
 
@@ -292,10 +316,11 @@ class KalamRepositoryTest : SufiIshqTest() {
     fun testGetRandomKalam_shouldReturnKalam_fromFavorites() {
         verifyRandomKalamQuery(
             trackListType = TrackListType.Favorites(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $FAVORITE = 1 " +
-                    "ORDER BY random() " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $FAVORITE = 1 " +
+                "ORDER BY random() " +
+                "LIMIT 1",
         )
     }
 
@@ -303,10 +328,11 @@ class KalamRepositoryTest : SufiIshqTest() {
     fun testGetRandomKalam_shouldReturnKalam_fromPlaylist() {
         verifyRandomKalamQuery(
             trackListType = TrackListType.Playlist("", 2),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "WHERE $PLAYLIST_ID = 2 " +
-                    "ORDER BY random() " +
-                    "LIMIT 1"
+            expectedQuery =
+            "SELECT * FROM $KALAM_TABLE_NAME " +
+                "WHERE $PLAYLIST_ID = 2 " +
+                "ORDER BY random() " +
+                "LIMIT 1",
         )
     }
 
@@ -314,34 +340,26 @@ class KalamRepositoryTest : SufiIshqTest() {
     fun testGetRandomKalam_shouldReturnKalam_fromAll() {
         verifyRandomKalamQuery(
             trackListType = TrackListType.All(),
-            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " +
-                    "ORDER BY random() " +
-                    "LIMIT 1"
+            expectedQuery = "SELECT * FROM $KALAM_TABLE_NAME " + "ORDER BY random() " + "LIMIT 1",
         )
     }
 
     @Test
     fun testCountAll_shouldReturn_allKalamCount() {
         every { kalamDao.countAll() } returns MutableLiveData(100)
-        kalamRepository.countAll().observe(mockLifecycleOwner()) {
-            assertEquals(100, it)
-        }
+        kalamRepository.countAll().observe(mockLifecycleOwner()) { assertEquals(100, it) }
     }
 
     @Test
     fun testCountDownloads_shouldReturn_downloadsKalamCount() {
         every { kalamDao.countDownloads() } returns MutableLiveData(70)
-        kalamRepository.countDownloads().observe(mockLifecycleOwner()) {
-            assertEquals(70, it)
-        }
+        kalamRepository.countDownloads().observe(mockLifecycleOwner()) { assertEquals(70, it) }
     }
 
     @Test
     fun testCountFavorites_shouldReturn_favoritesKalamCount() {
         every { kalamDao.countFavorites() } returns MutableLiveData(30)
-        kalamRepository.countFavorites().observe(mockLifecycleOwner()) {
-            assertEquals(30, it)
-        }
+        kalamRepository.countFavorites().observe(mockLifecycleOwner()) { assertEquals(30, it) }
     }
 
     @Test
@@ -367,8 +385,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     }
 
     @Test
-    fun testLoadAllFromAssets_shouldReturn_listOfKalamLiveData() {
-
+    fun testLoadAllFromAssets_shouldReturn_listOfKalamLiveData() = runBlocking {
         mockkStatic(Observable::class)
 
         val slot = slot<ObservableOnSubscribe<List<Kalam>>>()
@@ -378,10 +395,9 @@ class KalamRepositoryTest : SufiIshqTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         kalamRepository.loadAllFromAssets(context)
 
-        slot.captured.subscribe(mockk {
-            every { onNext(capture(kalamListSLot)) } returns Unit
-        })
-
+        slot.captured.subscribe(
+            mockk { every { onNext(capture(kalamListSLot)) } returns Unit },
+        )
 
         assertEquals(467, kalamListSLot.captured.size)
     }
@@ -397,7 +413,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     private fun verifyPreviousKalamQuery(
         id: Int,
         trackListType: TrackListType,
-        expectedQuery: String
+        expectedQuery: String,
     ) {
         val querySlot = slot<SimpleSQLiteQuery>()
         every { kalamDao.getSingleKalam(capture(querySlot)) } returns mockk()

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.main.player
 
 import androidx.compose.foundation.clickable
@@ -30,45 +46,43 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun PlayPauseButton(
     playerController: PlayerController,
     kalamInfo: State<KalamInfo?>,
-    boxScope: BoxScope
+    boxScope: BoxScope,
 ) {
-
     with(boxScope) {
         SIRow(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
+            modifier = Modifier.align(Alignment.CenterStart),
         ) {
             SIWidthSpace(value = 2)
             SICard(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape),
+                modifier = Modifier.size(80.dp).clip(CircleShape),
                 elevation = 0.dp,
             ) {
-
                 ContentBackground {
                     SICard(
-                        modifier = Modifier
-                            .fillMaxSize(0.75f)
-                            .clip(CircleShape)
-                            .clickable {
-                                playerController.doPlayOrPause()
-                            },
+                        modifier =
+                        Modifier.fillMaxSize(0.75f).clip(CircleShape).clickable {
+                            playerController.doPlayOrPause()
+                        },
                         elevation = 0.dp,
-                        bgColor = AuroraColor.Background
+                        bgColor = AuroraColor.Background,
                     ) { contentColor ->
-
                         if (kalamInfo.value == null || kalamInfo.value?.playerState == PlayerState.LOADING) {
                             SICircularProgressIndicator(
                                 color = AuroraColor.SecondaryVariant,
-                                strokeWidth = 4
+                                strokeWidth = 4,
                             )
                         } else {
-
                             SIIcon(
                                 modifier = Modifier.padding(20.dp),
-                                resId = if (kalamInfo.value?.playerState == PlayerState.PAUSE || kalamInfo.value?.playerState == PlayerState.IDLE) R.drawable.ic_play else R.drawable.ic_pause,
-                                tint = contentColor
+                                resId =
+                                if (kalamInfo.value?.playerState == PlayerState.PAUSE ||
+                                    kalamInfo.value?.playerState == PlayerState.IDLE
+                                ) {
+                                    R.drawable.ic_play
+                                } else {
+                                    R.drawable.ic_pause
+                                },
+                                tint = contentColor,
                             )
                         }
                     }
@@ -76,5 +90,4 @@ fun PlayPauseButton(
             }
         }
     }
-
 }

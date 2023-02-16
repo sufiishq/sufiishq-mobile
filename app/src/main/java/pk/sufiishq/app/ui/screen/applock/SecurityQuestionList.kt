@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,24 +45,22 @@ fun SecurityQuestionList(
     scaffoldState: ScaffoldState,
     doneButtonLabel: String = optString(R.string.label_done),
     onDoneClick: (item: SecurityQuestion) -> Unit,
-    headerButtonClick: () -> Unit
+    headerButtonClick: () -> Unit,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val isExpanded = rem(false)
-    val data = rem(
-        stringArrayResource(R.array.array_security_questions)
-            .mapIndexed { index, item ->
+    val data =
+        rem(
+            stringArrayResource(R.array.array_security_questions).mapIndexed { index, item ->
                 SecurityQuestion(index, item)
-            }
-    )
+            },
+        )
     val selection = rem(data.value[0])
     val answer = rem("")
 
     SIColumn(modifier = modifier.fillMaxWidth()) {
-
         AppLockHeader(
-            onButtonClick = headerButtonClick
+            onButtonClick = headerButtonClick,
         )
 
         SIHeightSpace(value = 12)
@@ -54,9 +68,7 @@ fun SecurityQuestionList(
         SIDataRow(
             title = selection.value.label,
             trailingIcon = R.drawable.baseline_arrow_drop_down_24,
-            onClick = {
-                isExpanded.value = true
-            }
+            onClick = { isExpanded.value = true },
         )
 
         SIHeightSpace(value = 12)
@@ -66,11 +78,9 @@ fun SecurityQuestionList(
                 modifier = Modifier.fillMaxWidth(),
                 label = optString(R.string.label_answer),
                 value = answer.value,
-                onValueChange = {
-                    answer.value = it
-                },
+                onValueChange = { answer.value = it },
                 maxLength = 30,
-                emptyFieldError = optString(R.string.msg_ans_required)
+                emptyFieldError = optString(R.string.msg_ans_required),
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
@@ -80,25 +90,24 @@ fun SecurityQuestionList(
                     onClick = {
                         if (answer.value.trim().isEmpty()) {
                             coroutineScope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(getString(R.string.msg_ans_not_empty))
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    getString(R.string.msg_ans_not_empty),
+                                )
                             }
                         } else {
                             selection.value.answer = answer.value
                             onDoneClick(selection.value)
                         }
-                    }
+                    },
                 )
             }
         }
-
 
         SIPopupMenu(
             isExpanded = isExpanded,
             modifier = Modifier.fillMaxWidth(),
             data = data.value,
-            onClick = {
-                selection.value = it as SecurityQuestion
-            }
+            onClick = { selection.value = it as SecurityQuestion },
         )
     }
 }

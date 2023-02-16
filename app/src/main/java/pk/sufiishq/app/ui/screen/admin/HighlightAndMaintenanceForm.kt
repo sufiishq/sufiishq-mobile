@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.admin
 
 import androidx.activity.ComponentActivity
@@ -16,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import java.util.*
 import pk.sufiishq.app.R
 import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.ui.components.OutlinedTextField
@@ -37,14 +52,14 @@ import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
+import java.util.Calendar
 
 @PackagePrivate
 @Composable
 fun HighlightAndMaintenanceForm(
     adminController: AdminController,
-    isDeveloper: Boolean
+    isDeveloper: Boolean,
 ) {
-
     val context = LocalContext.current
     val title = adminController.getTitle().observeAsState().optValue("")
     val detail = adminController.getDetail().observeAsState().optValue("")
@@ -53,19 +68,15 @@ fun HighlightAndMaintenanceForm(
     val saveBtnText = rem("")
     saveBtnText.value = optString(R.string.label_save)
 
-    LaunchedEffect(Unit) {
-        adminController.fetchHighlight()
-    }
+    LaunchedEffect(Unit) { adminController.fetchHighlight() }
 
     ConfirmationDialog(state = confirmDialog)
 
     SIColumn(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
+        modifier =
+        Modifier.verticalScroll(rememberScrollState())
+            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
-
-
         adminController.highlightStatus().observeAsState().value?.let { status ->
             saveBtnText.value = optString(R.string.label_update)
             SICard(
@@ -73,21 +84,19 @@ fun HighlightAndMaintenanceForm(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 SIRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     SIRow(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         SIIcon(resId = status.leadingIcon)
                         SIWidthSpace(value = 8)
                         SIText(
                             text = status.label,
                             textColor = AuroraColor.White,
-                            textSize = TextSize.Small
+                            textSize = TextSize.Small,
                         )
                     }
                     SIButton(
@@ -98,7 +107,7 @@ fun HighlightAndMaintenanceForm(
                                 ConfirmDialogParam(getString(R.string.msg_confirm_delete_highlight)) {
                                     adminController.deleteHighlight()
                                 }
-                        }
+                        },
                     )
                 }
             }
@@ -115,16 +124,15 @@ fun HighlightAndMaintenanceForm(
             label = optString(R.string.label_title),
             text = title,
             maxLength = 256,
-            onValueChange = adminController::setTitle
+            onValueChange = adminController::setTitle,
         )
 
         DetailView(
             text = detail,
-            onValueChange = adminController::setDetail
+            onValueChange = adminController::setDetail,
         )
 
         contacts.value?.forEachIndexed { index, pair ->
-
             val name = rem("")
             val number = rem("")
             name.value = pair?.first ?: ""
@@ -138,13 +146,12 @@ fun HighlightAndMaintenanceForm(
                     name.value = updatedName
                     number.value = updatedNumber
                     contacts.value!![index] = Pair(updatedName, updatedNumber)
-                }
+                },
             )
         }
 
         SIHeightSpace(value = 12)
         SIRow(modifier = Modifier.fillMaxWidth()) {
-
             SIButton(
                 modifier = Modifier.weight(1f),
                 text = optString(R.string.label_logout),
@@ -153,22 +160,23 @@ fun HighlightAndMaintenanceForm(
                         ConfirmDialogParam(getString(R.string.msg_confirm_logout)) {
                             adminController.signOut(context as ComponentActivity)
                         }
-                }
+                },
             )
             SIWidthSpace(value = 8)
             SIButton(
                 modifier = Modifier.weight(2f),
                 text = saveBtnText.value,
                 onClick = {
-                    confirmDialog.value = ConfirmDialogParam(
-                        getString(
-                            R.string.dynamic_confirm_save_highlight,
-                            saveBtnText.value
-                        )
-                    ) {
-                        adminController.addOrUpdateHighlight()
-                    }
-                }
+                    confirmDialog.value =
+                        ConfirmDialogParam(
+                            getString(
+                                R.string.dynamic_confirm_save_highlight,
+                                saveBtnText.value,
+                            ),
+                        ) {
+                            adminController.addOrUpdateHighlight()
+                        }
+                },
             )
         }
 
@@ -179,28 +187,24 @@ fun HighlightAndMaintenanceForm(
 @Composable
 private fun DetailView(
     text: String,
-    onValueChange: (value: String) -> Unit
+    onValueChange: (value: String) -> Unit,
 ) {
-
     SIHeightSpace(value = 8)
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
+        modifier = Modifier.fillMaxWidth().height(200.dp),
         value = text,
         label = optString(R.string.label_detail),
         maxLines = 20,
         singleLine = false,
         keyboardOptions = KeyboardOptions.Default,
-        onValueChange = onValueChange
+        onValueChange = onValueChange,
     )
 }
 
 @Composable
 private fun StartDateTimeView(
-    adminController: AdminController
+    adminController: AdminController,
 ) {
-
     val minDate = rem(Calendar.getInstance())
     val maxDate = rem(Calendar.getInstance().nextYear())
     val selectedDate = adminController.startDate().observeAsState()
@@ -213,15 +217,14 @@ private fun StartDateTimeView(
         minDate = minDate,
         maxDate = maxDate,
         onDateChanged = adminController::startDateChanged,
-        onTimeChanged = adminController::startTimeChanged
+        onTimeChanged = adminController::startTimeChanged,
     )
 }
 
 @Composable
 private fun EndDateTimeView(
-    adminController: AdminController
+    adminController: AdminController,
 ) {
-
     val selectedDate = adminController.endDate().observeAsState()
     val minDate = adminController.minEndDate().observeAsState()
     val maxDate = rem(Calendar.getInstance().nextYear(2))
@@ -234,7 +237,6 @@ private fun EndDateTimeView(
         minDate = minDate,
         maxDate = maxDate,
         onDateChanged = adminController::endDateChanged,
-        onTimeChanged = adminController::endTimeChanged
+        onTimeChanged = adminController::endTimeChanged,
     )
 }
-

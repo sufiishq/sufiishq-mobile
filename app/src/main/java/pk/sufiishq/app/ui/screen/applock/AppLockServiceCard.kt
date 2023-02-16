@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.annotation.DrawableRes
@@ -39,25 +55,20 @@ fun AppLockServiceCardWithButton(
     title: String,
     detail: String,
     actionButtonTitle: String,
-    actionButtonClick: suspend CoroutineScope.() -> Unit
+    actionButtonClick: suspend CoroutineScope.() -> Unit,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
 
     AppLockServiceCard(
         modifier = modifier,
         infoDrawableId = infoDrawableId,
         title = title,
-        detail = detail
+        detail = detail,
     ) {
         SIButton(
             modifier = Modifier.align(Alignment.BottomEnd),
             text = actionButtonTitle,
-            onClick = {
-                coroutineScope.launch {
-                    actionButtonClick(this)
-                }
-            }
+            onClick = { coroutineScope.launch { actionButtonClick(this) } },
         )
     }
 }
@@ -70,9 +81,8 @@ fun AppLockServiceCardWithToggle(
     title: String,
     detail: String,
     isCheck: Boolean,
-    onCheckedChanged: suspend CoroutineScope.(isChecked: Boolean) -> Unit
+    onCheckedChanged: suspend CoroutineScope.(isChecked: Boolean) -> Unit,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val check = rem(false)
     check.value = isCheck
@@ -81,7 +91,7 @@ fun AppLockServiceCardWithToggle(
         modifier = modifier,
         infoDrawableId = infoDrawableId,
         title = title,
-        detail = detail
+        detail = detail,
     ) {
         Switch(
             modifier = Modifier.align(Alignment.BottomEnd),
@@ -91,7 +101,7 @@ fun AppLockServiceCardWithToggle(
                     check.value = it
                     onCheckedChanged(this, check.value)
                 }
-            }
+            },
         )
     }
 }
@@ -104,9 +114,8 @@ fun AppLockDurationServiceCard(
     title: String,
     detail: String,
     selectedDurationCode: Int = 0,
-    onDurationChanged: suspend CoroutineScope.(autoLockDuration: AutoLockDuration) -> Unit
+    onDurationChanged: suspend CoroutineScope.(autoLockDuration: AutoLockDuration) -> Unit,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val data = rem(getAutoLockDurations())
     val selectedDuration = rem(data.value[selectedDurationCode])
@@ -116,14 +125,12 @@ fun AppLockDurationServiceCard(
         modifier = modifier,
         infoDrawableId = infoDrawableId,
         title = title,
-        detail = detail
+        detail = detail,
     ) {
         SIButton(
             modifier = Modifier.align(Alignment.CenterEnd),
             text = selectedDuration.value.label,
-            onClick = {
-                isExpanded.value = true
-            }
+            onClick = { isExpanded.value = true },
         )
         SIBox(modifier = Modifier.align(Alignment.BottomEnd)) {
             SIPopupMenu(
@@ -134,7 +141,7 @@ fun AppLockDurationServiceCard(
                         selectedDuration.value = it as AutoLockDuration
                         onDurationChanged(it)
                     }
-                }
+                },
             )
         }
     }
@@ -147,15 +154,12 @@ fun AppLockServiceCard(
     @DrawableRes infoDrawableId: Int,
     title: String,
     detail: String,
-    content: @Composable BoxScope.(fgColor: AuroraColor) -> Unit
+    content: @Composable BoxScope.(fgColor: AuroraColor) -> Unit,
 ) {
-
     SIRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier.fillMaxWidth().padding(16.dp),
         bgColor = AuroraColor.Background,
-        radius = 4
+        radius = 4,
     ) { textColor ->
         SIImage(resId = infoDrawableId)
         SIWidthSpace(value = 12)
@@ -165,12 +169,10 @@ fun AppLockServiceCard(
             SIText(
                 text = detail,
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
             SIHeightSpace(value = 6)
-            SIBox(modifier = Modifier.fillMaxWidth()) {
-                content(this, it)
-            }
+            SIBox(modifier = Modifier.fillMaxWidth()) { content(this, it) }
         }
     }
 }

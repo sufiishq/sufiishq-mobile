@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.dashboard
 
 import androidx.compose.foundation.clickable
@@ -26,40 +42,32 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun HighlightAvailableButton(
     modifier: Modifier = Modifier,
     highlightDialogControl: MutableState<Highlight?>,
-    dashboardController: DashboardController
+    dashboardController: DashboardController,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
 
-    dashboardController.getHighlightAvailable()
-        .observeAsState()
-        .value
-        ?.apply {
+    dashboardController.getHighlightAvailable().observeAsState().value?.apply {
+        SICard(
+            modifier =
+            modifier.clip(CircleShape).clickable {
+                coroutineScope.launch { highlightDialogControl.value = this@apply }
+            },
+            bgColor = AuroraColor.SecondaryVariant,
+        ) { contentColor ->
+            SIIcon(
+                modifier = Modifier.padding(12.dp).shake(true),
+                resId = R.drawable.round_notifications_active_24,
+                tint = contentColor,
+            )
+        }
 
-            SICard(
-                modifier = modifier
-                    .clip(CircleShape)
-                    .clickable {
-                        coroutineScope.launch {
-                            highlightDialogControl.value = this@apply
-                        }
-                    },
-                bgColor = AuroraColor.SecondaryVariant
-            ) { contentColor ->
-                SIIcon(
-                    modifier = Modifier.padding(12.dp).shake(true),
-                    resId = R.drawable.round_notifications_active_24,
-                    tint = contentColor,
-                )
-            }
-
-            LaunchedEffect(Unit) {
-                if (AutoShowDialog.AUTO_SHOW) {
-                    highlightDialogControl.value = this@apply
-                    AutoShowDialog.AUTO_SHOW = false
-                }
+        LaunchedEffect(Unit) {
+            if (AutoShowDialog.AUTO_SHOW) {
+                highlightDialogControl.value = this@apply
+                AutoShowDialog.AUTO_SHOW = false
             }
         }
+    }
 }
 
 object AutoShowDialog {

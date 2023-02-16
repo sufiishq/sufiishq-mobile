@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.Arrangement
@@ -24,24 +40,21 @@ fun AppLockHeader(
     modifier: Modifier = Modifier,
     title: String = optString(R.string.title_app_lock),
     buttonTitle: String = optString(R.string.label_cancel),
-    onButtonClick: () -> Unit
+    onButtonClick: () -> Unit,
 ) {
-
     SIRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(12.dp, 6.dp),
+        modifier = modifier.fillMaxWidth().padding(12.dp, 6.dp),
         bgColor = AuroraColor.Background,
         radius = 4,
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         SIRow(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SIImage(
                 modifier = Modifier.height(30.dp),
-                resId = R.drawable.shield
+                resId = R.drawable.shield,
             )
             SIWidthSpace(value = 8)
             SIText(

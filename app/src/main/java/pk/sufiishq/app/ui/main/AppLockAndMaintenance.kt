@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.main
 
 import android.app.Activity
@@ -60,22 +76,17 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun AppLockAndMaintenance(
     maintenanceManager: MaintenanceManager,
     appLockManager: AppLockManager,
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer,
 ) {
-
     val appLockStatus = appLockManager.getAppLockStatus().observeAsState().value
     if (appLockStatus != null) {
-
         AppLockView(
             appLockStatus = appLockStatus,
             appLockManager = appLockManager,
-            audioPlayer = audioPlayer
+            audioPlayer = audioPlayer,
         )
-
     } else {
-
-        val maintenance =
-            maintenanceManager.getMaintenance().observeAsState().optValue(Maintenance())
+        val maintenance = maintenanceManager.getMaintenance().observeAsState().optValue(Maintenance())
 
         // block the user if the app has under maintenance with strict mode ON
         StrictMaintenanceView(maintenance = maintenance)
@@ -89,38 +100,34 @@ fun AppLockAndMaintenance(
 private fun AppLockView(
     appLockStatus: AppLockStatus,
     appLockManager: AppLockManager,
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer,
 ) {
     val context = LocalContext.current
     val showSecurityQuestion = rem(false)
 
     SIBox(
         modifier = Modifier.fillMaxSize(),
-        bgColor = AuroraColor.Background
+        bgColor = AuroraColor.Background,
     ) {
-
         SIBox(
             modifier = Modifier.fillMaxSize(),
-            padding = 12
+            padding = 12,
         ) {
-
             if (showSecurityQuestion.value) {
                 SecurityQuestionView(
                     scope = this,
                     showSecurityQuestion = showSecurityQuestion,
                     appLockStatus = appLockStatus,
-                    appLockManager = appLockManager
+                    appLockManager = appLockManager,
                 )
             } else {
-
                 AppLockDetailView(
                     scope = this,
                     showSecurityQuestion = showSecurityQuestion,
                     appLockStatus = appLockStatus,
                     appLockManager = appLockManager,
-                    audioPlayer = audioPlayer
+                    audioPlayer = audioPlayer,
                 )
-
             }
         }
     }
@@ -142,11 +149,8 @@ private fun SecurityQuestionView(
     val context = LocalContext.current
     with(scope) {
         SIColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopCenter)
+            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
         ) {
-
             val coroutineScope = rememberCoroutineScope()
             val answer = rem("")
 
@@ -157,11 +161,12 @@ private fun SecurityQuestionView(
                 padding = 12,
             ) {
                 SIText(
-                    text = optString(
+                    text =
+                    optString(
                         R.string.dynamic_ask_security_question,
-                        appLockStatus.securityQuestion.question
+                        appLockStatus.securityQuestion.question,
                     ),
-                    textColor = it
+                    textColor = it,
                 )
             }
             SIHeightSpace(value = 12)
@@ -169,20 +174,16 @@ private fun SecurityQuestionView(
                 modifier = Modifier.fillMaxWidth(),
                 label = optString(R.string.label_answer),
                 value = answer.value,
-                onValueChange = {
-                    answer.value = it
-                },
+                onValueChange = { answer.value = it },
                 maxLength = 30,
-                emptyFieldError = optString(R.string.msg_ans_required)
+                emptyFieldError = optString(R.string.msg_ans_required),
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
                 SIRow(modifier = Modifier.align(Alignment.CenterEnd)) {
                     SIButton(
                         text = optString(R.string.label_cancel),
-                        onClick = {
-                            showSecurityQuestion.value = false
-                        }
+                        onClick = { showSecurityQuestion.value = false },
                     )
                     SIWidthSpace(value = 8)
                     SIButton(
@@ -191,9 +192,8 @@ private fun SecurityQuestionView(
                             coroutineScope.launch {
                                 if (answer.value.trim().isEmpty()) {
                                     context.toastShort(getString(R.string.msg_ans_not_empty))
-                                } else if (answer.value.trim()
-                                        .lowercase() != appLockStatus.securityQuestion.answer.trim()
-                                        .lowercase()
+                                } else if (answer.value.trim().lowercase() !=
+                                    appLockStatus.securityQuestion.answer.trim().lowercase()
                                 ) {
                                     context.toastShort(getString(R.string.msg_ans_not_matched))
                                 } else {
@@ -202,7 +202,7 @@ private fun SecurityQuestionView(
                                     context.toastShort(getString(R.string.msg_app_lock_removed))
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -216,41 +216,38 @@ private fun AppLockDetailView(
     showSecurityQuestion: MutableState<Boolean>,
     appLockStatus: AppLockStatus,
     appLockManager: AppLockManager,
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer,
 ) {
     with(scope) {
         SIConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.Center)
-
+            modifier = Modifier.fillMaxSize().align(Alignment.Center),
         ) {
-
             val (playControlRef, headerRef, forgotPinRef, pinKeyboardRef) = createRefs()
 
             val showPauseButton = rem(audioPlayer.isPlaying())
 
             if (showPauseButton.value) {
                 SIColumn(
-                    modifier = Modifier
-                        .constrainAs(playControlRef) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(headerRef.top)
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                    Modifier.constrainAs(playControlRef) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(headerRef.top)
+                    },
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     val length = audioPlayer.getActiveTrack().title.length
-                    val textLayoutWidth: Int = when {
-                        length <= 5 -> 45
-                        length <= 7 -> 60
-                        length <= 10 -> 80
-                        length <= 13 -> 100
-                        length <= 16 -> 120
-                        length <= 19 -> 130
-                        else -> 150
-                    }
+                    val textLayoutWidth: Int =
+                        when {
+                            length <= 5 -> 45
+                            length <= 7 -> 60
+                            length <= 10 -> 80
+                            length <= 13 -> 100
+                            length <= 16 -> 120
+                            length <= 19 -> 130
+                            else -> 150
+                        }
                     SIIcon(
                         modifier = Modifier.size(25.dp),
                         resId = R.drawable.ic_pause,
@@ -258,73 +255,65 @@ private fun AppLockDetailView(
                         onClick = {
                             showPauseButton.value = false
                             audioPlayer.doPlayOrPause()
-                        }
+                        },
                     )
                     SIMarqueeText(
                         modifier = Modifier.width(textLayoutWidth.dp),
                         text = audioPlayer.getActiveTrack().title,
                         textColor = it,
-                        backgroundColor = AuroraColor.Background
+                        backgroundColor = AuroraColor.Background,
                     )
                 }
             }
 
-
             SIImage(
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .constrainAs(headerRef) {
-                        start.linkTo(parent.start)
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(pinKeyboardRef.top)
-                    },
-                resId = R.drawable.caligraphi
+                modifier =
+                Modifier.padding(top = 20.dp).constrainAs(headerRef) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(pinKeyboardRef.top)
+                },
+                resId = R.drawable.caligraphi,
             )
 
             SIRow(
-                modifier = Modifier.constrainAs(forgotPinRef) {
+                modifier =
+                Modifier.constrainAs(forgotPinRef) {
                     top.linkTo(parent.top)
                     end.linkTo(parent.end)
-                }
+                },
             ) {
-
                 SIText(
                     text = optString(R.string.label_forgot_pin),
                     textColor = it,
                     textSize = TextSize.Small,
-                    textStyle = LocalTextStyle.current.copy(
-                        textDecoration = TextDecoration.Underline
+                    textStyle =
+                    LocalTextStyle.current.copy(
+                        textDecoration = TextDecoration.Underline,
                     ),
-                    onClick = {
-                        showSecurityQuestion.value = true
-                    }
+                    onClick = { showSecurityQuestion.value = true },
                 )
             }
 
-
             SIColumn(
-                modifier = Modifier
-                    .padding(bottom = 24.dp)
-                    .constrainAs(pinKeyboardRef) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier =
+                Modifier.padding(bottom = 24.dp).constrainAs(pinKeyboardRef) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                },
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 SIText(
                     text = optString(R.string.label_enter_pin),
                     textColor = it,
-                    textSize = TextSize.Large
+                    textSize = TextSize.Large,
                 )
                 SIHeightSpace(value = 48)
                 AppLockKeyboardWithPinView(
-                    onPinGenerated = {
-                        appLockManager.setAppLockStatus(null)
-                    },
-                    validPin = appLockStatus.savedPin
+                    onPinGenerated = { appLockManager.setAppLockStatus(null) },
+                    validPin = appLockStatus.savedPin,
                 )
             }
         }
@@ -333,9 +322,8 @@ private fun AppLockDetailView(
 
 @Composable
 private fun StrictMaintenanceView(
-    maintenance: Maintenance
+    maintenance: Maintenance,
 ) {
-
     // block the user if the app has under maintenance with strict mode ON
     if (maintenance.activeStatus && maintenance.strictMode) {
         val context = LocalContext.current
@@ -346,10 +334,9 @@ private fun StrictMaintenanceView(
         ContentBackground {
             SIBox(
                 modifier = Modifier.fillMaxSize(),
-                padding = 12
+                padding = 12,
             ) {
                 SIColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-
                     LottieAnimation(
                         maintenanceAnimation.value,
                         iterations = LottieConstants.IterateForever,
@@ -357,16 +344,12 @@ private fun StrictMaintenanceView(
                     SIText(
                         textAlign = TextAlign.Center,
                         text = optString(R.string.msg_under_maintenance),
-                        textColor = it
+                        textColor = it,
                     )
                     SIHeightSpace(value = 12)
                     SIButton(
                         text = optString(R.string.label_exit),
-                        onClick = {
-                            coroutineScope.launch {
-                                (context as Activity).finish()
-                            }
-                        }
+                        onClick = { coroutineScope.launch { (context as Activity).finish() } },
                     )
                 }
             }
@@ -376,23 +359,19 @@ private fun StrictMaintenanceView(
 
 @Composable
 private fun PartialMaintenanceDialog(
-    maintenance: Maintenance
+    maintenance: Maintenance,
 ) {
     val showDialog = rem(true)
     if (maintenance.activeStatus && !maintenance.strictMode && showDialog.value) {
         SIDialog(
             title = optString(R.string.title_under_maintenance),
             onYesText = optString(R.string.label_ok),
-            onYesClick = {
-                showDialog.value = false
-            },
-            onDismissRequest = {
-                showDialog.value = false
-            }
+            onYesClick = { showDialog.value = false },
+            onDismissRequest = { showDialog.value = false },
         ) {
             SIText(
                 text = optString(R.string.msg_under_maintenance_partial),
-                textColor = it
+                textColor = it,
             )
         }
     }

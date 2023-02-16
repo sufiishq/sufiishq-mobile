@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -34,30 +50,32 @@ import timber.log.Timber
 @PackagePrivate
 @Composable
 fun KalamDownloadDialog(
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
     kalamDownloadState.value?.apply {
-
         when (this) {
-            is KalamDownloadState.Started -> KalamDownloadStartedDialog(
-                this,
-                kalamController
-            )
-            is KalamDownloadState.InProgress -> KalamDownloadInProgressDialog(
-                this,
-                kalamController
-            )
-            is KalamDownloadState.Error -> KalamDownloadErrorDialog(
-                this,
-                kalamController
-            )
-            is KalamDownloadState.Completed -> KalamDownloadCompletedDialog(
-                this,
-                kalamController
-            )
+            is KalamDownloadState.Started ->
+                KalamDownloadStartedDialog(
+                    this,
+                    kalamController,
+                )
+            is KalamDownloadState.InProgress ->
+                KalamDownloadInProgressDialog(
+                    this,
+                    kalamController,
+                )
+            is KalamDownloadState.Error ->
+                KalamDownloadErrorDialog(
+                    this,
+                    kalamController,
+                )
+            is KalamDownloadState.Completed ->
+                KalamDownloadCompletedDialog(
+                    this,
+                    kalamController,
+                )
             else -> Timber.d("$this state is used for only hide dialog")
         }
     }
@@ -66,20 +84,15 @@ fun KalamDownloadDialog(
 @Composable
 private fun KalamDownloadStartedDialog(
     kalamDownloadState: KalamDownloadState.Started,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
         onNoText = optString(R.string.label_cancel),
-        onNoClick = {
-            dismissDownload(kalamController)
-        }
+        onNoClick = { dismissDownload(kalamController) },
     ) {
-
         SILinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
         )
     }
 }
@@ -87,48 +100,44 @@ private fun KalamDownloadStartedDialog(
 @Composable
 private fun KalamDownloadInProgressDialog(
     kalamDownloadState: KalamDownloadState.InProgress,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
 
-    val progress by animateFloatAsState(
-        targetValue = fileInfo.progress.toFloat() / 100f * 1f,
-        animationSpec = tween(
-            durationMillis = 800,
-            easing = LinearOutSlowInEasing
+    val progress by
+        animateFloatAsState(
+            targetValue = fileInfo.progress.toFloat() / 100f * 1f,
+            animationSpec =
+            tween(
+                durationMillis = 800,
+                easing = LinearOutSlowInEasing,
+            ),
         )
-    )
 
     ShowDialog(
         title = title,
         onNoText = optString(R.string.label_cancel),
-        onNoClick = {
-            dismissDownload(kalamController)
-        }
+        onNoClick = { dismissDownload(kalamController) },
     ) { textColor ->
-
         SIRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
-
             SIText(
                 text = "${fileInfo.progress}% of ",
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
             SIText(
                 text = format("%.2f", fileInfo.totalSize / 1024 / 1024) + " MB",
                 textColor = textColor,
-                textSize = TextSize.Small
+                textSize = TextSize.Small,
             )
         }
 
         SILinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             progress = progress,
         )
     }
@@ -137,61 +146,50 @@ private fun KalamDownloadInProgressDialog(
 @Composable
 private fun KalamDownloadCompletedDialog(
     kalamDownloadState: KalamDownloadState.Completed,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     val kalam = kalamDownloadState.kalam
 
     ShowDialog(
         title = kalam.title,
         onYesText = optString(R.string.label_ok),
-        onYesClick = {
-            dismissDownload(kalamController)
-        }
+        onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
-
         SIText(
-            text = buildAnnotatedString {
+            text =
+            buildAnnotatedString {
                 append("Kalam ")
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(kalam.title)
-                }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) { append(kalam.title) }
                 append(" successfully downloaded")
             },
-            textColor = textColor
+            textColor = textColor,
         )
-
     }
 }
 
 @Composable
 private fun KalamDownloadErrorDialog(
     kalamDownloadState: KalamDownloadState.Error,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     val kalam = kalamDownloadState.kalam
     val error = kalamDownloadState.error
 
     ShowDialog(
         title = kalam.title,
         onYesText = optString(R.string.label_ok),
-        onYesClick = {
-            dismissDownload(kalamController)
-        }
+        onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
-
         SIText(
             text = optString(R.string.label_download_error),
             textColor = textColor,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         SIText(
             text = error,
-            textColor = textColor
+            textColor = textColor,
         )
-
     }
 }
 
@@ -202,7 +200,7 @@ private fun ShowDialog(
     onNoClick: () -> Unit = {},
     onYesText: String? = null,
     onYesClick: () -> Unit = {},
-    content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit
+    content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     SIDialog(
         title = optString(R.string.dynamic_download_kalam, title),

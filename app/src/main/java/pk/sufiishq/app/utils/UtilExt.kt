@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.utils
 
 import androidx.annotation.StringRes
@@ -7,8 +23,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
-import java.text.SimpleDateFormat
-import java.util.*
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.helpers.ScreenType
@@ -17,6 +31,8 @@ import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 fun getApp(): SufiIshqApp = SufiIshqApp.getInstance()
 
@@ -43,7 +59,6 @@ fun <T> rem(value: T): MutableState<T> {
 }
 
 fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): List<DataMenuItem> {
-
     return filter {
         when (it.resId) {
             R.drawable.ic_round_favorite_24 -> {
@@ -64,7 +79,9 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
             R.drawable.ic_outline_delete_24 -> {
                 if (trackType == ScreenType.Tracks.ALL) {
                     kalam.onlineSource.isEmpty()
-                } else true
+                } else {
+                    true
+                }
             }
             R.drawable.ic_round_playlist_add_24 -> {
                 trackType != ScreenType.Tracks.PLAYLIST
@@ -72,14 +89,14 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
             else -> true
         }
     }
-
 }
 
 fun String.maxLength(length: Int, endWith: String): String {
-
     return if (this.length > length) {
         this.substring(0, length) + endWith
-    } else this
+    } else {
+        this
+    }
 }
 
 fun quickToast(msg: String, vararg args: Any?) {
@@ -95,8 +112,7 @@ fun getString(@StringRes resId: Int, vararg args: Any?): String {
 }
 
 fun Highlight?.contactsAsListPair(): List<Pair<String, String>>? {
-    return this
-        ?.contacts
+    return this?.contacts
         ?.map { it.value.toList().map { data -> data.second } }
         ?.flatten()
         ?.let {
@@ -109,9 +125,7 @@ fun Highlight?.contactsAsListPair(): List<Pair<String, String>>? {
 }
 
 fun String.addCharAtIndex(char: Char, index: Int): String {
-    return tryWithDefault(this) {
-        StringBuilder(this).apply { insert(index, char) }.toString()
-    }
+    return tryWithDefault(this) { StringBuilder(this).apply { insert(index, char) }.toString() }
 }
 
 suspend fun <T> tryAsyncWithDefault(default: T, block: suspend () -> T): T {
@@ -132,8 +146,9 @@ fun <T> tryWithDefault(default: T, block: () -> T): T {
     }
 }
 
-fun instantAutoLockDuration(label: String) = AutoLockDuration(
-    code = 0,
-    label = label,
-    durationInMillis = 0
-)
+fun instantAutoLockDuration(label: String) =
+    AutoLockDuration(
+        code = 0,
+        label = label,
+        durationInMillis = 0,
+    )

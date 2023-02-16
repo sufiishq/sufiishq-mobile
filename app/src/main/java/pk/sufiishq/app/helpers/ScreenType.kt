@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.helpers
 
 import androidx.compose.material.ScaffoldState
@@ -20,12 +36,8 @@ import pk.sufiishq.app.ui.screen.theme.ThemeScreen
 import pk.sufiishq.app.ui.screen.tracks.TracksScreen
 import pk.sufiishq.app.utils.getApp
 
-val ALL_SCREENS: List<ScreenType> = ScreenType::class
-    .nestedClasses
-    .toList()
-    .map {
-        it.objectInstance as ScreenType
-    }
+val ALL_SCREENS: List<ScreenType> =
+    ScreenType::class.nestedClasses.toList().map { it.objectInstance as ScreenType }
 
 sealed interface ScreenType {
     val route: String
@@ -34,13 +46,10 @@ sealed interface ScreenType {
     fun deepLinks(): List<NavDeepLink> = emptyList()
 
     fun buildRoute(vararg args: String): String {
-
         return buildString {
             append(route)
 
-            args.forEach { arg ->
-                append("/").append(arg)
-            }
+            args.forEach { arg -> append("/").append(arg) }
         }
     }
 
@@ -48,12 +57,13 @@ sealed interface ScreenType {
     fun Compose(
         navController: NavController,
         navBackStackEntry: NavBackStackEntry,
-        scaffoldState: ScaffoldState
+        scaffoldState: ScaffoldState,
     )
 
     object Dashboard : ScreenType {
 
-        override val route: String get() = "screen_dashboard"
+        override val route: String
+            get() = "screen_dashboard"
 
         override fun buildRoute() = route
 
@@ -61,17 +71,18 @@ sealed interface ScreenType {
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             DashboardScreen(
-                navController
+                navController,
             )
         }
     }
 
     object Playlist : ScreenType {
 
-        override val route: String get() = "screen_playlist"
+        override val route: String
+            get() = "screen_playlist"
 
         override fun buildRoute() = route
 
@@ -79,17 +90,18 @@ sealed interface ScreenType {
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             PlaylistScreen(
-                navController = navController
+                navController = navController,
             )
         }
     }
 
     object Help : ScreenType {
 
-        override val route: String get() = "screen_help"
+        override val route: String
+            get() = "screen_help"
 
         override fun buildRoute() = route
 
@@ -97,7 +109,7 @@ sealed interface ScreenType {
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             HelpScreen()
         }
@@ -116,7 +128,8 @@ sealed interface ScreenType {
         const val FAVORITES = "favorites"
         const val PLAYLIST = "playlist"
 
-        override val route: String get() = "screen_tracks"
+        override val route: String
+            get() = "screen_tracks"
 
         override fun buildRoute(): String {
             return "$route/{$PARAM_TRACK_TYPE}/{$PARAM_TITLE}/{$PARAM_PLAYLIST_ID}"
@@ -136,7 +149,6 @@ sealed interface ScreenType {
         }
 
         private fun getTrackListType(navBackStackEntry: NavBackStackEntry): TrackListType {
-
             val trackType = getTrackType(navBackStackEntry)
             val title = getTitle(navBackStackEntry)
             val playlistId = getPlaylistId(navBackStackEntry)
@@ -151,16 +163,12 @@ sealed interface ScreenType {
 
         override fun arguments(): List<NamedNavArgument> {
             return listOf(
-                navArgument(PARAM_TRACK_TYPE) {
-                    type = NavType.StringType
-                },
-                navArgument(PARAM_TITLE) {
-                    type = NavType.StringType
-                },
+                navArgument(PARAM_TRACK_TYPE) { type = NavType.StringType },
+                navArgument(PARAM_TITLE) { type = NavType.StringType },
                 navArgument(PARAM_PLAYLIST_ID) {
                     type = NavType.IntType
                     defaultValue = 0
-                }
+                },
             )
         }
 
@@ -168,24 +176,25 @@ sealed interface ScreenType {
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             TracksScreen(
-                trackListType = getTrackListType(navBackStackEntry)
+                trackListType = getTrackListType(navBackStackEntry),
             )
         }
     }
 
     object Theme : ScreenType {
 
-        override val route: String get() = "screen_photo"
+        override val route: String
+            get() = "screen_photo"
         override fun buildRoute() = route
 
         @Composable
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             ThemeScreen()
         }
@@ -193,14 +202,15 @@ sealed interface ScreenType {
 
     object DarbarLocation : ScreenType {
 
-        override val route: String get() = "screen_darbar_location"
+        override val route: String
+            get() = "screen_darbar_location"
         override fun buildRoute() = route
 
         @Composable
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             DarbarLocationScreen()
         }
@@ -210,7 +220,8 @@ sealed interface ScreenType {
 
         private const val PARAM_PHOTO_ID = "photoId"
 
-        override val route: String get() = "screen_photo"
+        override val route: String
+            get() = "screen_photo"
 
         override fun buildRoute(): String {
             return "$route/{$PARAM_PHOTO_ID}"
@@ -222,9 +233,7 @@ sealed interface ScreenType {
 
         override fun arguments(): List<NamedNavArgument> {
             return listOf(
-                navArgument(PARAM_PHOTO_ID) {
-                    type = NavType.IntType
-                }
+                navArgument(PARAM_PHOTO_ID) { type = NavType.IntType },
             )
         }
 
@@ -232,44 +241,46 @@ sealed interface ScreenType {
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             PhotoScreen(
-                photoId = getPhotoId(navBackStackEntry)
+                photoId = getPhotoId(navBackStackEntry),
             )
         }
     }
 
     object AppLock : ScreenType {
 
-        override val route: String get() = "screen_app_lock"
+        override val route: String
+            get() = "screen_app_lock"
         override fun buildRoute() = route
 
         @Composable
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             AppLockScreen(
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
             )
         }
     }
 
     object AdminSettings : ScreenType {
 
-        override val route: String get() = "screen_admin_settings"
+        override val route: String
+            get() = "screen_admin_settings"
         override fun buildRoute() = route
 
         @Composable
         override fun Compose(
             navController: NavController,
             navBackStackEntry: NavBackStackEntry,
-            scaffoldState: ScaffoldState
+            scaffoldState: ScaffoldState,
         ) {
             AdminSettingsScreen(
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
             )
         }
     }

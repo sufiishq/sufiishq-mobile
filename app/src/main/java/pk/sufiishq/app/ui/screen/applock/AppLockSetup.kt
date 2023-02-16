@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,21 +47,16 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun AppLockSetup(
-    appLockController: AppLockController
+    appLockController: AppLockController,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     SIBox(modifier = Modifier.fillMaxSize()) {
-
         SIRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .align(Alignment.TopCenter),
+            modifier = Modifier.fillMaxWidth().padding(16.dp).align(Alignment.TopCenter),
             bgColor = AuroraColor.Background,
-            radius = 4
+            radius = 4,
         ) { textColor ->
             SIImage(resId = R.drawable.shield)
             SIWidthSpace(value = 12)
@@ -53,13 +64,13 @@ fun AppLockSetup(
                 SIText(
                     text = optString(R.string.title_app_lock),
                     textColor = textColor,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 SIHeightSpace(value = 12)
                 SIText(
                     text = optString(R.string.detail_setup_app_lock),
                     textColor = textColor,
-                    textSize = TextSize.Small
+                    textSize = TextSize.Small,
                 )
                 SIHeightSpace(value = 12)
                 SIBox(modifier = Modifier.fillMaxWidth()) {
@@ -70,16 +81,14 @@ fun AppLockSetup(
                             coroutineScope.launch {
                                 appLockController.setupBiometricOrPin(context as FragmentActivity)
                             }
-                        }
+                        },
                     )
                 }
             }
         }
 
         SIImage(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .alpha(0.05f),
+            modifier = Modifier.align(Alignment.Center).alpha(0.05f),
             resId = R.drawable.shield_full,
         )
     }

@@ -1,10 +1,25 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import pk.sufiishq.app.core.applock.AppLockManager
 import pk.sufiishq.app.core.applock.AppLockState
 import pk.sufiishq.app.core.applock.BiometricManager
@@ -12,10 +27,14 @@ import pk.sufiishq.app.core.applock.BiometricStatus
 import pk.sufiishq.app.data.controller.AppLockController
 import pk.sufiishq.app.models.AutoLockDuration
 import pk.sufiishq.app.models.SecurityQuestion
+import javax.inject.Inject
 
 @HiltViewModel
-class AppLockViewModel @Inject constructor(
-    private val appLockManager: AppLockManager, private val bioMetricManager: BiometricManager
+class AppLockViewModel
+@Inject
+constructor(
+    private val appLockManager: AppLockManager,
+    private val bioMetricManager: BiometricManager,
 ) : ViewModel(), AppLockController {
 
     private var biometricVerified = false
@@ -44,7 +63,8 @@ class AppLockViewModel @Inject constructor(
                     is BiometricStatus.UsePin -> {
                         setState(AppLockState.NewPinPrompt)
                     }
-                    else -> { /* do nothing otherwise */
+                    else -> {
+                        /* do nothing otherwise */
                     }
                 }
             }
@@ -105,8 +125,9 @@ class AppLockViewModel @Inject constructor(
     override fun changePinGenerated(pin: String, cameFromForgotPin: Boolean) {
         appLockManager.setState(
             AppLockState.ConfirmChangePinPrompt(
-                previousPin = pin, cameFromForgotPin = cameFromForgotPin
-            )
+                previousPin = pin,
+                cameFromForgotPin = cameFromForgotPin,
+            ),
         )
     }
 

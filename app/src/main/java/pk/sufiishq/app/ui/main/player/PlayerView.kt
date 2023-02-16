@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.main.player
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,42 +49,27 @@ import pk.sufiishq.aurora.theme.AuroraLight
 fun PlayerView(
     playerController: PlayerController = hiltViewModel<PlayerViewModel>(),
 ) {
-
-    val showSliderLabel = remember {
-        derivedStateOf {
-            mutableStateOf(false)
-        }
-    }
+    val showSliderLabel = remember { derivedStateOf { mutableStateOf(false) } }
     val kalamInfo = playerController.getKalamInfo().observeAsState()
 
     ContentBackground(modifier = Modifier.height(90.dp)) {
         SIBox(modifier = Modifier.fillMaxSize()) {
-
-
             SIBox(modifier = Modifier.padding(top = 6.dp)) {
-
                 TrackInfo(kalamInfo = kalamInfo.value)
 
                 PlayPauseButton(
                     playerController = playerController,
                     kalamInfo = kalamInfo,
-                    boxScope = this
+                    boxScope = this,
                 )
             }
 
             TrackSlider(
                 playerController = playerController,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-                    .height(0.dp),
+                modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(0.dp),
                 kalamInfo = kalamInfo.value,
-                onValueChange = {
-                    showSliderLabel.value.value = true
-                },
-                onValueChangeFinished = {
-                    showSliderLabel.value.value = false
-                }
+                onValueChange = { showSliderLabel.value.value = true },
+                onValueChangeFinished = { showSliderLabel.value.value = false },
             )
         }
     }
@@ -77,20 +78,19 @@ fun PlayerView(
         val localDensity = LocalDensity.current
 
         SIBox(
-            modifier = Modifier
-                .fillMaxWidth()
-                .graphicsLayer {
-                    translationY = localDensity.run { 80.dp.toPx() * -1 }
-                }
+            modifier =
+            Modifier.fillMaxWidth().graphicsLayer {
+                translationY = localDensity.run { 80.dp.toPx() * -1 }
+            },
         ) {
             SIRow(
                 bgColor = AuroraColor.SecondaryVariant,
                 padding = 8,
-                radius = 4
+                radius = 4,
             ) {
                 SIText(
                     text = kalamInfo.value?.currentProgress?.formatTime ?: 0.formatTime,
-                    textColor = it
+                    textColor = it,
                 )
             }
         }
@@ -103,7 +103,7 @@ fun PlayerView(
 fun PlayerPreviewLight() {
     AuroraLight {
         PlayerView(
-            playerController = fakePlayerController()
+            playerController = fakePlayerController(),
         )
     }
 }
@@ -114,7 +114,7 @@ fun PlayerPreviewLight() {
 fun PlayerPreviewDark() {
     AuroraDark {
         PlayerView(
-            playerController = fakePlayerController()
+            playerController = fakePlayerController(),
         )
     }
 }

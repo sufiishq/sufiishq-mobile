@@ -1,9 +1,23 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.firebase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import java.util.*
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
@@ -12,23 +26,29 @@ import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.models.Highlight
 import pk.sufiishq.app.utils.contactsAsListPair
 import pk.sufiishq.app.utils.getString
+import java.util.Calendar
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class HighlightManager @Inject constructor(
+class HighlightManager
+@Inject
+constructor(
     private val adminSettingsRepository: AdminSettingsRepository,
-    @IoDispatcher private val dispatcher: CoroutineContext
+    @IoDispatcher private val dispatcher: CoroutineContext,
 ) {
 
     private val highlightAvailable = MutableLiveData<Highlight?>(null)
 
     private val highlightStatus = MutableLiveData<HighlightStatus?>(null)
     private val startDate = MutableLiveData(Calendar.getInstance())
-    private val endDate = MutableLiveData(Calendar.getInstance().apply {
-        add(Calendar.DAY_OF_MONTH, 1)
-    })
-    private val minEndDate = MutableLiveData(Calendar.getInstance().apply {
-        add(Calendar.DAY_OF_MONTH, 1)
-    })
+    private val endDate =
+        MutableLiveData(
+            Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) },
+        )
+    private val minEndDate =
+        MutableLiveData(
+            Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) },
+        )
     private val startTime = MutableLiveData(Calendar.getInstance())
     private val endTime = MutableLiveData(Calendar.getInstance())
     private val title = MutableLiveData<String?>(null)
@@ -41,7 +61,6 @@ class HighlightManager @Inject constructor(
     }
 
     private fun checkHighlightAvailable() {
-
         callAsync {
             fetch()
                 .takeIf { it is FirebaseDatabaseStatus.ReadHighlight }
@@ -75,13 +94,14 @@ class HighlightManager @Inject constructor(
 
     fun startDateChanged(calendar: Calendar) {
         startDate.value = calendar
-        minEndDate.value = Calendar.getInstance().apply {
-            set(Calendar.DAY_OF_MONTH, startDate.value!!.get(Calendar.DAY_OF_MONTH))
-            set(Calendar.MONTH, startDate.value!!.get(Calendar.MONTH))
-            set(Calendar.YEAR, startDate.value!!.get(Calendar.YEAR))
-        }.apply {
-            add(Calendar.DAY_OF_MONTH, 1)
-        }
+        minEndDate.value =
+            Calendar.getInstance()
+                .apply {
+                    set(Calendar.DAY_OF_MONTH, startDate.value!!.get(Calendar.DAY_OF_MONTH))
+                    set(Calendar.MONTH, startDate.value!!.get(Calendar.MONTH))
+                    set(Calendar.YEAR, startDate.value!!.get(Calendar.YEAR))
+                }
+                .apply { add(Calendar.DAY_OF_MONTH, 1) }
         if (endDate.value!!.timeInMillis <= startDate.value!!.timeInMillis) {
             endDate.value = minEndDate.value
         }
@@ -128,18 +148,16 @@ class HighlightManager @Inject constructor(
     }
 
     fun load(highlight: Highlight) {
-
-        val start = Calendar.getInstance().apply {
-            timeInMillis = highlight.startDateTime
-        }
-        val end = Calendar.getInstance().apply {
-            timeInMillis = highlight.endDateTime
-        }
+        val start = Calendar.getInstance().apply { timeInMillis = highlight.startDateTime }
+        val end = Calendar.getInstance().apply { timeInMillis = highlight.endDateTime }
 
         // check if highlight is ongoing or expired
         highlightStatus.postValue(
-            if (end.timeInMillis < Calendar.getInstance().timeInMillis) HighlightStatus.Expired()
-            else HighlightStatus.OnGoing()
+            if (end.timeInMillis < Calendar.getInstance().timeInMillis) {
+                HighlightStatus.Expired()
+            } else {
+                HighlightStatus.OnGoing()
+            },
         )
 
         startDate.value = start
@@ -150,11 +168,7 @@ class HighlightManager @Inject constructor(
         setDetail(highlight.detail)
 
         val defaultContacts = mutableListOf<Pair<String, String>?>(null, null, null)
-        highlight
-            .contactsAsListPair()
-            ?.forEachIndexed { index, pair ->
-                defaultContacts[index] = pair
-            }
+        highlight.contactsAsListPair()?.forEachIndexed { index, pair -> defaultContacts[index] = pair }
         contacts.value = defaultContacts
     }
 
@@ -163,18 +177,20 @@ class HighlightManager @Inject constructor(
     }
 
     suspend fun addOrUpdate(): FirebaseDatabaseStatus {
-
-        val highlight = Highlight(
-            startDateTime = buildDateTime(startDate.value!!, startTime.value!!),
-            endDateTime = buildDateTime(endDate.value!!, endTime.value!!),
-            title = title.value,
-            detail = detail.value!!,
-            contacts = resolveContacts()
-        )
+        val highlight =
+            Highlight(
+                startDateTime = buildDateTime(startDate.value!!, startTime.value!!),
+                endDateTime = buildDateTime(endDate.value!!, endTime.value!!),
+                title = title.value,
+                detail = detail.value!!,
+                contacts = resolveContacts(),
+            )
 
         // highlight is expired need to fixed the end time
         if (highlight.endDateTime < Calendar.getInstance().timeInMillis) {
-            return FirebaseDatabaseStatus.Failed(RuntimeException(getString(R.string.msg_highlight_invalid_end_time)))
+            return FirebaseDatabaseStatus.Failed(
+                RuntimeException(getString(R.string.msg_highlight_invalid_end_time)),
+            )
         }
 
         return adminSettingsRepository.addOrUpdateHighlight(highlight)
@@ -187,12 +203,8 @@ class HighlightManager @Inject constructor(
     fun clear() {
         highlightStatus.value = null
         startDate.value = Calendar.getInstance()
-        endDate.value = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, 1)
-        }
-        minEndDate.value = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_MONTH, 1)
-        }
+        endDate.value = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
+        minEndDate.value = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
         startTime.value = Calendar.getInstance()
         endTime.value = Calendar.getInstance()
         title.value = null
@@ -210,27 +222,28 @@ class HighlightManager @Inject constructor(
                     it.first.mapIndexed { index, name -> index.toString() to name.trim() }.toMap(),
                     it.second.mapIndexed { index, name -> index.toString() to name.trim() }.toMap(),
                 )
-            }?.let {
+            }
+            ?.let {
                 mapOf(
                     Highlight.NAME to it.first,
-                    Highlight.NUMBER to it.second
+                    Highlight.NUMBER to it.second,
                 )
             }
     }
 
     private fun buildDateTime(dateCal: Calendar, timeCal: Calendar): Long {
-        return Calendar.getInstance().apply {
-            set(Calendar.YEAR, dateCal.get(Calendar.YEAR))
-            set(Calendar.MONTH, dateCal.get(Calendar.MONTH))
-            set(Calendar.DAY_OF_MONTH, dateCal.get(Calendar.DAY_OF_MONTH))
-            set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY))
-            set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE))
-        }.timeInMillis
+        return Calendar.getInstance()
+            .apply {
+                set(Calendar.YEAR, dateCal.get(Calendar.YEAR))
+                set(Calendar.MONTH, dateCal.get(Calendar.MONTH))
+                set(Calendar.DAY_OF_MONTH, dateCal.get(Calendar.DAY_OF_MONTH))
+                set(Calendar.HOUR_OF_DAY, timeCal.get(Calendar.HOUR_OF_DAY))
+                set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE))
+            }
+            .timeInMillis
     }
 
     private fun callAsync(block: suspend CoroutineScope.() -> Unit) {
-        CoroutineScope(dispatcher).launch {
-            block()
-        }
+        CoroutineScope(dispatcher).launch { block() }
     }
 }

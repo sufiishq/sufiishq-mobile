@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import android.annotation.SuppressLint
@@ -9,8 +25,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import pk.sufiishq.app.core.app.AppManager
 import pk.sufiishq.app.core.kalam.delete.KalamDeleteManager
@@ -32,10 +46,14 @@ import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.models.Playlist
 import pk.sufiishq.app.utils.filterItems
 import pk.sufiishq.aurora.models.DataMenuItem
+import java.util.*
+import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
-class KalamViewModel @Inject constructor(
+class KalamViewModel
+@Inject
+constructor(
     @KalamItemPopupMenuItems private val popupMenu: PopupMenu,
     private val kalamDownloadManager: KalamDownloadManager,
     private val kalamDeleteManager: KalamDeleteManager,
@@ -44,16 +62,14 @@ class KalamViewModel @Inject constructor(
     private val playlistManager: PlaylistManager,
     private val favoriteManager: FavoriteManager,
     private val playerManager: PlayerManager,
-    private val appManager: AppManager
+    private val appManager: AppManager,
 ) : ViewModel(), KalamController {
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow
 
     private fun pagingSource(): () -> PagingSource<Int, Kalam> {
-        return {
-            kalamRepository.load()
-        }
+        return { kalamRepository.load() }
     }
 
     // -------------------------------------------------------------------- //

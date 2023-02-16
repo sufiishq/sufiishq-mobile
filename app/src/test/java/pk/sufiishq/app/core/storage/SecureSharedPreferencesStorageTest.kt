@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.storage
 
 import android.content.Context
@@ -32,7 +48,7 @@ class SecureSharedPreferencesStorageTest : SufiIshqTest() {
                 any(),
                 any(),
                 any(),
-                any()
+                any(),
             )
         } returns context.getSharedPreferences("sufiishq", Context.MODE_PRIVATE)
 
@@ -41,7 +57,6 @@ class SecureSharedPreferencesStorageTest : SufiIshqTest() {
 
     @Test
     fun test_verifyAll_getAndPutMethods() {
-
         verify("str_key", "", "")
         verify("int_key", 0, 0)
         verify("float_key", 0f, 0f)
@@ -53,7 +68,6 @@ class SecureSharedPreferencesStorageTest : SufiIshqTest() {
         storage.put("float_key", 1f)
         storage.put("long_key", 100L)
         storage.put("boolean_key", true)
-
 
         verify("str_key", "test", "")
         verify("int_key", 10, 0)

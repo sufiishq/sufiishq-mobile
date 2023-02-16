@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.utils
 
 import androidx.annotation.StringRes
@@ -18,9 +34,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.debugInspectorInfo
 
-/**
- * Returns whether the lazy list is currently scrolling up.
- */
+/** Returns whether the lazy list is currently scrolling up. */
 @Composable
 fun LazyListState.isScrollingUp(): Boolean {
     val previousIndex = remember(this) { mutableStateOf(firstVisibleItemIndex) }
@@ -31,12 +45,14 @@ fun LazyListState.isScrollingUp(): Boolean {
                 previousIndex.value > firstVisibleItemIndex
             } else {
                 previousScrollOffset.value >= firstVisibleItemScrollOffset
-            }.also {
-                previousIndex.value = firstVisibleItemIndex
-                previousScrollOffset.value = firstVisibleItemScrollOffset
             }
+                .also {
+                    previousIndex.value = firstVisibleItemIndex
+                    previousScrollOffset.value = firstVisibleItemScrollOffset
+                }
         }
-    }.value
+    }
+        .value
 }
 
 @Composable
@@ -45,27 +61,26 @@ fun optString(@StringRes resId: Int, vararg args: Any?): String {
     return context.getString(resId).format(*args)
 }
 
+fun Modifier.shake(enabled: Boolean) =
+    composed(
+        factory = {
+            val scale =
+                rememberInfiniteTransition()
+                    .animateFloat(
+                        initialValue = -20f,
+                        targetValue = 20f,
+                        animationSpec =
+                        infiniteRepeatable(
+                            animation = tween(durationMillis = 300, easing = LinearEasing),
+                            repeatMode = RepeatMode.Reverse,
+                        ),
+                    )
 
-fun Modifier.shake(enabled: Boolean) = composed(
-
-    factory = {
-
-        val scale = rememberInfiniteTransition().animateFloat(
-            initialValue = -20f,
-            targetValue = 20f,
-            animationSpec = infiniteRepeatable(
-
-                animation = tween(durationMillis = 300, easing = LinearEasing),
-                repeatMode = RepeatMode.Reverse
-            )
-        )
-
-        Modifier.graphicsLayer {
-            rotationZ = if (enabled) scale.value else 1f
-        }
-    },
-    inspectorInfo = debugInspectorInfo {
-        name = "shake"
-        properties["enabled"] = enabled
-    }
-)
+            Modifier.graphicsLayer { rotationZ = if (enabled) scale.value else 1f }
+        },
+        inspectorInfo =
+        debugInspectorInfo {
+            name = "shake"
+            properties["enabled"] = enabled
+        },
+    )

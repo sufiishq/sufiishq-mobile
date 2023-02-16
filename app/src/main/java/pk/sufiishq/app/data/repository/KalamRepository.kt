@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.data.repository
 
 import android.annotation.SuppressLint
@@ -5,7 +21,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
-import javax.inject.Inject
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -24,12 +39,14 @@ import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.utils.KALAM_TABLE_NAME
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-
-class KalamRepository @Inject constructor(
+class KalamRepository
+@Inject
+constructor(
     private val kalamDao: KalamDao,
-    @IoDispatcher private val dispatcher: CoroutineContext
+    @IoDispatcher private val dispatcher: CoroutineContext,
 ) {
 
     private var trackListType: TrackListType = TrackListType.All()
@@ -67,22 +84,22 @@ class KalamRepository @Inject constructor(
     }
 
     private fun loadAllKalam(searchKeyword: String): PagingSource<Int, Kalam> {
-        return kalamDao.getAllKalam("%${searchKeyword}%")
+        return kalamDao.getAllKalam("%$searchKeyword%")
     }
 
     private fun loadDownloadsKalam(searchKeyword: String): PagingSource<Int, Kalam> {
-        return kalamDao.getDownloadsKalam("%${searchKeyword}%")
+        return kalamDao.getDownloadsKalam("%$searchKeyword%")
     }
 
     private fun loadFavoritesKalam(searchKeyword: String): PagingSource<Int, Kalam> {
-        return kalamDao.getFavoritesKalam("%${searchKeyword}%")
+        return kalamDao.getFavoritesKalam("%$searchKeyword%")
     }
 
     private fun loadPlaylistKalam(
         playlistId: Int,
-        searchKeyword: String
+        searchKeyword: String,
     ): PagingSource<Int, Kalam> {
-        return kalamDao.getPlaylistKalam(playlistId, "%${searchKeyword}%")
+        return kalamDao.getPlaylistKalam(playlistId, "%$searchKeyword%")
     }
 
     fun loadAllPlaylistKalam(playlistId: Int): LiveData<List<Kalam>> {
@@ -96,9 +113,8 @@ class KalamRepository @Inject constructor(
     fun getNextKalam(
         id: Int,
         trackListType: TrackListType,
-        shuffle: Boolean
+        shuffle: Boolean,
     ): LiveData<Kalam?> {
-
         if (shuffle) return getRandomKalam(trackListType)
 
         val query = buildString {
@@ -122,9 +138,8 @@ class KalamRepository @Inject constructor(
     fun getPreviousKalam(
         id: Int,
         trackListType: TrackListType,
-        shuffle: Boolean
+        shuffle: Boolean,
     ): LiveData<Kalam?> {
-
         if (shuffle) return getRandomKalam(trackListType)
 
         val query = buildString {
@@ -184,11 +199,9 @@ class KalamRepository @Inject constructor(
     }
 
     suspend fun loadAllFromAssets(context: Context): List<Kalam> {
-
         return withContext(dispatcher) {
             val list = mutableListOf<Kalam>()
-            val fileContent =
-                context.assets.open("kalam.json").bufferedReader().use { it.readText() }
+            val fileContent = context.assets.open("kalam.json").bufferedReader().use { it.readText() }
             val jsonArray = JSONArray(fileContent)
             (0 until jsonArray.length()).forEach {
                 val jsonObject = jsonArray.getJSONObject(it)
@@ -209,7 +222,7 @@ class KalamRepository @Inject constructor(
             onlineSource = jsonObject.getString(ONLINE_SRC),
             offlineSource = jsonObject.getString(OFFLINE_SRC),
             isFavorite = jsonObject.getInt(FAVORITE),
-            playlistId = jsonObject.getInt(PLAYLIST_ID)
+            playlistId = jsonObject.getInt(PLAYLIST_ID),
         )
     }
 

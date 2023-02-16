@@ -1,8 +1,23 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.kalam.delete
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
@@ -15,12 +30,15 @@ import pk.sufiishq.app.models.Kalam
 import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.app.utils.offlineFile
 import pk.sufiishq.app.utils.quickToast
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class KalamDeleteManager @Inject constructor(
+class KalamDeleteManager
+@Inject
+constructor(
     @AndroidMediaPlayer private val player: AudioPlayer,
     @IoDispatcher private val dispatcher: CoroutineContext,
-    private val kalamRepository: KalamRepository
+    private val kalamRepository: KalamRepository,
 ) {
 
     private val showKalamConfirmDeleteDialog = MutableLiveData<KalamDeleteItem?>(null)
@@ -66,17 +84,13 @@ class KalamDeleteManager @Inject constructor(
     private fun deleteFromPlaylist(kalam: Kalam) {
         CoroutineScope(dispatcher).launch {
             kalamRepository.update(
-                kalam.apply {
-                    playlistId = 0
-                }
+                kalam.apply { playlistId = 0 },
             )
         }
     }
 
     private fun canDelete(kalam: Kalam): Boolean {
-
         // can't be deleted if kalam is on active play
         return player.getActiveTrack().id != kalam.id
     }
-
 }

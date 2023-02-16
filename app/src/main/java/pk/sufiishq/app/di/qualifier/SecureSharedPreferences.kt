@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.models
+package pk.sufiishq.app.di.qualifier
 
-data class NavigationItem(
-    val title: String,
-    val resId: Int,
-    val route: String,
-)
+import javax.inject.Qualifier
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class SecureSharedPreferences

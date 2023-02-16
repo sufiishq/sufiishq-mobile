@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.helpers
 
 import android.media.MediaPlayer
@@ -30,12 +46,9 @@ class PreviewAudioPlayerTest : SufiIshqTest() {
 
     @Test
     fun testStart_shouldVerify_handlerUpdatesWithRunnable() {
-
         var progress = -1
 
-        previewAudioPlayer.setOnProgressListener {
-            progress = it
-        }
+        previewAudioPlayer.setOnProgressListener { progress = it }
 
         val runnableSlot = slot<Runnable>()
         val delaySLot = slot<Long>()
@@ -61,7 +74,6 @@ class PreviewAudioPlayerTest : SufiIshqTest() {
 
     @Test
     fun testPause_shouldVerify_pauseAndHandlerRemoveCallback() {
-
         val runnableSlot = slot<Runnable>()
 
         every { sourcePlayer.pause() } returns Unit
@@ -77,7 +89,6 @@ class PreviewAudioPlayerTest : SufiIshqTest() {
 
     @Test
     fun testGetDuration_shouldReturn_kalamDuration() {
-
         val path = "path-to-the-source"
         val pathSlot = slot<String>()
 
@@ -120,9 +131,7 @@ class PreviewAudioPlayerTest : SufiIshqTest() {
         every { handler.removeCallbacks(capture(runnableSlot)) } returns Unit
         previewAudioPlayer.releaseProgressListener()
 
-        verifySequence {
-            handler.removeCallbacks(runnableSlot.captured)
-        }
+        verifySequence { handler.removeCallbacks(runnableSlot.captured) }
     }
 
     @Test
@@ -139,19 +148,14 @@ class PreviewAudioPlayerTest : SufiIshqTest() {
         previewAudioPlayer.seekTo(2500)
 
         assertEquals(2500, slotMsec.captured)
-        verifySequence {
-            sourcePlayer.seekTo(slotMsec.captured)
-        }
+        verifySequence { sourcePlayer.seekTo(slotMsec.captured) }
     }
 
     @Test
     fun testSetOnCompletionListener_shouldVerify_sourcePlayerCompleteListenerSet() {
-
         var isComplete = false
 
-        val listener = MediaPlayer.OnCompletionListener {
-            isComplete = true
-        }
+        val listener = MediaPlayer.OnCompletionListener { isComplete = true }
 
         val listenerSlot = slot<MediaPlayer.OnCompletionListener>()
         every { sourcePlayer.setOnCompletionListener(capture(listenerSlot)) } returns Unit

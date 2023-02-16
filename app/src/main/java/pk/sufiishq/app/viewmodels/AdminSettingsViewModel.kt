@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.viewmodels
 
 import android.annotation.SuppressLint
@@ -10,8 +26,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.DatabaseException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.*
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
@@ -25,23 +39,25 @@ import pk.sufiishq.app.data.controller.AdminController
 import pk.sufiishq.app.models.Maintenance
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.isNetworkAvailable
+import java.util.*
+import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
-class AdminSettingsViewModel @Inject constructor(
+class AdminSettingsViewModel
+@Inject
+constructor(
     @ApplicationContext private val context: Context,
     private val authManager: AuthManager,
     private val highlightManager: HighlightManager,
-    private val maintenanceManager: MaintenanceManager
+    private val maintenanceManager: MaintenanceManager,
 ) : ViewModel(), AdminController {
 
     private val showSnackbar = MutableLiveData<String?>(null)
     private val showLoader = MutableLiveData(false)
 
     init {
-        launchWithOnline {
-            authManager.tryToAuthLogin()
-        }
+        launchWithOnline { authManager.tryToAuthLogin() }
     }
 
     override fun showLoader(): LiveData<Boolean> {
@@ -62,9 +78,7 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     private fun callIfOnline(block: () -> Unit) {
-        context
-            .takeIf { it.isNetworkAvailable() }
-            ?.apply { block() }
+        context.takeIf { it.isNetworkAvailable() }?.apply { block() }
             ?: showSnackbar(getString(R.string.msg_no_network_connection))
     }
 
@@ -93,9 +107,7 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     override fun signIn(activity: ComponentActivity) {
-        launchWithOnline {
-            authManager.signIn(activity)
-        }
+        launchWithOnline { authManager.signIn(activity) }
     }
 
     override fun signOut(activity: ComponentActivity) {
@@ -111,9 +123,7 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     override fun deleteHighlight() {
-        launchAsyncWithOnline {
-            highlightManager.delete().let(::verifyDelete)
-        }
+        launchAsyncWithOnline { highlightManager.delete().let(::verifyDelete) }
     }
 
     override fun startDate(): LiveData<Calendar> {
@@ -173,17 +183,12 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     override fun fetchHighlight() {
-        launchAsyncWithOnline {
-            highlightManager.fetch().apply(::resolveHighlight)
-        }
+        launchAsyncWithOnline { highlightManager.fetch().apply(::resolveHighlight) }
     }
 
     override fun addOrUpdateHighlight() {
         launchWithValidation {
-            highlightManager
-                .addOrUpdate()
-                .let(::resolveMessage)
-                .apply(::showSnackbar)
+            highlightManager.addOrUpdate().let(::resolveMessage).apply(::showSnackbar)
         }
     }
 
@@ -213,18 +218,12 @@ class AdminSettingsViewModel @Inject constructor(
     }
 
     private fun validateDetail(block: () -> Unit) {
-        getDetail()
-            .takeIf { it.value?.trim()?.isNotEmpty() == true }
-            ?.apply { block() }
+        getDetail().takeIf { it.value?.trim()?.isNotEmpty() == true }?.apply { block() }
             ?: showSnackbar(getString(R.string.msg_detail_required))
     }
 
     private fun launchWithValidation(block: suspend CoroutineScope.() -> Unit) {
-        validateDetail {
-            launchAsyncWithOnline {
-                block()
-            }
-        }
+        validateDetail { launchAsyncWithOnline { block() } }
     }
 
     // -------------------------------------------------------------------- //
@@ -241,9 +240,7 @@ class AdminSettingsViewModel @Inject constructor(
 
     override fun setMaintenanceStrict(mode: Boolean) {
         callIfOnline {
-            launchAsyncWithOnline {
-                maintenanceManager.setStrictMode(mode).message.apply(::showSnackbar)
-            }
+            launchAsyncWithOnline { maintenanceManager.setStrictMode(mode).message.apply(::showSnackbar) }
         }
     }
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import android.os.Build
@@ -45,9 +61,8 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun AppLockKeyboardWithPinView(
     modifier: Modifier = Modifier,
     onPinGenerated: suspend CoroutineScope.(pin: String) -> Unit,
-    validPin: String? = null
+    validPin: String? = null,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val view = LocalView.current
     val digits = (0..9).toList().map { it.toString() }
@@ -71,23 +86,17 @@ fun AppLockKeyboardWithPinView(
                 pin.value = ""
             }
         } else {
-            LaunchedEffect(Unit) {
-                onPinGenerated(this, pin.value)
-            }
+            LaunchedEffect(Unit) { onPinGenerated(this, pin.value) }
         }
     }
 
     SIColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(modifier),
+        modifier = Modifier.fillMaxWidth().then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SIRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .offset(offsetX.value.dp, 0.dp),
-            horizontalArrangement = Arrangement.aligned(Alignment.CenterHorizontally)
+            modifier = Modifier.fillMaxWidth().offset(offsetX.value.dp, 0.dp),
+            horizontalArrangement = Arrangement.aligned(Alignment.CenterHorizontally),
         ) {
             PinIndicatorView(bgColor = indicatorColors[0])
             SIWidthSpace(value = 8)
@@ -100,7 +109,7 @@ fun AppLockKeyboardWithPinView(
         SIHeightSpace(value = 40)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             KeyboardButton(label = digits[1], pin = pin)
             KeyboardButton(label = digits[2], pin = pin)
@@ -109,7 +118,7 @@ fun AppLockKeyboardWithPinView(
         SIHeightSpace(value = 16)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             KeyboardButton(label = digits[4], pin = pin)
             KeyboardButton(label = digits[5], pin = pin)
@@ -118,7 +127,7 @@ fun AppLockKeyboardWithPinView(
         SIHeightSpace(value = 16)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             KeyboardButton(label = digits[7], pin = pin)
             KeyboardButton(label = digits[8], pin = pin)
@@ -127,30 +136,29 @@ fun AppLockKeyboardWithPinView(
         SIHeightSpace(value = 16)
         SIRow(
             modifier = Modifier.fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             KeyboardButton(label = "", pin = pin, bgColor = AuroraColor.Transparent)
             KeyboardButton(label = digits[0], pin = pin)
-            KeyboardIconButton(resId = R.drawable.round_backspace_24, onClick = {
-                if (pin.value.isNotEmpty()) {
-                    pin.value = pin.value.substring(0, pin.value.length - 1)
-                }
-            })
+            KeyboardIconButton(
+                resId = R.drawable.round_backspace_24,
+                onClick = {
+                    if (pin.value.isNotEmpty()) {
+                        pin.value = pin.value.substring(0, pin.value.length - 1)
+                    }
+                },
+            )
         }
     }
 }
 
-
 @Composable
 private fun PinIndicatorView(
-    bgColor: AuroraColor
+    bgColor: AuroraColor,
 ) {
     SIBox(
-        modifier = Modifier
-            .size(14.dp)
-            .clip(RoundedCornerShape(30))
-            .background(bgColor.color()),
-        content = {}
+        modifier = Modifier.size(14.dp).clip(RoundedCornerShape(30)).background(bgColor.color()),
+        content = {},
     )
 }
 
@@ -158,30 +166,27 @@ private fun PinIndicatorView(
 private fun KeyboardButton(
     label: String,
     pin: MutableState<String>,
-    bgColor: AuroraColor = AuroraColor.Background
+    bgColor: AuroraColor = AuroraColor.Background,
 ) {
-
     var clickableModifier: Modifier = Modifier
 
     if (label.isNotEmpty()) {
-        clickableModifier = Modifier.clickable {
-            if (pin.value.length < 4) {
-                pin.value = "${pin.value}$label"
+        clickableModifier =
+            Modifier.clickable {
+                if (pin.value.length < 4) {
+                    pin.value = "${pin.value}$label"
+                }
             }
-        }
     }
 
     SIBox(
         bgColor = bgColor,
-        modifier = Modifier
-            .size(65.dp)
-            .clip(RoundedCornerShape(30))
-            .then(clickableModifier)
+        modifier = Modifier.size(65.dp).clip(RoundedCornerShape(30)).then(clickableModifier),
     ) {
         SIText(
             text = label,
             textColor = it,
-            textSize = TextSize.Large
+            textSize = TextSize.Large,
         )
     }
 }
@@ -189,16 +194,10 @@ private fun KeyboardButton(
 @Composable
 private fun KeyboardIconButton(
     @DrawableRes resId: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
-
     SIBox(
-        modifier = Modifier
-            .size(65.dp)
-            .clip(RoundedCornerShape(30))
-            .clickable {
-                onClick()
-            }
+        modifier = Modifier.size(65.dp).clip(RoundedCornerShape(30)).clickable { onClick() },
     ) {
         SIImage(
             resId = resId,
@@ -213,11 +212,12 @@ private val shakeKeyframes: AnimationSpec<Float> = keyframes {
 
     // generate 8 keyframes
     for (i in 1..8) {
-        val x = when (i % 3) {
-            0 -> 4f
-            1 -> -4f
-            else -> 0f
-        }
+        val x =
+            when (i % 3) {
+                0 -> 4f
+                1 -> -4f
+                else -> 0f
+            }
         x at durationMillis / 10 * i with easing
     }
 }

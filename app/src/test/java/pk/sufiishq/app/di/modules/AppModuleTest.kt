@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.di.modules
 
 import android.content.Context
@@ -6,13 +22,9 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.player.SufiishqMediaPlayer
-import pk.sufiishq.app.core.player.helper.AppMediaPlayer
-
 
 class AppModuleTest : SufiIshqTest() {
 
@@ -31,28 +43,17 @@ class AppModuleTest : SufiIshqTest() {
     }
 
     @Test
-    fun test_providesPreviewAudioPlayer_shouldReturn_PreviewAudioPlayer() {
-        assertNotNull(appModule.providesPreviewAudioPlayer(appModule.providesHandler()))
-    }
-
-    @Test
-    fun test_providesAndroidMediaPlayer_shouldReturn_SufiishqMediaPlayer() {
-        val appMediaPlayer = AppMediaPlayer(appModule.providesHandler())
-        val player = appModule.providesAndroidMediaPlayer(appContext, appMediaPlayer)
-
-        assertNotNull(player)
-        assertTrue(player is SufiishqMediaPlayer)
-    }
-
-    @Test
     fun test_helpContentJson_shouldReturn_helpJson() {
         val mockContext = mockk<Context>()
 
-        every { mockContext.assets } returns mockk {
-            every { open(any()) } answers {
-                javaClass.classLoader.getResourceAsStream(firstArg())
+        every { mockContext.assets } returns
+            mockk {
+                every { open(any()) } answers {
+                    javaClass.classLoader.getResourceAsStream(
+                        firstArg(),
+                    )
+                }
             }
-        }
 
         val helpJson = appModule.helpContentJson(mockContext)
         assertNotNull(helpJson)
@@ -61,5 +62,4 @@ class AppModuleTest : SufiIshqTest() {
         assertEquals("test title", data.getString("title"))
         assertEquals("help content", data.getJSONArray("content").getString(0))
     }
-
 }

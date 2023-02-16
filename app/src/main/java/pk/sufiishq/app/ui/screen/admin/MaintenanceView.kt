@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.admin
 
 import androidx.compose.foundation.layout.Arrangement
@@ -25,9 +41,8 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun MaintenanceView(
-    adminController: AdminController
+    adminController: AdminController,
 ) {
-
     val active = rem(false)
     val strict = rem(false)
     val maintenance = adminController.getMaintenance().observeAsState().value
@@ -45,14 +60,14 @@ fun MaintenanceView(
             label = optString(R.string.label_on),
             status = active,
             scope = this,
-            onStatusChanged = adminController::setMaintenanceStatus
+            onStatusChanged = adminController::setMaintenanceStatus,
         )
         SIWidthSpace(value = 8)
         MaintenanceSwitch(
             label = optString(R.string.label_strict),
             status = strict,
             scope = this,
-            onStatusChanged = adminController::setMaintenanceStrict
+            onStatusChanged = adminController::setMaintenanceStrict,
         )
     }
 }
@@ -62,28 +77,26 @@ fun MaintenanceSwitch(
     label: String,
     status: MutableState<Boolean>,
     scope: RowScope,
-    onStatusChanged: (status: Boolean) -> Unit
+    onStatusChanged: (status: Boolean) -> Unit,
 ) {
     with(scope) {
         SIRow(
-            modifier = Modifier
-                .weight(1f)
-                .padding(12.dp, 6.dp),
+            modifier = Modifier.weight(1f).padding(12.dp, 6.dp),
             bgColor = AuroraColor.Background,
             radius = 4,
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SIText(
                 text = label,
-                textColor = it
+                textColor = it,
             )
             Switch(
                 checked = status.value,
                 onCheckedChange = { newStatus ->
                     status.value = newStatus
                     onStatusChanged(newStatus)
-                }
+                },
             )
         }
     }

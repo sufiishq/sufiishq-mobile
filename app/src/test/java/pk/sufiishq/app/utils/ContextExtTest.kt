@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.utils
 
 import android.content.Context
@@ -45,13 +61,13 @@ class ContextExtTest : SufiIshqTest() {
 
     @Test
     fun testIsNetworkAvailable_shouldReturn_falseWhenGetNullCapabilities() {
-
         val context = mockk<Context>()
 
-        every { context.getSystemService(any()) } returns mockk<ConnectivityManager> {
-            every { activeNetwork } returns mockk()
-            every { getNetworkCapabilities(any()) } returns null
-        }
+        every { context.getSystemService(any()) } returns
+            mockk<ConnectivityManager> {
+                every { activeNetwork } returns mockk()
+                every { getNetworkCapabilities(any()) } returns null
+            }
 
         assertFalse(context.isNetworkAvailable())
     }
@@ -76,14 +92,11 @@ class ContextExtTest : SufiIshqTest() {
 
     @Test
     fun testDpToPx_shouldReturn_convertedValue() {
-
-        val context = mockk<Context> {
-            every { resources } returns mockk {
-                every { displayMetrics } returns mockk {
-                    density = 2f
-                }
+        val context =
+            mockk<Context> {
+                every { resources } returns
+                    mockk { every { displayMetrics } returns mockk { density = 2f } }
             }
-        }
 
         assertEquals(20f, context.dpToPx(10f))
     }
@@ -97,11 +110,12 @@ class ContextExtTest : SufiIshqTest() {
 
         val toast = mockk<Toast>()
         every { toast.show() } returns Unit
-        every { Toast.makeText(any(), any<String>(), any()) } answers {
-            toastLength = thirdArg()
-            toastMessage = secondArg()
-            toast
-        }
+        every { Toast.makeText(any(), any<String>(), any()) } answers
+            {
+                toastLength = thirdArg()
+                toastMessage = secondArg()
+                toast
+            }
 
         val context = mockk<Context>()
         context.toast("toast showing")
@@ -120,9 +134,7 @@ class ContextExtTest : SufiIshqTest() {
         every { BitmapFactory.decodeStream(any()) } returns mockk()
 
         every { assetManager.open(any()) } returns mockk()
-        val context = mockk<Context> {
-            every { assets } returns assetManager
-        }
+        val context = mockk<Context> { every { assets } returns assetManager }
 
         assertNotNull(context.assetsToBitmap("test_file"))
         verify { assetManager.open("test_file") }
@@ -133,12 +145,16 @@ class ContextExtTest : SufiIshqTest() {
 
     private fun mockNetworkCapabilities(): NetworkCapabilities {
         return mockk {
-            every { hasTransport(any()) } answers {
-                when (firstArg<Int>()) {
-                    TRANSPORT_CELLULAR, TRANSPORT_WIFI, TRANSPORT_ETHERNET -> true
-                    else -> false
+            every { hasTransport(any()) } answers
+                {
+                    when (firstArg<Int>()) {
+                        TRANSPORT_CELLULAR,
+                        TRANSPORT_WIFI,
+                        TRANSPORT_ETHERNET,
+                        -> true
+                        else -> false
+                    }
                 }
-            }
         }
     }
 

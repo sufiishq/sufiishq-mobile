@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,28 +31,20 @@ import pk.sufiishq.aurora.layout.SIBox
 @Composable
 fun ChangeSecurityQuestion(
     appLockController: AppLockController,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
 
     SIBox(modifier = Modifier.fillMaxSize()) {
-
-    SecurityQuestionList(
+        SecurityQuestionList(
             modifier = Modifier.align(Alignment.TopCenter),
             scaffoldState = scaffoldState,
-            headerButtonClick = {
-                appLockController.gotoSetting()
-            },
-            onDoneClick = {
-                coroutineScope.launch {
-                    appLockController.updateSecurityQuestion(it)
-                }
-            }
+            headerButtonClick = { appLockController.gotoSetting() },
+            onDoneClick = { coroutineScope.launch { appLockController.updateSecurityQuestion(it) } },
         )
 
         SecurityHint(
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 }

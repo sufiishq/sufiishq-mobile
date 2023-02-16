@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.theme
 
 import androidx.compose.foundation.clickable
@@ -38,51 +54,42 @@ fun DayNightThemeControl(
     scaleAndVisibility: State<Float>,
     onLightModeCLick: () -> Unit,
     onDarkModeClick: () -> Unit,
-    onAutoModeClick: () -> Unit
+    onAutoModeClick: () -> Unit,
 ) {
     SIBox(
-        modifier = Modifier
-            .height(220.dp)
-            .graphicsLayer {
-                translationY = firstItemTranslationY.value * 0.5f
-                alpha = 1f - scaleAndVisibility.value
-            }
+        modifier =
+        Modifier.height(220.dp).graphicsLayer {
+            translationY = firstItemTranslationY.value * 0.5f
+            alpha = 1f - scaleAndVisibility.value
+        },
     ) {
         SIRow(modifier = Modifier.fillMaxSize()) {
             SICard(
                 bgColor = AuroraColor.Light,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clickable {
-                        onLightModeCLick()
-                    }
+                modifier = Modifier.weight(1f).fillMaxHeight().clickable { onLightModeCLick() },
             ) {
                 SIBox(modifier = Modifier.padding(30.dp, 50.dp)) {
                     SIColumn(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .align(Alignment.Center),
+                        modifier = Modifier.fillMaxHeight().align(Alignment.Center),
                         verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         SIImage(
-                            modifier = Modifier
-                                .width(60.dp)
-                                .graphicsLayer {
-                                    translationY = firstItemTranslationY.value * 0.12f
-                                    scaleX = 1f - scaleAndVisibility.value * 0.5f
-                                    scaleY = 1f - scaleAndVisibility.value * 0.5f
-                                    rotationZ = firstItemTranslationY.value * 0.25f
-                                    alpha = 0.8f
-                                },
+                            modifier =
+                            Modifier.width(60.dp).graphicsLayer {
+                                translationY = firstItemTranslationY.value * 0.12f
+                                scaleX = 1f - scaleAndVisibility.value * 0.5f
+                                scaleY = 1f - scaleAndVisibility.value * 0.5f
+                                rotationZ = firstItemTranslationY.value * 0.25f
+                                alpha = 0.8f
+                            },
                             resId = R.drawable.day,
-                            tintColor = AuroraColor.Dark
+                            tintColor = AuroraColor.Dark,
                         )
                         SIText(
                             text = optString(R.string.label_light),
                             textColor = AuroraColor.Dark,
-                            textSize = TextSize.Large
+                            textSize = TextSize.Large,
                         )
                     }
                 }
@@ -90,38 +97,30 @@ fun DayNightThemeControl(
             SIWidthSpace(value = 12)
             SICard(
                 bgColor = AuroraColor.Dark,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clickable {
-                        onDarkModeClick()
-                    }
+                modifier = Modifier.weight(1f).fillMaxHeight().clickable { onDarkModeClick() },
             ) {
                 SIBox(modifier = Modifier.padding(30.dp, 50.dp)) {
                     SIColumn(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .align(Alignment.Center),
+                        modifier = Modifier.fillMaxHeight().align(Alignment.Center),
                         verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         SIImage(
-                            modifier = Modifier
-                                .width(60.dp)
-                                .graphicsLayer {
-                                    translationY = firstItemTranslationY.value * 0.12f
-                                    scaleX = 1f - scaleAndVisibility.value * 0.5f
-                                    scaleY = 1f - scaleAndVisibility.value * 0.5f
-                                    rotationZ = (firstItemTranslationY.value * 0.25f) * -1f
-                                    alpha = 0.8f
-                                },
+                            modifier =
+                            Modifier.width(60.dp).graphicsLayer {
+                                translationY = firstItemTranslationY.value * 0.12f
+                                scaleX = 1f - scaleAndVisibility.value * 0.5f
+                                scaleY = 1f - scaleAndVisibility.value * 0.5f
+                                rotationZ = (firstItemTranslationY.value * 0.25f) * -1f
+                                alpha = 0.8f
+                            },
                             resId = R.drawable.night,
-                            tintColor = AuroraColor.Light
+                            tintColor = AuroraColor.Light,
                         )
                         SIText(
                             text = optString(R.string.label_dark),
                             textColor = AuroraColor.Light,
-                            textSize = TextSize.Large
+                            textSize = TextSize.Large,
                         )
                     }
                 }
@@ -129,28 +128,21 @@ fun DayNightThemeControl(
         }
 
         SICard(
-            modifier = Modifier
-                .size(90.dp)
-                .clip(CircleShape),
-            bgColor = AuroraColor.Background
+            modifier = Modifier.size(90.dp).clip(CircleShape),
+            bgColor = AuroraColor.Background,
         ) {
-
             ContentBackground {
                 SICard(
-                    modifier = Modifier
-                        .fillMaxSize(0.75f)
-                        .clip(CircleShape)
-                        .clickable {
-                            onAutoModeClick()
-                        },
-                    bgColor = AuroraColor.SecondaryVariant
+                    modifier =
+                    Modifier.fillMaxSize(0.75f).clip(CircleShape).clickable { onAutoModeClick() },
+                    bgColor = AuroraColor.SecondaryVariant,
                 ) { contentColor ->
                     SIBox {
                         SIText(
                             textAlign = TextAlign.Center,
                             text = optString(R.string.label_auto),
                             textColor = contentColor,
-                            textSize = TextSize.Small
+                            textSize = TextSize.Small,
                         )
                     }
                 }

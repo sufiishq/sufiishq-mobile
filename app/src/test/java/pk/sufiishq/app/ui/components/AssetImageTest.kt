@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.components
 
 import android.content.Context
@@ -19,8 +35,7 @@ import pk.sufiishq.app.utils.assetsToBitmap
 
 class AssetImageTest : SufiIshqTest() {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
     @Test
     fun `test verify bitmap image`() {
@@ -33,12 +48,11 @@ class AssetImageTest : SufiIshqTest() {
             AssetImage(
                 path = "my_path",
                 modifier = Modifier.testTag("test_tag"),
-                context = context
+                context = context,
             )
         }
 
         composeTestRule.onNode(hasTestTag("test_tag")).assertExists().assertIsDisplayed()
-
     }
 
     private fun sampleBitmap(): Bitmap {

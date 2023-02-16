@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.main.topbar
 
 import android.content.Context
@@ -27,18 +43,15 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 fun AppBarOverflowMenu(
     navController: NavController,
     iconColor: AuroraColor? = null,
-    mainController: MainController = hiltViewModel<MainViewModel>()
+    mainController: MainController = hiltViewModel<MainViewModel>(),
 ) {
-
     val context = LocalContext.current
 
     SIPopupMenu(
         resId = R.drawable.ic_baseline_more_vert_24,
         iconTint = iconColor,
         data = mainController.popupMenuItems(),
-        onClick = {
-            handleClick(mainController, it, context, navController)
-        }
+        onClick = { handleClick(mainController, it, context, navController) },
     )
 }
 
@@ -46,14 +59,14 @@ private fun handleClick(
     mainController: MainController,
     popupMenuItem: DataMenuItem,
     context: Context,
-    navController: NavController
+    navController: NavController,
 ) {
     when (popupMenuItem) {
         is PopupMenuItem.Share -> mainController.shareApp(context as ComponentActivity)
         is PopupMenuItem.Facebook -> {
             mainController.openFacebookGroup(
                 context,
-                "https://www.facebook.com/groups/375798102574085"
+                "https://www.facebook.com/groups/375798102574085",
             )
         }
         is PopupMenuItem.Help -> {
@@ -63,13 +76,10 @@ private fun handleClick(
             }
         }
         is PopupMenuItem.Theme -> {
-            navController.navigate(ScreenType.Theme.buildRoute()) {
-                launchSingleTop = true
-            }
+            navController.navigate(ScreenType.Theme.buildRoute()) { launchSingleTop = true }
         }
     }
 }
-
 
 @ExcludeFromJacocoGeneratedReport
 @Preview
@@ -79,7 +89,7 @@ fun AppBarOverflowMenuPreviewLight() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            fakeMainController()
+            fakeMainController(),
         )
     }
 }
@@ -92,7 +102,7 @@ fun AppBarOverflowMenuPreviewDark() {
         AppBarOverflowMenu(
             rememberNavController(),
             AuroraColor.OnPrimary,
-            fakeMainController()
+            fakeMainController(),
         )
     }
 }
@@ -106,7 +116,7 @@ fun OverflowMenuItemPreviewLight() {
             label = optString(R.string.menu_item_share),
             labelColor = AuroraColor.OnBackground,
             resId = R.drawable.ic_round_share_24,
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -120,7 +130,7 @@ fun OverflowMenuItemPreviewDark() {
             label = optString(R.string.menu_item_share),
             labelColor = AuroraColor.OnBackground,
             resId = R.drawable.ic_round_share_24,
-            onClick = {}
+            onClick = {},
         )
     }
 }

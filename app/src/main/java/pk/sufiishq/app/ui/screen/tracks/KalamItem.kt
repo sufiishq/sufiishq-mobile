@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.runtime.Composable
@@ -22,9 +38,8 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 fun KalamItem(
     kalam: Kalam,
     trackListType: TrackListType,
-    kalamController: KalamController
+    kalamController: KalamController,
 ) {
-
     val isExpanded = rem(false)
 
     SIDataRow(
@@ -32,19 +47,16 @@ fun KalamItem(
         trailingIcon = R.drawable.ic_baseline_more_vert_24,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },
         trailingIconScope = {
-
             KalamItemPopupMenu(
                 isExpanded = isExpanded,
                 kalamController = kalamController,
                 kalam = kalam,
-                trackListType = trackListType
+                trackListType = trackListType,
             )
         },
-        onClick = {
-            kalamController.changeTrack(kalam, trackListType)
-        },
+        onClick = { kalamController.changeTrack(kalam, trackListType) },
         title = kalam.title,
-        subTitle = "${kalam.location} ${kalam.recordeDate.formatDateAs(prefix = "- ")}"
+        subTitle = "${kalam.location} ${kalam.recordeDate.formatDateAs(prefix = "- ")}",
     )
 }
 
@@ -56,7 +68,7 @@ fun KalamItemPreviewLight() {
         KalamItem(
             kalam = fakeKalam(),
             trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
-            kalamController = fakeKalamController()
+            kalamController = fakeKalamController(),
         )
     }
 }
@@ -69,7 +81,7 @@ fun KalamItemPreviewDark() {
         KalamItem(
             kalam = fakeKalam(),
             trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
-            kalamController = fakeKalamController()
+            kalamController = fakeKalamController(),
         )
     }
 }

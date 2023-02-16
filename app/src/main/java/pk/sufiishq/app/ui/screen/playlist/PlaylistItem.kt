@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.playlist
 
 import androidx.compose.runtime.Composable
@@ -26,9 +42,8 @@ fun PlaylistItem(
     showDeletePlaylistDialog: MutableState<Playlist?>,
     playlist: Playlist,
     navController: NavController,
-    popupMenuItems: List<DataMenuItem>
+    popupMenuItems: List<DataMenuItem>,
 ) {
-
     val isExpanded = rem(false)
 
     SIDataRow(
@@ -41,7 +56,7 @@ fun PlaylistItem(
                 data = popupMenuItems,
                 onClick = {
                     handleClick(it, playlist, showAddUpdatePlaylistDialog, showDeletePlaylistDialog)
-                }
+                },
             )
         },
         onClick = {
@@ -49,12 +64,12 @@ fun PlaylistItem(
                 ScreenType.Tracks.buildRoute(
                     "playlist",
                     "${playlist.title} Playlist",
-                    "${playlist.id}"
-                )
+                    "${playlist.id}",
+                ),
             )
         },
         title = playlist.title,
-        subTitle = "Total ${playlist.totalKalam} kalams"
+        subTitle = "Total ${playlist.totalKalam} kalams",
     )
 }
 
@@ -62,7 +77,7 @@ private fun handleClick(
     popupMenuItem: DataMenuItem,
     playlist: Playlist,
     showAddUpdatePlaylistDialog: MutableState<Playlist?>,
-    showDeletePlaylistDialog: MutableState<Playlist?>
+    showDeletePlaylistDialog: MutableState<Playlist?>,
 ) {
     when (popupMenuItem) {
         is PopupMenuItem.Edit -> {
@@ -84,7 +99,7 @@ fun PlaylistItemPreviewLight() {
             showDeletePlaylistDialog = rem(null),
             playlist = fakePlaylist(),
             navController = rememberNavController(),
-            popupMenuItems = listOf()
+            popupMenuItems = listOf(),
         )
     }
 }
@@ -99,7 +114,7 @@ fun PlaylistItemPreviewDark() {
             showDeletePlaylistDialog = rem(null),
             playlist = fakePlaylist(),
             navController = rememberNavController(),
-            popupMenuItems = listOf()
+            popupMenuItems = listOf(),
         )
     }
 }

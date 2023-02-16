@@ -1,11 +1,25 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.core.applock
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import java.util.*
-import javax.inject.Inject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.models.AppLockStatus
 import pk.sufiishq.app.models.AutoLockDuration
@@ -14,14 +28,19 @@ import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.instantAutoLockDuration
 import pk.sufiishq.app.utils.putInStorage
+import java.util.Calendar
+import javax.inject.Inject
 
-class AppLockManager @Inject constructor(
+class AppLockManager
+@Inject
+constructor(
     private val gson: Gson,
-    private val biometricManager: BiometricManager
+    private val biometricManager: BiometricManager,
 ) {
 
     private val activeState = MutableLiveData<AppLockState>(AppLockState.Setup)
-    private val autoLockDuration = MutableLiveData(instantAutoLockDuration(getString(R.string.label_instant)))
+    private val autoLockDuration =
+        MutableLiveData(instantAutoLockDuration(getString(R.string.label_instant)))
     private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
     init {
@@ -49,7 +68,7 @@ class AppLockManager @Inject constructor(
     fun registerNewPin(
         securityQuestion: SecurityQuestion,
         generatedPin: String,
-        biometricEnable: Boolean
+        biometricEnable: Boolean,
     ) {
         savePin(generatedPin)
         setBiometric(biometricEnable)
@@ -57,7 +76,7 @@ class AppLockManager @Inject constructor(
         setAutoLockDuration(instantAutoLockDuration(getString(R.string.label_instant)))
         setSettingState(
             message = getString(R.string.msg_pin_successfully_generated),
-            biometricEnable = biometricEnable
+            biometricEnable = biometricEnable,
         )
     }
 
@@ -73,7 +92,7 @@ class AppLockManager @Inject constructor(
         SAVED_PIN.putInStorage(pin)
         setSettingState(
             message = getString(R.string.msg_pin_successfully_changed),
-            biometricEnable = isBiometricEnabled()
+            biometricEnable = isBiometricEnabled(),
         )
     }
 
@@ -83,7 +102,6 @@ class AppLockManager @Inject constructor(
             setSettingState(getString(R.string.msg_biometric_successfully_disable), false)
         } else {
             if (biometricManager.userHasBiometricCapability()) {
-
                 biometricManager.prompt(fragmentActivity, false) {
                     if (it is BiometricStatus.Success) {
                         setBiometric(true)
@@ -95,7 +113,7 @@ class AppLockManager @Inject constructor(
             } else {
                 setSettingState(
                     message = getString(R.string.msg_biometric_not_enable),
-                    biometricEnable = false
+                    biometricEnable = false,
                 )
             }
         }
@@ -105,22 +123,21 @@ class AppLockManager @Inject constructor(
         setSecurityQuestion(securityQuestion)
         setSettingState(
             message = getString(R.string.msg_security_question_updated),
-            biometricEnable = isBiometricEnabled()
+            biometricEnable = isBiometricEnabled(),
         )
-
     }
 
     fun updateAutoLockDuration(autoLockDuration: AutoLockDuration) {
         setAutoLockDuration(autoLockDuration)
         setSettingState(
             message = getString(R.string.dynamic_auto_lock_duration_set, autoLockDuration.label),
-            biometricEnable = isBiometricEnabled()
+            biometricEnable = isBiometricEnabled(),
         )
     }
 
     fun gotoSetting() {
         setSettingState(
-            biometricEnable = isBiometricEnabled()
+            biometricEnable = isBiometricEnabled(),
         )
     }
 
@@ -141,9 +158,10 @@ class AppLockManager @Inject constructor(
     }
 
     fun isBiometricEnabled(): Boolean {
-        return biometricManager.userHasBiometricCapability() && HAS_BIOMETRIC_ENABLE.getFromStorage(
-            false
-        )
+        return biometricManager.userHasBiometricCapability() &&
+            HAS_BIOMETRIC_ENABLE.getFromStorage(
+                false,
+            )
     }
 
     fun forgotPin() {
@@ -180,8 +198,8 @@ class AppLockManager @Inject constructor(
                 AppLockStatus(
                     isBiometricEnable = isBiometricEnabled(),
                     savedPin = getSavedPin(),
-                    securityQuestion = fetchSecurityQuestion()
-                )
+                    securityQuestion = fetchSecurityQuestion(),
+                ),
             )
         } else if (exitAppTime == 0L) {
             setAppLockStatus(null)
@@ -191,8 +209,8 @@ class AppLockManager @Inject constructor(
                     AppLockStatus(
                         isBiometricEnable = isBiometricEnabled(),
                         savedPin = getSavedPin(),
-                        securityQuestion = fetchSecurityQuestion()
-                    )
+                        securityQuestion = fetchSecurityQuestion(),
+                    ),
                 )
             } else {
                 setAppLockStatus(null)
@@ -212,18 +230,16 @@ class AppLockManager @Inject constructor(
         setState(
             AppLockState.Setting(
                 message = message,
-                biometricEnable = biometricEnable
-            )
+                biometricEnable = biometricEnable,
+            ),
         )
     }
 
     private fun fetchAutoLockDuration(): AutoLockDuration {
-        return AUTO_LOCK_DURATION
-            .getFromStorage("")
+        return AUTO_LOCK_DURATION.getFromStorage("")
             .takeIf { it.isNotEmpty() }
-            ?.let {
-                gson.fromJson(it, AutoLockDuration::class.java)
-            } ?: instantAutoLockDuration(getString(R.string.label_instant))
+            ?.let { gson.fromJson(it, AutoLockDuration::class.java) }
+            ?: instantAutoLockDuration(getString(R.string.label_instant))
     }
 
     private fun postAutoLockDuration(duration: AutoLockDuration) {
@@ -232,7 +248,7 @@ class AppLockManager @Inject constructor(
 
     private fun setSecurityQuestion(securityQuestion: SecurityQuestion) {
         BACKUP_SECURITY_QUESTION.putInStorage(
-            gson.toJson(securityQuestion)
+            gson.toJson(securityQuestion),
         )
     }
 
@@ -246,11 +262,9 @@ class AppLockManager @Inject constructor(
     }
 
     private fun fetchSecurityQuestion(): SecurityQuestion {
-        return BACKUP_SECURITY_QUESTION
-            .getFromStorage("")
-            .let {
-                gson.fromJson(it, SecurityQuestion::class.java)
-            }
+        return BACKUP_SECURITY_QUESTION.getFromStorage("").let {
+            gson.fromJson(it, SecurityQuestion::class.java)
+        }
     }
 
     companion object {

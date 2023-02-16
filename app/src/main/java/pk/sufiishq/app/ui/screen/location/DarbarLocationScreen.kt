@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.location
 
 import androidx.compose.foundation.BorderStroke
@@ -33,86 +49,78 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun DarbarLocationScreen() {
     ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
+        modifier =
+        Modifier.fillMaxSize().padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
-
         val (darbarPhoto, locationButtons) = createRefs()
 
         SICard(
-            modifier = Modifier.constrainAs(darbarPhoto) {
+            modifier =
+            Modifier.constrainAs(darbarPhoto) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 bottom.linkTo(locationButtons.top)
                 height = Dimension.fillToConstraints
-            }
+            },
         ) {
             SIImage(
                 resId = R.drawable.darbar,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         }
 
         SIColumn(
-            modifier = Modifier.constrainAs(locationButtons) {
+            modifier =
+            Modifier.constrainAs(locationButtons) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            }
+            },
         ) {
             SIHeightSpace(value = 12)
             LocationButton(
                 location = optString(R.string.loc_pakpattan),
-                Pair(30.344721262825235, 73.40368348568946)
+                Pair(30.344721262825235, 73.40368348568946),
             )
             SIHeightSpace(value = 12)
             LocationButton(
                 location = optString(R.string.loc_karachi),
-                Pair(24.843744, 67.198691)
+                Pair(24.843744, 67.198691),
             )
         }
-
-
     }
 }
 
 @Composable
 private fun LocationButton(
     location: String,
-    latLng: Pair<Double, Double>
+    latLng: Pair<Double, Double>,
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     SICard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp),
-        border = BorderStroke(0.5.dp, AuroraColor.Primary.color())
+        modifier = Modifier.fillMaxWidth().height(60.dp),
+        border = BorderStroke(0.5.dp, AuroraColor.Primary.color()),
     ) {
-
         SIBox(
             bgColor = AuroraColor.Background,
         ) {
-
             SIRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp, 6.dp),
+                modifier = Modifier.fillMaxWidth().padding(12.dp, 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 SIText(
-                    text = location, textColor = it, fontWeight = FontWeight.Bold
+                    text = location,
+                    textColor = it,
+                    fontWeight = FontWeight.Bold,
                 )
-                SIButton(text = optString(R.string.label_open), onClick = {
-                    coroutineScope.launch {
-                        context.launchGoogleMap(latLng)
-                    }
-                })
+                SIButton(
+                    text = optString(R.string.label_open),
+                    onClick = { coroutineScope.launch { context.launchGoogleMap(latLng) } },
+                )
             }
         }
     }
