@@ -37,7 +37,7 @@ class HighlightManager @Inject constructor(
         MutableLiveData<MutableList<Pair<String, String>?>>(mutableListOf(null, null, null))
 
     init {
-        //checkHighlightAvailable()
+        checkHighlightAvailable()
     }
 
     private fun checkHighlightAvailable() {
