@@ -9,7 +9,6 @@ plugins {
     id 'com.spotify.ruler'
     id 'org.sonarqube' version '3.4.0.2513'
     id 'com.diffplug.spotless' version '6.15.0'
-    //id 'com.ncorti.ktfmt.gradle' version '0.11.0'
 }
 
 apply from: './gradle/properties.gradle'
@@ -23,7 +22,7 @@ android {
         applicationId "pk.sufiishq.app"
         minSdk 24
         targetSdk 33
-        versionCode 22
+        versionCode 23
         versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -50,8 +49,10 @@ android {
                 debugSymbolLevel = "FULL"
             }
 
-            minifyEnabled true
-            shrinkResources true
+            // FIXME disable this for now because android jetpack compose navigation failed with minification enable https://stackoverflow.com/questions/75475360/jetpack-compose-navigation-throwing-exception-in-release-build-if-minify-has-ena
+            minifyEnabled false
+            shrinkResources false
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -125,21 +126,20 @@ ruler {
 
 spotless {
     kotlin {
-        target '**/*.kt'
+        target 'src/**/*.kt'
         ktlint('0.48.2').userData(['indent_size': '4', 'continuation_indent_size': '4'])
-        //ktfmt().kotlinlangStyle()
         licenseHeaderFile "${rootProject.projectDir}/license-header.txt"
     }
 
     format 'xml', {
-        target '**/*.xml'
+        target "${rootProject.projectDir}/app/src/**/*.xml"
         indentWithSpaces()
         trimTrailingWhitespace()
         endWithNewline()
     }
 
     format 'json', {
-        target '**/*.json'
+        target "${rootProject.projectDir}/app/src/**/*.json"
         indentWithSpaces(4)
         trimTrailingWhitespace()
     }
