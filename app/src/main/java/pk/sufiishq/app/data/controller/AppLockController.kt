@@ -24,8 +24,16 @@ import pk.sufiishq.app.models.SecurityQuestion
 
 interface AppLockController {
 
+    // -------------------------------------------------------------------- //
+    // signatures checking and setting the active state. #AppLockState
+    // -------------------------------------------------------------------- //
+
     fun getActiveState(): LiveData<AppLockState>
     fun setState(newState: AppLockState)
+
+    // -------------------------------------------------------------------- //
+    // signatures other controlling functionality
+    // -------------------------------------------------------------------- //
 
     fun userHasBiometricCapability(): Boolean
     fun setupBiometricOrPin(fragmentActivity: FragmentActivity)

@@ -47,19 +47,13 @@ constructor(
 
     private val showUpdateDialog = MutableLiveData(false)
 
-    override fun checkUpdate(activity: ComponentActivity) {
-        inAppUpdateManager.checkInAppUpdate(activity, this)
+    // -------------------------------------------------------------------- //
+    // different controls
+    // -------------------------------------------------------------------- //
+
+    override fun popupMenuItems(): List<DataMenuItem> {
+        return popupMenu.getPopupMenuItems()
     }
-
-    override fun showUpdateButton(value: Boolean) = showUpdateDialog.postValue(value)
-    override fun showUpdateButton(): LiveData<Boolean> = showUpdateDialog
-    override fun handleUpdate() = inAppUpdateManager.startUpdateFlow()
-
-    override fun unregisterListener(activity: ComponentActivity) {
-        inAppUpdateManager.unregisterListener(activity)
-    }
-
-    override fun popupMenuItems(): List<DataMenuItem> = popupMenu.getPopupMenuItems()
 
     override fun openFacebookGroup(context: Context, groupUrl: String) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(groupUrl)))
@@ -67,6 +61,30 @@ constructor(
 
     override fun shareApp(activity: ComponentActivity) {
         appManager.shareApp(activity)
+    }
+
+    // -------------------------------------------------------------------- //
+    // handle in-app updates
+    // -------------------------------------------------------------------- //
+
+    override fun checkUpdate(activity: ComponentActivity) {
+        inAppUpdateManager.checkInAppUpdate(activity, this)
+    }
+
+    override fun showUpdateButton(value: Boolean) {
+        showUpdateDialog.postValue(value)
+    }
+
+    override fun showUpdateButton(): LiveData<Boolean> {
+        return showUpdateDialog
+    }
+
+    override fun handleUpdate() {
+        inAppUpdateManager.startUpdateFlow()
+    }
+
+    override fun unregisterListener(activity: ComponentActivity) {
+        inAppUpdateManager.unregisterListener(activity)
     }
 
     // -------------------------------------------------------------------- //

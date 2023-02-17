@@ -20,14 +20,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
-import androidx.sqlite.db.SimpleSQLiteQuery
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.data.dao.KalamDao
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.CODE
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.FAVORITE
-import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ID
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.LOCATION
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.OFFLINE_SRC
 import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.ONLINE_SRC
@@ -37,8 +35,6 @@ import pk.sufiishq.app.data.repository.KalamRepository.KalamTableInfo.TITLE
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.helpers.TrackListType
 import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.utils.KALAM_TABLE_NAME
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -110,74 +106,6 @@ constructor(
         return kalamDao.getFirstKalam()
     }
 
-    fun getNextKalam(
-        id: Int,
-        trackListType: TrackListType,
-        shuffle: Boolean,
-    ): LiveData<Kalam?> {
-        if (shuffle) return getRandomKalam(trackListType)
-
-        val query = buildString {
-            append("SELECT * FROM kalam ")
-            append("WHERE $ID < $id ")
-
-            when (trackListType) {
-                is TrackListType.Downloads -> append("AND $OFFLINE_SRC != '' ")
-                is TrackListType.Favorites -> append("AND $FAVORITE = 1 ")
-                is TrackListType.Playlist -> append("AND $PLAYLIST_ID = ${trackListType.playlistId} ")
-                else -> Timber.d("default track list type is $trackListType")
-            }
-
-            append("ORDER BY $ID DESC ")
-            append("LIMIT 1")
-        }
-
-        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
-    }
-
-    fun getPreviousKalam(
-        id: Int,
-        trackListType: TrackListType,
-        shuffle: Boolean,
-    ): LiveData<Kalam?> {
-        if (shuffle) return getRandomKalam(trackListType)
-
-        val query = buildString {
-            append("SELECT * FROM kalam ")
-            append("WHERE $ID > $id ")
-
-            when (trackListType) {
-                is TrackListType.Downloads -> append("AND $OFFLINE_SRC != '' ")
-                is TrackListType.Favorites -> append("AND $FAVORITE = 1 ")
-                is TrackListType.Playlist -> append("AND $PLAYLIST_ID = ${trackListType.playlistId} ")
-                else -> Timber.d("default track list type is $trackListType")
-            }
-
-            append("ORDER BY $ID ASC ")
-            append("LIMIT 1")
-        }
-
-        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
-    }
-
-    fun getRandomKalam(trackListType: TrackListType): LiveData<Kalam?> {
-        val query = buildString {
-            append("SELECT * FROM $KALAM_TABLE_NAME ")
-
-            when (trackListType) {
-                is TrackListType.Downloads -> append("WHERE $OFFLINE_SRC != '' ")
-                is TrackListType.Favorites -> append("WHERE $FAVORITE = 1 ")
-                is TrackListType.Playlist -> append("WHERE $PLAYLIST_ID = ${trackListType.playlistId} ")
-                else -> Timber.d("default track list type is $trackListType")
-            }
-
-            append("ORDER BY random() ")
-            append("LIMIT 1")
-        }
-
-        return kalamDao.getSingleKalam(SimpleSQLiteQuery(query))
-    }
-
     fun countAll(): LiveData<Int> {
         return kalamDao.countAll()
     }
@@ -201,7 +129,8 @@ constructor(
     suspend fun loadAllFromAssets(context: Context): List<Kalam> {
         return withContext(dispatcher) {
             val list = mutableListOf<Kalam>()
-            val fileContent = context.assets.open("kalam.json").bufferedReader().use { it.readText() }
+            val fileContent =
+                context.assets.open("kalam.json").bufferedReader().use { it.readText() }
             val jsonArray = JSONArray(fileContent)
             (0 until jsonArray.length()).forEach {
                 val jsonObject = jsonArray.getJSONObject(it)

@@ -24,12 +24,21 @@ import pk.sufiishq.aurora.models.DataMenuItem
 
 interface MainController {
 
-    fun checkUpdate(activity: ComponentActivity)
-    fun showUpdateButton(): LiveData<Boolean>
-    fun showUpdateButton(value: Boolean)
+    // -------------------------------------------------------------------- //
+    // signature for different controls
+    // -------------------------------------------------------------------- //
+
     fun popupMenuItems(): List<DataMenuItem>
     fun openFacebookGroup(context: Context, groupUrl: String)
     fun shareApp(activity: ComponentActivity)
+
+    // -------------------------------------------------------------------- //
+    // signature in-app update controls
+    // -------------------------------------------------------------------- //
+
+    fun checkUpdate(activity: ComponentActivity)
+    fun showUpdateButton(): LiveData<Boolean>
+    fun showUpdateButton(value: Boolean)
     fun handleUpdate()
     fun unregisterListener(activity: ComponentActivity)
 
