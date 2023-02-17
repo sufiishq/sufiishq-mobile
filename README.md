@@ -44,9 +44,9 @@
 
 
 
-| Dark | Light |
-|-------|------|
-|![](.github/screenshot_dark.jpg)|![](.github/screenshot_light.jpg)
+| Dark                             | Light |
+|----------------------------------|------|
+| ![](.github/screenshot_dark.png) |![](.github/screenshot_light.png)
 
 ## 💻 Install
 
