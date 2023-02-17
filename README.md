@@ -78,9 +78,10 @@
 
 ## 🏋 Dependency
 
-- Java 11 or above
+- JDK 11 or above
 - Android Studio Chipmunk | 2021.1+
 - Google Firebase
+- Emulator / Physical Device
 
 ## 🤝 Contributing
 
