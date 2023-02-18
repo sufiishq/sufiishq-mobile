@@ -26,8 +26,8 @@ import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SITextField
 import pk.sufiishq.aurora.theme.AuroraColor

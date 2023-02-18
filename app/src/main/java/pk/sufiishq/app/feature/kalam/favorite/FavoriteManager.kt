@@ -19,9 +19,9 @@ package pk.sufiishq.app.feature.kalam.favorite
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.utils.quickToast
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext

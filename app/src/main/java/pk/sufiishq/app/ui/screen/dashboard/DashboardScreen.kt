@@ -38,9 +38,9 @@ import pk.sufiishq.app.feature.app.controller.DashboardViewModel
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeDashboardController
 import pk.sufiishq.app.utils.fakeMainController
-import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIBadge

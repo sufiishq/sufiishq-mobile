@@ -32,8 +32,8 @@ import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.controller.KalamViewModel
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SILazyColumn
 import pk.sufiishq.aurora.theme.AuroraDark

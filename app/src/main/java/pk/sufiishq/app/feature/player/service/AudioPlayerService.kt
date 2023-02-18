@@ -25,6 +25,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
@@ -34,7 +35,6 @@ import pk.sufiishq.app.feature.player.listener.PlayerStateListener
 import pk.sufiishq.app.feature.player.state.MediaState
 import pk.sufiishq.app.feature.player.util.PlayerNotification
 import pk.sufiishq.app.feature.storage.LastKalamPlayLiveData
-import pk.sufiishq.app.di.qualifier.IoDispatcher
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

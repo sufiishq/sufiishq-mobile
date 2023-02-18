@@ -20,10 +20,10 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
+import pk.sufiishq.app.feature.kalam.extension.hasOfflineSource
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import java.io.File
 import javax.inject.Inject
-import pk.sufiishq.app.feature.kalam.extension.hasOfflineSource
 
 class AppMediaPlayer
 @Inject

@@ -21,11 +21,11 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.utils.extention.hasBiometricCapability
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
+import javax.inject.Inject
 
 class BiometricManager
 @Inject

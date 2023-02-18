@@ -19,10 +19,10 @@ package pk.sufiishq.app.feature.app
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import pk.sufiishq.app.R
+import pk.sufiishq.app.feature.kalam.extension.metaInfo
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
-import pk.sufiishq.app.feature.kalam.extension.metaInfo
 
 class AppManager @Inject constructor() {
 

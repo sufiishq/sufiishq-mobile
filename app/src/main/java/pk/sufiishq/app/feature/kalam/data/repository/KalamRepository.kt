@@ -23,6 +23,7 @@ import androidx.paging.PagingSource
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository.KalamTableInfo.CODE
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository.KalamTableInfo.FAVORITE
@@ -34,7 +35,6 @@ import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository.KalamTableI
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository.KalamTableInfo.TITLE
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.di.qualifier.IoDispatcher
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

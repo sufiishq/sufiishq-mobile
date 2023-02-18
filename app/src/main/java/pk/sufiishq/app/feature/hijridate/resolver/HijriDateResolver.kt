@@ -17,7 +17,6 @@
 package pk.sufiishq.app.feature.hijridate.resolver
 
 import com.google.gson.Gson
-import javax.inject.Inject
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import pk.sufiishq.app.di.qualifier.IoDispatcher
@@ -27,6 +26,7 @@ import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.extention.getTodayDate
 import pk.sufiishq.app.utils.extention.putInStorage
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 private const val HIJRI_DATE_HOST = "http://api.aladhan.com/v1/gToH?date=%s"

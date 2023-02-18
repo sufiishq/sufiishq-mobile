@@ -31,9 +31,9 @@ import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
 import pk.sufiishq.app.feature.player.PlayerState
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
-import javax.inject.Inject
 import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.extention.putInStorage
+import javax.inject.Inject
 
 @HiltViewModel
 class AssetKalamLoaderViewModel

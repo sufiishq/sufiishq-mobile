@@ -36,10 +36,10 @@ import pk.sufiishq.app.feature.admin.highlight.HighlightManager
 import pk.sufiishq.app.feature.admin.highlight.HighlightStatus
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.admin.model.Maintenance
+import pk.sufiishq.app.utils.extention.isNetworkAvailable
 import pk.sufiishq.app.utils.getString
 import java.util.*
 import javax.inject.Inject
-import pk.sufiishq.app.utils.extention.isNetworkAvailable
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel

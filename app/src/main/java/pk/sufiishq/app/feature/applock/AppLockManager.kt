@@ -24,12 +24,12 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.model.AppLockStatus
 import pk.sufiishq.app.feature.applock.model.AutoLockDuration
 import pk.sufiishq.app.feature.applock.model.SecurityQuestion
+import pk.sufiishq.app.utils.extention.getFromStorage
+import pk.sufiishq.app.utils.extention.putInStorage
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.instantAutoLockDuration
 import java.util.Calendar
 import javax.inject.Inject
-import pk.sufiishq.app.utils.extention.getFromStorage
-import pk.sufiishq.app.utils.extention.putInStorage
 
 class AppLockManager
 @Inject

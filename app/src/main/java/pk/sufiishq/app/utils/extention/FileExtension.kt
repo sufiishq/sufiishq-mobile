@@ -21,9 +21,9 @@ import VideoHandle.OnEditorListener
 import org.apache.commons.io.IOUtils
 import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
+import pk.sufiishq.app.utils.getString
 import timber.log.Timber
 import java.io.File
-import pk.sufiishq.app.utils.getString
 
 fun File.moveTo(destination: File) {
     IOUtils.copy(this.inputStream(), destination.outputStream()).also { this.delete() }

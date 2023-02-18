@@ -22,10 +22,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.playlist.data.repository.PlaylistRepository
 import pk.sufiishq.app.feature.playlist.model.Playlist
-import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject

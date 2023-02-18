@@ -25,8 +25,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import pk.sufiishq.app.di.qualifier.KalamItemPopupMenuItems
 import pk.sufiishq.app.feature.app.AppManager
@@ -47,6 +45,8 @@ import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.utils.filterItems
 import pk.sufiishq.aurora.models.DataMenuItem
+import java.util.*
+import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel

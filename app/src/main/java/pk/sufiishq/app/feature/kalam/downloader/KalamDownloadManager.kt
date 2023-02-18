@@ -20,10 +20,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
-import java.net.SocketException
-import java.net.UnknownHostException
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
@@ -39,6 +35,10 @@ import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.moveTo
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
+import java.io.File
+import java.net.SocketException
+import java.net.UnknownHostException
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class KalamDownloadManager
@@ -111,7 +111,7 @@ constructor(
                 getString(R.string.msg_no_network_connection)
             } else {
                 throwable.localizedMessage ?: throwable.message
-                ?: getString(R.string.label_unknown_error)
+                    ?: getString(R.string.label_unknown_error)
             }
 
         setKalamDownloadState(KalamDownloadState.Error(error, kalam))

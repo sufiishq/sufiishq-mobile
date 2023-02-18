@@ -19,13 +19,13 @@ package pk.sufiishq.app.feature.player
 import android.content.Context
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import pk.sufiishq.app.feature.kalam.extension.canPlay
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
 import pk.sufiishq.app.utils.extention.putInStorage
+import javax.inject.Inject
 
 class PlayerManager
 @Inject

@@ -34,9 +34,9 @@ import org.robolectric.shadows.ShadowMediaPlayer
 import org.robolectric.util.ReflectionHelpers.getField
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.player.helper.AppMediaPlayer
 import pk.sufiishq.app.feature.player.helper.AppMediaPlayer.Companion.UPDATE_DELAY
 import java.io.File
-import pk.sufiishq.app.feature.player.helper.AppMediaPlayer
 
 @Config(shadows = [AppMediaPlayerTest.ShadowPlayer::class])
 class AppMediaPlayerTest : SufiIshqTest() {
