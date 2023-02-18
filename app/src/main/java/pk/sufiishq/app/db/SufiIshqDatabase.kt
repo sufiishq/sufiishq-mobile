@@ -17,15 +17,25 @@
 package pk.sufiishq.app.db
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import pk.sufiishq.app.feature.app.model.Media
+import pk.sufiishq.app.feature.gallery.model.Occasion
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 
-@Database(entities = [Kalam::class, Playlist::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class],
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
+)
 abstract class SufiIshqDatabase : RoomDatabase() {
 
     abstract fun kalamDao(): KalamDao
@@ -38,7 +48,9 @@ abstract class SufiIshqDatabase : RoomDatabase() {
         fun getInstance(context: Context): SufiIshqDatabase {
             if (INSTANCE == null) {
                 synchronized(this) {
-                    INSTANCE = Room.databaseBuilder(context, SufiIshqDatabase::class.java, "sufiishq").build()
+                    INSTANCE =
+                        Room.databaseBuilder(context, SufiIshqDatabase::class.java, "sufiishq")
+                            .build()
                 }
             }
 
