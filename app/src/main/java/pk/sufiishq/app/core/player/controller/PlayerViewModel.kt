@@ -21,6 +21,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import pk.sufiishq.app.core.kalam.model.KalamInfo
+import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.core.player.state.mapToIdleState
@@ -28,8 +30,6 @@ import pk.sufiishq.app.core.player.state.mapToLoadingState
 import pk.sufiishq.app.core.player.state.mapToPauseState
 import pk.sufiishq.app.core.player.state.mapToPlayingState
 import pk.sufiishq.app.core.player.state.mapToResumeState
-import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.core.kalam.model.KalamInfo
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")

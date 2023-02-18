@@ -26,7 +26,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import org.json.JSONObject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.app.model.NavigationItem
@@ -38,6 +37,7 @@ import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.getString
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

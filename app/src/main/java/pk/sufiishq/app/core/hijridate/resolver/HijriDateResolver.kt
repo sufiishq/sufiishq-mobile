@@ -19,14 +19,14 @@ package pk.sufiishq.app.core.hijridate.resolver
 import com.google.gson.Gson
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import pk.sufiishq.app.di.qualifier.IoDispatcher
+import pk.sufiishq.app.core.hijridate.api.HijriDateService
 import pk.sufiishq.app.core.hijridate.model.HijriDate
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.getTodayDate
 import pk.sufiishq.app.utils.putInStorage
 import timber.log.Timber
 import javax.inject.Inject
-import pk.sufiishq.app.core.hijridate.api.HijriDateService
 import kotlin.coroutines.CoroutineContext
 
 private const val HIJRI_DATE_HOST = "http://api.aladhan.com/v1/gToH?date=%s"

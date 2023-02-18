@@ -30,8 +30,8 @@ import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.app.controller.MainController
-import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.core.app.model.NavigationItem
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.widgets.HijriDate
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SIDivider

@@ -20,12 +20,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
-import pk.sufiishq.app.di.qualifier.KalamItemPopupMenuItems
-import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
 import pk.sufiishq.app.core.app.popupmenu.AppBarPopupMenu
 import pk.sufiishq.app.core.kalam.popupmenu.KalamItemPopupMenu
 import pk.sufiishq.app.core.playlist.popupmenu.PlaylistItemPopupMenu
+import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
+import pk.sufiishq.app.di.qualifier.KalamItemPopupMenuItems
+import pk.sufiishq.app.di.qualifier.PlaylistItemPopupMenuItems
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import javax.inject.Singleton
 

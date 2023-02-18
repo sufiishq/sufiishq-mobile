@@ -25,10 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
-import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.core.applock.model.AutoLockDuration
 import pk.sufiishq.app.core.admin.model.Highlight
+import pk.sufiishq.app.core.applock.model.AutoLockDuration
 import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
 import java.text.SimpleDateFormat

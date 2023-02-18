@@ -21,8 +21,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import pk.sufiishq.app.core.kalam.data.dao.KalamDao
-import pk.sufiishq.app.core.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.core.playlist.model.Playlist
 
 @Database(entities = [Kalam::class, Playlist::class], version = 1, exportSchema = false)

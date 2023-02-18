@@ -18,7 +18,6 @@ package pk.sufiishq.app.core.kalam.delete
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
@@ -31,6 +30,7 @@ import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.utils.offlineFile
 import pk.sufiishq.app.utils.quickToast
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class KalamDeleteManager

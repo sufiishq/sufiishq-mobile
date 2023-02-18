@@ -19,9 +19,9 @@ package pk.sufiishq.app.core.hijridate.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import pk.sufiishq.app.core.hijridate.model.HijriDate
 import pk.sufiishq.app.core.hijridate.resolver.HijriDateResolver
 import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.core.hijridate.model.HijriDate
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

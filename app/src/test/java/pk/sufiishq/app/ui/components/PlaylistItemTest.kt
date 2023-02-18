@@ -33,8 +33,8 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.core.playlist.model.Playlist
+import pk.sufiishq.app.helpers.ScreenType
 
 class PlaylistItemTest : SufiIshqTest() {
 

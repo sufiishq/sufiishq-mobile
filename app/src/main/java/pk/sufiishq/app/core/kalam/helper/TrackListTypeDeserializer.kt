@@ -19,8 +19,8 @@ package pk.sufiishq.app.core.kalam.helper
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import java.lang.reflect.Type
 import pk.sufiishq.app.helpers.ScreenType
+import java.lang.reflect.Type
 
 class TrackListTypeDeserializer : JsonDeserializer<TrackListType> {
 

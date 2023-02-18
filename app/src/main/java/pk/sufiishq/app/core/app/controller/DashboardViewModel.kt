@@ -20,10 +20,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pk.sufiishq.app.core.admin.highlight.HighlightManager
-import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
-import pk.sufiishq.app.core.playlist.data.repository.PlaylistRepository
 import pk.sufiishq.app.core.admin.model.Highlight
 import pk.sufiishq.app.core.app.model.NavigationItem
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.core.playlist.data.repository.PlaylistRepository
 import javax.inject.Inject
 
 @HiltViewModel

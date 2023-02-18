@@ -33,8 +33,8 @@ import org.robolectric.annotation.Implements
 import org.robolectric.shadows.ShadowMediaPlayer
 import org.robolectric.util.ReflectionHelpers.getField
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.player.helper.AppMediaPlayer.Companion.UPDATE_DELAY
 import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.player.helper.AppMediaPlayer.Companion.UPDATE_DELAY
 import java.io.File
 
 @Config(shadows = [AppMediaPlayerTest.ShadowPlayer::class])

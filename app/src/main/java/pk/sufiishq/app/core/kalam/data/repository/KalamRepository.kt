@@ -20,7 +20,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
-import javax.inject.Inject
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -36,6 +35,7 @@ import pk.sufiishq.app.core.kalam.data.repository.KalamRepository.KalamTableInfo
 import pk.sufiishq.app.core.kalam.helper.TrackListType
 import pk.sufiishq.app.core.kalam.model.Kalam
 import pk.sufiishq.app.di.qualifier.IoDispatcher
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class KalamRepository

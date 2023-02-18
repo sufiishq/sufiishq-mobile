@@ -28,8 +28,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
-import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.player.service.AudioPlayerService
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.getString
 

@@ -26,11 +26,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pk.sufiishq.app.core.app.AppManager
-import pk.sufiishq.app.core.update.InAppUpdateManager
+import pk.sufiishq.app.core.hijridate.model.HijriDate
 import pk.sufiishq.app.core.hijridate.repository.HijriDateRepository
+import pk.sufiishq.app.core.update.InAppUpdateManager
 import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
-import pk.sufiishq.app.core.hijridate.model.HijriDate
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject
 

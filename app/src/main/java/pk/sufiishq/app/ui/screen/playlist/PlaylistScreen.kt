@@ -31,13 +31,13 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.core.playlist.controller.PlaylistController
+import pk.sufiishq.app.core.playlist.controller.PlaylistViewModel
 import pk.sufiishq.app.core.playlist.model.Playlist
 import pk.sufiishq.app.utils.fakePlaylistController
 import pk.sufiishq.app.utils.isScrollingUp
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
-import pk.sufiishq.app.core.playlist.controller.PlaylistViewModel
 import pk.sufiishq.aurora.layout.SILazyColumn
 import pk.sufiishq.aurora.layout.SIScaffold
 import pk.sufiishq.aurora.theme.AuroraDark

@@ -25,15 +25,15 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.core.player.PlayerState
 import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.core.kalam.helper.TrackListType
 import pk.sufiishq.app.core.kalam.model.Kalam
 import pk.sufiishq.app.core.kalam.model.KalamInfo
+import pk.sufiishq.app.core.player.PlayerState
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.putInStorage
 import javax.inject.Inject
-import pk.sufiishq.app.core.kalam.helper.TrackListType
 
 @HiltViewModel
 class AssetKalamLoaderViewModel

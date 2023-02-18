@@ -24,7 +24,6 @@ import pk.sufiishq.app.core.applock.AppLockManager
 import pk.sufiishq.app.core.applock.AppLockState
 import pk.sufiishq.app.core.applock.BiometricManager
 import pk.sufiishq.app.core.applock.BiometricStatus
-import pk.sufiishq.app.core.applock.controller.AppLockController
 import pk.sufiishq.app.core.applock.model.AutoLockDuration
 import pk.sufiishq.app.core.applock.model.SecurityQuestion
 import javax.inject.Inject

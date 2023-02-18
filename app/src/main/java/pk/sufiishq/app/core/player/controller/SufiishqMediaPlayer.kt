@@ -23,7 +23,6 @@ import android.media.MediaPlayer
 import android.media.PlaybackParams
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.kalam.helper.TrackListType
 import pk.sufiishq.app.core.kalam.model.Kalam
@@ -32,6 +31,7 @@ import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
+import javax.inject.Inject
 
 class SufiishqMediaPlayer
 @Inject
@@ -167,7 +167,7 @@ constructor(
                         audioFocusRequest!!,
                     )
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) -> audioManager.abandonAudioFocus(
-                    this
+                    this,
                 )
             }
         } catch (ex: Exception) {

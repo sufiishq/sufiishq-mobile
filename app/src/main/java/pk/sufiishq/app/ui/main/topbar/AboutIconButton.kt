@@ -141,7 +141,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                 append("or ")
                                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                     append(
-                                        "Suggestion "
+                                        "Suggestion ",
                                     )
                                 }
 
