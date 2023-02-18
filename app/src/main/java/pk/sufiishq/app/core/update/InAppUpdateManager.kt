@@ -28,7 +28,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.controller.MainController
+import pk.sufiishq.app.core.app.controller.MainController
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
 import javax.inject.Singleton

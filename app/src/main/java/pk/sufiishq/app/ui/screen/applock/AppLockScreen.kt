@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.applock.AppLockState
-import pk.sufiishq.app.data.controller.AppLockController
+import pk.sufiishq.app.core.applock.controller.AppLockController
 import pk.sufiishq.app.utils.optString
-import pk.sufiishq.app.viewmodels.AppLockViewModel
+import pk.sufiishq.app.core.applock.controller.AppLockViewModel
 import pk.sufiishq.aurora.layout.SIColumn
 
 @Composable

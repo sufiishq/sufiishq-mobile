@@ -35,7 +35,8 @@ import pk.sufiishq.app.core.player.helper.AppMediaPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.player.controller.SufiishqMediaPlayer
 
 class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
 

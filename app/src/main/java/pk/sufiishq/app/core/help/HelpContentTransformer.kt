@@ -22,8 +22,8 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.models.HelpContent
-import pk.sufiishq.app.models.TagInfo
+import pk.sufiishq.app.core.help.model.HelpContent
+import pk.sufiishq.app.core.help.model.TagInfo
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -49,14 +49,14 @@ constructor(
         }
     }
 
-    private fun transform(data: String): HelpData {
-        return data.find(IMAGE_PATTERN) { HelpData.Photo(it.getString("image")) }
-            ?: data.find(DIVIDER_PATTERN) { HelpData.Divider(it.getInt("divider")) }
-            ?: data.find(SPACER_PATTERN) { HelpData.Spacer(it.getInt("spacer")) }
-            ?: HelpData.Paragraph(annotateParagraph(data))
+    private fun transform(data: String): HelpDataType {
+        return data.find(IMAGE_PATTERN) { HelpDataType.Photo(it.getString("image")) }
+            ?: data.find(DIVIDER_PATTERN) { HelpDataType.Divider(it.getInt("divider")) }
+            ?: data.find(SPACER_PATTERN) { HelpDataType.Spacer(it.getInt("spacer")) }
+            ?: HelpDataType.Paragraph(annotateParagraph(data))
     }
 
-    private fun String.find(pattern: String, found: (JSONObject) -> HelpData): HelpData? {
+    private fun String.find(pattern: String, found: (JSONObject) -> HelpDataType): HelpDataType? {
         return if (Regex(pattern).containsMatchIn(this)) found(JSONObject(this)) else null
     }
 

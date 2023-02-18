@@ -25,6 +25,7 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
+import pk.sufiishq.app.core.kalam.helper.TrackListType
 import pk.sufiishq.app.ui.screen.admin.AdminSettingsScreen
 import pk.sufiishq.app.ui.screen.applock.AppLockScreen
 import pk.sufiishq.app.ui.screen.dashboard.DashboardScreen
@@ -188,6 +189,7 @@ sealed interface ScreenType {
 
         override val route: String
             get() = "screen_photo"
+
         override fun buildRoute() = route
 
         @Composable
@@ -204,6 +206,7 @@ sealed interface ScreenType {
 
         override val route: String
             get() = "screen_darbar_location"
+
         override fun buildRoute() = route
 
         @Composable
@@ -253,6 +256,7 @@ sealed interface ScreenType {
 
         override val route: String
             get() = "screen_app_lock"
+
         override fun buildRoute() = route
 
         @Composable
@@ -271,6 +275,7 @@ sealed interface ScreenType {
 
         override val route: String
             get() = "screen_admin_settings"
+
         override fun buildRoute() = route
 
         @Composable

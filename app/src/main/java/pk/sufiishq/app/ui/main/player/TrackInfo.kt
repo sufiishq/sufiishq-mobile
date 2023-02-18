@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.aurora.components.SIMarqueeText

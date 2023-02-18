@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.help.HelpData
-import pk.sufiishq.app.models.HelpContent
+import pk.sufiishq.app.core.help.HelpDataType
+import pk.sufiishq.app.core.help.model.HelpContent
 import pk.sufiishq.app.ui.components.NetworkImage
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIIcon
@@ -73,23 +73,23 @@ fun HelpExpandableCard(
     ) { textColor ->
         item.content.onEach {
             when (it) {
-                is HelpData.Paragraph ->
+                is HelpDataType.Paragraph ->
                     SIText(
                         text = it.text,
                         textColor = textColor,
                         textSize = TextSize.Small,
                     )
-                is HelpData.Photo ->
+                is HelpDataType.Photo ->
                     NetworkImage(
                         modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
                         url = it.path,
                     )
-                is HelpData.Divider ->
+                is HelpDataType.Divider ->
                     Divider(
                         thickness = it.height.dp,
                         modifier = Modifier.padding(top = 12.dp).testTag("divider_tag"),
                     )
-                is HelpData.Spacer ->
+                is HelpDataType.Spacer ->
                     Spacer(
                         modifier = Modifier.height(it.height.dp).testTag("spacer_tag"),
                     )
@@ -110,7 +110,7 @@ fun LightExpandableCard() {
             HelpContent(
                 "The Title",
                 listOf(
-                    HelpData.Paragraph(buildAnnotatedString { "This is some text" }),
+                    HelpDataType.Paragraph(buildAnnotatedString { "This is some text" }),
                 ),
             ),
         )
@@ -129,7 +129,7 @@ fun DarkExpandableCard() {
             HelpContent(
                 "The Title",
                 listOf(
-                    HelpData.Paragraph(buildAnnotatedString { "This is some text" }),
+                    HelpDataType.Paragraph(buildAnnotatedString { "This is some text" }),
                 ),
             ),
         )

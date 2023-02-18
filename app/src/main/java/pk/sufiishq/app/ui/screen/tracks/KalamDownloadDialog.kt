@@ -37,7 +37,7 @@ import okhttp3.internal.format
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.kalam.downloader.FileInfo
 import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
-import pk.sufiishq.app.data.controller.KalamController
+import pk.sufiishq.app.core.kalam.controller.KalamController
 import pk.sufiishq.app.utils.optString
 import pk.sufiishq.aurora.components.SILinearProgressIndicator
 import pk.sufiishq.aurora.components.SIText

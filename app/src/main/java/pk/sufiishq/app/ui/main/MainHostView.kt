@@ -20,8 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.applock.AppLockManager
-import pk.sufiishq.app.core.firebase.MaintenanceManager
-import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.core.admin.maintenance.MaintenanceManager
+import pk.sufiishq.app.core.player.controller.AudioPlayer
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.main.player.PlayerView
 import pk.sufiishq.app.ui.main.topbar.AboutIconButton

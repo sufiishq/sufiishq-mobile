@@ -16,10 +16,10 @@
 
 package pk.sufiishq.app.core.player.state
 
+import pk.sufiishq.app.core.kalam.helper.TrackListType
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import pk.sufiishq.app.core.player.PlayerState
-import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamInfo
 import pk.sufiishq.app.utils.quickToast
 
 sealed class MediaState(val kalam: Kalam, val trackListType: TrackListType) {

@@ -31,7 +31,7 @@ import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitStatus
-import pk.sufiishq.app.data.controller.KalamController
+import pk.sufiishq.app.core.kalam.controller.KalamController
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.formatTime

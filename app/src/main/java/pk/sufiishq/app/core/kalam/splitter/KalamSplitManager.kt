@@ -23,11 +23,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.player.AudioPlayer
-import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.core.player.controller.AudioPlayer
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.appendPath

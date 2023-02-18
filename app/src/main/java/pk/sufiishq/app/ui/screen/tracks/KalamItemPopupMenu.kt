@@ -22,11 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.data.controller.KalamController
-import pk.sufiishq.app.helpers.TrackListType
+import pk.sufiishq.app.core.kalam.controller.KalamController
+import pk.sufiishq.app.core.kalam.helper.TrackListType
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.kalam.model.KalamDeleteItem
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamDeleteItem
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
 import pk.sufiishq.aurora.layout.SIDropdownMenu
 import pk.sufiishq.aurora.models.DataMenuItem

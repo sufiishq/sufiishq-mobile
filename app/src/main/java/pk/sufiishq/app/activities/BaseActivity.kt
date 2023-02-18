@@ -23,13 +23,13 @@ import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.core.app.AppManager
 import pk.sufiishq.app.core.applock.AppLockManager
-import pk.sufiishq.app.core.firebase.AuthManager
-import pk.sufiishq.app.core.firebase.MaintenanceManager
-import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.core.admin.auth.AuthManager
+import pk.sufiishq.app.core.admin.maintenance.MaintenanceManager
+import pk.sufiishq.app.core.player.controller.AudioPlayer
 import pk.sufiishq.app.core.player.service.AudioPlayerService
-import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.viewmodels.AssetKalamLoaderViewModel
-import pk.sufiishq.app.viewmodels.MainViewModel
+import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.core.app.controller.AssetKalamLoaderViewModel
+import pk.sufiishq.app.core.app.controller.MainViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint

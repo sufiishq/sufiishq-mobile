@@ -20,7 +20,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 import pk.sufiishq.app.utils.hasOfflineSource
 import java.io.File
 import javax.inject.Inject

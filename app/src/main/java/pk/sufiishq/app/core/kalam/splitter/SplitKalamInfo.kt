@@ -16,7 +16,7 @@
 
 package pk.sufiishq.app.core.kalam.splitter
 
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 
 data class SplitKalamInfo(
     val kalam: Kalam,

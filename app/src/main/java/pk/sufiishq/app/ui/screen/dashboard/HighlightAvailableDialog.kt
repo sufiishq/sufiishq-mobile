@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.models.Highlight
+import pk.sufiishq.app.core.admin.model.Highlight
 import pk.sufiishq.app.utils.addCharAtIndex
 import pk.sufiishq.app.utils.contactsAsListPair
 import pk.sufiishq.app.utils.launchCallIntent

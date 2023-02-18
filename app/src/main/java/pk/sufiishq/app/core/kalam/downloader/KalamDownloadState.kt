@@ -16,7 +16,7 @@
 
 package pk.sufiishq.app.core.kalam.downloader
 
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 
 sealed interface KalamDownloadState {
 

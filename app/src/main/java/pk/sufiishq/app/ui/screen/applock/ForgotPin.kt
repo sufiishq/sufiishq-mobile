@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.data.controller.AppLockController
-import pk.sufiishq.app.models.SecurityQuestion
+import pk.sufiishq.app.core.applock.controller.AppLockController
+import pk.sufiishq.app.core.applock.model.SecurityQuestion
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.optString

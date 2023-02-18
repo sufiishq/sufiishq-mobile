@@ -36,7 +36,7 @@ import org.junit.AfterClass
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)

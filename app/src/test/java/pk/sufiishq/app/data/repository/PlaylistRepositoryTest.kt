@@ -28,8 +28,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.data.dao.PlaylistDao
-import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.core.playlist.data.dao.PlaylistDao
+import pk.sufiishq.app.core.playlist.data.repository.PlaylistRepository
+import pk.sufiishq.app.core.playlist.model.Playlist
 
 class PlaylistRepositoryTest : SufiIshqTest() {
 

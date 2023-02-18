@@ -16,7 +16,7 @@
 
 package pk.sufiishq.app.core.applock
 
-import pk.sufiishq.app.models.SecurityQuestion
+import pk.sufiishq.app.core.applock.model.SecurityQuestion
 
 sealed interface AppLockState {
 

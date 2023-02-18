@@ -23,16 +23,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.flow.collectLatest
-import pk.sufiishq.app.core.firebase.AuthState
-import pk.sufiishq.app.data.controller.AdminController
+import pk.sufiishq.app.core.admin.auth.AuthState
+import pk.sufiishq.app.core.admin.controller.AdminController
 import pk.sufiishq.app.ui.components.dialogs.ShowIndicatorDialog
 import pk.sufiishq.app.utils.optValue
-import pk.sufiishq.app.viewmodels.AdminSettingsViewModel
+import pk.sufiishq.app.core.admin.controller.AdminViewModel
 
 @Composable
 fun AdminSettingsScreen(
     scaffoldState: ScaffoldState,
-    adminController: AdminController = hiltViewModel<AdminSettingsViewModel>(),
+    adminController: AdminController = hiltViewModel<AdminViewModel>(),
 ) {
     val authState =
         adminController.checkAuthentication().observeAsState().optValue(AuthState.Cancelled())

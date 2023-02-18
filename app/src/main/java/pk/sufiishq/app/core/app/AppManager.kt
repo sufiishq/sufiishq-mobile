@@ -19,7 +19,7 @@ package pk.sufiishq.app.core.app
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import pk.sufiishq.app.R
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.metaInfo
 import javax.inject.Inject

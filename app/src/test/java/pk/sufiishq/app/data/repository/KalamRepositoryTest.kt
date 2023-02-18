@@ -31,10 +31,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.data.dao.KalamDao
+import pk.sufiishq.app.core.kalam.data.dao.KalamDao
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.Kalam
+import pk.sufiishq.app.core.kalam.model.Kalam
 
 class KalamRepositoryTest : SufiIshqTest() {
 

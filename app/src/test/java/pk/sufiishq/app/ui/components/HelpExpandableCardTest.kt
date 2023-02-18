@@ -28,8 +28,8 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.help.HelpData
-import pk.sufiishq.app.models.HelpContent
+import pk.sufiishq.app.core.help.HelpDataType
+import pk.sufiishq.app.core.help.model.HelpContent
 import pk.sufiishq.app.ui.screen.help.HelpExpandableCard
 
 class HelpExpandableCardTest : SufiIshqTest() {
@@ -50,34 +50,34 @@ class HelpExpandableCardTest : SufiIshqTest() {
 
     @Test
     fun `test paragraph view should be exists and displayed`() {
-        val helpData = HelpData.Paragraph(buildAnnotatedString { append("test") })
-        setContent(helpData)
+        val helpDataType = HelpDataType.Paragraph(buildAnnotatedString { append("test") })
+        setContent(helpDataType)
 
         composeTestRule.onNode(hasText("test")).assertExists().assertIsDisplayed()
     }
 
     @Test
     fun `test divider view should be exists and displayed`() {
-        val helpData = HelpData.Divider(1)
-        setContent(helpData)
+        val helpDataType = HelpDataType.Divider(1)
+        setContent(helpDataType)
 
         composeTestRule.onNode(hasTestTag("divider_tag")).assertExists().assertIsDisplayed()
     }
 
     @Test
     fun `test spacer view should be exists and displayed`() {
-        val helpData = HelpData.Spacer(10)
-        setContent(helpData)
+        val helpDataType = HelpDataType.Spacer(10)
+        setContent(helpDataType)
 
         composeTestRule.onNode(hasTestTag("spacer_tag")).assertExists()
     }
 
-    private fun setContent(helpData: HelpData, selectedIndex: Int = 0) {
+    private fun setContent(helpDataType: HelpDataType, selectedIndex: Int = 0) {
         composeTestRule.setContent {
             HelpExpandableCard(
                 expandedIndex = mutableStateOf(selectedIndex),
                 index = 0,
-                item = HelpContent("title", listOf(helpData)),
+                item = HelpContent("title", listOf(helpDataType)),
             )
         }
     }

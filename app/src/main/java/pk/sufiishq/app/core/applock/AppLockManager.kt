@@ -21,9 +21,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import pk.sufiishq.app.R
-import pk.sufiishq.app.models.AppLockStatus
-import pk.sufiishq.app.models.AutoLockDuration
-import pk.sufiishq.app.models.SecurityQuestion
+import pk.sufiishq.app.core.applock.model.AppLockStatus
+import pk.sufiishq.app.core.applock.model.AutoLockDuration
+import pk.sufiishq.app.core.applock.model.SecurityQuestion
 import pk.sufiishq.app.utils.getFromStorage
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.instantAutoLockDuration

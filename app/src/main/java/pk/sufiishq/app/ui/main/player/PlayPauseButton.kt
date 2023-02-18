@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.core.player.PlayerState
-import pk.sufiishq.app.data.controller.PlayerController
-import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.core.player.controller.PlayerController
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.components.SIIcon

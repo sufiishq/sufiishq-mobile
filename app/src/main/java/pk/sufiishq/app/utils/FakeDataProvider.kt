@@ -26,25 +26,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.help.HelpData
+import pk.sufiishq.app.core.admin.model.Highlight
+import pk.sufiishq.app.core.app.controller.DashboardController
+import pk.sufiishq.app.core.app.controller.MainController
+import pk.sufiishq.app.core.app.model.NavigationItem
+import pk.sufiishq.app.core.help.HelpDataType
+import pk.sufiishq.app.core.help.controller.HelpController
+import pk.sufiishq.app.core.help.model.HelpContent
+import pk.sufiishq.app.core.hijridate.model.HijriDate
+import pk.sufiishq.app.core.kalam.controller.KalamController
 import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.core.kalam.helper.TrackListType
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.kalam.model.KalamDeleteItem
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.core.kalam.splitter.SplitStatus
-import pk.sufiishq.app.data.controller.DashboardController
-import pk.sufiishq.app.data.controller.HelpController
-import pk.sufiishq.app.data.controller.KalamController
-import pk.sufiishq.app.data.controller.MainController
-import pk.sufiishq.app.data.controller.PlayerController
-import pk.sufiishq.app.data.controller.PlaylistController
-import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.HelpContent
-import pk.sufiishq.app.models.Highlight
-import pk.sufiishq.app.models.HijriDate
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamDeleteItem
-import pk.sufiishq.app.models.KalamInfo
-import pk.sufiishq.app.models.NavigationItem
-import pk.sufiishq.app.models.Playlist
+import pk.sufiishq.app.core.player.controller.PlayerController
+import pk.sufiishq.app.core.playlist.controller.PlaylistController
+import pk.sufiishq.app.core.playlist.model.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
 // ---------------------------------------------------------------------------------- //
@@ -105,6 +105,7 @@ fun fakeKalamController() =
         override fun delete(kalamDeleteItem: KalamDeleteItem) = Unit
         override fun showKalamConfirmDeleteDialog(): LiveData<KalamDeleteItem?> =
             MutableLiveData(null)
+
         override fun showKalamConfirmDeleteDialog(kalamDeleteItem: KalamDeleteItem?) = Unit
 
         override fun addToPlaylist(kalam: Kalam, playlist: Playlist) = Unit
@@ -162,7 +163,8 @@ fun fakePlaylistController() =
         override fun delete(playlist: Playlist) = Unit
     }
 
-@ExcludeFromJacocoGeneratedReport fun fakePlaylist() = Playlist(1, "Karachi")
+@ExcludeFromJacocoGeneratedReport
+fun fakePlaylist() = Playlist(1, "Karachi")
 
 // ---------------------------------------------------------------------------------- //
 // GLOBAL DATA PROVIDER
@@ -197,13 +199,13 @@ fun fakeHelpController() =
                     HelpContent(
                         "First Title",
                         listOf(
-                            HelpData.Paragraph(buildAnnotatedString { append("some paragraph") }),
-                            HelpData.Photo("Path"),
-                            HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
-                            HelpData.Divider(2),
-                            HelpData.Paragraph(buildAnnotatedString { append("another paragraph") }),
-                            HelpData.Spacer(10),
-                            HelpData.Paragraph(
+                            HelpDataType.Paragraph(buildAnnotatedString { append("some paragraph") }),
+                            HelpDataType.Photo("Path"),
+                            HelpDataType.Paragraph(buildAnnotatedString { append("another paragraph") }),
+                            HelpDataType.Divider(2),
+                            HelpDataType.Paragraph(buildAnnotatedString { append("another paragraph") }),
+                            HelpDataType.Spacer(10),
+                            HelpDataType.Paragraph(
                                 buildAnnotatedString {
                                     append("another paragraph with some **bold** and __italic__ words")
                                 },
@@ -212,7 +214,7 @@ fun fakeHelpController() =
                     ),
                     HelpContent(
                         "Second Title",
-                        listOf(HelpData.Paragraph(buildAnnotatedString { append("Test 2") })),
+                        listOf(HelpDataType.Paragraph(buildAnnotatedString { append("Test 2") })),
                     ),
                 ),
             )

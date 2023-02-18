@@ -95,7 +95,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                         SIBox(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center,
-                        ) { textColor ->
+                        ) {
                             SIText(
                                 text = stringResource(id = R.string.app_name),
                                 textColor = textColor,
@@ -139,7 +139,11 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                     append("Issues, Problems ")
                                 }
                                 append("or ")
-                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) { append("Suggestion ") }
+                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                    append(
+                                        "Suggestion "
+                                    )
+                                }
 
                                 append("\n\n")
 
@@ -206,8 +210,8 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                     .firstOrNull()
                                     ?.let { stringAnnotation -> mUriHandler.openUri(stringAnnotation.item) }
 
-                                annotatedString.getStringAnnotations("GITHUB_REPO", it, it).firstOrNull()?.let {
-                                        stringAnnotation ->
+                                annotatedString.getStringAnnotations("GITHUB_REPO", it, it)
+                                    .firstOrNull()?.let { stringAnnotation ->
                                     mUriHandler.openUri(stringAnnotation.item)
                                 }
 
@@ -224,15 +228,20 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                     padding = 3,
                     bgColor = AuroraColor.Background,
                     modifier =
-                    Modifier.size(100.dp).clip(CircleShape).constrainAs(icon) {
-                        start.linkTo(parent.start)
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                    },
+                    Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .constrainAs(icon) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     SIBox(
-                        modifier = Modifier.size(100.dp).clip(CircleShape),
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
                         SIImage(

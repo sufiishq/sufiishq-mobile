@@ -26,8 +26,9 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.data.repository.HelpContentRepository
-import pk.sufiishq.app.models.HelpContent
+import pk.sufiishq.app.core.help.controller.HelpViewModel
+import pk.sufiishq.app.core.help.repository.HelpContentRepository
+import pk.sufiishq.app.core.help.model.HelpContent
 
 @Ignore("will be fixed later")
 class HelpViewModelTest : SufiIshqTest() {

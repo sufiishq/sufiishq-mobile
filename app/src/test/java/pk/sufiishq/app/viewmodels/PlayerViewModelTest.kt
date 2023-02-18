@@ -26,10 +26,11 @@ import org.junit.Ignore
 import org.junit.Rule
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.kalam.downloader.FileDownloader
-import pk.sufiishq.app.core.player.SufiishqMediaPlayer
+import pk.sufiishq.app.core.player.controller.PlayerViewModel
+import pk.sufiishq.app.core.player.controller.SufiishqMediaPlayer
 import pk.sufiishq.app.core.storage.SecureSharedPreferencesStorage
-import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.data.repository.PlaylistRepository
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.core.playlist.data.repository.PlaylistRepository
 
 @Ignore("will be fixed later")
 class PlayerViewModelTest : SufiIshqTest() {

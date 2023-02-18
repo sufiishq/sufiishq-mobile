@@ -33,11 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.data.controller.PlayerController
+import pk.sufiishq.app.core.player.controller.PlayerController
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.utils.fakePlayerController
 import pk.sufiishq.app.utils.formatTime
-import pk.sufiishq.app.viewmodels.PlayerViewModel
+import pk.sufiishq.app.core.player.controller.PlayerViewModel
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIRow

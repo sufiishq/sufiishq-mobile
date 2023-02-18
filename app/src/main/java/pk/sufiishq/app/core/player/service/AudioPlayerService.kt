@@ -25,16 +25,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.core.player.AudioPlayer
+import pk.sufiishq.app.core.player.controller.AudioPlayer
 import pk.sufiishq.app.core.player.listener.PlayerStateListener
 import pk.sufiishq.app.core.player.state.MediaState
 import pk.sufiishq.app.core.player.util.PlayerNotification
 import pk.sufiishq.app.core.storage.LastKalamPlayLiveData
-import pk.sufiishq.app.data.repository.KalamRepository
-import pk.sufiishq.app.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

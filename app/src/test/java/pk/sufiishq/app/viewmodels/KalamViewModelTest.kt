@@ -37,16 +37,17 @@ import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.core.kalam.splitter.KalamSplitManager
-import pk.sufiishq.app.core.player.AudioPlayer
-import pk.sufiishq.app.data.repository.KalamRepository
+import pk.sufiishq.app.core.player.controller.AudioPlayer
+import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.helpers.TrackListType
-import pk.sufiishq.app.models.Kalam
-import pk.sufiishq.app.models.KalamDeleteItem
+import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.core.kalam.model.KalamDeleteItem
 import pk.sufiishq.app.utils.KALAM_DIR
 import pk.sufiishq.app.utils.moveTo
 import pk.sufiishq.app.utils.toast
 import java.io.File
 import java.util.*
+import pk.sufiishq.app.core.kalam.controller.KalamViewModel
 
 class KalamViewModelTest : SufiIshqTest() {
 

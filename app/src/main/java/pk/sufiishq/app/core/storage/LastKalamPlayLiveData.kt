@@ -18,7 +18,7 @@ package pk.sufiishq.app.core.storage
 
 import com.google.gson.Gson
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
-import pk.sufiishq.app.models.KalamInfo
+import pk.sufiishq.app.core.kalam.model.KalamInfo
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
 import javax.inject.Inject
 

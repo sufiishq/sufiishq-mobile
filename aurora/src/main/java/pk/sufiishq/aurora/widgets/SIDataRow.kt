@@ -43,7 +43,7 @@ fun SIDataRow(
     subTitle: String? = null
 ) {
     SIDataRow(
-        modifier = Modifier,
+        modifier = modifier,
         bgColor = bgColor,
         fgColor = fgColor,
         leadingIcon = leadingIcon,
