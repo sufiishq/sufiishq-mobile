@@ -34,7 +34,7 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.kalam.splitter.SplitStatus
+import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import java.io.File
 import java.io.FilenameFilter
 import java.nio.charset.Charset

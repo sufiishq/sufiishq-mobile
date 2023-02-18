@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.utils.extention
 
 import android.content.Context
 import android.content.Intent

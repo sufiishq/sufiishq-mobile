@@ -19,8 +19,8 @@ package pk.sufiishq.app.ui.main.player
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.core.kalam.model.KalamInfo
-import pk.sufiishq.app.core.player.controller.PlayerController
+import pk.sufiishq.app.feature.kalam.model.KalamInfo
+import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.aurora.components.SISlider
 
 @PackagePrivate

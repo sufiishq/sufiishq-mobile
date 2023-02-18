@@ -19,7 +19,7 @@ package pk.sufiishq.app.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import pk.sufiishq.app.utils.deleteContent
+import pk.sufiishq.app.utils.extention.deleteContent
 
 class CacheRemoveWorker(context: Context, workerParam: WorkerParameters) :
     Worker(context, workerParam) {

@@ -33,8 +33,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.kalam.downloader.FileDownloader
-import pk.sufiishq.app.core.kalam.downloader.FileInfo
+import pk.sufiishq.app.feature.kalam.downloader.FileDownloader
+import pk.sufiishq.app.feature.kalam.downloader.FileInfo
 import java.io.File
 
 class FileDownloaderTest : SufiIshqTest() {

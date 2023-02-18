@@ -24,7 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.playlist.model.Playlist
+import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.fakePlaylist

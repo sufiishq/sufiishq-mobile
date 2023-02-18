@@ -23,9 +23,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.flow.collectLatest
-import pk.sufiishq.app.core.admin.auth.AuthState
-import pk.sufiishq.app.core.admin.controller.AdminController
-import pk.sufiishq.app.core.admin.controller.AdminViewModel
+import pk.sufiishq.app.feature.admin.auth.AuthState
+import pk.sufiishq.app.feature.admin.controller.AdminController
+import pk.sufiishq.app.feature.admin.controller.AdminViewModel
 import pk.sufiishq.app.ui.components.dialogs.ShowIndicatorDialog
 import pk.sufiishq.app.utils.optValue
 

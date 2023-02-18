@@ -34,8 +34,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.utils.launchGoogleMap
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.launchGoogleMap
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
@@ -50,7 +50,9 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun DarbarLocationScreen() {
     ConstraintLayout(
         modifier =
-        Modifier.fillMaxSize().padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
         val (darbarPhoto, locationButtons) = createRefs()
 
@@ -101,14 +103,18 @@ private fun LocationButton(
     val context = LocalContext.current
 
     SICard(
-        modifier = Modifier.fillMaxWidth().height(60.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
         border = BorderStroke(0.5.dp, AuroraColor.Primary.color()),
     ) {
         SIBox(
             bgColor = AuroraColor.Background,
         ) {
             SIRow(
-                modifier = Modifier.fillMaxWidth().padding(12.dp, 6.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp, 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {

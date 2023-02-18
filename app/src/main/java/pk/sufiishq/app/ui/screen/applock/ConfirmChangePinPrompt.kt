@@ -23,8 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.applock.controller.AppLockController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.feature.applock.controller.AppLockController
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize

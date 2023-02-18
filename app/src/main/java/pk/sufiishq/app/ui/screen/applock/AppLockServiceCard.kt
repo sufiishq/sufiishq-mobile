@@ -31,9 +31,9 @@ import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.applock.model.AutoLockDuration
+import pk.sufiishq.app.feature.applock.model.AutoLockDuration
 import pk.sufiishq.app.utils.instantAutoLockDuration
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace

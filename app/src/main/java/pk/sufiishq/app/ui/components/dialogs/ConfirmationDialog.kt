@@ -19,7 +19,7 @@ package pk.sufiishq.app.ui.components.dialogs
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import pk.sufiishq.app.R
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.layout.SIDialog
 

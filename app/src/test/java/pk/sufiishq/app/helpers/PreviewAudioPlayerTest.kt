@@ -29,7 +29,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.kalam.splitter.PreviewAudioPlayer
+import pk.sufiishq.app.feature.kalam.splitter.PreviewAudioPlayer
 
 class PreviewAudioPlayerTest : SufiIshqTest() {
 

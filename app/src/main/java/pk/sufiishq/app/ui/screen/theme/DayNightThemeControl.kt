@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.ui.components.ContentBackground
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace

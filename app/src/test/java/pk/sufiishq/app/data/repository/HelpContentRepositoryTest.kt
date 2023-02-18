@@ -21,8 +21,8 @@ import io.mockk.mockk
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.help.repository.HelpContentRepository
-import pk.sufiishq.app.core.help.resolver.HelpContentResolver
+import pk.sufiishq.app.feature.help.repository.HelpContentRepository
+import pk.sufiishq.app.feature.help.resolver.HelpContentResolver
 
 class HelpContentRepositoryTest : SufiIshqTest() {
 

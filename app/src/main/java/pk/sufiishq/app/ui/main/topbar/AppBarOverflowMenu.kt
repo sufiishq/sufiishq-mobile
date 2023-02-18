@@ -26,12 +26,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.app.controller.MainController
-import pk.sufiishq.app.core.app.controller.MainViewModel
+import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.fakeMainController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
 import pk.sufiishq.aurora.models.DataMenuItem
 import pk.sufiishq.aurora.theme.AuroraColor

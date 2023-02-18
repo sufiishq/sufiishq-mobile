@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.admin.model.Highlight
-import pk.sufiishq.app.core.app.controller.DashboardController
-import pk.sufiishq.app.utils.shake
+import pk.sufiishq.app.feature.admin.model.Highlight
+import pk.sufiishq.app.feature.app.controller.DashboardController
+import pk.sufiishq.app.utils.extention.shake
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -49,13 +49,17 @@ fun HighlightAvailableButton(
     dashboardController.getHighlightAvailable().observeAsState().value?.apply {
         SICard(
             modifier =
-            modifier.clip(CircleShape).clickable {
-                coroutineScope.launch { highlightDialogControl.value = this@apply }
-            },
+            modifier
+                .clip(CircleShape)
+                .clickable {
+                    coroutineScope.launch { highlightDialogControl.value = this@apply }
+                },
             bgColor = AuroraColor.SecondaryVariant,
         ) { contentColor ->
             SIIcon(
-                modifier = Modifier.padding(12.dp).shake(true),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .shake(true),
                 resId = R.drawable.round_notifications_active_24,
                 tint = contentColor,
             )

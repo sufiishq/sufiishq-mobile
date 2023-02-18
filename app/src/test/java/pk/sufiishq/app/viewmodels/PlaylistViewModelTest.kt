@@ -30,10 +30,10 @@ import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.kalam.data.repository.KalamRepository
-import pk.sufiishq.app.core.playlist.controller.PlaylistViewModel
-import pk.sufiishq.app.core.playlist.data.repository.PlaylistRepository
-import pk.sufiishq.app.core.playlist.model.Playlist
+import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
+import pk.sufiishq.app.feature.playlist.controller.PlaylistViewModel
+import pk.sufiishq.app.feature.playlist.data.repository.PlaylistRepository
+import pk.sufiishq.app.feature.playlist.model.Playlist
 
 class PlaylistViewModelTest : SufiIshqTest() {
 

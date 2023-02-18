@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.core.kalam.model.KalamInfo
+import pk.sufiishq.app.feature.kalam.model.KalamInfo
+import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.formatDateAs
-import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.aurora.components.SIMarqueeText
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize
@@ -40,13 +40,17 @@ fun TrackInfo(
 ) {
     SICard(
         modifier =
-        Modifier.fillMaxSize().padding(start = 30.dp, top = 12.dp, end = 12.dp, bottom = 12.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(start = 30.dp, top = 12.dp, end = 12.dp, bottom = 12.dp),
         elevation = 0.dp,
         bgColor = AuroraColor.Background,
     ) { textColor ->
         SIConstraintLayout(
             modifier =
-            Modifier.fillMaxSize().padding(top = 8.dp, start = 66.dp, end = 10.dp, bottom = 8.dp),
+            Modifier
+                .fillMaxSize()
+                .padding(top = 8.dp, start = 66.dp, end = 10.dp, bottom = 8.dp),
         ) {
             val (titleRef, recordedDateRef, currentProgressRef, totalDurationRef) = createRefs()
 

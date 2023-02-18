@@ -28,6 +28,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
+import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
 
 class SecureSharedPreferencesStorageTest : SufiIshqTest() {
 

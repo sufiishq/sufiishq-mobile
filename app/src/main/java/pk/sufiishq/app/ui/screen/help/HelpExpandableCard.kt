@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.help.HelpDataType
-import pk.sufiishq.app.core.help.model.HelpContent
+import pk.sufiishq.app.feature.help.HelpDataType
+import pk.sufiishq.app.feature.help.model.HelpContent
 import pk.sufiishq.app.ui.components.NetworkImage
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIIcon

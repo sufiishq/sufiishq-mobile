@@ -29,13 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
-import pk.sufiishq.app.core.kalam.splitter.SplitStatus
+import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
+import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
-import pk.sufiishq.app.utils.formatTime
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.formatTime
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.quickToast
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
@@ -53,7 +52,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun KalamSplitDialog(
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val showSplitDialog = kalamController.showKalamSplitDialog().observeAsState()
 
@@ -71,7 +70,7 @@ fun KalamSplitDialog(
 @Composable
 private fun StartSplitView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
@@ -120,7 +119,7 @@ private fun StartSplitView(
 @Composable
 private fun SplitCompletedView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val kalamTitle = rem("")
 
@@ -145,7 +144,7 @@ private fun SplitCompletedView(
 @Composable
 private fun SplitDoneView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val previewPlayStart = splitKalamInfo.previewPlayStart
     val previewKalamProgress = splitKalamInfo.previewKalamProgress
@@ -162,7 +161,9 @@ private fun SplitDoneView(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SIImage(
-                modifier = Modifier.width(35.dp).clickable { kalamController.playSplitKalamPreview() },
+                modifier = Modifier
+                    .width(35.dp)
+                    .clickable { kalamController.playSplitKalamPreview() },
                 resId = if (previewPlayStart) R.drawable.ic_pause else R.drawable.ic_play,
                 tintColor = textColor,
             )
@@ -233,30 +234,30 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDialog(kalamController: KalamController) {
+private fun dismissDialog(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.dismissKalamSplitDialog()
 }
 
-private fun startSplitting(kalamController: KalamController) {
+private fun startSplitting(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.startSplitting()
 }
 
-private fun backToStart(kalamController: KalamController) {
+private fun backToStart(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.setSplitStatus(SplitStatus.Start)
 }
 
-private fun done(kalamController: KalamController) {
+private fun done(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.setSplitStatus(SplitStatus.Completed)
 }
 
-private fun backToDone(kalamController: KalamController) {
+private fun backToDone(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.setSplitStatus(SplitStatus.Done)
 }
 
 private fun saveKalam(
     kalamTitle: String,
     splitKalamInfo: SplitKalamInfo,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     if (kalamTitle.isEmpty()) {
         quickToast(R.string.msg_kalam_title_required)

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.utils.extention
+
+import pk.sufiishq.app.utils.getApp
 
 fun <T : Any> String.getFromStorage(default: T): T {
     return getApp().keyValueStorage.get(this, default)

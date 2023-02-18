@@ -26,25 +26,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.admin.model.Highlight
-import pk.sufiishq.app.core.app.controller.DashboardController
-import pk.sufiishq.app.core.app.controller.MainController
-import pk.sufiishq.app.core.app.model.NavigationItem
-import pk.sufiishq.app.core.help.HelpDataType
-import pk.sufiishq.app.core.help.controller.HelpController
-import pk.sufiishq.app.core.help.model.HelpContent
-import pk.sufiishq.app.core.hijridate.model.HijriDate
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
-import pk.sufiishq.app.core.kalam.helper.TrackListType
-import pk.sufiishq.app.core.kalam.model.Kalam
-import pk.sufiishq.app.core.kalam.model.KalamDeleteItem
-import pk.sufiishq.app.core.kalam.model.KalamInfo
-import pk.sufiishq.app.core.kalam.splitter.SplitKalamInfo
-import pk.sufiishq.app.core.kalam.splitter.SplitStatus
-import pk.sufiishq.app.core.player.controller.PlayerController
-import pk.sufiishq.app.core.playlist.controller.PlaylistController
-import pk.sufiishq.app.core.playlist.model.Playlist
+import pk.sufiishq.app.feature.admin.model.Highlight
+import pk.sufiishq.app.feature.app.controller.DashboardController
+import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.feature.app.model.NavigationItem
+import pk.sufiishq.app.feature.help.HelpDataType
+import pk.sufiishq.app.feature.help.controller.HelpController
+import pk.sufiishq.app.feature.help.model.HelpContent
+import pk.sufiishq.app.feature.hijridate.model.HijriDate
+import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.model.KalamDeleteItem
+import pk.sufiishq.app.feature.kalam.model.KalamInfo
+import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
+import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
+import pk.sufiishq.app.feature.player.controller.PlayerController
+import pk.sufiishq.app.feature.playlist.controller.PlaylistController
+import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.aurora.models.DataMenuItem
 
 // ---------------------------------------------------------------------------------- //
@@ -82,7 +81,7 @@ fun fakePlayerController() =
 
 @ExcludeFromJacocoGeneratedReport
 fun fakeKalamController() =
-    object : KalamController {
+    object : pk.sufiishq.app.feature.kalam.controller.KalamController {
 
         override fun getKalamDataFlow(): Flow<PagingData<Kalam>> = flow {
             PagingData.from(

@@ -17,7 +17,6 @@
 package pk.sufiishq.app.utils
 
 const val SUFI_ISHQ_HOST = "https://www.sufiishq.pk/"
-const val KALAM_TABLE_NAME = "kalam"
 const val KALAM_DIR = "kalam"
 const val CACHE_SPLIT_FILENAME = "split.mp3"
 const val KALAM_TITLE_LENGTH = 50

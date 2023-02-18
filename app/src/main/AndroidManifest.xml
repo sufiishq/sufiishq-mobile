@@ -49,7 +49,7 @@
         </activity>
 
         <service
-            android:name=".core.player.service.AudioPlayerService"
+            android:name=".feature.player.service.AudioPlayerService"
             android:enabled="true"
             android:exported="false" />
     </application>

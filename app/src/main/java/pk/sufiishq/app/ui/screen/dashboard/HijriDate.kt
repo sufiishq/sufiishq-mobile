@@ -24,8 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.app.controller.MainController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace

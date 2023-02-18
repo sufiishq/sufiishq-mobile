@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.utils.extention
 
 import android.annotation.SuppressLint
 import timber.log.Timber

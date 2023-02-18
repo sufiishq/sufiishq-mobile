@@ -25,7 +25,7 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.ui.screen.admin.AdminSettingsScreen
 import pk.sufiishq.app.ui.screen.applock.AppLockScreen
 import pk.sufiishq.app.ui.screen.dashboard.DashboardScreen

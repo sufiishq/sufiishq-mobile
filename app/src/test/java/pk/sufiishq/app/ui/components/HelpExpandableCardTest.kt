@@ -28,8 +28,8 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.help.HelpDataType
-import pk.sufiishq.app.core.help.model.HelpContent
+import pk.sufiishq.app.feature.help.HelpDataType
+import pk.sufiishq.app.feature.help.model.HelpContent
 import pk.sufiishq.app.ui.screen.help.HelpExpandableCard
 
 class HelpExpandableCardTest : SufiIshqTest() {

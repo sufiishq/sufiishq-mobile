@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import okhttp3.internal.format
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.downloader.FileInfo
-import pk.sufiishq.app.core.kalam.downloader.KalamDownloadState
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.feature.kalam.controller.KalamController
+import pk.sufiishq.app.feature.kalam.downloader.FileInfo
+import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SILinearProgressIndicator
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize
@@ -50,7 +50,7 @@ import timber.log.Timber
 @PackagePrivate
 @Composable
 fun KalamDownloadDialog(
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
@@ -84,7 +84,7 @@ fun KalamDownloadDialog(
 @Composable
 private fun KalamDownloadStartedDialog(
     kalamDownloadState: KalamDownloadState.Started,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
@@ -100,7 +100,7 @@ private fun KalamDownloadStartedDialog(
 @Composable
 private fun KalamDownloadInProgressDialog(
     kalamDownloadState: KalamDownloadState.InProgress,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
@@ -146,7 +146,7 @@ private fun KalamDownloadInProgressDialog(
 @Composable
 private fun KalamDownloadCompletedDialog(
     kalamDownloadState: KalamDownloadState.Completed,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
 
@@ -170,7 +170,7 @@ private fun KalamDownloadCompletedDialog(
 @Composable
 private fun KalamDownloadErrorDialog(
     kalamDownloadState: KalamDownloadState.Error,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
     val error = kalamDownloadState.error
@@ -213,6 +213,6 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDownload(kalamController: KalamController) {
+private fun dismissDownload(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
     kalamController.dismissDownload()
 }

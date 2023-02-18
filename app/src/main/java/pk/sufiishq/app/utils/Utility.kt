@@ -23,16 +23,17 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
-import pk.sufiishq.app.R
-import pk.sufiishq.app.SufiIshqApp
-import pk.sufiishq.app.core.admin.model.Highlight
-import pk.sufiishq.app.core.applock.model.AutoLockDuration
-import pk.sufiishq.app.core.kalam.model.Kalam
-import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.aurora.models.DataMenuItem
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
+import pk.sufiishq.app.R
+import pk.sufiishq.app.SufiIshqApp
+import pk.sufiishq.app.feature.admin.model.Highlight
+import pk.sufiishq.app.feature.applock.model.AutoLockDuration
+import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.extention.toastShort
+import pk.sufiishq.aurora.models.DataMenuItem
+import timber.log.Timber
 
 fun getApp(): SufiIshqApp = SufiIshqApp.getInstance()
 

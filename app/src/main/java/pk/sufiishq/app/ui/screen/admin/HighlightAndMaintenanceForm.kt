@@ -32,14 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
+import java.util.Calendar
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.admin.controller.AdminController
+import pk.sufiishq.app.feature.admin.controller.AdminController
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
+import pk.sufiishq.app.utils.extention.nextYear
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.getString
-import pk.sufiishq.app.utils.nextYear
-import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
@@ -52,7 +53,6 @@ import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
-import java.util.Calendar
 
 @PackagePrivate
 @Composable
@@ -74,7 +74,8 @@ fun HighlightAndMaintenanceForm(
 
     SIColumn(
         modifier =
-        Modifier.verticalScroll(rememberScrollState())
+        Modifier
+            .verticalScroll(rememberScrollState())
             .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
         adminController.highlightStatus().observeAsState().value?.let { status ->
@@ -84,7 +85,9 @@ fun HighlightAndMaintenanceForm(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 SIRow(
-                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -191,7 +194,9 @@ private fun DetailView(
 ) {
     SIHeightSpace(value = 8)
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
         value = text,
         label = optString(R.string.label_detail),
         maxLines = 20,

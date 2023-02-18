@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import pk.sufiishq.app.R
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIText

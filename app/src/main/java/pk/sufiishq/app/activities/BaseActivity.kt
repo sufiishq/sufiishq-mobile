@@ -21,15 +21,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
-import pk.sufiishq.app.core.admin.auth.AuthManager
-import pk.sufiishq.app.core.admin.maintenance.MaintenanceManager
-import pk.sufiishq.app.core.app.AppManager
-import pk.sufiishq.app.core.app.controller.AssetKalamLoaderViewModel
-import pk.sufiishq.app.core.app.controller.MainViewModel
-import pk.sufiishq.app.core.applock.AppLockManager
-import pk.sufiishq.app.core.player.controller.AudioPlayer
-import pk.sufiishq.app.core.player.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.core.player.service.AudioPlayerService
+import pk.sufiishq.app.feature.admin.auth.AuthManager
+import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
+import pk.sufiishq.app.feature.app.AppManager
+import pk.sufiishq.app.feature.app.controller.AssetKalamLoaderViewModel
+import pk.sufiishq.app.feature.app.controller.MainViewModel
+import pk.sufiishq.app.feature.applock.AppLockManager
+import pk.sufiishq.app.feature.player.controller.AudioPlayer
+import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.feature.player.service.AudioPlayerService
 import javax.inject.Inject
 
 @AndroidEntryPoint

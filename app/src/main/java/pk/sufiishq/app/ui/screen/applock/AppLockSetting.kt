@@ -33,11 +33,11 @@ import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.applock.controller.AppLockController
+import pk.sufiishq.app.feature.applock.controller.AppLockController
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
 import pk.sufiishq.app.utils.getString
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage

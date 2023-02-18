@@ -29,11 +29,11 @@ import androidx.navigation.NavController
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.app.controller.MainController
-import pk.sufiishq.app.core.app.model.NavigationItem
+import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.widgets.HijriDate
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIDivider
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.widgets.SIDataRow

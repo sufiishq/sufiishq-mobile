@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.admin.controller.AdminController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.feature.admin.controller.AdminController
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText

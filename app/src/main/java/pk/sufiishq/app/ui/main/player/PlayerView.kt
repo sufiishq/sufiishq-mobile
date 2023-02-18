@@ -33,11 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.player.controller.PlayerController
-import pk.sufiishq.app.core.player.controller.PlayerViewModel
+import pk.sufiishq.app.feature.player.controller.PlayerController
+import pk.sufiishq.app.feature.player.controller.PlayerViewModel
 import pk.sufiishq.app.ui.components.ContentBackground
+import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.fakePlayerController
-import pk.sufiishq.app.utils.formatTime
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIRow
@@ -66,7 +66,10 @@ fun PlayerView(
 
             TrackSlider(
                 playerController = playerController,
-                modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().height(0.dp),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .height(0.dp),
                 kalamInfo = kalamInfo.value,
                 onValueChange = { showSliderLabel.value.value = true },
                 onValueChangeFinished = { showSliderLabel.value.value = false },
@@ -79,9 +82,11 @@ fun PlayerView(
 
         SIBox(
             modifier =
-            Modifier.fillMaxWidth().graphicsLayer {
-                translationY = localDensity.run { 80.dp.toPx() * -1 }
-            },
+            Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    translationY = localDensity.run { 80.dp.toPx() * -1 }
+                },
         ) {
             SIRow(
                 bgColor = AuroraColor.SecondaryVariant,

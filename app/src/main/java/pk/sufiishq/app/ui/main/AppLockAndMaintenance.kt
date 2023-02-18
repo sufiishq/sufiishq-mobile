@@ -43,19 +43,19 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.admin.maintenance.MaintenanceManager
-import pk.sufiishq.app.core.admin.model.Maintenance
-import pk.sufiishq.app.core.applock.AppLockManager
-import pk.sufiishq.app.core.applock.model.AppLockStatus
-import pk.sufiishq.app.core.player.controller.AudioPlayer
+import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
+import pk.sufiishq.app.feature.admin.model.Maintenance
+import pk.sufiishq.app.feature.applock.AppLockManager
+import pk.sufiishq.app.feature.applock.model.AppLockStatus
+import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.screen.applock.AppLockKeyboardWithPinView
+import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.extention.toastShort
 import pk.sufiishq.app.utils.getString
-import pk.sufiishq.app.utils.optString
 import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
-import pk.sufiishq.app.utils.toastShort
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIIcon
@@ -86,7 +86,8 @@ fun AppLockAndMaintenance(
             audioPlayer = audioPlayer,
         )
     } else {
-        val maintenance = maintenanceManager.getMaintenance().observeAsState().optValue(Maintenance())
+        val maintenance =
+            maintenanceManager.getMaintenance().observeAsState().optValue(Maintenance())
 
         // block the user if the app has under maintenance with strict mode ON
         StrictMaintenanceView(maintenance = maintenance)
@@ -149,7 +150,9 @@ private fun SecurityQuestionView(
     val context = LocalContext.current
     with(scope) {
         SIColumn(
-            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
         ) {
             val coroutineScope = rememberCoroutineScope()
             val answer = rem("")
@@ -220,7 +223,9 @@ private fun AppLockDetailView(
 ) {
     with(scope) {
         SIConstraintLayout(
-            modifier = Modifier.fillMaxSize().align(Alignment.Center),
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center),
         ) {
             val (playControlRef, headerRef, forgotPinRef, pinKeyboardRef) = createRefs()
 
@@ -268,12 +273,14 @@ private fun AppLockDetailView(
 
             SIImage(
                 modifier =
-                Modifier.padding(top = 20.dp).constrainAs(headerRef) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(pinKeyboardRef.top)
-                },
+                Modifier
+                    .padding(top = 20.dp)
+                    .constrainAs(headerRef) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(pinKeyboardRef.top)
+                    },
                 resId = R.drawable.caligraphi,
             )
 
@@ -298,11 +305,13 @@ private fun AppLockDetailView(
 
             SIColumn(
                 modifier =
-                Modifier.padding(bottom = 24.dp).constrainAs(pinKeyboardRef) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                },
+                Modifier
+                    .padding(bottom = 24.dp)
+                    .constrainAs(pinKeyboardRef) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    },
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SIText(

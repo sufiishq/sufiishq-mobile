@@ -30,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.help.controller.HelpController
-import pk.sufiishq.app.core.help.controller.HelpViewModel
+import pk.sufiishq.app.feature.help.controller.HelpController
+import pk.sufiishq.app.feature.help.controller.HelpViewModel
 import pk.sufiishq.app.utils.fakeHelpController
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SICircularProgressIndicator

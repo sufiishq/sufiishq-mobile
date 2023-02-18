@@ -23,11 +23,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.helper.TrackListType
-import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.controller.KalamController
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.utils.fakeKalamController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SITextField
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -40,7 +40,7 @@ fun SearchTextField(
     textColor: AuroraColor,
     lazyKalamItems: LazyPagingItems<Kalam>,
     trackListType: TrackListType,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     val searchText = rem("")
 

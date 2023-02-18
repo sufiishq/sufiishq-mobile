@@ -22,8 +22,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pk.sufiishq.app.core.kalam.data.dao.KalamDao
-import pk.sufiishq.app.core.playlist.data.dao.PlaylistDao
+import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
+import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.db.SufiIshqDatabase
 
 @Module

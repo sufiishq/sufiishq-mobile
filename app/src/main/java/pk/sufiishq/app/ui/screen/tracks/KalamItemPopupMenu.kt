@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.helper.TrackListType
-import pk.sufiishq.app.core.kalam.model.Kalam
-import pk.sufiishq.app.core.kalam.model.KalamDeleteItem
+import pk.sufiishq.app.feature.kalam.controller.KalamController
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.model.KalamDeleteItem
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
 import pk.sufiishq.aurora.layout.SIDropdownMenu
@@ -36,7 +36,7 @@ import pk.sufiishq.aurora.models.DataMenuItem
 fun KalamItemPopupMenu(
     isExpanded: MutableState<Boolean>,
     kalam: Kalam,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
     trackListType: TrackListType,
 ) {
     val context = LocalContext.current
@@ -62,7 +62,7 @@ private fun handleClick(
     kalam: Kalam,
     trackListType: TrackListType,
     context: Context,
-    kalamController: KalamController,
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
 ) {
     when (popupMenuItem) {
         is PopupMenuItem.AddToPlaylist -> kalamController.showPlaylistDialog(kalam)

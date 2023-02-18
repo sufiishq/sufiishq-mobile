@@ -29,7 +29,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.model.Kalam
 
 class UtilExtTest : SufiIshqTest() {
 

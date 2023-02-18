@@ -28,12 +28,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.core.kalam.controller.KalamController
-import pk.sufiishq.app.core.kalam.controller.KalamViewModel
-import pk.sufiishq.app.core.kalam.helper.TrackListType
-import pk.sufiishq.app.core.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.controller.KalamController
+import pk.sufiishq.app.feature.kalam.controller.KalamViewModel
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.utils.fakeKalamController
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SILazyColumn
 import pk.sufiishq.aurora.theme.AuroraDark
@@ -41,7 +41,7 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun TracksScreen(
-    kalamController: KalamController = hiltViewModel<KalamViewModel>(),
+    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController = hiltViewModel<KalamViewModel>(),
     trackListType: TrackListType,
 ) {
     kalamController.searchKalam("", trackListType)

@@ -22,11 +22,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.playlist.controller.PlaylistController
-import pk.sufiishq.app.core.playlist.model.Playlist
+import pk.sufiishq.app.feature.playlist.controller.PlaylistController
+import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.quickToast
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.layout.SIDialog

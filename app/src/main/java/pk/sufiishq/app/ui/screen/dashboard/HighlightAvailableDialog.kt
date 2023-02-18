@@ -30,11 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
-import pk.sufiishq.app.core.admin.model.Highlight
+import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.utils.addCharAtIndex
 import pk.sufiishq.app.utils.contactsAsListPair
-import pk.sufiishq.app.utils.launchCallIntent
-import pk.sufiishq.app.utils.optString
+import pk.sufiishq.app.utils.extention.launchCallIntent
+import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -66,7 +66,9 @@ fun HighlightAvailableDialog(
             }
 
             SIText(
-                modifier = Modifier.heightIn(max = 250.dp).verticalScroll(rememberScrollState()),
+                modifier = Modifier
+                    .heightIn(max = 250.dp)
+                    .verticalScroll(rememberScrollState()),
                 text = highlight.detail,
                 textColor = it,
             )
