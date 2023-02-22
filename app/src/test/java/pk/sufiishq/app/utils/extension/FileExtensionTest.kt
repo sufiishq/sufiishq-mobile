@@ -23,34 +23,46 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.verify
-import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.utils.extention.appendPath
+import pk.sufiishq.app.utils.extention.asInputStream
+import pk.sufiishq.app.utils.extention.asOutputStream
 import pk.sufiishq.app.utils.extention.deleteContent
 import pk.sufiishq.app.utils.extention.moveTo
 import pk.sufiishq.app.utils.extention.split
 import pk.sufiishq.app.utils.extention.toFile
 import java.io.File
 import java.io.FilenameFilter
+import java.io.InputStream
+import java.io.OutputStream
 
 class FileExtensionTest : SufiIshqTest() {
 
     @Test
     fun testMoveTo_should_createThenCopySourceFile() {
-        val file = appContext.filesDir.appendPath("/source.txt")
-        FileUtils.copyInputStreamToFile(testHelpFileInputStream(), file)
+        mockkStatic(IOUtils::class)
+        mockkStatic(File::asInputStream)
+        mockkStatic(File::asOutputStream)
 
-        val destFile = appContext.filesDir.appendPath("/target.txt")
-        file.moveTo(destFile)
+        val sourceFile = mockk<File> {
+            every { delete() } returns true
+            every { asInputStream() } returns mockk()
+        }
+        val targetFile = mockk<File> {
+            every { asOutputStream() } returns mockk()
+        }
 
-        assertEquals(
-            file.inputStream().bufferedReader().readText(),
-            destFile.inputStream().bufferedReader().readText(),
-        )
+        every { IOUtils.copy(any<InputStream>(), any<OutputStream>()) } returns 1
+
+        sourceFile.moveTo(targetFile)
+
+        verify { IOUtils.copy(any<InputStream>(), any<OutputStream>()) }
+        verify { sourceFile.delete() }
     }
 
     @Test

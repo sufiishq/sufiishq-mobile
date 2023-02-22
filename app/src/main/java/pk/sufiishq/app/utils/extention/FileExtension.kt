@@ -24,9 +24,11 @@ import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 fun File.moveTo(destination: File) {
-    IOUtils.copy(this.inputStream(), destination.outputStream()).also { this.delete() }
+    IOUtils.copy(this.asInputStream(), destination.asOutputStream()).also { this.delete() }
 }
 
 fun File.deleteContent() {
@@ -68,3 +70,6 @@ fun File.split(
 }
 
 fun File.appendPath(path: String): File = File("$absolutePath/$path")
+
+fun File.asInputStream() = FileInputStream(this)
+fun File.asOutputStream() = FileOutputStream(this)
