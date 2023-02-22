@@ -18,7 +18,6 @@ package pk.sufiishq.app.feature.playlist.data.repository
 
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -31,6 +30,7 @@ import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.utils.getOrAwaitValue
+import javax.inject.Inject
 
 @HiltAndroidTest
 class PlaylistRepositoryTest : SufiIshqTest() {
@@ -38,6 +38,7 @@ class PlaylistRepositoryTest : SufiIshqTest() {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private lateinit var playlistRepository: PlaylistRepository
+
     @Inject lateinit var playlistDao: PlaylistDao
 
     @Before

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.feature.help.resolver
 
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -5,7 +21,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -20,6 +35,7 @@ import pk.sufiishq.app.feature.help.HelpContentTransformer
 import pk.sufiishq.app.feature.help.api.HelpContentService
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import retrofit2.Response
+import javax.inject.Inject
 
 @HiltAndroidTest
 class OnlineHelpContentResolverTest : SufiIshqTest() {
@@ -44,7 +60,7 @@ class OnlineHelpContentResolverTest : SufiIshqTest() {
             Dispatchers.Main.immediate,
             helpJson,
             helpContentService,
-            transformer
+            transformer,
         )
     }
 
@@ -53,7 +69,7 @@ class OnlineHelpContentResolverTest : SufiIshqTest() {
         val helpUrlSlot = slot<String>()
         every { helpContentService.getHelp(capture(helpUrlSlot)) } returns mockk {
             every { execute() } returns Response.success(
-                helpJson.toString().toResponseBody()
+                helpJson.toString().toResponseBody(),
             )
         }
 

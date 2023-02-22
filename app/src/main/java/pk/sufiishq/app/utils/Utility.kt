@@ -25,10 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.feature.admin.model.Highlight
@@ -38,6 +34,10 @@ import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.extention.toastShort
 import pk.sufiishq.aurora.models.DataMenuItem
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 fun getApp(): SufiIshqApp = SufiIshqApp.getInstance()
 

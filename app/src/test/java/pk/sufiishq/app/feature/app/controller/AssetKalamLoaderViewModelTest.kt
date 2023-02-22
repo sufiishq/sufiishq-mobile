@@ -16,12 +16,9 @@
 
 package pk.sufiishq.app.feature.app.controller
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.google.gson.Gson
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -30,6 +27,7 @@ import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.utils.getOrAwaitValue
+import javax.inject.Inject
 
 @HiltAndroidTest
 class AssetKalamLoaderViewModelTest : SufiIshqTest() {
@@ -38,6 +36,7 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var kalamRepository: KalamRepository
+
     @Inject lateinit var gson: Gson
     private lateinit var assetKalamLoaderViewModel: AssetKalamLoaderViewModel
 
@@ -54,5 +53,4 @@ class AssetKalamLoaderViewModelTest : SufiIshqTest() {
             assetKalamLoaderViewModel.loadAllKalam()
             assertTrue(assetKalamLoaderViewModel.countAll().getOrAwaitValue() == 467)
         }
-
 }

@@ -23,7 +23,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import javax.inject.Inject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -39,6 +38,7 @@ import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.getOrAwaitValue
 import pk.sufiishq.app.utils.getString
+import javax.inject.Inject
 
 @HiltAndroidTest
 class PlaylistViewModelTest : SufiIshqTest() {
@@ -75,7 +75,7 @@ class PlaylistViewModelTest : SufiIshqTest() {
                     PopupMenuItem.Delete(getString(StringRes.menu_item_delete)),
                 ).sortedBy {
                     it.label
-                }
+                },
             )
             .forEach {
                 assertEquals(it.first.label, it.second.label)
@@ -112,7 +112,7 @@ class PlaylistViewModelTest : SufiIshqTest() {
     @Test
     fun testGetAll_shouldReturn_allPlaylist() {
         every { playlistRepository.loadAll() } returns MutableLiveData(
-            listOf(Playlist(1, "first :("))
+            listOf(Playlist(1, "first :(")),
         )
 
         playlistViewModel.getAll().getOrAwaitValue()?.let {
@@ -125,7 +125,7 @@ class PlaylistViewModelTest : SufiIshqTest() {
     @Test
     fun testGet_shouldReturn_singlePlaylist() {
         every { playlistRepository.load(any()) } returns MutableLiveData(
-            Playlist(1, "first :(")
+            Playlist(1, "first :("),
         )
 
         playlistViewModel.get(1).getOrAwaitValue()?.let {
@@ -156,8 +156,8 @@ class PlaylistViewModelTest : SufiIshqTest() {
         val playlist = Playlist(1, "test")
         every { kalamRepository.loadAllPlaylistKalam(any()) } returns MutableLiveData(
             listOf(
-                kalam
-            )
+                kalam,
+            ),
         )
 
         coEvery { kalamRepository.update(any()) } returns Unit
@@ -169,5 +169,4 @@ class PlaylistViewModelTest : SufiIshqTest() {
         coVerify { playlistRepository.delete(playlist) }
         assertEquals(0, kalam.playlistId)
     }
-
 }

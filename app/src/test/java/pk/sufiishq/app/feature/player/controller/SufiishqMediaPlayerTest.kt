@@ -20,11 +20,9 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -32,11 +30,9 @@ import org.junit.Before
 import org.junit.Test
 import org.robolectric.util.ReflectionHelpers.callInstanceMethod
 import org.robolectric.util.ReflectionHelpers.setField
-import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.feature.player.controller.SufiishqMediaPlayer
 import pk.sufiishq.app.feature.player.helper.AppMediaPlayer
 import pk.sufiishq.app.feature.player.listener.PlayerStateListener
 import pk.sufiishq.app.feature.player.state.MediaState
@@ -50,7 +46,6 @@ class SufiishqMediaPlayerTest : SufiIshqTest(), PlayerStateListener {
 
     @Before
     fun setUp() {
-
         val trackListType: TrackListType = TrackListType.All()
         currentMediaState = MediaState.Idle(sampleKalam, trackListType)
         mediaPlayer = mockk {

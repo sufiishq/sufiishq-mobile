@@ -53,5 +53,4 @@ class PlaylistItemTest : SufiIshqTest() {
             .assertExists()
             .assertIsDisplayed()
     }
-
 }

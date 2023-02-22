@@ -16,22 +16,16 @@
 
 package pk.sufiishq.app.utils.extension
 
-
 import VideoHandle.EpEditor
 import VideoHandle.OnEditorListener
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.verify
-import java.io.File
-import java.io.FilenameFilter
 import org.apache.commons.io.FileUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
@@ -40,6 +34,8 @@ import pk.sufiishq.app.utils.extention.deleteContent
 import pk.sufiishq.app.utils.extention.moveTo
 import pk.sufiishq.app.utils.extention.split
 import pk.sufiishq.app.utils.extention.toFile
+import java.io.File
+import java.io.FilenameFilter
 
 class FileExtensionTest : SufiIshqTest() {
 
@@ -53,7 +49,7 @@ class FileExtensionTest : SufiIshqTest() {
 
         assertEquals(
             file.inputStream().bufferedReader().readText(),
-            destFile.inputStream().bufferedReader().readText()
+            destFile.inputStream().bufferedReader().readText(),
         )
     }
 
@@ -66,16 +62,16 @@ class FileExtensionTest : SufiIshqTest() {
         val file =
             mockk<File> {
                 every { list(any()) } answers
-                        {
-                            val filter = firstArg<FilenameFilter>()
-                            val data = mutableListOf<String>()
-                            arrayOf("first.mp3", "unknown.txt", "second.mp3").forEach {
-                                if (filter.accept(mockk(), it)) {
-                                    data.add(it)
-                                }
+                    {
+                        val filter = firstArg<FilenameFilter>()
+                        val data = mutableListOf<String>()
+                        arrayOf("first.mp3", "unknown.txt", "second.mp3").forEach {
+                            if (filter.accept(mockk(), it)) {
+                                data.add(it)
                             }
-                            data.toTypedArray()
                         }
+                        data.toTypedArray()
+                    }
                 every { absolutePath } returns ""
                 every { absolutePath.toFile(any()) } returns mp3File
             }
@@ -132,12 +128,12 @@ class FileExtensionTest : SufiIshqTest() {
     fun testVerify_fileAppendPath() {
         val file = File(
             appContext.filesDir.appendPath("/path").appendPath("/to")
-                .appendPath("/append").absolutePath
+                .appendPath("/append").absolutePath,
         )
 
         assertEquals(
             "${appContext.filesDir.absolutePath}${File.separator}path${File.separator}to${File.separator}append",
-            file.absolutePath
+            file.absolutePath,
         )
     }
 }

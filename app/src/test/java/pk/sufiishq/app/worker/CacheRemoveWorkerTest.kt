@@ -18,12 +18,12 @@ package pk.sufiishq.app.worker
 
 import androidx.work.ListenableWorker.Result
 import androidx.work.testing.TestWorkerBuilder
-import java.util.concurrent.Executors
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
+import java.util.concurrent.Executors
 
 class CacheRemoveWorkerTest : SufiIshqTest() {
 
@@ -33,7 +33,7 @@ class CacheRemoveWorkerTest : SufiIshqTest() {
     fun setUp() {
         cacheRemoveWorker = TestWorkerBuilder<CacheRemoveWorker>(
             appContext,
-            Executors.newSingleThreadExecutor()
+            Executors.newSingleThreadExecutor(),
         ).build()
     }
 
@@ -41,5 +41,4 @@ class CacheRemoveWorkerTest : SufiIshqTest() {
     fun testDoWork_shouldReturn_successResult() {
         assertThat(cacheRemoveWorker.doWork(), `is`(Result.success()))
     }
-
 }

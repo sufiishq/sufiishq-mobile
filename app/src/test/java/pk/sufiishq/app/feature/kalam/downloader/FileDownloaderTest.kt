@@ -16,13 +16,10 @@
 
 package pk.sufiishq.app.feature.kalam.downloader
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
-import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -33,6 +30,7 @@ import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.utils.extention.appendPath
+import java.io.File
 
 class FileDownloaderTest : SufiIshqTest() {
 
@@ -41,7 +39,6 @@ class FileDownloaderTest : SufiIshqTest() {
 
     @Before
     fun setUp() {
-
         downloadFileService = mockk()
         fileDownloader = FileDownloader(Dispatchers.Main.immediate, downloadFileService)
     }
@@ -62,7 +59,7 @@ class FileDownloaderTest : SufiIshqTest() {
         assertEquals(2, result.size)
         assertEquals(
             testHelpFileInputStream().bufferedReader().readText(),
-            outFile.inputStream().bufferedReader().readText()
+            outFile.inputStream().bufferedReader().readText(),
         )
     }
 

@@ -18,7 +18,6 @@ package pk.sufiishq.app.feature.help.controller
 
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
@@ -27,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.help.repository.HelpContentRepository
+import javax.inject.Inject
 
 @HiltAndroidTest
 class HelpViewModelTest : SufiIshqTest() {

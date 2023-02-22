@@ -18,7 +18,6 @@ package pk.sufiishq.app.feature.help.repository
 
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -28,6 +27,7 @@ import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 import pk.sufiishq.app.feature.help.di.qualifier.OfflineResolver
 import pk.sufiishq.app.feature.help.resolver.HelpContentResolver
+import javax.inject.Inject
 
 @HiltAndroidTest
 class HelpContentRepositoryTest : SufiIshqTest() {

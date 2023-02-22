@@ -16,7 +16,6 @@
 
 package pk.sufiishq.app.feature.kalam.controller
 
-import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
@@ -27,7 +26,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
-import javax.inject.Inject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -58,6 +56,7 @@ import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.getOrAwaitValue
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.aurora.models.DataMenuItem
+import javax.inject.Inject
 
 @HiltAndroidTest
 class KalamViewModelTest : SufiIshqTest() {
@@ -143,22 +142,21 @@ class KalamViewModelTest : SufiIshqTest() {
 
     @Test
     fun testPopupMenuItems_shouldReturn_filterMenuItem_basedOnAttributes() {
-
         assertPopupMenuItemList(
             kalamViewModel.popupMenuItems(
                 sampleKalam.copy(
                     isFavorite = 0,
                     onlineSource = "online:)",
-                    offlineSource = ""
+                    offlineSource = "",
                 ),
-                ScreenType.Tracks.ALL
+                ScreenType.Tracks.ALL,
             ),
             listOf(
                 PopupMenuItem.MarkAsFavorite(getString(StringRes.menu_item_mark_as_favorite)),
                 PopupMenuItem.Download(getString(StringRes.menu_item_download)),
                 PopupMenuItem.AddToPlaylist(getString(StringRes.menu_item_add_to_playlist)),
                 PopupMenuItem.Share(getString(StringRes.menu_item_share)),
-            )
+            ),
         )
 
         assertPopupMenuItemList(
@@ -166,16 +164,16 @@ class KalamViewModelTest : SufiIshqTest() {
                 sampleKalam.copy(
                     isFavorite = 1,
                     onlineSource = "online:)",
-                    offlineSource = ""
+                    offlineSource = "",
                 ),
-                ScreenType.Tracks.ALL
+                ScreenType.Tracks.ALL,
             ),
             listOf(
                 PopupMenuItem.MarkAsNotFavorite(getString(StringRes.menu_item_remove_favorite)),
                 PopupMenuItem.Download(getString(StringRes.menu_item_download)),
                 PopupMenuItem.AddToPlaylist(getString(StringRes.menu_item_add_to_playlist)),
                 PopupMenuItem.Share(getString(StringRes.menu_item_share)),
-            )
+            ),
         )
 
         assertPopupMenuItemList(
@@ -183,15 +181,15 @@ class KalamViewModelTest : SufiIshqTest() {
                 sampleKalam.copy(
                     isFavorite = 0,
                     onlineSource = "online:(",
-                    offlineSource = "offline:)"
+                    offlineSource = "offline:)",
                 ),
-                ScreenType.Tracks.ALL
+                ScreenType.Tracks.ALL,
             ),
             listOf(
                 PopupMenuItem.MarkAsFavorite(getString(StringRes.menu_item_mark_as_favorite)),
                 PopupMenuItem.AddToPlaylist(getString(StringRes.menu_item_add_to_playlist)),
                 PopupMenuItem.Share(getString(StringRes.menu_item_share)),
-            )
+            ),
         )
 
         assertPopupMenuItemList(
@@ -199,9 +197,9 @@ class KalamViewModelTest : SufiIshqTest() {
                 sampleKalam.copy(
                     isFavorite = 0,
                     onlineSource = "online:(",
-                    offlineSource = "offline:)"
+                    offlineSource = "offline:)",
                 ),
-                ScreenType.Tracks.DOWNLOADS
+                ScreenType.Tracks.DOWNLOADS,
             ),
             listOf(
                 PopupMenuItem.MarkAsFavorite(getString(StringRes.menu_item_mark_as_favorite)),
@@ -209,7 +207,7 @@ class KalamViewModelTest : SufiIshqTest() {
                 PopupMenuItem.Share(getString(StringRes.menu_item_share)),
                 PopupMenuItem.Split(getString(StringRes.menu_item_split_kalam)),
                 PopupMenuItem.Delete(getString(StringRes.menu_item_delete)),
-            )
+            ),
         )
 
         assertPopupMenuItemList(
@@ -217,15 +215,15 @@ class KalamViewModelTest : SufiIshqTest() {
                 sampleKalam.copy(
                     isFavorite = 0,
                     onlineSource = "online:(",
-                    offlineSource = "offline:)"
+                    offlineSource = "offline:)",
                 ),
-                ScreenType.Tracks.PLAYLIST
+                ScreenType.Tracks.PLAYLIST,
             ),
             listOf(
                 PopupMenuItem.MarkAsFavorite(getString(StringRes.menu_item_mark_as_favorite)),
                 PopupMenuItem.Share(getString(StringRes.menu_item_share)),
                 PopupMenuItem.Delete(getString(StringRes.menu_item_delete)),
-            )
+            ),
         )
     }
 
@@ -251,7 +249,6 @@ class KalamViewModelTest : SufiIshqTest() {
 
     @Test
     fun testMarkAsFavorite_shouldDelegate_toFavoriteManager() {
-
         every { favoriteManager.markAsFavorite(any()) } returns Unit
         kalamViewModel.markAsFavorite(sampleKalam)
 
@@ -260,7 +257,6 @@ class KalamViewModelTest : SufiIshqTest() {
 
     @Test
     fun testRemoveFavorite_shouldDelegate_toFavoriteManager() {
-
         every { favoriteManager.removeFavorite(any()) } returns Unit
         kalamViewModel.removeFavorite(sampleKalam)
 
@@ -271,7 +267,7 @@ class KalamViewModelTest : SufiIshqTest() {
     fun testDelete_shouldDelegate_toKalamDeleteManager() {
         val kalamDeleteItem = KalamDeleteItem(
             sampleKalam,
-            TrackListType.Downloads()
+            TrackListType.Downloads(),
         )
 
         every { kalamDeleteManager.delete(any()) } returns Unit
@@ -282,7 +278,6 @@ class KalamViewModelTest : SufiIshqTest() {
 
     @Test
     fun testShowKalamConfirmDeleteDialog_shouldReturn_KalamDeleteItem() {
-
         var kalamDeleteItem: KalamDeleteItem? = null
 
         every { kalamDeleteManager.showKalamConfirmDeleteDialog(any()) } answers {
@@ -292,12 +287,12 @@ class KalamViewModelTest : SufiIshqTest() {
         kalamViewModel.showKalamConfirmDeleteDialog(
             KalamDeleteItem(
                 sampleKalam,
-                TrackListType.Downloads()
-            )
+                TrackListType.Downloads(),
+            ),
         )
 
         every { kalamDeleteManager.showKalamConfirmDeleteDialog() } returns MutableLiveData(
-            kalamDeleteItem
+            kalamDeleteItem,
         )
 
         val result = kalamViewModel.showKalamConfirmDeleteDialog().getOrAwaitValue()
@@ -328,10 +323,11 @@ class KalamViewModelTest : SufiIshqTest() {
 
         every { playlistManager.showPlaylistDialog() } returns MutableLiveData(
             Pair(
-                kalam!!, listOf(
-                    Playlist(1, "tiny :)")
-                )
-            )
+                kalam!!,
+                listOf(
+                    Playlist(1, "tiny :)"),
+                ),
+            ),
         )
 
         val result = kalamViewModel.showPlaylistDialog().getOrAwaitValue()!!
@@ -352,11 +348,11 @@ class KalamViewModelTest : SufiIshqTest() {
     @Test
     fun testGetKalamDownloadState_shouldReturn_idleState() {
         every { kalamDownloadManager.getKalamDownloadState() } returns MutableLiveData(
-            KalamDownloadState.Idle
+            KalamDownloadState.Idle,
         )
 
         assertTrue(
-            kalamViewModel.getKalamDownloadState().getOrAwaitValue() is KalamDownloadState.Idle
+            kalamViewModel.getKalamDownloadState().getOrAwaitValue() is KalamDownloadState.Idle,
         )
     }
 
@@ -387,7 +383,7 @@ class KalamViewModelTest : SufiIshqTest() {
     @Test
     fun testShowKalamSplitDialog_shouldReturn_mockSplitKalamInfo() {
         every { kalamSplitManager.showKalamSplitDialog() } returns MutableLiveData(
-            mockk()
+            mockk(),
         )
         assertNotNull(kalamViewModel.showKalamSplitDialog().getOrAwaitValue())
     }
@@ -464,7 +460,7 @@ class KalamViewModelTest : SufiIshqTest() {
             .zip(
                 actual.sortedBy {
                     it.label
-                }
+                },
             )
             .forEach {
                 assertEquals(it.first.label, it.second.label)

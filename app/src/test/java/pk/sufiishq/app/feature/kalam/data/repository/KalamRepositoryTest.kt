@@ -16,16 +16,12 @@
 
 package pk.sufiishq.app.feature.kalam.data.repository
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -40,6 +36,7 @@ import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.getOrAwaitValue
+import javax.inject.Inject
 
 @HiltAndroidTest
 class KalamRepositoryTest : SufiIshqTest() {
@@ -47,6 +44,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     private lateinit var kalamRepository: KalamRepository
+
     @Inject lateinit var kalamDao: KalamDao
 
     @Before
@@ -66,7 +64,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     fun testInsert_shouldVerify_kalamBatchInsertion() = runBlocking {
         val kalams = listOf(
             sampleKalam().copy(id = 2),
-            sampleKalam().copy(id = 3)
+            sampleKalam().copy(id = 3),
         )
         kalamRepository.insertAll(kalams)
 

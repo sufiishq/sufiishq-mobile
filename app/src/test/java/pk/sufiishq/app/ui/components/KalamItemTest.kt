@@ -51,5 +51,4 @@ class KalamItemTest : SufiIshqTest() {
             .assertExists()
             .assertIsDisplayed()
     }
-
 }

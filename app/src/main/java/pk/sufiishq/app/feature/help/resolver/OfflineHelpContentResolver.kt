@@ -16,7 +16,6 @@
 
 package pk.sufiishq.app.feature.help.resolver
 
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,6 +24,7 @@ import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.help.HelpContentTransformer
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import pk.sufiishq.app.feature.help.model.HelpContent
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class OfflineHelpContentResolver

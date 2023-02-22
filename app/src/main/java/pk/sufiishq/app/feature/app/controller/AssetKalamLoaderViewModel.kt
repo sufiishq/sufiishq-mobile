@@ -24,7 +24,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
@@ -35,6 +34,7 @@ import pk.sufiishq.app.feature.player.PlayerState
 import pk.sufiishq.app.utils.LAST_PLAY_KALAM
 import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.extention.putInStorage
+import javax.inject.Inject
 
 @HiltViewModel
 class AssetKalamLoaderViewModel

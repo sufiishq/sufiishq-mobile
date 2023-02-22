@@ -21,10 +21,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.text.buildAnnotatedString
 import io.mockk.mockk
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest

@@ -19,7 +19,6 @@ package pk.sufiishq.app.feature.storage
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.Assert.assertEquals
@@ -28,7 +27,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
 
 class SecureSharedPreferencesStorageTest : SufiIshqTest() {
 
@@ -36,7 +34,6 @@ class SecureSharedPreferencesStorageTest : SufiIshqTest() {
 
     @Before
     fun setUp() {
-
         mockkStatic(EncryptedSharedPreferences::class)
         mockkStatic(MasterKeys::getOrCreate)
 

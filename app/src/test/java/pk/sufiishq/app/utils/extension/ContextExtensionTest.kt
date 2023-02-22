@@ -27,7 +27,6 @@ import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
 import android.net.NetworkCapabilities.TRANSPORT_USB
 import android.net.NetworkCapabilities.TRANSPORT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -67,10 +66,10 @@ class ContextExtensionTest : SufiIshqTest() {
         val context = mockk<Context>()
 
         every { context.getSystemService(any()) } returns
-                mockk<ConnectivityManager> {
-                    every { activeNetwork } returns mockk()
-                    every { getNetworkCapabilities(any()) } returns null
-                }
+            mockk<ConnectivityManager> {
+                every { activeNetwork } returns mockk()
+                every { getNetworkCapabilities(any()) } returns null
+            }
 
         assertFalse(context.isNetworkAvailable())
     }
@@ -98,7 +97,7 @@ class ContextExtensionTest : SufiIshqTest() {
         val context =
             mockk<Context> {
                 every { resources } returns
-                        mockk { every { displayMetrics } returns mockk { density = 2f } }
+                    mockk { every { displayMetrics } returns mockk { density = 2f } }
             }
 
         assertEquals(20f, context.dpToPx(10f))
@@ -124,15 +123,15 @@ class ContextExtensionTest : SufiIshqTest() {
     private fun mockNetworkCapabilities(): NetworkCapabilities {
         return mockk {
             every { hasTransport(any()) } answers
-                    {
-                        when (firstArg<Int>()) {
-                            TRANSPORT_CELLULAR,
-                            TRANSPORT_WIFI,
-                            TRANSPORT_ETHERNET,
-                            -> true
-                            else -> false
-                        }
+                {
+                    when (firstArg<Int>()) {
+                        TRANSPORT_CELLULAR,
+                        TRANSPORT_WIFI,
+                        TRANSPORT_ETHERNET,
+                        -> true
+                        else -> false
                     }
+                }
         }
     }
 

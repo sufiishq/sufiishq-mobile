@@ -82,48 +82,48 @@ class PlayerViewModelTest : SufiIshqTest() {
     @Test
     fun testSnStateChange_shouldMap_toLoadingState() {
         changeState(
-            MediaState.Loading(sampleKalam, TrackListType.All())
+            MediaState.Loading(sampleKalam, TrackListType.All()),
         )
 
         assertEquals(
             PlayerState.LOADING,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
     }
 
     @Test
     fun testSnStateChange_shouldMap_toPlayingState() {
         changeState(
-            MediaState.Playing(sampleKalam, 0, 100, TrackListType.All())
+            MediaState.Playing(sampleKalam, 0, 100, TrackListType.All()),
         )
 
         assertEquals(
             PlayerState.PLAYING,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
     }
 
     @Test
     fun testSnStateChange_shouldMap_toPauseState() {
         changeState(
-            MediaState.Pause(sampleKalam, 0, 100, TrackListType.All())
+            MediaState.Pause(sampleKalam, 0, 100, TrackListType.All()),
         )
 
         assertEquals(
             PlayerState.PAUSE,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
     }
 
     @Test
     fun testSnStateChange_shouldMap_toResumetate() {
         changeState(
-            MediaState.Resume(sampleKalam, 0, 100, TrackListType.All())
+            MediaState.Resume(sampleKalam, 0, 100, TrackListType.All()),
         )
 
         assertEquals(
             PlayerState.PLAYING,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
     }
 
@@ -132,25 +132,25 @@ class PlayerViewModelTest : SufiIshqTest() {
         changeState(MediaState.Idle(sampleKalam, TrackListType.All()))
         assertEquals(
             PlayerState.IDLE,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
 
         changeState(MediaState.Stop(sampleKalam, TrackListType.All()))
         assertEquals(
             PlayerState.IDLE,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
 
         changeState(MediaState.Complete(sampleKalam, TrackListType.All()))
         assertEquals(
             PlayerState.IDLE,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
 
         changeState(MediaState.Error(sampleKalam, 0, 0, "", TrackListType.All()))
         assertEquals(
             PlayerState.IDLE,
-            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState
+            playerViewModel.getKalamInfo().getOrAwaitValue()!!.playerState,
         )
     }
 
@@ -161,12 +161,12 @@ class PlayerViewModelTest : SufiIshqTest() {
 
     private fun setDefaultKalamInfo() {
         callInstanceMethod<Unit>(
-            playerViewModel, "updateKalamInfo",
+            playerViewModel,
+            "updateKalamInfo",
             ClassParameter(
                 KalamInfo::class.java,
-                sampleKalamInfo
-            )
+                sampleKalamInfo,
+            ),
         )
     }
-
 }

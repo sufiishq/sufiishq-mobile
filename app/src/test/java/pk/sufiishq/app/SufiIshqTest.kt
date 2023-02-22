@@ -26,7 +26,6 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import java.io.InputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import org.junit.AfterClass
@@ -40,6 +39,7 @@ import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
 import pk.sufiishq.app.feature.player.PlayerState
+import java.io.InputStream
 
 typealias StringRes = R.string
 
@@ -94,7 +94,7 @@ abstract class SufiIshqTest {
         0,
         100,
         false,
-        TrackListType.All()
+        TrackListType.All(),
     )
 
     fun List<suspend CoroutineScope.() -> Unit>.invoke() {

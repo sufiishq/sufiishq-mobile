@@ -16,11 +16,9 @@
 
 package pk.sufiishq.app.feature.player.helper
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
-import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
