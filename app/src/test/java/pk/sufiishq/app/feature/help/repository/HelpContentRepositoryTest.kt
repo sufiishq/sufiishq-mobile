@@ -45,7 +45,7 @@ class HelpContentRepositoryTest : SufiIshqTest() {
     }
 
     @Test
-    fun test_loadContent_shouldReturn_flowOfHelpContentList() = runBlocking {
+    fun testLoadContent_shouldReturn_flowOfHelpContentList() = runBlocking {
         val helpContentRepository = HelpContentRepository(helpContentResolver)
         val result = helpContentRepository.loadContent().first()
         Assert.assertEquals(1, result.size)
