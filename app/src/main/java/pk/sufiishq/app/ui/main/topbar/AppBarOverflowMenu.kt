@@ -19,7 +19,9 @@ package pk.sufiishq.app.ui.main.topbar
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -48,6 +50,7 @@ fun AppBarOverflowMenu(
     val context = LocalContext.current
 
     SIPopupMenu(
+        modifier = Modifier.testTag("test_tag_app_bar_popup_menu"),
         resId = R.drawable.ic_baseline_more_vert_24,
         iconTint = iconColor,
         data = mainController.popupMenuItems(),

@@ -61,7 +61,7 @@ class KalamViewModel
     private val favoriteManager: FavoriteManager,
     private val playerManager: PlayerManager,
     private val appManager: AppManager,
-) : ViewModel(), pk.sufiishq.app.feature.kalam.controller.KalamController {
+) : ViewModel(), KalamController {
 
     private var kalams: Flow<PagingData<Kalam>> =
         Pager(PagingConfig(pageSize = 10), pagingSourceFactory = pagingSource()).flow

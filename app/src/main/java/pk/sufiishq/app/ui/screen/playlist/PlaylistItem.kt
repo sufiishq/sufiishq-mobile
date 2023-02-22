@@ -18,6 +18,8 @@ package pk.sufiishq.app.ui.screen.playlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -35,6 +37,8 @@ import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIDataRow
 import pk.sufiishq.aurora.widgets.SIPopupMenu
 
+const val TEST_TAG_PLAYLIST_DATA_ROW = "test_tag_kalam_data_row"
+
 @PackagePrivate
 @Composable
 fun PlaylistItem(
@@ -47,6 +51,7 @@ fun PlaylistItem(
     val isExpanded = rem(false)
 
     SIDataRow(
+        modifier = Modifier.testTag(TEST_TAG_PLAYLIST_DATA_ROW),
         leadingIcon = R.drawable.ic_outline_playlist_play_24,
         trailingIcon = R.drawable.ic_baseline_more_vert_24,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },

@@ -31,11 +31,12 @@ import io.mockk.mockkStatic
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.utils.assetsToBitmap
+import pk.sufiishq.app.utils.extention.assetsToBitmap
 
 class AssetImageTest : SufiIshqTest() {
 
-    @get:Rule val composeTestRule = createComposeRule()
+    @get:Rule
+    val composeTestRule = createComposeRule()
 
     @Test
     fun `test verify bitmap image`() {

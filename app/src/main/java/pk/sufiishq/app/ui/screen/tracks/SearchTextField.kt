@@ -40,7 +40,7 @@ fun SearchTextField(
     textColor: AuroraColor,
     lazyKalamItems: LazyPagingItems<Kalam>,
     trackListType: TrackListType,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val searchText = rem("")
 

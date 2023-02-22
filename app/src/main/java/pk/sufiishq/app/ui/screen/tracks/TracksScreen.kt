@@ -41,7 +41,7 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun TracksScreen(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController = hiltViewModel<KalamViewModel>(),
+    kalamController: KalamController = hiltViewModel<KalamViewModel>(),
     trackListType: TrackListType,
 ) {
     kalamController.searchKalam("", trackListType)

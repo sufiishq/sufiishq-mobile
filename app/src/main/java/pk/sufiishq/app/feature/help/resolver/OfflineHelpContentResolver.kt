@@ -16,24 +16,26 @@
 
 package pk.sufiishq.app.feature.help.resolver
 
-import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONObject
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.help.HelpContentTransformer
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import pk.sufiishq.app.feature.help.model.HelpContent
-import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class OfflineHelpContentResolver
 @Inject
 constructor(
+    @IoDispatcher private val dispatcher: CoroutineContext,
     @HelpJson private val helpJson: JSONObject,
     private val transformer: HelpContentTransformer,
 ) : HelpContentResolver {
 
     override fun resolve(): Flow<List<HelpContent>> {
-        return flow { emit(transformer.transform(helpJson)) }.flowOn(Dispatchers.IO)
+        return flow { emit(transformer.transform(helpJson)) }.flowOn(dispatcher)
     }
 }

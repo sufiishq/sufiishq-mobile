@@ -17,6 +17,8 @@
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
@@ -33,16 +35,19 @@ import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIDataRow
 
+const val TEST_TAG_KALAM_DATA_ROW = "test_tag_kalam_data_row"
+
 @PackagePrivate
 @Composable
 fun KalamItem(
     kalam: Kalam,
     trackListType: TrackListType,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val isExpanded = rem(false)
 
     SIDataRow(
+        modifier = Modifier.testTag(TEST_TAG_KALAM_DATA_ROW),
         leadingIcon = R.drawable.ic_start_logo,
         trailingIcon = R.drawable.ic_baseline_more_vert_24,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },

@@ -36,7 +36,7 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 @PackagePrivate
 @Composable
 fun PlaylistDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     kalamController.showPlaylistDialog().observeAsState().value?.apply {
         val kalam = first

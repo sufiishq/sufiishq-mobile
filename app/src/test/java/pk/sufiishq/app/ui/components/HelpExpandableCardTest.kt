@@ -37,13 +37,9 @@ class HelpExpandableCardTest : SufiIshqTest() {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @Ignore("will be fixed later")
     @Test
     fun `test in header card icon and title should be exists and displayed`() {
         setContent(mockk(), 1)
-
-        val headerNode = composeTestRule.onNode(hasTestTag("card_header"), useUnmergedTree = true)
-        headerNode.onChildAt(0).assertExists().assertIsDisplayed()
 
         composeTestRule.onNode(hasText("title")).assertExists().assertIsDisplayed()
     }

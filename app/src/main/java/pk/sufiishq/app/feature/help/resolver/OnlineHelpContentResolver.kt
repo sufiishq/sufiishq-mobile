@@ -27,6 +27,8 @@ import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import pk.sufiishq.app.feature.help.model.HelpContent
 import timber.log.Timber
 import javax.inject.Inject
+import pk.sufiishq.app.di.qualifier.IoDispatcher
+import kotlin.coroutines.CoroutineContext
 
 private const val HELP_URL =
     "https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/app/src/main/assets/help/help.json"
@@ -34,6 +36,7 @@ private const val HELP_URL =
 class OnlineHelpContentResolver
 @Inject
 constructor(
+    @IoDispatcher private val dispatcher: CoroutineContext,
     @HelpJson private val helpJson: JSONObject,
     private val helpContentService: HelpContentService,
     private val transformer: HelpContentTransformer,
@@ -54,6 +57,6 @@ constructor(
                 emit(transformer.transform(helpJson))
             }
         }
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatcher)
     }
 }

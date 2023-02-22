@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.R
+import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.ui.components.OutlinedTextField
@@ -52,7 +53,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun KalamSplitDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val showSplitDialog = kalamController.showKalamSplitDialog().observeAsState()
 
@@ -70,7 +71,7 @@ fun KalamSplitDialog(
 @Composable
 private fun StartSplitView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
@@ -119,7 +120,7 @@ private fun StartSplitView(
 @Composable
 private fun SplitCompletedView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalamTitle = rem("")
 
@@ -144,7 +145,7 @@ private fun SplitCompletedView(
 @Composable
 private fun SplitDoneView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val previewPlayStart = splitKalamInfo.previewPlayStart
     val previewKalamProgress = splitKalamInfo.previewKalamProgress
@@ -234,30 +235,30 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDialog(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun dismissDialog(kalamController: KalamController) {
     kalamController.dismissKalamSplitDialog()
 }
 
-private fun startSplitting(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun startSplitting(kalamController: KalamController) {
     kalamController.startSplitting()
 }
 
-private fun backToStart(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun backToStart(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Start)
 }
 
-private fun done(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun done(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Completed)
 }
 
-private fun backToDone(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun backToDone(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Done)
 }
 
 private fun saveKalam(
     kalamTitle: String,
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     if (kalamTitle.isEmpty()) {
         quickToast(R.string.msg_kalam_title_required)

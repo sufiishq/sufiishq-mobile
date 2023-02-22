@@ -29,7 +29,7 @@ import pk.sufiishq.app.utils.rem
 @PackagePrivate
 @Composable
 fun KalamConfirmDeleteDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     kalamController.showKalamConfirmDeleteDialog().observeAsState().value?.apply {
         val param = rem<ConfirmDialogParam?>(null)

@@ -50,7 +50,7 @@ import timber.log.Timber
 @PackagePrivate
 @Composable
 fun KalamDownloadDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
@@ -84,7 +84,7 @@ fun KalamDownloadDialog(
 @Composable
 private fun KalamDownloadStartedDialog(
     kalamDownloadState: KalamDownloadState.Started,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
@@ -100,7 +100,7 @@ private fun KalamDownloadStartedDialog(
 @Composable
 private fun KalamDownloadInProgressDialog(
     kalamDownloadState: KalamDownloadState.InProgress,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
@@ -146,7 +146,7 @@ private fun KalamDownloadInProgressDialog(
 @Composable
 private fun KalamDownloadCompletedDialog(
     kalamDownloadState: KalamDownloadState.Completed,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
 
@@ -170,7 +170,7 @@ private fun KalamDownloadCompletedDialog(
 @Composable
 private fun KalamDownloadErrorDialog(
     kalamDownloadState: KalamDownloadState.Error,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
     val error = kalamDownloadState.error
@@ -213,6 +213,6 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDownload(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun dismissDownload(kalamController: KalamController) {
     kalamController.dismissDownload()
 }
