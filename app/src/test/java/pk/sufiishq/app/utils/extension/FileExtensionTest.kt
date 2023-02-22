@@ -41,10 +41,10 @@ class FileExtensionTest : SufiIshqTest() {
 
     @Test
     fun testMoveTo_should_createThenCopySourceFile() {
-        val file = File(appContext.cacheDir.appendPath("/source.txt").absolutePath)
+        val file = appContext.filesDir.appendPath("/source.txt")
         FileUtils.copyInputStreamToFile(testHelpFileInputStream(), file)
 
-        val destFile = File(appContext.filesDir.appendPath("/target.txt").absolutePath)
+        val destFile = appContext.filesDir.appendPath("/target.txt")
         file.moveTo(destFile)
 
         assertEquals(
