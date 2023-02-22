@@ -16,68 +16,64 @@
 
 package pk.sufiishq.app
 
+import android.content.Context
 import android.os.Build
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ApplicationProvider
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import io.mockk.mockkStatic
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.AfterClass
+import org.junit.Before
+import org.junit.Rule
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import pk.sufiishq.app.fake.TestSharedPreferences
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.kalam.model.KalamInfo
+import pk.sufiishq.app.feature.player.PlayerState
+import java.io.InputStream
+
+typealias StringRes = R.string
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1], application = HiltTestApplication::class)
 abstract class SufiIshqTest {
 
-    protected fun mockApp(): SufiIshqApp {
+    @get:Rule
+    val rules = InstantTaskExecutorRule()
+
+    private val sufiIshqApp = mockk<SufiIshqApp>()
+    internal val appContext = ApplicationProvider.getApplicationContext<Context>()
+
+    @Before
+    fun baseSetUp() {
+        mockApp()
+    }
+
+    private fun mockApp() {
         mockkObject(SufiIshqApp)
 
-        val sufiIshqApp = mockk<SufiIshqApp>()
-        every { SufiIshqApp.getInstance() } returns sufiIshqApp
-        return sufiIshqApp
-    }
-
-    protected fun mockLifecycleOwner(): LifecycleOwner {
-        val owner = mockk<LifecycleOwner>()
-        val lifecycle = LifecycleRegistry(owner)
-        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        every { owner.lifecycle } returns lifecycle
-        return owner
-    }
-
-    protected fun launchViewModelScope(
-        viewModel: ViewModel,
-        block: (slot: List<suspend CoroutineScope.() -> Unit>) -> Unit,
-    ) {
-        mockkStatic(ViewModel::viewModelScope)
-        mockkStatic(CoroutineScope::launch)
-
-        runBlocking {
-            val slot = mutableListOf<suspend CoroutineScope.() -> Unit>()
-            val coroutineScope = mockk<CoroutineScope>()
-            every {
-                coroutineScope.launch(
-                    context = any(),
-                    block = capture(slot),
-                )
-            } returns mockk()
-            every { viewModel.viewModelScope } returns coroutineScope
-            block(slot)
+        with(sufiIshqApp) {
+            every { keyValueStorage } returns TestSharedPreferences(appContext)
+            every { getString(any()) } answers {
+                appContext.getString(firstArg())
+            }
         }
+
+        every { SufiIshqApp.getInstance() } returns sufiIshqApp
+    }
+
+    protected fun testHelpFileInputStream(): InputStream {
+        return javaClass.classLoader.getResourceAsStream("help/help.json")
     }
 
     // WARNING - do not change or remove any property in this method
@@ -94,22 +90,19 @@ abstract class SufiIshqTest {
             1,
         )
 
+    // WARNING - do not change, remove or modify any property in this method
+    protected fun sampleKalamInfo() = KalamInfo(
+        PlayerState.IDLE,
+        sampleKalam(),
+        0,
+        100,
+        false,
+        TrackListType.All(),
+    )
+
     fun List<suspend CoroutineScope.() -> Unit>.invoke() {
         runBlocking { forEach { it.invoke(mockk()) } }
     }
-
-    fun getKalam() =
-        Kalam(
-            id = 1,
-            title = "My Kalam",
-            code = 1,
-            recordeDate = "20-01-1989",
-            location = "Karachi",
-            onlineSource = "https://sufiishq.pk/media/kalam/karachi/karachi_01.mp3",
-            offlineSource = "",
-            isFavorite = 0,
-            playlistId = 0,
-        )
 
     companion object {
 

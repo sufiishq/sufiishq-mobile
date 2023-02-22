@@ -16,17 +16,18 @@
 
 package pk.sufiishq.app.feature.help.resolver
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONObject
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.help.HelpContentTransformer
 import pk.sufiishq.app.feature.help.api.HelpContentService
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import pk.sufiishq.app.feature.help.model.HelpContent
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 private const val HELP_URL =
     "https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/app/src/main/assets/help/help.json"
@@ -34,6 +35,7 @@ private const val HELP_URL =
 class OnlineHelpContentResolver
 @Inject
 constructor(
+    @IoDispatcher private val dispatcher: CoroutineContext,
     @HelpJson private val helpJson: JSONObject,
     private val helpContentService: HelpContentService,
     private val transformer: HelpContentTransformer,
@@ -54,6 +56,6 @@ constructor(
                 emit(transformer.transform(helpJson))
             }
         }
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatcher)
     }
 }
