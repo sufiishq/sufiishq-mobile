@@ -62,10 +62,13 @@ abstract class SufiIshqTest {
     private fun mockApp() {
         mockkObject(SufiIshqApp)
 
-        every { sufiIshqApp.keyValueStorage } returns TestSharedPreferences(appContext)
-        every { sufiIshqApp.getString(any()) } answers {
-            appContext.getString(firstArg())
+        with(sufiIshqApp) {
+            every { keyValueStorage } returns TestSharedPreferences(appContext)
+            every { getString(any()) } answers {
+                appContext.getString(firstArg())
+            }
         }
+
         every { SufiIshqApp.getInstance() } returns sufiIshqApp
     }
 

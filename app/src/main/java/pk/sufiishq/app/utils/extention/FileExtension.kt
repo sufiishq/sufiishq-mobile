@@ -64,7 +64,9 @@ fun File.split(
                 onComplete(SplitStatus.Error(getString(R.string.msg_execution_failed)))
             }
 
-            override fun onProgress(progress: Float) {}
+            override fun onProgress(progress: Float) {
+                /* no need to use this method as we don't show a linear progress */
+            }
         },
     )
 }

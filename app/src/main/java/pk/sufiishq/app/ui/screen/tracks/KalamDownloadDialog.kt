@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -105,7 +104,7 @@ private fun KalamDownloadInProgressDialog(
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
 
-    val progress by
+    val progress =
         animateFloatAsState(
             targetValue = fileInfo.progress.toFloat() / 100f * 1f,
             animationSpec =
@@ -138,7 +137,7 @@ private fun KalamDownloadInProgressDialog(
 
         SILinearProgressIndicator(
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-            progress = progress,
+            progress = progress.value,
         )
     }
 }
