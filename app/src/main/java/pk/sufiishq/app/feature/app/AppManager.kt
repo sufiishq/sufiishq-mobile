@@ -18,17 +18,17 @@ package pk.sufiishq.app.feature.app
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.extension.metaInfo
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
 
 class AppManager @Inject constructor() {
 
     fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {
-        val appName = componentActivity.getString(R.string.app_name)
-        val shareText = getString(R.string.msg_kalam_meta_info, kalam.title, kalam.metaInfo())
+        val appName = componentActivity.getString(TextRes.app_name)
+        val shareText = getString(TextRes.msg_kalam_meta_info, kalam.title, kalam.metaInfo())
         Intent(Intent.ACTION_SEND)
             .apply {
                 type = "text/plain"
@@ -39,14 +39,14 @@ class AppManager @Inject constructor() {
                 componentActivity.startActivity(
                     Intent.createChooser(
                         it,
-                        getString(R.string.dynamic_share_kalam, appName),
+                        getString(TextRes.dynamic_share_kalam, appName),
                     ),
                 )
             }
     }
 
     fun shareApp(activity: ComponentActivity) {
-        val appName = activity.getString(R.string.app_name)
+        val appName = activity.getString(TextRes.app_name)
         Intent(Intent.ACTION_SEND)
             .apply {
                 type = "text/plain"
@@ -60,7 +60,7 @@ class AppManager @Inject constructor() {
                 activity.startActivity(
                     Intent.createChooser(
                         it,
-                        getString(R.string.dynamic_share_kalam, appName),
+                        getString(TextRes.dynamic_share_kalam, appName),
                     ),
                 )
             }

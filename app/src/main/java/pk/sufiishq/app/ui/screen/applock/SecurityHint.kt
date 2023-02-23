@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
@@ -44,17 +45,17 @@ fun SecurityHint(
         bgColor = AuroraColor.Background,
         radius = 4,
     ) { textColor ->
-        SIImage(resId = R.drawable.guarantee)
+        SIImage(resId = ImageRes.guarantee)
         SIWidthSpace(value = 12)
         SIColumn(modifier = Modifier.fillMaxWidth()) {
             SIText(
-                text = optString(R.string.title_hint),
+                text = optString(TextRes.title_hint),
                 textColor = textColor,
                 fontWeight = FontWeight.Bold,
             )
             SIHeightSpace(value = 8)
             SIText(
-                text = optString(R.string.detail_hint),
+                text = optString(TextRes.detail_hint),
                 textColor = textColor,
                 textSize = TextSize.Small,
             )

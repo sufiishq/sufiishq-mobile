@@ -36,7 +36,7 @@ import pk.sufiishq.aurora.models.DataMenuItem
 fun KalamItemPopupMenu(
     isExpanded: MutableState<Boolean>,
     kalam: Kalam,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
     trackListType: TrackListType,
 ) {
     val context = LocalContext.current
@@ -62,7 +62,7 @@ private fun handleClick(
     kalam: Kalam,
     trackListType: TrackListType,
     context: Context,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     when (popupMenuItem) {
         is PopupMenuItem.AddToPlaylist -> kalamController.showPlaylistDialog(kalam)

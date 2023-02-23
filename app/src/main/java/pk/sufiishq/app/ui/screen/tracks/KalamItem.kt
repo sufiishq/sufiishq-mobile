@@ -17,13 +17,16 @@
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeKalam
 import pk.sufiishq.app.utils.fakeKalamController
@@ -33,18 +36,21 @@ import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIDataRow
 
+const val TEST_TAG_KALAM_DATA_ROW = "test_tag_kalam_data_row"
+
 @PackagePrivate
 @Composable
 fun KalamItem(
     kalam: Kalam,
     trackListType: TrackListType,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val isExpanded = rem(false)
 
     SIDataRow(
-        leadingIcon = R.drawable.ic_start_logo,
-        trailingIcon = R.drawable.ic_baseline_more_vert_24,
+        modifier = Modifier.testTag(TEST_TAG_KALAM_DATA_ROW),
+        leadingIcon = ImageRes.ic_start_logo,
+        trailingIcon = ImageRes.ic_baseline_more_vert_24,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },
         trailingIconScope = {
             KalamItemPopupMenu(
@@ -67,7 +73,7 @@ fun KalamItemPreviewLight() {
     AuroraLight {
         KalamItem(
             kalam = fakeKalam(),
-            trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
+            trackListType = TrackListType.All(title = optString(TextRes.title_all_kalam)),
             kalamController = fakeKalamController(),
         )
     }
@@ -80,7 +86,7 @@ fun KalamItemPreviewDark() {
     AuroraDark {
         KalamItem(
             kalam = fakeKalam(),
-            trackListType = TrackListType.All(title = optString(R.string.title_all_kalam)),
+            trackListType = TrackListType.All(title = optString(TextRes.title_all_kalam)),
             kalamController = fakeKalamController(),
         )
     }

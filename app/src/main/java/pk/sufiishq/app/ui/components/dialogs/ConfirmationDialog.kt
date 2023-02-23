@@ -18,7 +18,7 @@ package pk.sufiishq.app.ui.components.dialogs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.layout.SIDialog
@@ -36,12 +36,12 @@ fun ConfirmationDialog(
     state.value?.apply {
         SIDialog(
             onDismissRequest = { onDismissed() },
-            onNoText = optString(R.string.label_no),
+            onNoText = optString(TextRes.label_no),
             onNoClick = {
                 onDismissed()
                 state.value = null
             },
-            onYesText = optString(R.string.label_yes),
+            onYesText = optString(TextRes.label_yes),
             onYesClick = {
                 state.value = null
                 onConfirmed()

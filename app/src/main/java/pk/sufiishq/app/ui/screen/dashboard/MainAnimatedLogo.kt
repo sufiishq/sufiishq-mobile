@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SIImage
 
 @PackagePrivate
@@ -48,6 +48,6 @@ fun MainAnimatedLogo(
 
     SIImage(
         modifier = modifier.testTag("logo").graphicsLayer { rotationY = angle },
-        resId = R.drawable.logo,
+        resId = ImageRes.logo,
     )
 }

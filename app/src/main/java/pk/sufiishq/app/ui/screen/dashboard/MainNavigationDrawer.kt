@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.widgets.HijriDate
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIDivider
 import pk.sufiishq.aurora.layout.SIColumn
@@ -71,8 +72,8 @@ fun MainNavigationDrawer(
             bottomSpace = 6,
         )
         SIDataRow(
-            title = optString(R.string.menu_item_app_lock),
-            leadingIcon = R.drawable.app_lock,
+            title = optString(TextRes.menu_item_app_lock),
+            leadingIcon = ImageRes.app_lock,
             rowHeight = 48,
             onClick = {
                 scope.launch {
@@ -82,8 +83,8 @@ fun MainNavigationDrawer(
             },
         )
         SIDataRow(
-            title = optString(R.string.menu_item_admin_setting),
-            leadingIcon = R.drawable.setting,
+            title = optString(TextRes.menu_item_admin_setting),
+            leadingIcon = ImageRes.setting,
             rowHeight = 48,
             onClick = {
                 scope.launch {

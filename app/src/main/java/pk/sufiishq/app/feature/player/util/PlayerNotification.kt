@@ -26,10 +26,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import pk.sufiishq.app.R
 import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.getString
 
@@ -60,7 +61,7 @@ class PlayerNotification(private val context: Context) {
             val notificationChannel =
                 NotificationChannel(
                     AudioPlayerService.CHANNEL_ID,
-                    getString(R.string.app_name),
+                    getString(TextRes.app_name),
                     NotificationManager.IMPORTANCE_MIN,
                 )
             notificationChannel.enableLights(false)
@@ -78,7 +79,7 @@ class PlayerNotification(private val context: Context) {
 
             builder
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.ic_start_logo)
+                .setSmallIcon(ImageRes.ic_start_logo)
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)
@@ -96,7 +97,7 @@ class PlayerNotification(private val context: Context) {
 
             builder
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.ic_start_logo)
+                .setSmallIcon(ImageRes.ic_start_logo)
                 .setTicker(activeKalam?.title)
                 .setOngoing(true)
                 .setContentTitle(activeKalam?.title)

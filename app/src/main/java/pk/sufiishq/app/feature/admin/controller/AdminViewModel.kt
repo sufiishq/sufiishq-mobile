@@ -28,7 +28,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.FirebaseDatabaseStatus
 import pk.sufiishq.app.feature.admin.auth.AuthManager
 import pk.sufiishq.app.feature.admin.auth.AuthState
@@ -36,6 +35,7 @@ import pk.sufiishq.app.feature.admin.highlight.HighlightManager
 import pk.sufiishq.app.feature.admin.highlight.HighlightStatus
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.admin.model.Maintenance
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.isNetworkAvailable
 import pk.sufiishq.app.utils.getString
 import java.util.*
@@ -78,7 +78,7 @@ constructor(
 
     private fun callIfOnline(block: () -> Unit) {
         context.takeIf { it.isNetworkAvailable() }?.apply { block() }
-            ?: showSnackbar(getString(R.string.msg_no_network_connection))
+            ?: showSnackbar(getString(TextRes.msg_no_network_connection))
     }
 
     private fun launchWithOnline(block: () -> Unit) {
@@ -193,7 +193,7 @@ constructor(
 
     private fun resolveMessage(status: FirebaseDatabaseStatus): String? {
         return if (status is FirebaseDatabaseStatus.Failed && status.ex is DatabaseException) {
-            getString(R.string.msg_authorization_failed)
+            getString(TextRes.msg_authorization_failed)
         } else {
             fetchHighlight()
             status.message
@@ -218,7 +218,7 @@ constructor(
 
     private fun validateDetail(block: () -> Unit) {
         getDetail().takeIf { it.value?.trim()?.isNotEmpty() == true }?.apply { block() }
-            ?: showSnackbar(getString(R.string.msg_detail_required))
+            ?: showSnackbar(getString(TextRes.msg_detail_required))
     }
 
     private fun launchWithValidation(block: suspend CoroutineScope.() -> Unit) {

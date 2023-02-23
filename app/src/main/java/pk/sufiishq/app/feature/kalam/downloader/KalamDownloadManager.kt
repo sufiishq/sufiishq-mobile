@@ -25,12 +25,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FilenameUtils
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.extension.isOfflineFileExists
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.moveTo
 import pk.sufiishq.app.utils.getString
@@ -108,10 +108,10 @@ constructor(
 
         val error =
             if (throwable is SocketException || throwable is UnknownHostException) {
-                getString(R.string.msg_no_network_connection)
+                getString(TextRes.msg_no_network_connection)
             } else {
                 throwable.localizedMessage ?: throwable.message
-                    ?: getString(R.string.label_unknown_error)
+                    ?: getString(TextRes.label_unknown_error)
             }
 
         setKalamDownloadState(KalamDownloadState.Error(error, kalam))

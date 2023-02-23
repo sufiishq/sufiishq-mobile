@@ -24,10 +24,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.AppLockState
 import pk.sufiishq.app.feature.applock.controller.AppLockController
 import pk.sufiishq.app.feature.applock.controller.AppLockViewModel
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.layout.SIColumn
 
@@ -89,7 +89,7 @@ fun AppLockScreen(
                     scaffoldState,
                     state.securityQuestion,
                 )
-            else -> optString(R.string.dynamic_exception_state_not_handled, activeState.value)
+            else -> optString(TextRes.dynamic_exception_state_not_handled, activeState.value)
         }
     }
 }

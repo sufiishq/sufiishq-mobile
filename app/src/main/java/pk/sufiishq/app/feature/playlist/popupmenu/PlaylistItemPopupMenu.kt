@@ -16,9 +16,9 @@
 
 package pk.sufiishq.app.feature.playlist.popupmenu
 
-import pk.sufiishq.app.R
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject
@@ -27,8 +27,8 @@ class PlaylistItemPopupMenu @Inject constructor() : PopupMenu {
 
     override fun getPopupMenuItems(): List<DataMenuItem> {
         return listOf(
-            PopupMenuItem.Edit(getString(R.string.menu_item_rename)),
-            PopupMenuItem.Delete(getString(R.string.menu_item_delete)),
+            PopupMenuItem.Edit(getString(TextRes.menu_item_rename)),
+            PopupMenuItem.Delete(getString(TextRes.menu_item_delete)),
         )
     }
 }

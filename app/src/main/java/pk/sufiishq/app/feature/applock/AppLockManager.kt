@@ -20,10 +20,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.model.AppLockStatus
 import pk.sufiishq.app.feature.applock.model.AutoLockDuration
 import pk.sufiishq.app.feature.applock.model.SecurityQuestion
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.extention.putInStorage
 import pk.sufiishq.app.utils.getString
@@ -40,7 +40,7 @@ constructor(
 
     private val activeState = MutableLiveData<AppLockState>(AppLockState.Setup)
     private val autoLockDuration =
-        MutableLiveData(instantAutoLockDuration(getString(R.string.label_instant)))
+        MutableLiveData(instantAutoLockDuration(getString(TextRes.label_instant)))
     private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
     init {
@@ -73,9 +73,9 @@ constructor(
         savePin(generatedPin)
         setBiometric(biometricEnable)
         setSecurityQuestion(securityQuestion)
-        setAutoLockDuration(instantAutoLockDuration(getString(R.string.label_instant)))
+        setAutoLockDuration(instantAutoLockDuration(getString(TextRes.label_instant)))
         setSettingState(
-            message = getString(R.string.msg_pin_successfully_generated),
+            message = getString(TextRes.msg_pin_successfully_generated),
             biometricEnable = biometricEnable,
         )
     }
@@ -91,7 +91,7 @@ constructor(
     fun changePinConfirmed(pin: String) {
         SAVED_PIN.putInStorage(pin)
         setSettingState(
-            message = getString(R.string.msg_pin_successfully_changed),
+            message = getString(TextRes.msg_pin_successfully_changed),
             biometricEnable = isBiometricEnabled(),
         )
     }
@@ -99,20 +99,20 @@ constructor(
     fun toggleBiometric(fragmentActivity: FragmentActivity) {
         if (isBiometricEnabled()) {
             setBiometric(false)
-            setSettingState(getString(R.string.msg_biometric_successfully_disable), false)
+            setSettingState(getString(TextRes.msg_biometric_successfully_disable), false)
         } else {
             if (biometricManager.userHasBiometricCapability()) {
                 biometricManager.prompt(fragmentActivity, false) {
                     if (it is BiometricStatus.Success) {
                         setBiometric(true)
-                        setSettingState(getString(R.string.msg_biometric_successfully_enable), true)
+                        setSettingState(getString(TextRes.msg_biometric_successfully_enable), true)
                     } else {
                         setSettingState(null, false)
                     }
                 }
             } else {
                 setSettingState(
-                    message = getString(R.string.msg_biometric_not_enable),
+                    message = getString(TextRes.msg_biometric_not_enable),
                     biometricEnable = false,
                 )
             }
@@ -122,7 +122,7 @@ constructor(
     fun updateSecurityQuestion(securityQuestion: SecurityQuestion) {
         setSecurityQuestion(securityQuestion)
         setSettingState(
-            message = getString(R.string.msg_security_question_updated),
+            message = getString(TextRes.msg_security_question_updated),
             biometricEnable = isBiometricEnabled(),
         )
     }
@@ -130,7 +130,7 @@ constructor(
     fun updateAutoLockDuration(autoLockDuration: AutoLockDuration) {
         setAutoLockDuration(autoLockDuration)
         setSettingState(
-            message = getString(R.string.dynamic_auto_lock_duration_set, autoLockDuration.label),
+            message = getString(TextRes.dynamic_auto_lock_duration_set, autoLockDuration.label),
             biometricEnable = isBiometricEnabled(),
         )
     }
@@ -239,7 +239,7 @@ constructor(
         return AUTO_LOCK_DURATION.getFromStorage("")
             .takeIf { it.isNotEmpty() }
             ?.let { gson.fromJson(it, AutoLockDuration::class.java) }
-            ?: instantAutoLockDuration(getString(R.string.label_instant))
+            ?: instantAutoLockDuration(getString(TextRes.label_instant))
     }
 
     private fun postAutoLockDuration(duration: AutoLockDuration) {

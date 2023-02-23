@@ -23,12 +23,12 @@ import android.media.MediaPlayer
 import android.media.PlaybackParams
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.helper.AppMediaPlayer
 import pk.sufiishq.app.feature.player.listener.PlayerStateListener
 import pk.sufiishq.app.feature.player.state.MediaState
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
 import javax.inject.Inject
@@ -205,7 +205,7 @@ constructor(
                     activeKalam,
                     what,
                     extra,
-                    getString(R.string.label_something_went_wrong),
+                    getString(TextRes.label_something_went_wrong),
                     trackListType,
                 ),
             )

@@ -23,8 +23,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
@@ -61,11 +62,11 @@ fun HijriDate(
             }
             SIText(
                 modifier = Modifier.align(Alignment.BottomEnd),
-                text = optString(R.string.dynamic_hijri_year, year),
+                text = optString(TextRes.dynamic_hijri_year, year),
                 textColor = textColor,
                 textSize = TextSize.Small,
             )
         }
-            ?: SIImage(resId = R.drawable.caligraphi)
+            ?: SIImage(resId = ImageRes.caligraphi)
     }
 }

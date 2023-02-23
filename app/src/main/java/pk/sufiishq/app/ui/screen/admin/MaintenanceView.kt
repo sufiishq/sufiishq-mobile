@@ -28,8 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.controller.AdminController
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -50,21 +50,21 @@ fun MaintenanceView(
     strict.value = maintenance?.strictMode ?: false
 
     SIHeightSpace(value = 12)
-    AdminHeader(optString(R.string.label_maintenance))
+    AdminHeader(optString(TextRes.label_maintenance))
 
     SIHeightSpace(value = 12)
     SIRow(
         modifier = Modifier.fillMaxWidth(),
     ) {
         MaintenanceSwitch(
-            label = optString(R.string.label_on),
+            label = optString(TextRes.label_on),
             status = active,
             scope = this,
             onStatusChanged = adminController::setMaintenanceStatus,
         )
         SIWidthSpace(value = 8)
         MaintenanceSwitch(
-            label = optString(R.string.label_strict),
+            label = optString(TextRes.label_strict),
             status = strict,
             scope = this,
             onStatusChanged = adminController::setMaintenanceStrict,

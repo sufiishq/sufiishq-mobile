@@ -18,7 +18,6 @@ package pk.sufiishq.app.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
@@ -26,6 +25,7 @@ import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.main.player.PlayerView
 import pk.sufiishq.app.ui.main.topbar.AboutIconButton
 import pk.sufiishq.app.ui.main.topbar.AppBarOverflowMenu
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.layout.SIScaffold
 import pk.sufiishq.aurora.widgets.SITopAppBar
 
@@ -42,7 +42,7 @@ fun MainHostView(
             SITopAppBar(
                 navigationIcon = { fgColor -> AboutIconButton(fgColor) },
                 actions = { fgColor -> AppBarOverflowMenu(navController, fgColor) },
-                centerDrawable = R.drawable.hp_logo,
+                centerDrawable = ImageRes.hp_logo,
             )
         },
         bottomBar = { PlayerView() },

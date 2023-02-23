@@ -35,7 +35,8 @@ import javax.inject.Inject
 @HiltAndroidApp
 class SufiIshqApp : Application() {
 
-    @Inject @SecureSharedPreferences
+    @Inject
+    @SecureSharedPreferences
     lateinit var keyValueStorage: KeyValueStorage
 
     override fun onCreate() {

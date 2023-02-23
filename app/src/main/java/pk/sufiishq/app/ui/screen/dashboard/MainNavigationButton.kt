@@ -29,8 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.ui.components.ContentBackground
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -55,7 +55,7 @@ fun MainNavigationButton(
             ) { contentColor ->
                 SIIcon(
                     modifier = Modifier.padding(12.dp),
-                    resId = R.drawable.ic_round_menu_24,
+                    resId = ImageRes.ic_round_menu_24,
                     tint = contentColor,
                 )
             }

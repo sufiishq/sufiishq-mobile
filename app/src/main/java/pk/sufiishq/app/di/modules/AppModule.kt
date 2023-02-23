@@ -27,7 +27,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.json.JSONObject
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
@@ -36,6 +35,8 @@ import pk.sufiishq.app.feature.kalam.helper.TrackListTypeDeserializer
 import pk.sufiishq.app.feature.storage.KeyValueStorage
 import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import javax.inject.Singleton
 
@@ -75,27 +76,27 @@ class AppModule {
     @Provides
     fun provideMainNavigation(): List<NavigationItem> {
         return listOf(
-            // NavigationItem(getString(R.string.menu_item_qibla_direction), R.drawable.compass,
+            // NavigationItem(getString(TextRes.menu_item_qibla_direction), ImageRes.compass,
             // ""),
             NavigationItem(
-                getString(R.string.menu_item_tasbeeh_sarkar),
-                R.drawable.tasbih,
-                ScreenType.Photo.buildRoute(R.drawable.photo_tasbeeh.toString()),
+                getString(TextRes.menu_item_tasbeeh_sarkar),
+                ImageRes.tasbih,
+                ScreenType.Photo.buildRoute(ImageRes.photo_tasbeeh.toString()),
             ),
-            // NavigationItem(getString(R.string.menu_item_events), R.drawable.events, ""),
-            // NavigationItem(getString(R.string.menu_item_gallery), R.drawable.gallery, ""),
-            // NavigationItem(getString(R.string.menu_item_niaz), R.drawable.niaz, ""),
-            // NavigationItem(getString(R.string.menu_item_remedies), R.drawable.remedy, ""),
-            // NavigationItem(getString(R.string.menu_item_rubai), R.drawable.rubai, ""),
+            // NavigationItem(getString(TextRes.menu_item_events), ImageRes.events, ""),
+            // NavigationItem(getString(TextRes.menu_item_gallery), ImageRes.gallery, ""),
+            // NavigationItem(getString(TextRes.menu_item_niaz), ImageRes.niaz, ""),
+            // NavigationItem(getString(TextRes.menu_item_remedies), ImageRes.remedy, ""),
+            // NavigationItem(getString(TextRes.menu_item_rubai), ImageRes.rubai, ""),
             NavigationItem(
-                getString(R.string.menu_item_location),
-                R.drawable.location,
+                getString(TextRes.menu_item_location),
+                ImageRes.location,
                 ScreenType.DarbarLocation.buildRoute(),
             ),
             NavigationItem(
-                getString(R.string.menu_item_shijra),
-                R.drawable.shijra,
-                ScreenType.Photo.buildRoute(R.drawable.photo_shijra.toString()),
+                getString(TextRes.menu_item_shijra),
+                ImageRes.shijra,
+                ScreenType.Photo.buildRoute(ImageRes.photo_shijra.toString()),
             ),
         )
     }

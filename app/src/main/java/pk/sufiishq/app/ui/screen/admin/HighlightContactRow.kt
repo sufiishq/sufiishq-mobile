@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -57,7 +57,7 @@ fun HighlightContactRow(
             SIBox(modifier = Modifier.weight(1f)) {
                 AdminTextView(
                     modifier = Modifier.fillMaxWidth(),
-                    label = optString(R.string.label_name),
+                    label = optString(TextRes.label_name),
                     text = contactName,
                     maxLength = 20,
                     onValueChange = { value -> onValueChange(value, contactNumber) },
@@ -67,7 +67,7 @@ fun HighlightContactRow(
             SIBox(modifier = Modifier.weight(1f)) {
                 AdminTextView(
                     modifier = Modifier.fillMaxWidth(),
-                    label = optString(R.string.label_number_hint),
+                    label = optString(TextRes.label_number_hint),
                     text = contactNumber,
                     maxLength = 11,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),

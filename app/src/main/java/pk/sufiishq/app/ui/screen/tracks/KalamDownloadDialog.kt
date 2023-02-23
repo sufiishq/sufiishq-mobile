@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -34,10 +33,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import okhttp3.internal.format
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.downloader.FileInfo
 import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SILinearProgressIndicator
 import pk.sufiishq.aurora.components.SIText
@@ -50,7 +49,7 @@ import timber.log.Timber
 @PackagePrivate
 @Composable
 fun KalamDownloadDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
@@ -84,11 +83,11 @@ fun KalamDownloadDialog(
 @Composable
 private fun KalamDownloadStartedDialog(
     kalamDownloadState: KalamDownloadState.Started,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
-        onNoText = optString(R.string.label_cancel),
+        onNoText = optString(TextRes.label_cancel),
         onNoClick = { dismissDownload(kalamController) },
     ) {
         SILinearProgressIndicator(
@@ -100,12 +99,12 @@ private fun KalamDownloadStartedDialog(
 @Composable
 private fun KalamDownloadInProgressDialog(
     kalamDownloadState: KalamDownloadState.InProgress,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val title = kalamDownloadState.kalam.title
     val fileInfo = kalamDownloadState.fileInfo as FileInfo.Downloading
 
-    val progress by
+    val progress =
         animateFloatAsState(
             targetValue = fileInfo.progress.toFloat() / 100f * 1f,
             animationSpec =
@@ -117,7 +116,7 @@ private fun KalamDownloadInProgressDialog(
 
     ShowDialog(
         title = title,
-        onNoText = optString(R.string.label_cancel),
+        onNoText = optString(TextRes.label_cancel),
         onNoClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIRow(
@@ -138,7 +137,7 @@ private fun KalamDownloadInProgressDialog(
 
         SILinearProgressIndicator(
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-            progress = progress,
+            progress = progress.value,
         )
     }
 }
@@ -146,13 +145,13 @@ private fun KalamDownloadInProgressDialog(
 @Composable
 private fun KalamDownloadCompletedDialog(
     kalamDownloadState: KalamDownloadState.Completed,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
 
     ShowDialog(
         title = kalam.title,
-        onYesText = optString(R.string.label_ok),
+        onYesText = optString(TextRes.label_ok),
         onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIText(
@@ -170,18 +169,18 @@ private fun KalamDownloadCompletedDialog(
 @Composable
 private fun KalamDownloadErrorDialog(
     kalamDownloadState: KalamDownloadState.Error,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalam = kalamDownloadState.kalam
     val error = kalamDownloadState.error
 
     ShowDialog(
         title = kalam.title,
-        onYesText = optString(R.string.label_ok),
+        onYesText = optString(TextRes.label_ok),
         onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIText(
-            text = optString(R.string.label_download_error),
+            text = optString(TextRes.label_download_error),
             textColor = textColor,
             fontWeight = FontWeight.Bold,
         )
@@ -203,7 +202,7 @@ private fun ShowDialog(
     content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     SIDialog(
-        title = optString(R.string.dynamic_download_kalam, title),
+        title = optString(TextRes.dynamic_download_kalam, title),
         onNoText = onNoText,
         onNoClick = onNoClick,
         onYesText = onYesText,
@@ -213,6 +212,6 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDownload(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun dismissDownload(kalamController: KalamController) {
     kalamController.dismissDownload()
 }

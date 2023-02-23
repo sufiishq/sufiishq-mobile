@@ -22,8 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.controller.AppLockController
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -48,7 +48,7 @@ fun ConfirmPinPrompt(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SIText(
-                text = optString(R.string.label_re_enter_pin),
+                text = optString(TextRes.label_re_enter_pin),
                 textColor = it,
                 textSize = TextSize.Large,
             )

@@ -25,8 +25,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.controller.KalamController
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIDivider
 import pk.sufiishq.aurora.layout.SIDialog
@@ -36,14 +36,14 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 @PackagePrivate
 @Composable
 fun PlaylistDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     kalamController.showPlaylistDialog().observeAsState().value?.apply {
         val kalam = first
         val playlistItems = second
 
         SIDialog(
-            title = optString(R.string.title_playlist),
+            title = optString(TextRes.title_playlist),
             onDismissRequest = { kalamController.dismissPlaylistDialog() },
         ) {
             SILazyColumn(

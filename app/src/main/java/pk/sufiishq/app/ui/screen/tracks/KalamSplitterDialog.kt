@@ -28,11 +28,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.quickToast
@@ -52,7 +54,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @PackagePrivate
 @Composable
 fun KalamSplitDialog(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val showSplitDialog = kalamController.showKalamSplitDialog().observeAsState()
 
@@ -70,13 +72,13 @@ fun KalamSplitDialog(
 @Composable
 private fun StartSplitView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
-        onNoText = optString(R.string.label_cancel),
+        onNoText = optString(TextRes.label_cancel),
         onNoClick = { dismissDialog(kalamController) },
-        onYesText = optString(R.string.label_preview),
+        onYesText = optString(TextRes.label_preview),
         onYesClick = { startSplitting(kalamController) },
     ) { textColor ->
         SIRangeSlider(
@@ -119,23 +121,23 @@ private fun StartSplitView(
 @Composable
 private fun SplitCompletedView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val kalamTitle = rem("")
 
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
-        onNoText = optString(R.string.label_back),
+        onNoText = optString(TextRes.label_back),
         onNoClick = { backToDone(kalamController) },
-        onYesText = optString(R.string.label_save),
+        onYesText = optString(TextRes.label_save),
         onYesClick = { saveKalam(kalamTitle.value.trim(), splitKalamInfo, kalamController) },
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = kalamTitle.value,
             onValueChange = { kalamTitle.value = it },
-            label = optString(R.string.label_kalam_title),
-            emptyFieldError = optString(R.string.msg_kalam_title_required),
+            label = optString(TextRes.label_kalam_title),
+            emptyFieldError = optString(TextRes.msg_kalam_title_required),
             maxLength = KALAM_TITLE_LENGTH,
         )
     }
@@ -144,7 +146,7 @@ private fun SplitCompletedView(
 @Composable
 private fun SplitDoneView(
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     val previewPlayStart = splitKalamInfo.previewPlayStart
     val previewKalamProgress = splitKalamInfo.previewKalamProgress
@@ -152,9 +154,9 @@ private fun SplitDoneView(
 
     ShowDialog(
         splitKalamInfo = splitKalamInfo,
-        onNoText = optString(R.string.label_back),
+        onNoText = optString(TextRes.label_back),
         onNoClick = { backToStart(kalamController) },
-        onYesText = optString(R.string.label_done),
+        onYesText = optString(TextRes.label_done),
         onYesClick = { done(kalamController) },
     ) { textColor ->
         SIRow(
@@ -164,7 +166,7 @@ private fun SplitDoneView(
                 modifier = Modifier
                     .width(35.dp)
                     .clickable { kalamController.playSplitKalamPreview() },
-                resId = if (previewPlayStart) R.drawable.ic_pause else R.drawable.ic_play,
+                resId = if (previewPlayStart) ImageRes.ic_pause else ImageRes.ic_play,
                 tintColor = textColor,
             )
 
@@ -224,7 +226,7 @@ private fun ShowDialog(
     content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     SIDialog(
-        title = optString(R.string.dynamic_title_split_kalam, splitKalamInfo.kalam.title),
+        title = optString(TextRes.dynamic_title_split_kalam, splitKalamInfo.kalam.title),
         onNoText = onNoText,
         onNoClick = onNoClick,
         onYesText = onYesText,
@@ -234,33 +236,33 @@ private fun ShowDialog(
     }
 }
 
-private fun dismissDialog(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun dismissDialog(kalamController: KalamController) {
     kalamController.dismissKalamSplitDialog()
 }
 
-private fun startSplitting(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun startSplitting(kalamController: KalamController) {
     kalamController.startSplitting()
 }
 
-private fun backToStart(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun backToStart(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Start)
 }
 
-private fun done(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun done(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Completed)
 }
 
-private fun backToDone(kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController) {
+private fun backToDone(kalamController: KalamController) {
     kalamController.setSplitStatus(SplitStatus.Done)
 }
 
 private fun saveKalam(
     kalamTitle: String,
     splitKalamInfo: SplitKalamInfo,
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController,
+    kalamController: KalamController,
 ) {
     if (kalamTitle.isEmpty()) {
-        quickToast(R.string.msg_kalam_title_required)
+        quickToast(TextRes.msg_kalam_title_required)
     } else {
         kalamController.saveSplitKalam(
             sourceKalam = splitKalamInfo.kalam,

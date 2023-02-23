@@ -33,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.launchGoogleMap
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
@@ -67,7 +68,7 @@ fun DarbarLocationScreen() {
             },
         ) {
             SIImage(
-                resId = R.drawable.darbar,
+                resId = ImageRes.darbar,
                 contentScale = ContentScale.Crop,
             )
         }
@@ -82,12 +83,12 @@ fun DarbarLocationScreen() {
         ) {
             SIHeightSpace(value = 12)
             LocationButton(
-                location = optString(R.string.loc_pakpattan),
+                location = optString(TextRes.loc_pakpattan),
                 Pair(30.344721262825235, 73.40368348568946),
             )
             SIHeightSpace(value = 12)
             LocationButton(
-                location = optString(R.string.loc_karachi),
+                location = optString(TextRes.loc_karachi),
                 Pair(24.843744, 67.198691),
             )
         }
@@ -124,7 +125,7 @@ private fun LocationButton(
                     fontWeight = FontWeight.Bold,
                 )
                 SIButton(
-                    text = optString(R.string.label_open),
+                    text = optString(TextRes.label_open),
                     onClick = { coroutineScope.launch { context.launchGoogleMap(latLng) } },
                 )
             }

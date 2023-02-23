@@ -34,8 +34,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.ui.components.ContentBackground
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
@@ -83,11 +84,11 @@ fun DayNightThemeControl(
                                 rotationZ = firstItemTranslationY.value * 0.25f
                                 alpha = 0.8f
                             },
-                            resId = R.drawable.day,
+                            resId = ImageRes.day,
                             tintColor = AuroraColor.Dark,
                         )
                         SIText(
-                            text = optString(R.string.label_light),
+                            text = optString(TextRes.label_light),
                             textColor = AuroraColor.Dark,
                             textSize = TextSize.Large,
                         )
@@ -114,11 +115,11 @@ fun DayNightThemeControl(
                                 rotationZ = (firstItemTranslationY.value * 0.25f) * -1f
                                 alpha = 0.8f
                             },
-                            resId = R.drawable.night,
+                            resId = ImageRes.night,
                             tintColor = AuroraColor.Light,
                         )
                         SIText(
-                            text = optString(R.string.label_dark),
+                            text = optString(TextRes.label_dark),
                             textColor = AuroraColor.Light,
                             textSize = TextSize.Large,
                         )
@@ -140,7 +141,7 @@ fun DayNightThemeControl(
                     SIBox {
                         SIText(
                             textAlign = TextAlign.Center,
-                            text = optString(R.string.label_auto),
+                            text = optString(TextRes.label_auto),
                             textColor = contentColor,
                             textSize = TextSize.Small,
                         )

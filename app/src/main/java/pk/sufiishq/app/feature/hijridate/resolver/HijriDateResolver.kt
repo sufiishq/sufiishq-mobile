@@ -29,9 +29,9 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-private const val HIJRI_DATE_HOST = "http://api.aladhan.com/v1/gToH?date=%s"
-private const val SP_HIJRI_DATE_KEY = "sp_hijri_date"
-private const val SP_HIJRI_DATA_KEY = "sp_hijri_data"
+const val HIJRI_DATE_HOST = "http://api.aladhan.com/v1/gToH?date=%s"
+const val SP_HIJRI_DATE_KEY = "sp_hijri_date"
+const val SP_HIJRI_DATA_KEY = "sp_hijri_data"
 
 @Suppress("SimpleRedundantLet")
 class HijriDateResolver
@@ -63,7 +63,7 @@ constructor(
     }
 
     private fun dateNotMatched(currentDate: String): Boolean {
-        return !SP_HIJRI_DATE_KEY.getFromStorage("").let { it == currentDate }
+        return SP_HIJRI_DATE_KEY.getFromStorage("") != currentDate
     }
 
     private fun resolve(jsonObject: JSONObject): HijriDate {

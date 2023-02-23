@@ -26,6 +26,7 @@ import org.junit.Test
 import org.robolectric.util.ReflectionHelpers
 import org.robolectric.util.ReflectionHelpers.callInstanceMethod
 import pk.sufiishq.app.SufiIshqTest
+import pk.sufiishq.app.feature.kalam.helper.TrackListType
 
 class ScreenTypeTest : SufiIshqTest() {
 
@@ -69,45 +70,44 @@ class ScreenTypeTest : SufiIshqTest() {
         assertEquals("title", args[1].name)
         assertEquals("playlistId", args[2].name)
 
-        val withArgs =
-            tracksType.buildRoute(
-                ScreenType.Tracks.FAVORITES,
-                "Favorites",
-                "0",
-            )
+        val withArgs = tracksType.buildRoute(
+            ScreenType.Tracks.FAVORITES,
+            "Favorites",
+            "0",
+        )
 
         assertEquals("screen_tracks/favorites/Favorites/0", withArgs)
 
-        val tracksListTypeAll = getTrackListType(tracksType, getNavBackStackEntry("all", "All Kalam"))
+        val tracksListTypeAll =
+            getTrackListType(tracksType, getTrackNavBackStackEntry("all", "All Kalam"))
         assertTrue(tracksListTypeAll is TrackListType.All)
 
         val tracksListTypeDownload =
-            getTrackListType(tracksType, getNavBackStackEntry("downloads", "Downloads"))
+            getTrackListType(tracksType, getTrackNavBackStackEntry("downloads", "Downloads"))
         assertTrue(tracksListTypeDownload is TrackListType.Downloads)
 
         val tracksListTypeFavorite =
-            getTrackListType(tracksType, getNavBackStackEntry("favorites", "Favorites"))
+            getTrackListType(tracksType, getTrackNavBackStackEntry("favorites", "Favorites"))
         assertTrue(tracksListTypeFavorite is TrackListType.Favorites)
 
         val tracksListTypePlaylist =
-            getTrackListType(tracksType, getNavBackStackEntry("playlist", "Faisalabad", 10))
+            getTrackListType(tracksType, getTrackNavBackStackEntry("playlist", "Faisalabad", 10))
         assertTrue(tracksListTypePlaylist is TrackListType.Playlist)
         assertEquals("Faisalabad", tracksListTypePlaylist.title)
         assertEquals(10, (tracksListTypePlaylist as TrackListType.Playlist).playlistId)
     }
 
-    private fun getNavBackStackEntry(
+    private fun getTrackNavBackStackEntry(
         trackType: String,
         title: String,
         playlistId: Int = 0,
     ): NavBackStackEntry {
         return mockk {
-            every { arguments } returns
-                bundleOf(
-                    "trackType" to trackType,
-                    "title" to title,
-                    "playlistId" to playlistId,
-                )
+            every { arguments } returns bundleOf(
+                "trackType" to trackType,
+                "title" to title,
+                "playlistId" to playlistId,
+            )
         }
     }
 

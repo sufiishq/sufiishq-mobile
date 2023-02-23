@@ -29,6 +29,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.app.controller.MainController
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -81,11 +82,11 @@ class InAppUpdateManager @Inject constructor() {
     private fun popupSnackbarForCompleteUpdate(activity: ComponentActivity) {
         Snackbar.make(
             activity.findViewById<View>(android.R.id.content).rootView,
-            getString(R.string.label_update_downloaded),
+            getString(TextRes.label_update_downloaded),
             Snackbar.LENGTH_INDEFINITE,
         )
             .apply {
-                setAction(getString(R.string.label_restart_all_caps)) {
+                setAction(getString(TextRes.label_restart_all_caps)) {
                     AppUpdateManagerFactory.create(activity).completeUpdate()
                 }
                 setActionTextColor(ContextCompat.getColor(activity, R.color.dark_secondary))

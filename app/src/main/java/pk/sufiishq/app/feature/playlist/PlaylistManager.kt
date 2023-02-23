@@ -24,12 +24,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.playlist.data.repository.PlaylistRepository
 import pk.sufiishq.app.feature.playlist.model.Playlist
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.quickToast
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -55,7 +55,7 @@ constructor(
         CoroutineScope(dispatcher).launch {
             kalam.playlistId = playlist.id
             kalamRepository.update(kalam)
-            quickToast(R.string.dynamic_kalam_added_in_playlist, kalam.title, playlist.title)
+            quickToast(TextRes.dynamic_kalam_added_in_playlist, kalam.title, playlist.title)
         }
     }
 
@@ -70,7 +70,7 @@ constructor(
                     if (it.isNotEmpty()) {
                         showPlaylistDialog.postValue(Pair(kalam, it))
                     } else {
-                        quickToast(R.string.label_no_playlist_found)
+                        quickToast(TextRes.label_no_playlist_found)
                     }
                 }
             }

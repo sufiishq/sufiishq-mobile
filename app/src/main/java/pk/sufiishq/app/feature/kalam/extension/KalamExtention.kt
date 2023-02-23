@@ -17,8 +17,8 @@
 package pk.sufiishq.app.feature.kalam.extension
 
 import android.content.Context
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.isNetworkAvailable
 import pk.sufiishq.app.utils.getApp
 import pk.sufiishq.app.utils.quickToast
@@ -28,7 +28,7 @@ fun Kalam?.hasOfflineSource() = this?.offlineSource?.isNotEmpty() ?: false
 
 fun Kalam?.canPlay(context: Context): Boolean {
     return if (!this.hasOfflineSource() && !context.isNetworkAvailable()) {
-        quickToast(R.string.msg_no_network_connection)
+        quickToast(TextRes.msg_no_network_connection)
         false
     } else {
         true

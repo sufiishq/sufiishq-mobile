@@ -23,8 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.controller.AdminController
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -42,13 +43,13 @@ fun AdminSignIn(
     SIBox(modifier = Modifier.fillMaxSize()) {
         SIColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             SIImage(
-                resId = R.drawable.authentication_full,
+                resId = ImageRes.authentication_full,
                 tintColor = it,
             )
             SIHeightSpace(value = 12)
             SIButton(
-                text = optString(R.string.label_verify_identity),
-                leadingIcon = R.drawable.key,
+                text = optString(TextRes.label_verify_identity),
+                leadingIcon = ImageRes.key,
                 onClick = { adminController.signIn(context as ComponentActivity) },
             )
         }

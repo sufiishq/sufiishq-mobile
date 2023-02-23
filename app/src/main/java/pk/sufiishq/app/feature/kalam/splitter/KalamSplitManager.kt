@@ -22,7 +22,6 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
@@ -30,6 +29,7 @@ import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
 import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.extention.moveTo
@@ -178,7 +178,7 @@ constructor(
             kalamRepository.insert(kalam)
 
             getDestFile().moveTo(appContext.filesDir.appendPath(fileName)).also {
-                quickToast(R.string.dynamic_kalam_saved, kalamTitle)
+                quickToast(TextRes.dynamic_kalam_saved, kalamTitle)
             }
         }
     }

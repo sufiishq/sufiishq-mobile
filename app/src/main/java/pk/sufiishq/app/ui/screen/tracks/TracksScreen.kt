@@ -26,12 +26,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.controller.KalamViewModel
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.aurora.layout.SIColumn
@@ -41,7 +41,7 @@ import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun TracksScreen(
-    kalamController: pk.sufiishq.app.feature.kalam.controller.KalamController = hiltViewModel<KalamViewModel>(),
+    kalamController: KalamController = hiltViewModel<KalamViewModel>(),
     trackListType: TrackListType,
 ) {
     kalamController.searchKalam("", trackListType)
@@ -61,7 +61,7 @@ fun TracksScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             hasItems = lazyKalamItems.itemCount > 0,
-            noItemText = optString(R.string.dynamic_no_kalam_found, trackListType.title),
+            noItemText = optString(TextRes.dynamic_no_kalam_found, trackListType.title),
         ) {
             items(lazyKalamItems) { track ->
                 track?.run {
@@ -103,7 +103,7 @@ fun TracksPreviewLight() {
     AuroraLight {
         TracksScreen(
             kalamController = fakeKalamController(),
-            trackListType = TrackListType.All(optString(R.string.title_all_kalam)),
+            trackListType = TrackListType.All(optString(TextRes.title_all_kalam)),
         )
     }
 }
@@ -115,7 +115,7 @@ fun TracksPreviewDark() {
     AuroraDark {
         TracksScreen(
             kalamController = fakeKalamController(),
-            trackListType = TrackListType.All(optString(R.string.title_all_kalam)),
+            trackListType = TrackListType.All(optString(TextRes.title_all_kalam)),
         )
     }
 }
