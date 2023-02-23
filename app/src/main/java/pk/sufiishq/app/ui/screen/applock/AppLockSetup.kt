@@ -30,8 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.controller.AppLockController
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -58,17 +59,17 @@ fun AppLockSetup(
             bgColor = AuroraColor.Background,
             radius = 4,
         ) { textColor ->
-            SIImage(resId = R.drawable.shield)
+            SIImage(resId = ImageRes.shield)
             SIWidthSpace(value = 12)
             SIColumn(modifier = Modifier.fillMaxWidth()) {
                 SIText(
-                    text = optString(R.string.title_app_lock),
+                    text = optString(TextRes.title_app_lock),
                     textColor = textColor,
                     fontWeight = FontWeight.Bold,
                 )
                 SIHeightSpace(value = 12)
                 SIText(
-                    text = optString(R.string.detail_setup_app_lock),
+                    text = optString(TextRes.detail_setup_app_lock),
                     textColor = textColor,
                     textSize = TextSize.Small,
                 )
@@ -76,7 +77,7 @@ fun AppLockSetup(
                 SIBox(modifier = Modifier.fillMaxWidth()) {
                     SIButton(
                         modifier = Modifier.align(Alignment.BottomEnd),
-                        text = optString(R.string.label_setup),
+                        text = optString(TextRes.label_setup),
                         onClick = {
                             coroutineScope.launch {
                                 appLockController.setupBiometricOrPin(context as FragmentActivity)
@@ -89,7 +90,7 @@ fun AppLockSetup(
 
         SIImage(
             modifier = Modifier.align(Alignment.Center).alpha(0.05f),
-            resId = R.drawable.shield_full,
+            resId = ImageRes.shield_full,
         )
     }
 }

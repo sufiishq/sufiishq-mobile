@@ -29,11 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
 import pk.sufiishq.app.feature.player.PlayerState
 import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.app.ui.components.ContentBackground
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIWidthSpace
@@ -78,9 +78,9 @@ fun PlayPauseButton(
                                 if (kalamInfo.value?.playerState == PlayerState.PAUSE ||
                                     kalamInfo.value?.playerState == PlayerState.IDLE
                                 ) {
-                                    R.drawable.ic_play
+                                    ImageRes.ic_play
                                 } else {
-                                    R.drawable.ic_pause
+                                    ImageRes.ic_pause
                                 },
                                 tint = contentColor,
                             )

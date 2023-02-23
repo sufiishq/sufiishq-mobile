@@ -29,8 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.model.Highlight
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.addCharAtIndex
 import pk.sufiishq.app.utils.contactsAsListPair
 import pk.sufiishq.app.utils.extention.launchCallIntent
@@ -50,7 +50,7 @@ fun HighlightAvailableDialog(
     showDialog.value?.apply {
         SIDialog(
             modifier = Modifier.heightIn(max = 600.dp),
-            title = optString(R.string.label_highlight),
+            title = optString(TextRes.label_highlight),
             onDismissRequest = { showDialog.value = null },
         ) {
             val context = LocalContext.current

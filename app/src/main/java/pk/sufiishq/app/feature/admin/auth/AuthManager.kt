@@ -33,9 +33,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.admin.repository.AdminRepository
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.tryAsyncWithDefault
 import timber.log.Timber
@@ -76,7 +76,7 @@ constructor(
                 if (result.resultCode == Activity.RESULT_OK) {
                     safeCall { onActivityResult(result.data) }
                 } else {
-                    setState(AuthState.Cancelled(getString(R.string.label_cancelled)))
+                    setState(AuthState.Cancelled(getString(TextRes.label_cancelled)))
                 }
             }
     }
@@ -125,7 +125,7 @@ constructor(
                 ),
             )
         } else {
-            setState(AuthState.Error(null, getString(R.string.msg_identification_failed)))
+            setState(AuthState.Error(null, getString(TextRes.msg_identification_failed)))
             signOut(activity)
         }
     }

@@ -32,10 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.controller.AppLockController
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.rem
@@ -73,45 +74,45 @@ fun AppLockSetting(
 
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
-            infoDrawableId = R.drawable.change_pin,
-            title = optString(R.string.title_change_pin),
-            detail = optString(R.string.detail_change_pin),
-            actionButtonTitle = optString(R.string.label_change),
+            infoDrawableId = ImageRes.change_pin,
+            title = optString(TextRes.title_change_pin),
+            detail = optString(TextRes.detail_change_pin),
+            actionButtonTitle = optString(TextRes.label_change),
             actionButtonClick = { appLockController.userWantChangePin() },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithToggle(
-            infoDrawableId = R.drawable.toggle_fingerprint,
-            title = optString(R.string.title_toggle_biometric),
-            detail = optString(R.string.detail_toggle_biometric),
+            infoDrawableId = ImageRes.toggle_fingerprint,
+            title = optString(TextRes.title_toggle_biometric),
+            detail = optString(TextRes.detail_toggle_biometric),
             isCheck = biometricEnable,
             onCheckedChanged = { appLockController.toggleBiometric(fragmentActivity) },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
-            infoDrawableId = R.drawable.update_security_question,
-            title = optString(R.string.title_update_security_question),
-            detail = optString(R.string.detail_update_security_question),
-            actionButtonTitle = optString(R.string.label_update),
+            infoDrawableId = ImageRes.update_security_question,
+            title = optString(TextRes.title_update_security_question),
+            detail = optString(TextRes.detail_update_security_question),
+            actionButtonTitle = optString(TextRes.label_update),
             actionButtonClick = { appLockController.userWantUpdateSecurityQuestion() },
         )
         SIHeightSpace(value = 12)
         AppLockDurationServiceCard(
-            infoDrawableId = R.drawable.lock_time,
-            title = optString(R.string.title_app_lock),
-            detail = optString(R.string.detail_change_app_lock_time),
+            infoDrawableId = ImageRes.lock_time,
+            title = optString(TextRes.title_app_lock),
+            detail = optString(TextRes.detail_change_app_lock_time),
             selectedDurationCode = autoLockDuration.value!!.code,
             onDurationChanged = { appLockController.updateAutoLockDuration(it) },
         )
         SIHeightSpace(value = 12)
         AppLockServiceCardWithButton(
-            infoDrawableId = R.drawable.remove_app_lock,
-            title = optString(R.string.title_remove_app_lock),
-            detail = optString(R.string.detail_remove_app_lock),
-            actionButtonTitle = optString(R.string.label_remove),
+            infoDrawableId = ImageRes.remove_app_lock,
+            title = optString(TextRes.title_remove_app_lock),
+            detail = optString(TextRes.detail_remove_app_lock),
+            actionButtonTitle = optString(TextRes.label_remove),
             actionButtonClick = {
                 param.value =
-                    ConfirmDialogParam(getString(R.string.msg_confirm_remove_app_lock)) {
+                    ConfirmDialogParam(getString(TextRes.msg_confirm_remove_app_lock)) {
                         appLockController.removeAppLock()
                     }
             },
@@ -130,11 +131,11 @@ private fun Header() {
     ) {
         SIImage(
             modifier = Modifier.height(30.dp),
-            resId = R.drawable.shield,
+            resId = ImageRes.shield,
         )
         SIWidthSpace(value = 8)
         SIText(
-            text = optString(R.string.label_setting),
+            text = optString(TextRes.label_setting),
             textColor = it,
             fontWeight = FontWeight.Bold,
         )

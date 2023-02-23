@@ -25,7 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIImage
@@ -38,8 +39,8 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun AppLockHeader(
     modifier: Modifier = Modifier,
-    title: String = optString(R.string.title_app_lock),
-    buttonTitle: String = optString(R.string.label_cancel),
+    title: String = optString(TextRes.title_app_lock),
+    buttonTitle: String = optString(TextRes.label_cancel),
     onButtonClick: () -> Unit,
 ) {
     SIRow(
@@ -54,7 +55,7 @@ fun AppLockHeader(
         ) {
             SIImage(
                 modifier = Modifier.height(30.dp),
-                resId = R.drawable.shield,
+                resId = ImageRes.shield,
             )
             SIWidthSpace(value = 8)
             SIText(

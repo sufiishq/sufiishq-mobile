@@ -29,9 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.extention.shake
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.layout.SICard
@@ -60,7 +60,7 @@ fun HighlightAvailableButton(
                 modifier = Modifier
                     .padding(12.dp)
                     .shake(true),
-                resId = R.drawable.round_notifications_active_24,
+                resId = ImageRes.round_notifications_active_24,
                 tint = contentColor,
             )
         }

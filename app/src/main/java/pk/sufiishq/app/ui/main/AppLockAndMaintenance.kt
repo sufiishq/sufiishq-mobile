@@ -42,7 +42,6 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.admin.model.Maintenance
 import pk.sufiishq.app.feature.applock.AppLockManager
@@ -51,6 +50,8 @@ import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.screen.applock.AppLockKeyboardWithPinView
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.extention.toastShort
 import pk.sufiishq.app.utils.getString
@@ -166,7 +167,7 @@ private fun SecurityQuestionView(
                 SIText(
                     text =
                     optString(
-                        R.string.dynamic_ask_security_question,
+                        TextRes.dynamic_ask_security_question,
                         appLockStatus.securityQuestion.question,
                     ),
                     textColor = it,
@@ -175,34 +176,34 @@ private fun SecurityQuestionView(
             SIHeightSpace(value = 12)
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = optString(R.string.label_answer),
+                label = optString(TextRes.label_answer),
                 value = answer.value,
                 onValueChange = { answer.value = it },
                 maxLength = 30,
-                emptyFieldError = optString(R.string.msg_ans_required),
+                emptyFieldError = optString(TextRes.msg_ans_required),
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
                 SIRow(modifier = Modifier.align(Alignment.CenterEnd)) {
                     SIButton(
-                        text = optString(R.string.label_cancel),
+                        text = optString(TextRes.label_cancel),
                         onClick = { showSecurityQuestion.value = false },
                     )
                     SIWidthSpace(value = 8)
                     SIButton(
-                        text = optString(R.string.label_reset),
+                        text = optString(TextRes.label_reset),
                         onClick = {
                             coroutineScope.launch {
                                 if (answer.value.trim().isEmpty()) {
-                                    context.toastShort(getString(R.string.msg_ans_not_empty))
+                                    context.toastShort(getString(TextRes.msg_ans_not_empty))
                                 } else if (answer.value.trim().lowercase() !=
                                     appLockStatus.securityQuestion.answer.trim().lowercase()
                                 ) {
-                                    context.toastShort(getString(R.string.msg_ans_not_matched))
+                                    context.toastShort(getString(TextRes.msg_ans_not_matched))
                                 } else {
                                     appLockManager.removeAppLock()
                                     appLockManager.setAppLockStatus(null)
-                                    context.toastShort(getString(R.string.msg_app_lock_removed))
+                                    context.toastShort(getString(TextRes.msg_app_lock_removed))
                                 }
                             }
                         },
@@ -255,7 +256,7 @@ private fun AppLockDetailView(
                         }
                     SIIcon(
                         modifier = Modifier.size(25.dp),
-                        resId = R.drawable.ic_pause,
+                        resId = ImageRes.ic_pause,
                         tint = it,
                         onClick = {
                             showPauseButton.value = false
@@ -281,7 +282,7 @@ private fun AppLockDetailView(
                         end.linkTo(parent.end)
                         bottom.linkTo(pinKeyboardRef.top)
                     },
-                resId = R.drawable.caligraphi,
+                resId = ImageRes.caligraphi,
             )
 
             SIRow(
@@ -292,7 +293,7 @@ private fun AppLockDetailView(
                 },
             ) {
                 SIText(
-                    text = optString(R.string.label_forgot_pin),
+                    text = optString(TextRes.label_forgot_pin),
                     textColor = it,
                     textSize = TextSize.Small,
                     textStyle =
@@ -315,7 +316,7 @@ private fun AppLockDetailView(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SIText(
-                    text = optString(R.string.label_enter_pin),
+                    text = optString(TextRes.label_enter_pin),
                     textColor = it,
                     textSize = TextSize.Large,
                 )
@@ -352,12 +353,12 @@ private fun StrictMaintenanceView(
                     )
                     SIText(
                         textAlign = TextAlign.Center,
-                        text = optString(R.string.msg_under_maintenance),
+                        text = optString(TextRes.msg_under_maintenance),
                         textColor = it,
                     )
                     SIHeightSpace(value = 12)
                     SIButton(
-                        text = optString(R.string.label_exit),
+                        text = optString(TextRes.label_exit),
                         onClick = { coroutineScope.launch { (context as Activity).finish() } },
                     )
                 }
@@ -373,13 +374,13 @@ private fun PartialMaintenanceDialog(
     val showDialog = rem(true)
     if (maintenance.activeStatus && !maintenance.strictMode && showDialog.value) {
         SIDialog(
-            title = optString(R.string.title_under_maintenance),
-            onYesText = optString(R.string.label_ok),
+            title = optString(TextRes.title_under_maintenance),
+            onYesText = optString(TextRes.label_ok),
             onYesClick = { showDialog.value = false },
             onDismissRequest = { showDialog.value = false },
         ) {
             SIText(
-                text = optString(R.string.msg_under_maintenance_partial),
+                text = optString(TextRes.msg_under_maintenance_partial),
                 textColor = it,
             )
         }

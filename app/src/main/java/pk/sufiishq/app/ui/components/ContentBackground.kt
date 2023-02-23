@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.theme.AuroraColor
 
@@ -35,7 +35,7 @@ fun ContentBackground(
     ) {
         TileAndroidImage(
             modifier = Modifier.fillMaxSize().alpha(0.2f),
-            drawableId = R.drawable.pattern,
+            drawableId = ImageRes.pattern,
             contentDescription = "",
         )
 

@@ -19,8 +19,8 @@ package pk.sufiishq.app.utils.extention
 import VideoHandle.EpEditor
 import VideoHandle.OnEditorListener
 import org.apache.commons.io.IOUtils
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
 import java.io.File
@@ -61,7 +61,7 @@ fun File.split(
             }
 
             override fun onFailure() {
-                onComplete(SplitStatus.Error(getString(R.string.msg_execution_failed)))
+                onComplete(SplitStatus.Error(getString(TextRes.msg_execution_failed)))
             }
 
             override fun onProgress(progress: Float) {

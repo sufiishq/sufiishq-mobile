@@ -31,11 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.help.HelpDataType
 import pk.sufiishq.app.feature.help.model.HelpContent
 import pk.sufiishq.app.ui.components.NetworkImage
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIText
@@ -56,7 +56,7 @@ fun HelpExpandableCard(
     SIExpandableCard(
         header = { textColor ->
             SIIcon(
-                resId = R.drawable.ic_baseline_circle_24,
+                resId = ImageRes.ic_baseline_circle_24,
                 tint = AuroraColor.Background,
                 modifier = Modifier.size(12.dp),
             )

@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
@@ -141,7 +141,7 @@ fun AppLockKeyboardWithPinView(
             KeyboardButton(label = "", pin = pin, bgColor = AuroraColor.Transparent)
             KeyboardButton(label = digits[0], pin = pin)
             KeyboardIconButton(
-                resId = R.drawable.round_backspace_24,
+                resId = ImageRes.round_backspace_24,
                 onClick = {
                     if (pin.value.isNotEmpty()) {
                         pin.value = pin.value.substring(0, pin.value.length - 1)

@@ -21,12 +21,12 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.admin.FirebaseDatabaseReference
 import pk.sufiishq.app.feature.admin.FirebaseDatabaseStatus
 import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.admin.model.Maintenance
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -41,7 +41,7 @@ constructor(
     suspend fun addOrUpdateHighlight(highlight: Highlight): FirebaseDatabaseStatus {
         return safeCall {
             firebaseDatabase.getReference(FirebaseDatabaseReference.HIGHLIGHT).setValue(highlight).await()
-            FirebaseDatabaseStatus.Write(message = getString(R.string.msg_highlight_done))
+            FirebaseDatabaseStatus.Write(message = getString(TextRes.msg_highlight_done))
         }
     }
 
@@ -113,7 +113,7 @@ constructor(
                 .child(key)
                 .setValue(value)
                 .await()
-            FirebaseDatabaseStatus.Write(message = getString(R.string.msg_maintenance_status_done))
+            FirebaseDatabaseStatus.Write(message = getString(TextRes.msg_maintenance_status_done))
         }
     }
 

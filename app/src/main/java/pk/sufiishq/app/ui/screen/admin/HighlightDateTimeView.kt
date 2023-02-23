@@ -28,7 +28,7 @@ import androidx.fragment.app.FragmentActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.extention.shortMonthName
 import pk.sufiishq.app.utils.extention.timeAs12HoursFormat
@@ -108,7 +108,7 @@ fun HighlightDateTimeView(
             SIButton(
                 text =
                 optString(
-                    R.string.dynamic_date,
+                    TextRes.dynamic_date,
                     day,
                     month.shortMonthName(),
                     year,
@@ -123,8 +123,8 @@ fun HighlightDateTimeView(
                 timeAs12HoursFormat(
                     hour,
                     minute,
-                    optString(R.string.label_am),
-                    optString(R.string.label_pm),
+                    optString(TextRes.label_am),
+                    optString(TextRes.label_pm),
                 ),
                 onClick = { timePickerDialog.show(context.supportFragmentManager, null) },
             )

@@ -16,18 +16,18 @@
 
 package pk.sufiishq.app.feature.kalam.helper
 
-import pk.sufiishq.app.R
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 
 sealed class TrackListType(val type: String, val title: String) {
-    class All(title: String = getString(R.string.title_all_kalam)) :
+    class All(title: String = getString(TextRes.title_all_kalam)) :
         TrackListType(ScreenType.Tracks.ALL, title)
 
-    class Downloads(title: String = getString(R.string.title_downloads)) :
+    class Downloads(title: String = getString(TextRes.title_downloads)) :
         TrackListType(ScreenType.Tracks.DOWNLOADS, title)
 
-    class Favorites(title: String = getString(R.string.title_favorites)) :
+    class Favorites(title: String = getString(TextRes.title_favorites)) :
         TrackListType(ScreenType.Tracks.FAVORITES, title)
 
     class Playlist(title: String, val playlistId: Int) :

@@ -32,11 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.admin.controller.AdminController
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.nextYear
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.getString
@@ -66,7 +66,7 @@ fun HighlightAndMaintenanceForm(
     val contacts = adminController.getContacts().observeAsState()
     val confirmDialog = rem<ConfirmDialogParam?>(null)
     val saveBtnText = rem("")
-    saveBtnText.value = optString(R.string.label_save)
+    saveBtnText.value = optString(TextRes.label_save)
 
     LaunchedEffect(Unit) { adminController.fetchHighlight() }
 
@@ -79,7 +79,7 @@ fun HighlightAndMaintenanceForm(
             .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
         adminController.highlightStatus().observeAsState().value?.let { status ->
-            saveBtnText.value = optString(R.string.label_update)
+            saveBtnText.value = optString(TextRes.label_update)
             SICard(
                 bgColor = status.bgColor,
                 modifier = Modifier.fillMaxWidth(),
@@ -104,10 +104,10 @@ fun HighlightAndMaintenanceForm(
                     }
                     SIButton(
                         bgColor = AuroraColor.White,
-                        text = optString(R.string.label_remove),
+                        text = optString(TextRes.label_remove),
                         onClick = {
                             confirmDialog.value =
-                                ConfirmDialogParam(getString(R.string.msg_confirm_delete_highlight)) {
+                                ConfirmDialogParam(getString(TextRes.msg_confirm_delete_highlight)) {
                                     adminController.deleteHighlight()
                                 }
                         },
@@ -117,14 +117,14 @@ fun HighlightAndMaintenanceForm(
             SIHeightSpace(value = 12)
         }
 
-        AdminHeader(optString(R.string.title_highlight))
+        AdminHeader(optString(TextRes.title_highlight))
 
         StartDateTimeView(adminController)
         EndDateTimeView(adminController)
 
         AdminTextView(
             modifier = Modifier.fillMaxWidth(),
-            label = optString(R.string.label_title),
+            label = optString(TextRes.label_title),
             text = title,
             maxLength = 256,
             onValueChange = adminController::setTitle,
@@ -142,7 +142,7 @@ fun HighlightAndMaintenanceForm(
             number.value = pair?.second ?: ""
 
             HighlightContactRow(
-                label = optString(R.string.dynamic_contact, index.plus(1)),
+                label = optString(TextRes.dynamic_contact, index.plus(1)),
                 contactName = name.value,
                 contactNumber = number.value,
                 onValueChange = { updatedName, updatedNumber ->
@@ -157,10 +157,10 @@ fun HighlightAndMaintenanceForm(
         SIRow(modifier = Modifier.fillMaxWidth()) {
             SIButton(
                 modifier = Modifier.weight(1f),
-                text = optString(R.string.label_logout),
+                text = optString(TextRes.label_logout),
                 onClick = {
                     confirmDialog.value =
-                        ConfirmDialogParam(getString(R.string.msg_confirm_logout)) {
+                        ConfirmDialogParam(getString(TextRes.msg_confirm_logout)) {
                             adminController.signOut(context as ComponentActivity)
                         }
                 },
@@ -173,7 +173,7 @@ fun HighlightAndMaintenanceForm(
                     confirmDialog.value =
                         ConfirmDialogParam(
                             getString(
-                                R.string.dynamic_confirm_save_highlight,
+                                TextRes.dynamic_confirm_save_highlight,
                                 saveBtnText.value,
                             ),
                         ) {
@@ -198,7 +198,7 @@ private fun DetailView(
             .fillMaxWidth()
             .height(200.dp),
         value = text,
-        label = optString(R.string.label_detail),
+        label = optString(TextRes.label_detail),
         maxLines = 20,
         singleLine = false,
         keyboardOptions = KeyboardOptions.Default,
@@ -216,7 +216,7 @@ private fun StartDateTimeView(
     val startTime = adminController.startTime().observeAsState()
 
     HighlightDateTimeView(
-        label = optString(R.string.label_start),
+        label = optString(TextRes.label_start),
         selectedDate = selectedDate,
         selectedTime = startTime,
         minDate = minDate,
@@ -236,7 +236,7 @@ private fun EndDateTimeView(
     val endTime = adminController.endTime().observeAsState()
 
     HighlightDateTimeView(
-        label = optString(R.string.label_end),
+        label = optString(TextRes.label_end),
         selectedDate = selectedDate,
         selectedTime = endTime,
         minDate = minDate,

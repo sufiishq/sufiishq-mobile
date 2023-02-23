@@ -25,7 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.maxLength
 import pk.sufiishq.app.utils.quickToast
 import pk.sufiishq.app.utils.rem
@@ -76,15 +76,15 @@ fun ThemeScreen() {
                 scaleAndVisibility = scaleAndVisibility,
                 onLightModeCLick = {
                     AuroraConfig.updateTheme(Theme.Light, context)
-                    quickToast(R.string.msg_light_mode_on)
+                    quickToast(TextRes.msg_light_mode_on)
                 },
                 onDarkModeClick = {
                     AuroraConfig.updateTheme(Theme.Dark, context)
-                    quickToast(R.string.msg_dark_mode_on)
+                    quickToast(TextRes.msg_dark_mode_on)
                 },
                 onAutoModeClick = {
                     AuroraConfig.updateTheme(Theme.Auto, context)
-                    quickToast(R.string.msg_auto_mode_on)
+                    quickToast(TextRes.msg_auto_mode_on)
                 },
             )
         }

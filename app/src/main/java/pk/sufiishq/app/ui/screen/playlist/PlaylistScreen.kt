@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.playlist.controller.PlaylistController
 import pk.sufiishq.app.feature.playlist.controller.PlaylistViewModel
 import pk.sufiishq.app.feature.playlist.model.Playlist
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.isScrollingUp
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakePlaylistController
@@ -66,7 +66,7 @@ fun PlaylistScreen(
             hasItems = allPlaylist.isNotEmpty(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             state = listState,
-            noItemText = optString(R.string.msg_no_playlist),
+            noItemText = optString(TextRes.msg_no_playlist),
         ) {
             items(allPlaylist) { playlistItem ->
                 PlaylistItem(

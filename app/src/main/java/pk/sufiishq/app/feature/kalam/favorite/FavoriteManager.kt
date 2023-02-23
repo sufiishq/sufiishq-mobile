@@ -18,10 +18,10 @@ package pk.sufiishq.app.feature.kalam.favorite
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.quickToast
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -36,14 +36,14 @@ constructor(
     fun markAsFavorite(kalam: Kalam) {
         updateFavorite(
             kalam.apply { isFavorite = 1 },
-            R.string.dynamic_favorite_added,
+            TextRes.dynamic_favorite_added,
         )
     }
 
     fun removeFavorite(kalam: Kalam) {
         updateFavorite(
             kalam.apply { isFavorite = 0 },
-            R.string.dynamic_favorite_removed,
+            TextRes.dynamic_favorite_removed,
         )
     }
 

@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIRow
@@ -60,10 +60,10 @@ fun HelpHeader(
                     },
                 ) {
                     SIImage(
-                        resId = R.drawable.help_left_hand,
+                        resId = ImageRes.help_left_hand,
                         tintColor = AuroraColor.SecondaryVariant,
                     )
-                    SIImage(resId = R.drawable.help_left_hand_front)
+                    SIImage(resId = ImageRes.help_left_hand_front)
                 }
             }
             SIBox(
@@ -82,10 +82,10 @@ fun HelpHeader(
                         .align(Alignment.BottomStart),
                 ) {
                     SIImage(
-                        resId = R.drawable.help_right_hand,
+                        resId = ImageRes.help_right_hand,
                         tintColor = AuroraColor.SecondaryVariant,
                     )
-                    SIImage(resId = R.drawable.help_right_hand_front)
+                    SIImage(resId = ImageRes.help_right_hand_front)
                 }
             }
         }
@@ -101,8 +101,8 @@ fun HelpHeader(
                 .align(Alignment.TopCenter)
                 .padding(30.dp),
         ) {
-            SIImage(resId = R.drawable.help_main, tintColor = AuroraColor.SecondaryVariant)
-            SIImage(resId = R.drawable.help_main_front)
+            SIImage(resId = ImageRes.help_main, tintColor = AuroraColor.SecondaryVariant)
+            SIImage(resId = ImageRes.help_main_front)
         }
     }
 }

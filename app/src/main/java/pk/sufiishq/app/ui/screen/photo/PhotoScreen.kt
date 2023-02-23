@@ -29,7 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIIcon
@@ -81,24 +82,24 @@ fun PhotoScreen(
             ) { tint ->
                 SIIcon(
                     modifier = Modifier.size(30.dp),
-                    resId = R.drawable.zoom_in,
+                    resId = ImageRes.zoom_in,
                     tint = tint,
                 )
                 SIWidthSpace(value = 6)
                 SIText(
-                    text = optString(R.string.label_zoom_in_out),
+                    text = optString(TextRes.label_zoom_in_out),
                     textColor = tint,
                     textSize = TextSize.Small,
                 )
                 SIWidthSpace(value = 30)
                 SIIcon(
                     modifier = Modifier.size(34.dp),
-                    resId = R.drawable.drag,
+                    resId = ImageRes.drag,
                     tint = tint,
                 )
                 SIWidthSpace(value = 2)
                 SIText(
-                    text = optString(R.string.label_drag),
+                    text = optString(TextRes.label_drag),
                     textColor = tint,
                     textSize = TextSize.Small,
                 )

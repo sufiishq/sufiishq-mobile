@@ -27,7 +27,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 
 @Module
@@ -42,7 +42,7 @@ class AdminModule {
     @Provides
     fun provideGoogleSignInOptions(): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(getString(TextRes.default_web_client_id))
             .requestEmail()
             .build()
     }

@@ -21,11 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.playlist.controller.PlaylistController
 import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.quickToast
 import pk.sufiishq.app.utils.rem
@@ -43,18 +43,18 @@ fun AddOrUpdatePlaylistDialog(
         SIDialog(
             title =
             if (title.isEmpty()) {
-                optString(R.string.label_add_new_playlist)
+                optString(TextRes.label_add_new_playlist)
             } else {
-                optString(R.string.label_rename_playlist)
+                optString(TextRes.label_rename_playlist)
             },
-            onNoText = optString(R.string.label_cancel),
+            onNoText = optString(TextRes.label_cancel),
             onNoClick = { dismissDialog(showAddUpdatePlaylistDialog) },
             onDismissRequest = { dismissDialog(showAddUpdatePlaylistDialog) },
             onYesText =
             if (title.isEmpty()) {
-                optString(R.string.label_add)
+                optString(TextRes.label_add)
             } else {
-                optString(R.string.label_update)
+                optString(TextRes.label_update)
             },
             onYesClick = {
                 addOrUpdatePlaylist(
@@ -68,8 +68,8 @@ fun AddOrUpdatePlaylistDialog(
                 modifier = Modifier.fillMaxWidth(),
                 value = playlistTitle.value,
                 onValueChange = { playlistTitle.value = it },
-                label = optString(R.string.label_playlist_title),
-                emptyFieldError = optString(R.string.msg_kalam_title_required),
+                label = optString(TextRes.label_playlist_title),
+                emptyFieldError = optString(TextRes.msg_kalam_title_required),
                 maxLength = PLAYLIST_TITLE_LENGTH,
             )
         }
@@ -82,7 +82,7 @@ private fun addOrUpdatePlaylist(
     playlist: Playlist,
 ) {
     if (playlist.title.isEmpty()) {
-        quickToast(R.string.msg_kalam_title_required)
+        quickToast(TextRes.msg_kalam_title_required)
     } else {
         if (playlist.id == 0) {
             playlistController.add(playlist)

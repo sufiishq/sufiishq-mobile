@@ -33,10 +33,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import okhttp3.internal.format
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.downloader.FileInfo
 import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.aurora.components.SILinearProgressIndicator
 import pk.sufiishq.aurora.components.SIText
@@ -87,7 +87,7 @@ private fun KalamDownloadStartedDialog(
 ) {
     ShowDialog(
         title = kalamDownloadState.kalam.title,
-        onNoText = optString(R.string.label_cancel),
+        onNoText = optString(TextRes.label_cancel),
         onNoClick = { dismissDownload(kalamController) },
     ) {
         SILinearProgressIndicator(
@@ -116,7 +116,7 @@ private fun KalamDownloadInProgressDialog(
 
     ShowDialog(
         title = title,
-        onNoText = optString(R.string.label_cancel),
+        onNoText = optString(TextRes.label_cancel),
         onNoClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIRow(
@@ -151,7 +151,7 @@ private fun KalamDownloadCompletedDialog(
 
     ShowDialog(
         title = kalam.title,
-        onYesText = optString(R.string.label_ok),
+        onYesText = optString(TextRes.label_ok),
         onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIText(
@@ -176,11 +176,11 @@ private fun KalamDownloadErrorDialog(
 
     ShowDialog(
         title = kalam.title,
-        onYesText = optString(R.string.label_ok),
+        onYesText = optString(TextRes.label_ok),
         onYesClick = { dismissDownload(kalamController) },
     ) { textColor ->
         SIText(
-            text = optString(R.string.label_download_error),
+            text = optString(TextRes.label_download_error),
             textColor = textColor,
             fontWeight = FontWeight.Bold,
         )
@@ -202,7 +202,7 @@ private fun ShowDialog(
     content: @Composable ColumnScope.(fgColor: AuroraColor) -> Unit,
 ) {
     SIDialog(
-        title = optString(R.string.dynamic_download_kalam, title),
+        title = optString(TextRes.dynamic_download_kalam, title),
         onNoText = onNoText,
         onNoClick = onNoClick,
         onYesText = onYesText,

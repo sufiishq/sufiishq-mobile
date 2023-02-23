@@ -30,7 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
@@ -38,6 +37,8 @@ import pk.sufiishq.app.feature.app.controller.DashboardViewModel
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeDashboardController
 import pk.sufiishq.app.utils.fakeMainController
@@ -59,10 +60,10 @@ fun DashboardScreen(
     mainController: MainController = hiltViewModel<MainViewModel>(),
     dashboardController: DashboardController = hiltViewModel<DashboardViewModel>(),
 ) {
-    val all = rem(stringResource(R.string.title_all_kalam))
-    val favorites = rem(stringResource(R.string.title_favorites))
-    val downloads = rem(stringResource(R.string.title_downloads))
-    val playlist = rem(stringResource(R.string.title_playlist))
+    val all = rem(stringResource(TextRes.title_all_kalam))
+    val favorites = rem(stringResource(TextRes.title_favorites))
+    val downloads = rem(stringResource(TextRes.title_downloads))
+    val playlist = rem(stringResource(TextRes.title_playlist))
     val scaffoldState = rememberScaffoldState()
 
     SIScaffold(
@@ -117,7 +118,7 @@ fun DashboardScreen(
                         end.linkTo(parent.end)
                         bottom.linkTo(buttonBox.top)
                     },
-                    resId = R.drawable.caligraphi,
+                    resId = ImageRes.caligraphi,
                 )
 
                 HighlightAvailableButton(
@@ -132,7 +133,7 @@ fun DashboardScreen(
 
                 if (BuildConfig.DEBUG) {
                     SIBadge(
-                        text = optString(R.string.label_debug),
+                        text = optString(TextRes.label_debug),
                         modifier =
                         Modifier.constrainAs(debugLabel) {
                             end.linkTo(parent.end, 12.dp)
@@ -157,7 +158,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = all.value,
                                 count = dashboardController.countAll().observeAsState().optValue(0),
-                                icon = R.drawable.round_check_circle_24,
+                                icon = ImageRes.round_check_circle_24,
                                 paddingModifier = Modifier.padding(0.dp, 0.dp, 6.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -173,7 +174,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = favorites.value,
                                 count = dashboardController.countFavorites().observeAsState().optValue(0),
-                                icon = R.drawable.round_favorite_24,
+                                icon = ImageRes.round_favorite_24,
                                 paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
                                 navigate = {
                                     navController.navigate(
@@ -193,7 +194,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = downloads.value,
                                 count = dashboardController.countDownloads().observeAsState().optValue(0),
-                                icon = R.drawable.round_cloud_download_24,
+                                icon = ImageRes.round_cloud_download_24,
                                 paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -209,7 +210,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = playlist.value,
                                 count = dashboardController.countPlaylist().observeAsState().optValue(0),
-                                icon = R.drawable.round_format_list_bulleted_24,
+                                icon = ImageRes.round_format_list_bulleted_24,
                                 paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
                                 navigate = { navController.navigate(ScreenType.Playlist.buildRoute()) },
                             )

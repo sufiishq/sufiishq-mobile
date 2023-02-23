@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.model.AutoLockDuration
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.instantAutoLockDuration
 import pk.sufiishq.app.utils.rem
@@ -180,13 +180,13 @@ fun AppLockServiceCard(
 @Composable
 private fun getAutoLockDurations(): List<AutoLockDuration> {
     return listOf(
-        instantAutoLockDuration(optString(R.string.label_instant)),
-        AutoLockDuration(1, optString(R.string.label_30_seconds), 30000),
-        AutoLockDuration(2, optString(R.string.label_1_minute), 60000),
-        AutoLockDuration(3, optString(R.string.label_3_minutes), 180000),
-        AutoLockDuration(4, optString(R.string.label_5_minutes), 300000),
-        AutoLockDuration(5, optString(R.string.label_10_minutes), 600000),
-        AutoLockDuration(6, optString(R.string.label_30_minutes), 1800000),
-        AutoLockDuration(7, optString(R.string.label_1_hour), 3600000),
+        instantAutoLockDuration(optString(TextRes.label_instant)),
+        AutoLockDuration(1, optString(TextRes.label_30_seconds), 30000),
+        AutoLockDuration(2, optString(TextRes.label_1_minute), 60000),
+        AutoLockDuration(3, optString(TextRes.label_3_minutes), 180000),
+        AutoLockDuration(4, optString(TextRes.label_5_minutes), 300000),
+        AutoLockDuration(5, optString(TextRes.label_10_minutes), 600000),
+        AutoLockDuration(6, optString(TextRes.label_30_minutes), 1800000),
+        AutoLockDuration(7, optString(TextRes.label_1_hour), 3600000),
     )
 }

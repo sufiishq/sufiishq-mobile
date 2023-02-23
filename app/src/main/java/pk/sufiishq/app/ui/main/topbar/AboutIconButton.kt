@@ -35,8 +35,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIClickableText
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -59,7 +60,7 @@ fun AboutIconButton(
     val showDialog = rem(false)
 
     SIIcon(
-        resId = R.drawable.ic_outline_info_24,
+        resId = ImageRes.ic_outline_info_24,
         tint = onColor,
         onClick = { showDialog.value = true },
     )
@@ -97,7 +98,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                             contentAlignment = Alignment.Center,
                         ) {
                             SIText(
-                                text = stringResource(id = R.string.app_name),
+                                text = stringResource(id = TextRes.app_name),
                                 textColor = textColor,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -245,7 +246,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                         contentAlignment = Alignment.Center,
                     ) {
                         SIImage(
-                            resId = R.drawable.sarkar,
+                            resId = ImageRes.sarkar,
                             contentScale = ContentScale.FillWidth,
                         )
                     }

@@ -24,7 +24,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.ui.screen.admin.AdminSettingsScreen
 import pk.sufiishq.app.ui.screen.applock.AppLockScreen
@@ -35,6 +34,7 @@ import pk.sufiishq.app.ui.screen.photo.PhotoScreen
 import pk.sufiishq.app.ui.screen.playlist.PlaylistScreen
 import pk.sufiishq.app.ui.screen.theme.ThemeScreen
 import pk.sufiishq.app.ui.screen.tracks.TracksScreen
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getApp
 
 val ALL_SCREENS: List<ScreenType> =
@@ -142,7 +142,7 @@ sealed interface ScreenType {
 
         private fun getTitle(navBackStackEntry: NavBackStackEntry): String {
             return navBackStackEntry.arguments?.getString(PARAM_TITLE)
-                ?: getApp().getString(R.string.title_all_kalam)
+                ?: getApp().getString(TextRes.title_all_kalam)
         }
 
         private fun getPlaylistId(navBackStackEntry: NavBackStackEntry): Int {

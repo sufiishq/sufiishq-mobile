@@ -28,6 +28,8 @@ import kotlinx.coroutines.launch
 import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.applock.model.SecurityQuestion
 import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.rem
@@ -43,7 +45,7 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 fun SecurityQuestionList(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState,
-    doneButtonLabel: String = optString(R.string.label_done),
+    doneButtonLabel: String = optString(TextRes.label_done),
     onDoneClick: (item: SecurityQuestion) -> Unit,
     headerButtonClick: () -> Unit,
 ) {
@@ -67,7 +69,7 @@ fun SecurityQuestionList(
 
         SIDataRow(
             title = selection.value.label,
-            trailingIcon = R.drawable.baseline_arrow_drop_down_24,
+            trailingIcon = ImageRes.baseline_arrow_drop_down_24,
             onClick = { isExpanded.value = true },
         )
 
@@ -76,11 +78,11 @@ fun SecurityQuestionList(
         if (selection.value.index != 0) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = optString(R.string.label_answer),
+                label = optString(TextRes.label_answer),
                 value = answer.value,
                 onValueChange = { answer.value = it },
                 maxLength = 30,
-                emptyFieldError = optString(R.string.msg_ans_required),
+                emptyFieldError = optString(TextRes.msg_ans_required),
             )
 
             SIBox(modifier = Modifier.fillMaxWidth()) {
@@ -91,7 +93,7 @@ fun SecurityQuestionList(
                         if (answer.value.trim().isEmpty()) {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
-                                    getString(R.string.msg_ans_not_empty),
+                                    getString(TextRes.msg_ans_not_empty),
                                 )
                             }
                         } else {

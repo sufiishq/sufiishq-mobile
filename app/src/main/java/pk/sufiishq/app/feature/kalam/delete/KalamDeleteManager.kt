@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.R
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.extension.offlineFile
@@ -29,6 +28,7 @@ import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamDeleteItem
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.quickToast
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -48,7 +48,7 @@ constructor(
         if (canDelete(kalamDeleteItem.kalam)) {
             deleteKalam(kalamDeleteItem)
         } else {
-            quickToast(R.string.dynamic_delete_on_playing_error, kalamDeleteItem.kalam.title)
+            quickToast(TextRes.dynamic_delete_on_playing_error, kalamDeleteItem.kalam.title)
         }
     }
 

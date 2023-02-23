@@ -21,11 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.rem
@@ -65,7 +65,7 @@ fun SearchTextFieldPreviewLight() {
         SearchTextField(
             AuroraColor.OnBackground,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
-            TrackListType.All(optString(R.string.title_all_kalam)),
+            TrackListType.All(optString(TextRes.title_all_kalam)),
             fakeKalamController(),
         )
     }
@@ -80,7 +80,7 @@ fun SearchTextFieldPreviewDark() {
         SearchTextField(
             AuroraColor.OnBackground,
             data.getKalamDataFlow().collectAsLazyPagingItems(),
-            TrackListType.All(optString(R.string.title_all_kalam)),
+            TrackListType.All(optString(TextRes.title_all_kalam)),
             fakeKalamController(),
         )
     }

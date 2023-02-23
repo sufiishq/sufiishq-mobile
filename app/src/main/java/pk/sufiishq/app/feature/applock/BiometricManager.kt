@@ -21,7 +21,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pk.sufiishq.app.R
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.hasBiometricCapability
 import pk.sufiishq.app.utils.getString
 import timber.log.Timber
@@ -60,7 +60,7 @@ constructor(
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
                     biometricVerified = false
-                    Timber.d(getString(R.string.msg_biometric_failed_unknown))
+                    Timber.d(getString(TextRes.msg_biometric_failed_unknown))
                     callback(BiometricStatus.Failed)
                 }
 
@@ -78,14 +78,14 @@ constructor(
 
     private fun createPromptInfo(allowUsePin: Boolean): BiometricPrompt.PromptInfo {
         return BiometricPrompt.PromptInfo.Builder()
-            .setTitle(getString(R.string.app_name))
+            .setTitle(getString(TextRes.app_name))
             .setConfirmationRequired(false)
             .setNegativeButtonText(
                 if (allowUsePin) {
-                    getString(R.string.label_use_pin)
+                    getString(TextRes.label_use_pin)
                 } else {
                     getString(
-                        R.string.label_cancel,
+                        TextRes.label_cancel,
                     )
                 },
             )

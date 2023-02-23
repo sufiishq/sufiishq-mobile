@@ -26,12 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import pk.sufiishq.app.R
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
+import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeMainController
 import pk.sufiishq.aurora.components.SIDropdownMenuItem
@@ -51,7 +52,7 @@ fun AppBarOverflowMenu(
 
     SIPopupMenu(
         modifier = Modifier.testTag("test_tag_app_bar_popup_menu"),
-        resId = R.drawable.ic_baseline_more_vert_24,
+        resId = ImageRes.ic_baseline_more_vert_24,
         iconTint = iconColor,
         data = mainController.popupMenuItems(),
         onClick = { handleClick(mainController, it, context, navController) },
@@ -116,9 +117,9 @@ fun AppBarOverflowMenuPreviewDark() {
 fun OverflowMenuItemPreviewLight() {
     AuroraLight {
         SIDropdownMenuItem(
-            label = optString(R.string.menu_item_share),
+            label = optString(TextRes.menu_item_share),
             labelColor = AuroraColor.OnBackground,
-            resId = R.drawable.ic_round_share_24,
+            resId = ImageRes.ic_round_share_24,
             onClick = {},
         )
     }
@@ -130,9 +131,9 @@ fun OverflowMenuItemPreviewLight() {
 fun OverflowMenuItemPreviewDark() {
     AuroraDark {
         SIDropdownMenuItem(
-            label = optString(R.string.menu_item_share),
+            label = optString(TextRes.menu_item_share),
             labelColor = AuroraColor.OnBackground,
-            resId = R.drawable.ic_round_share_24,
+            resId = ImageRes.ic_round_share_24,
             onClick = {},
         )
     }
