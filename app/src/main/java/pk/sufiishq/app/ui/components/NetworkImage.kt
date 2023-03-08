@@ -16,9 +16,14 @@
 
 package pk.sufiishq.app.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.layout.SIBox
@@ -32,14 +37,24 @@ private enum class State {
 fun NetworkImage(
     modifier: Modifier = Modifier,
     url: String,
+    contentScale: ContentScale = ContentScale.Fit,
+    @DrawableRes placeholder: Int = ImageRes.placeholder,
 ) {
     val state = rem(State.Loading)
+    val context = LocalContext.current
 
     SIBox {
         AsyncImage(
             modifier = modifier,
-            model = url,
+            model = ImageRequest.Builder(context)
+                .data(url)
+                .crossfade(true)
+                .placeholder(placeholder)
+                .error(placeholder)
+                .build(),
             contentDescription = null,
+            contentScale = contentScale,
+
             onLoading = { state.value = State.Loading },
             onError = { state.value = State.Done },
             onSuccess = { state.value = State.Done },

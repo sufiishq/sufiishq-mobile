@@ -21,10 +21,12 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
-import pk.sufiishq.app.feature.gallery.model.Occasion
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
+import pk.sufiishq.app.feature.occasions.model.Occasion
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 
@@ -33,13 +35,15 @@ import pk.sufiishq.app.feature.playlist.model.Playlist
     version = 2,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-    ]
+        AutoMigration(from = 1, to = 2),
+    ],
 )
 abstract class SufiIshqDatabase : RoomDatabase() {
 
     abstract fun kalamDao(): KalamDao
     abstract fun playlistDao(): PlaylistDao
+    abstract fun occasionDao(): OccasionDao
+    abstract fun mediaDao(): MediaDao
 
     companion object {
 

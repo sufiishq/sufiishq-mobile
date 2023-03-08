@@ -24,29 +24,40 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.google.gson.Gson
+import pk.sufiishq.app.feature.app.model.Media
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
+import pk.sufiishq.app.feature.occasions.OccasionType
 import pk.sufiishq.app.ui.screen.admin.AdminSettingsScreen
 import pk.sufiishq.app.ui.screen.applock.AppLockScreen
 import pk.sufiishq.app.ui.screen.dashboard.DashboardScreen
+import pk.sufiishq.app.ui.screen.gallery.GalleryScreen
 import pk.sufiishq.app.ui.screen.help.HelpScreen
 import pk.sufiishq.app.ui.screen.location.DarbarLocationScreen
+import pk.sufiishq.app.ui.screen.occasion.OccasionScreen
+import pk.sufiishq.app.ui.screen.occasionlist.OccasionListScreen
 import pk.sufiishq.app.ui.screen.photo.PhotoScreen
+import pk.sufiishq.app.ui.screen.photolist.PhotoListScreen
 import pk.sufiishq.app.ui.screen.playlist.PlaylistScreen
 import pk.sufiishq.app.ui.screen.theme.ThemeScreen
 import pk.sufiishq.app.ui.screen.tracks.TracksScreen
+import pk.sufiishq.app.ui.screen.videolist.VideoListScreen
+import pk.sufiishq.app.ui.screen.videoplay.VideoPlayScreen
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getApp
+import pk.sufiishq.app.feature.occasions.model.Occasion as OccasionModel
 
-val ALL_SCREENS: List<ScreenType> =
+val MainScreens: List<ScreenType> =
     ScreenType::class.nestedClasses.toList().map { it.objectInstance as ScreenType }
 
 sealed interface ScreenType {
+
     val route: String
     fun buildRoute(): String
     fun arguments(): List<NamedNavArgument> = emptyList()
     fun deepLinks(): List<NavDeepLink> = emptyList()
 
-    fun buildRoute(vararg args: String): String {
+    fun buildRoute(vararg args: Any): String {
         return buildString {
             append(route)
 
@@ -287,6 +298,182 @@ sealed interface ScreenType {
             AdminSettingsScreen(
                 scaffoldState = scaffoldState,
             )
+        }
+    }
+
+    object Gallery : ScreenType {
+
+        override val route: String
+            get() = "gallery_screen"
+
+        override fun buildRoute() = route
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            GalleryScreen(navController)
+        }
+    }
+
+    object OccasionList : ScreenType {
+
+        private const val PARAM_LIST_TYPE = "list_type"
+
+        override val route: String
+            get() = "occasion_list_screen"
+
+        override fun buildRoute(): String {
+            return "$route/{$PARAM_LIST_TYPE}"
+        }
+
+        private fun getListType(navBackStackEntry: NavBackStackEntry): String {
+            return navBackStackEntry.arguments?.getString(PARAM_LIST_TYPE)!!
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_LIST_TYPE) { type = NavType.StringType },
+            )
+        }
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            OccasionListScreen(navController, OccasionType.valueOf(getListType(navBackStackEntry)))
+        }
+    }
+
+    object Occasion : ScreenType {
+
+        private const val PARAM_OCCASION = "list_type"
+
+        override val route: String
+            get() = "occasion_screen"
+
+        override fun buildRoute(): String {
+            return "$route/{$PARAM_OCCASION}"
+        }
+
+        private fun getOccasion(navBackStackEntry: NavBackStackEntry): OccasionModel {
+            return navBackStackEntry.arguments?.getString(PARAM_OCCASION)!!.let {
+                Gson().fromJson(it, OccasionModel::class.java)
+            }
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_OCCASION) { type = JsonNavType(OccasionModel::class.java) },
+            )
+        }
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            OccasionScreen(navController, getOccasion(navBackStackEntry))
+        }
+    }
+
+    object PhotoList : ScreenType {
+
+        private const val PARAM_MEDIA = "referenceId"
+
+        override val route: String
+            get() = "photo_list_screen"
+
+        override fun buildRoute(): String {
+            return "$route/{$PARAM_MEDIA}"
+        }
+
+        private fun getReferenceId(navBackStackEntry: NavBackStackEntry): String {
+            return navBackStackEntry.arguments?.getString(PARAM_MEDIA)!!
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_MEDIA) { type = NavType.StringType },
+            )
+        }
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            PhotoListScreen(getReferenceId(navBackStackEntry))
+        }
+    }
+
+    object VideoList : ScreenType {
+
+        private const val PARAM_MEDIA = "referenceId"
+
+        override val route: String
+            get() = "video_list_screen"
+
+        override fun buildRoute(): String {
+            return "$route/{$PARAM_MEDIA}"
+        }
+
+        private fun getReferenceId(navBackStackEntry: NavBackStackEntry): String {
+            return navBackStackEntry.arguments?.getString(PARAM_MEDIA)!!
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_MEDIA) { type = NavType.StringType },
+            )
+        }
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            VideoListScreen(navController, getReferenceId(navBackStackEntry))
+        }
+    }
+
+    object VideoPlay : ScreenType {
+
+        private const val PARAM_MEDIA = "media"
+
+        override val route: String
+            get() = "video_play_screen"
+
+        override fun buildRoute(): String {
+            return "$route/{$PARAM_MEDIA}"
+        }
+
+        private fun getMedia(navBackStackEntry: NavBackStackEntry): Media {
+            return navBackStackEntry.arguments?.getString(PARAM_MEDIA)!!.let {
+                Gson().fromJson(it, Media::class.java)
+            }
+        }
+
+        override fun arguments(): List<NamedNavArgument> {
+            return listOf(
+                navArgument(PARAM_MEDIA) { type = JsonNavType(Media::class.java) },
+            )
+        }
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            VideoPlayScreen(navController, getMedia(navBackStackEntry))
         }
     }
 }

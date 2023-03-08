@@ -22,9 +22,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import pk.sufiishq.app.feature.app.api.MediaService
 import pk.sufiishq.app.feature.help.api.HelpContentService
 import pk.sufiishq.app.feature.hijridate.api.HijriDateService
 import pk.sufiishq.app.feature.kalam.downloader.DownloadFileService
+import pk.sufiishq.app.feature.occasions.api.OccasionService
 import pk.sufiishq.app.utils.SUFI_ISHQ_HOST
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -32,9 +34,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
-    @Singleton @Provides
-    fun provideBaseUrl(): String = SUFI_ISHQ_HOST
 
     @Singleton
     @Provides
@@ -50,8 +49,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String): Retrofit {
-        return Retrofit.Builder().baseUrl(baseUrl).client(okHttpClient).build()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder().baseUrl(SUFI_ISHQ_HOST).client(okHttpClient).build()
     }
 
     @Provides
@@ -67,5 +66,15 @@ class NetworkModule {
     @Provides
     fun provideHijriDateService(retrofit: Retrofit): HijriDateService {
         return retrofit.create(HijriDateService::class.java)
+    }
+
+    @Provides
+    fun provideMediaService(retrofit: Retrofit): MediaService {
+        return retrofit.create(MediaService::class.java)
+    }
+
+    @Provides
+    fun provideOccasionService(retrofit: Retrofit): OccasionService {
+        return retrofit.create(OccasionService::class.java)
     }
 }

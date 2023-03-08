@@ -16,7 +16,9 @@
 
 package pk.sufiishq.app.ui.main
 
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.applock.AppLockManager
@@ -39,13 +41,19 @@ fun MainHostView(
 
     SIScaffold(
         topBar = {
-            SITopAppBar(
-                navigationIcon = { fgColor -> AboutIconButton(fgColor) },
-                actions = { fgColor -> AppBarOverflowMenu(navController, fgColor) },
-                centerDrawable = ImageRes.hp_logo,
-            )
+            if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                SITopAppBar(
+                    navigationIcon = { fgColor -> AboutIconButton(fgColor) },
+                    actions = { fgColor -> AppBarOverflowMenu(navController, fgColor) },
+                    centerDrawable = ImageRes.hp_logo,
+                )
+            }
         },
-        bottomBar = { PlayerView() },
+        bottomBar = {
+            if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                PlayerView()
+            }
+        },
     ) {
         ContentBackground { NavigationHost(navController) }
     }

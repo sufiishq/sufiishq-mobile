@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pk.sufiishq.app.feature.admin.auth.AuthManager
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.app.AppManager
+import pk.sufiishq.app.feature.app.PermissionManager
 import pk.sufiishq.app.feature.app.controller.AssetKalamLoaderViewModel
 import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.feature.applock.AppLockManager
@@ -46,6 +47,8 @@ open class BaseActivity : FragmentActivity() {
 
     @Inject lateinit var maintenanceManager: MaintenanceManager
 
+    @Inject lateinit var permissionManager: PermissionManager
+
     private val mainController: MainViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
@@ -61,6 +64,8 @@ open class BaseActivity : FragmentActivity() {
         mainController.checkUpdate(this@BaseActivity)
 
         authManager.registerActivityResultListener(this)
+
+        permissionManager.validateNotificationPermission(this)
     }
 
     override fun onDestroy() {

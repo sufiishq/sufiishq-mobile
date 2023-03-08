@@ -25,7 +25,9 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import io.mockk.spyk
 import pk.sufiishq.app.db.SufiIshqDatabase
+import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
+import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import javax.inject.Singleton
 
@@ -52,5 +54,17 @@ class TestDatabaseModule {
     @Singleton
     fun providePlaylistDao(db: SufiIshqDatabase): PlaylistDao {
         return spyk(db.playlistDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideMediaDao(db: SufiIshqDatabase): MediaDao {
+        return spyk(db.mediaDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideOccasionDao(db: SufiIshqDatabase): OccasionDao {
+        return spyk(db.occasionDao())
     }
 }

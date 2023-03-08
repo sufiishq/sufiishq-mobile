@@ -13,6 +13,11 @@
     <string name="title_update_security_question">Update Security Question</string>
     <string name="title_remove_app_lock">Remove App Lock</string>
     <string name="title_hint">Hint</string>
+    <string name="title_gallery">Gallery</string>
+    <string name="title_niaz">Niaz</string>
+    <string name="title_urs">Urs</string>
+    <string name="title_videos">Videos</string>
+    <string name="title_photos">Photos</string>
 
     <string name="menu_item_add_to_playlist">Add to Playlist</string>
     <string name="menu_item_mark_as_favorite">Mark as Favorite</string>
@@ -101,6 +106,7 @@
     <string name="label_maintenance">Maintenance</string>
     <string name="label_on">On</string>
     <string name="label_strict">Strict</string>
+    <string name="label_alert">Alert</string>
 
     <string name="msg_update_available">New update available now</string>
     <string name="msg_no_playlist">No playlist found</string>
@@ -139,6 +145,11 @@
     <string name="msg_under_maintenance_partial">Application is currently under maintenance some of the features may not work properly.</string>
     <string name="msg_confirm_remove_app_lock">Are you sure you want to remove App Lock?</string>
     <string name="msg_kalam_meta_info">Kalam Title: %s\nLocation: %s</string>
+    <string name="msg_no_photos">No Photos Available</string>
+    <string name="msg_no_videos">No Videos Available</string>
+    <string name="msg_occasions_updated">Niaz And Urs has been updated!</string>
+    <string name="msg_require_notif_permissions">SufiIshq app required notification permission to show notification</string>
+    <string name="msg_no_occasions">No %s Available</string>
 
     <string name="detail_setup_app_lock">Setup your SufiIshq application lock configuration by setting up the PIN and Fingerprint options with easy steps.</string>
     <string name="detail_change_pin">Update your pin any time and also make sure to use a strong pin and avoid using a simple pin so that anyone can\'t guess.</string>
@@ -147,6 +158,9 @@
     <string name="detail_change_app_lock_time">You can change the auto app lock duration at any time.</string>
     <string name="detail_remove_app_lock">You can remove your pin and fingerprint lock here at any time.</string>
     <string name="detail_hint">The security question will help to regenerate your pin, in case you forgot your pin.</string>
+    <string name="detail_card_niaz">In this section you would find all available Niaz. You can search Niaz with location and date.</string>
+    <string name="detail_card_urs">In this section you would find all available Urs. You can also search Urs by date.</string>
+    <string name="detail_card_videos">In this section you would find all feature videos.</string>
 
     <string name="dynamic_no_kalam_found">No kalam found in %s</string>
     <string name="dynamic_download_kalam">Download Kalam %s</string>
@@ -168,6 +182,9 @@
     <string name="dynamic_auto_lock_duration_set">Auto lock duration set to %s</string>
     <string name="dynamic_ask_security_question">Q. %s</string>
     <string name="dynamic_exception_state_not_handled">%s is not a handled</string>
+    <string name="dynamic_photo_list_count">%s Photos</string>
+    <string name="dynamic_video_list_count">%s Videos</string>
+    <string name="dynamic_search_occasion">Search %s</string>
 
     <string name="loc_karachi">Karachi</string>
     <string name="loc_pakpattan">PakPattan</string>

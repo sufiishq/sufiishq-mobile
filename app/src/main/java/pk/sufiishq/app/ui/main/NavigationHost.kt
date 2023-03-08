@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import pk.sufiishq.app.helpers.ALL_SCREENS
+import pk.sufiishq.app.helpers.MainScreens
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIScaffold
@@ -55,7 +55,7 @@ fun NavigationHost(
                 navController = navController,
                 startDestination = ScreenType.Dashboard.buildRoute(),
             ) {
-                ALL_SCREENS.onEach { screen ->
+                MainScreens.onEach { screen ->
                     composable(screen.buildRoute(), screen.arguments(), screen.deepLinks()) {
                         screen.Compose(navController, it, scaffoldState)
                     }

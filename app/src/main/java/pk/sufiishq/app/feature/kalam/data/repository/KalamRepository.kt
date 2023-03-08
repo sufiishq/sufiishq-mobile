@@ -102,12 +102,16 @@ constructor(
         return kalamDao.getAllPlaylistKalam(playlistId)
     }
 
-    fun getDefaultKalam(): LiveData<Kalam> {
+    suspend fun getDefaultKalam(): Kalam? {
         return kalamDao.getFirstKalam()
     }
 
     fun countAll(): LiveData<Int> {
         return kalamDao.countAll()
+    }
+
+    suspend fun countAllWithSuspend(): Int {
+        return kalamDao.countAllWithSuspend()
     }
 
     fun countDownloads(): LiveData<Int> {

@@ -22,3 +22,4 @@ const val CACHE_SPLIT_FILENAME = "split.mp3"
 const val KALAM_TITLE_LENGTH = 50
 const val PLAYLIST_TITLE_LENGTH = 30
 const val LAST_PLAY_KALAM = "last_play_kalam"
+const val FEATURE_VIDEO_REFERENCE_ID = "0"

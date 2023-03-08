@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "bf59fd2463b41ce994fc8af839ce20e9",
+    "identityHash": "cca06e8c7c1bead9ca8e0b1eac772728",
     "entities": [
       {
         "tableName": "kalam",
@@ -106,12 +106,18 @@
       },
       {
         "tableName": "occasion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `cover` TEXT NOT NULL, `start_timestamp` INTEGER NOT NULL, `end_timestamp` INTEGER NOT NULL, `hijri_date` TEXT NOT NULL, `type` TEXT NOT NULL, `address` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `cover` TEXT NOT NULL, `startTimestamp` INTEGER NOT NULL, `endTimestamp` INTEGER NOT NULL, `hijriDate` TEXT NOT NULL, `type` TEXT NOT NULL, `address` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -134,19 +140,19 @@
           },
           {
             "fieldPath": "startTimestamp",
-            "columnName": "start_timestamp",
+            "columnName": "startTimestamp",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "endTimestamp",
-            "columnName": "end_timestamp",
+            "columnName": "endTimestamp",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "hijriDate",
-            "columnName": "hijri_date",
+            "columnName": "hijriDate",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -161,20 +167,32 @@
             "columnName": "address",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `thumbnail` TEXT, `src` TEXT NOT NULL, `type` TEXT NOT NULL, `kind` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT, `thumbnail` TEXT, `src` TEXT NOT NULL, `type` TEXT NOT NULL, `referenceId` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -207,8 +225,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "kind",
-            "columnName": "kind",
+            "fieldPath": "referenceId",
+            "columnName": "referenceId",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -217,7 +235,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -226,7 +244,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bf59fd2463b41ce994fc8af839ce20e9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cca06e8c7c1bead9ca8e0b1eac772728')"
     ]
   }
 }

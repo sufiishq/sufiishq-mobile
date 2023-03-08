@@ -17,6 +17,8 @@
 package pk.sufiishq.app
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -33,7 +35,9 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
-class SufiIshqApp : Application() {
+class SufiIshqApp : Application(), Configuration.Provider {
+
+    @Inject lateinit var hiltWorkerFactory: HiltWorkerFactory
 
     @Inject
     @SecureSharedPreferences
@@ -50,15 +54,21 @@ class SufiIshqApp : Application() {
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 
-        initCacheRemoveWorkRequest()
+        initWorkers()
     }
 
-    private fun initCacheRemoveWorkRequest() {
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(hiltWorkerFactory)
+            .build()
+    }
+
+    private fun initWorkers() {
         val cacheRemoveWorkRequest =
             PeriodicWorkRequestBuilder<CacheRemoveWorker>(24, TimeUnit.HOURS).build()
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork(
-                CacheRemoveWorker.TAG,
+                CacheRemoveWorker::class.java.simpleName,
                 ExistingPeriodicWorkPolicy.KEEP,
                 cacheRemoveWorkRequest,
             )
