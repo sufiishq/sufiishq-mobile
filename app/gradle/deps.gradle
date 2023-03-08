@@ -42,6 +42,10 @@ dependencies {
     // hilt navigation compose
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
+    // dagger-hilt work manager extension
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
@@ -49,12 +53,14 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-appcheck-playintegrity'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.google.firebase:firebase-appcheck-debug:16.1.1'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.1.2'
+
 
 
 
@@ -92,6 +98,10 @@ dependencies {
 
     // Gson is a Java library that can be used to convert Java Objects into their JSON representation.
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // exoplayer for video streaming
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.3'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.3'
 
     // add sufi-ishq aurora ui sdk
     implementation project(":aurora")

@@ -19,12 +19,10 @@ package pk.sufiishq.app.feature.app.controller
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
@@ -45,18 +43,20 @@ constructor(
     private val kalamRepository: KalamRepository,
 ) : ViewModel() {
 
+    private var runOnlyOnce = true
+
     fun countAll(): LiveData<Int> = kalamRepository.countAll()
 
     fun loadAllKalam() {
         viewModelScope.launch {
-            kalamRepository.countAll().asFlow().collectLatest { count ->
-                if (count <= 0) {
+            kalamRepository.countAllWithSuspend().let { count ->
+                if (count <= 0 && runOnlyOnce) {
+                    runOnlyOnce = false
                     val allKalam = kalamRepository.loadAllFromAssets(appContext)
                     initDefaultKalam(allKalam[allKalam.size.minus(1)].copy(id = allKalam.size))
                     kalamRepository.insertAll(allKalam)
                 } else if (LAST_PLAY_KALAM.getFromStorage("").isEmpty()) {
-                    kalamRepository.getDefaultKalam().asFlow()
-                        .collectLatest { initDefaultKalam(it) }
+                    kalamRepository.getDefaultKalam()?.let { initDefaultKalam(it) }
                 }
             }
         }

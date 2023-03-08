@@ -86,7 +86,7 @@ class TestAppModule {
                 ScreenType.Photo.buildRoute(ImageRes.photo_tasbeeh.toString()),
             ),
             // NavigationItem(getString(TextRes.menu_item_events), ImageRes.events, ""),
-            // NavigationItem(getString(TextRes.menu_item_gallery), ImageRes.gallery, ""),
+            NavigationItem(getString(TextRes.menu_item_gallery), ImageRes.gallery, ""),
             // NavigationItem(getString(TextRes.menu_item_niaz), ImageRes.niaz, ""),
             // NavigationItem(getString(TextRes.menu_item_remedies), ImageRes.remedy, ""),
             // NavigationItem(getString(TextRes.menu_item_rubai), ImageRes.rubai, ""),

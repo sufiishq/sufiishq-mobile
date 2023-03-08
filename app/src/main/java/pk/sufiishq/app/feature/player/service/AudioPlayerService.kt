@@ -51,7 +51,8 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
     @IoDispatcher @Inject
     lateinit var dispatcher: CoroutineContext
 
-    private val notification: PlayerNotification by lazy { PlayerNotification(this) }
+    @Inject lateinit var playerNotification: PlayerNotification
+
     private var autoPlay = false
     private var job: Job? = null
 
@@ -83,7 +84,7 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
     }
 
     private fun buildNotification(kalam: Kalam) {
-        notification.buildNotification(kalam, this)
+        playerNotification.buildNotification(kalam, this)
     }
 
     private fun removeNotification() {

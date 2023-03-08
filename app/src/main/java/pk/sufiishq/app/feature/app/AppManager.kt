@@ -23,7 +23,9 @@ import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppManager @Inject constructor() {
 
     fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {

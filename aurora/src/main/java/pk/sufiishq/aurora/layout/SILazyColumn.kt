@@ -1,5 +1,7 @@
 package pk.sufiishq.aurora.layout
 
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,7 @@ fun SILazyColumn(
     hasItems: Boolean = true,
     noItemText: String? = null,
     state: LazyListState = rememberLazyListState(),
+    flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     content: LazyListScope.() -> Unit
 ) {
     if (hasItems) {
@@ -33,6 +36,7 @@ fun SILazyColumn(
             verticalArrangement = verticalArrangement,
             horizontalAlignment = horizontalAlignment,
             state = state,
+            flingBehavior = flingBehavior,
             content = content
         )
     } else {

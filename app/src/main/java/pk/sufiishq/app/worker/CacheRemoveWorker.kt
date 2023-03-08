@@ -17,16 +17,18 @@
 package pk.sufiishq.app.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import pk.sufiishq.app.utils.extention.deleteContent
 
-class CacheRemoveWorker(context: Context, workerParam: WorkerParameters) :
-    Worker(context, workerParam) {
-
-    companion object {
-        val TAG = CacheRemoveWorker::class.simpleName!!
-    }
+@HiltWorker
+class CacheRemoveWorker @AssistedInject constructor(
+    @Assisted val context: Context,
+    @Assisted workerParam: WorkerParameters,
+) : Worker(context, workerParam) {
 
     override fun doWork(): Result {
         applicationContext.cacheDir.deleteContent()

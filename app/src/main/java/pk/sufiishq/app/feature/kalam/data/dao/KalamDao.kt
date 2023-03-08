@@ -32,7 +32,7 @@ import pk.sufiishq.app.feature.kalam.model.Kalam
 interface KalamDao {
 
     @Query("SELECT * FROM kalam ORDER BY id DESC LIMIT 1")
-    fun getFirstKalam(): LiveData<Kalam>
+    suspend fun getFirstKalam(): Kalam?
 
     @Query("SELECT * FROM kalam WHERE id = :id")
     fun getKalam(id: Int): LiveData<Kalam?>
@@ -79,6 +79,9 @@ interface KalamDao {
 
     @Query("SELECT COUNT(*) FROM kalam")
     fun countAll(): LiveData<Int>
+
+    @Query("SELECT COUNT(*) FROM kalam")
+    suspend fun countAllWithSuspend(): Int
 
     @Query("SELECT COUNT(*) FROM kalam WHERE offline_src != ''")
     fun countDownloads(): LiveData<Int>

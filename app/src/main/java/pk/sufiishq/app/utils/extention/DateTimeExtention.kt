@@ -44,7 +44,22 @@ fun Int.shortMonthName(): String {
         .let { SimpleDateFormat("MMM").format(it.time) }
 }
 
+@SuppressLint("SimpleDateFormat")
+fun Int.fullMonthName(): String {
+    return Calendar.getInstance()
+        .apply { set(Calendar.MONTH, this@fullMonthName) }
+        .let { SimpleDateFormat("MMMM").format(it.time) }
+}
+
 fun Calendar.nextYear(count: Int = 1): Calendar {
     add(Calendar.YEAR, count)
     return this
+}
+
+fun Long.formatTime(pattern: String): String {
+    val time = Calendar.getInstance().apply {
+        timeInMillis = this@formatTime
+    }.time
+    val dateFormatter = SimpleDateFormat(pattern, Locale.getDefault())
+    return dateFormatter.format(time)
 }

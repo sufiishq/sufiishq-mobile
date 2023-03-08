@@ -25,6 +25,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import org.json.JSONArray
+import org.json.JSONObject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.feature.admin.model.Highlight
@@ -176,3 +178,10 @@ fun instantAutoLockDuration(label: String) =
         label = label,
         durationInMillis = 0,
     )
+
+fun JSONArray.asObjectList(): List<JSONObject> {
+    val list = mutableListOf<JSONObject>()
+
+    (0..length().minus(1)).onEach { list.add(getJSONObject(it)) }
+    return list
+}

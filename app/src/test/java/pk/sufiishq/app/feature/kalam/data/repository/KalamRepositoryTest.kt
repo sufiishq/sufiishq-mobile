@@ -165,7 +165,7 @@ class KalamRepositoryTest : SufiIshqTest() {
     @Test
     fun testGetDefaultKalam_shouldReturn_defaultKalam() = runBlocking {
         kalamRepository.insert(sampleKalam().copy(id = 6))
-        assertNotNull(kalamRepository.getDefaultKalam().getOrAwaitValue())
+        assertNotNull(kalamRepository.getDefaultKalam())
     }
 
     @Test
