@@ -32,6 +32,6 @@ fun SIBox(
             .padding(padding.coerceIn(0, 12).dp),
         contentAlignment = contentAlignment
     ) {
-        content(bgColor.getForegroundColor())
+        content(bgColor.getForegroundColor(bgColor.color()))
     }
 }

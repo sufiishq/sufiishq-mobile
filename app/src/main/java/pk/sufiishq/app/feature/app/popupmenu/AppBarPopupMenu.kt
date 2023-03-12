@@ -29,8 +29,6 @@ class AppBarPopupMenu @Inject constructor() : PopupMenu {
         return listOf(
             PopupMenuItem.Share(getString(TextRes.menu_item_share)),
             PopupMenuItem.Facebook(getString(TextRes.menu_item_facebook)),
-            PopupMenuItem.Help(getString(TextRes.menu_item_help)),
-            PopupMenuItem.Theme(getString(TextRes.menu_item_theme)),
         )
     }
 }

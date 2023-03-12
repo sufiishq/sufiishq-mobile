@@ -28,67 +28,55 @@ sealed class PopupMenuItem(
 
     class MarkAsFavorite(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_favorite_24,
+        itemResId: Int? = ImageRes.favorite,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class MarkAsNotFavorite(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_favorite_border_24,
+        itemResId: Int? = ImageRes.favorite_outline,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Download(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_cloud_download_24,
+        itemResId: Int? = ImageRes.download,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class AddToPlaylist(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_playlist_add_24,
+        itemResId: Int? = ImageRes.add,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Share(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_share_24,
+        itemResId: Int? = ImageRes.share,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Split(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_call_split_24,
+        itemResId: Int? = ImageRes.split,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Edit(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_outline_edit_24,
+        itemResId: Int? = ImageRes.edit,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Delete(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_outline_delete_24,
+        itemResId: Int? = ImageRes.delete,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 
     class Facebook(
         itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_groups_24,
-        itemIconTint: AuroraColor? = null,
-    ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
-
-    class Help(
-        itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_help_24,
-        itemIconTint: AuroraColor? = null,
-    ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
-
-    class Theme(
-        itemLabel: String,
-        itemResId: Int? = ImageRes.ic_round_dark_mode_24,
+        itemResId: Int? = ImageRes.group,
         itemIconTint: AuroraColor? = null,
     ) : PopupMenuItem(itemLabel, itemResId, itemIconTint)
 }

@@ -24,12 +24,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.controller.MainViewModel
-import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
@@ -44,7 +41,6 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 
 @Composable
 fun AppBarOverflowMenu(
-    navController: NavController,
     iconColor: AuroraColor? = null,
     mainController: MainController = hiltViewModel<MainViewModel>(),
 ) {
@@ -55,7 +51,7 @@ fun AppBarOverflowMenu(
         resId = ImageRes.ic_baseline_more_vert_24,
         iconTint = iconColor,
         data = mainController.popupMenuItems(),
-        onClick = { handleClick(mainController, it, context, navController) },
+        onClick = { handleClick(mainController, it, context) },
     )
 }
 
@@ -63,7 +59,6 @@ private fun handleClick(
     mainController: MainController,
     popupMenuItem: DataMenuItem,
     context: Context,
-    navController: NavController,
 ) {
     when (popupMenuItem) {
         is PopupMenuItem.Share -> mainController.shareApp(context as ComponentActivity)
@@ -72,15 +67,6 @@ private fun handleClick(
                 context,
                 "https://www.facebook.com/groups/375798102574085",
             )
-        }
-        is PopupMenuItem.Help -> {
-            navController.navigate(ScreenType.Help.buildRoute()) {
-                popUpTo(ScreenType.Dashboard.buildRoute())
-                launchSingleTop = true
-            }
-        }
-        is PopupMenuItem.Theme -> {
-            navController.navigate(ScreenType.Theme.buildRoute()) { launchSingleTop = true }
         }
     }
 }
@@ -91,7 +77,6 @@ private fun handleClick(
 fun AppBarOverflowMenuPreviewLight() {
     AuroraLight {
         AppBarOverflowMenu(
-            rememberNavController(),
             AuroraColor.OnPrimary,
             fakeMainController(),
         )
@@ -104,7 +89,6 @@ fun AppBarOverflowMenuPreviewLight() {
 fun AppBarOverflowMenuPreviewDark() {
     AuroraDark {
         AppBarOverflowMenu(
-            rememberNavController(),
             AuroraColor.OnPrimary,
             fakeMainController(),
         )
@@ -119,7 +103,7 @@ fun OverflowMenuItemPreviewLight() {
         SIDropdownMenuItem(
             label = optString(TextRes.menu_item_share),
             labelColor = AuroraColor.OnBackground,
-            resId = ImageRes.ic_round_share_24,
+            resId = ImageRes.share,
             onClick = {},
         )
     }
@@ -133,7 +117,7 @@ fun OverflowMenuItemPreviewDark() {
         SIDropdownMenuItem(
             label = optString(TextRes.menu_item_share),
             labelColor = AuroraColor.OnBackground,
-            resId = ImageRes.ic_round_share_24,
+            resId = ImageRes.share,
             onClick = {},
         )
     }

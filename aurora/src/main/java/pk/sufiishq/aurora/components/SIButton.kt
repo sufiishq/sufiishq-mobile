@@ -37,14 +37,14 @@ fun SIButton(
                 SIIcon(
                     modifier = Modifier.padding(end = 12.dp),
                     resId = leadingIcon,
-                    tint = bgColor.getForegroundColor()
+                    tint = bgColor.getForegroundColor(bgColor.color())
                 )
             }
 
             SIText(
                 text = text,
                 textSize = textSize,
-                textColor = bgColor.getForegroundColor(),
+                textColor = bgColor.getForegroundColor(bgColor.color()),
             )
         }
     }

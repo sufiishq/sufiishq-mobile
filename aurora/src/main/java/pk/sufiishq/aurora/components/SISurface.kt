@@ -16,7 +16,7 @@ fun SISurface(
     Surface(
         modifier = modifier.background(bgColor.color()),
         content = {
-            content(bgColor, bgColor.getForegroundColor())
+            content(bgColor, bgColor.getForegroundColor(bgColor.color()))
         }
     )
 }

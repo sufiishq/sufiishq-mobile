@@ -29,9 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SIIcon
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.theme.AuroraColor
 
@@ -45,7 +45,7 @@ fun MainNavigationButton(
     SICard(
         modifier = Modifier.size(80.dp).clip(CircleShape),
     ) {
-        ContentBackground {
+        SIAuroraSurface {
             SICard(
                 modifier =
                 Modifier.fillMaxSize(0.73f).clip(CircleShape).clickable {

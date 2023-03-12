@@ -29,7 +29,7 @@ inline fun SIConstraintLayout(
             )
             .padding(padding.coerceIn(0, 12).dp),
         content = {
-            content(bgColor.getForegroundColor())
+            content(bgColor.getForegroundColor(bgColor.color()))
         }
     )
 }

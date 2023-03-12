@@ -19,7 +19,7 @@ fun SICard(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     bgColor: AuroraColor = AuroraColor.Background,
-    contentColor: Color = contentColorFor(bgColor.getForegroundColor().color()),
+    contentColor: Color = contentColorFor(bgColor.getForegroundColor(bgColor.color()).color()),
     border: BorderStroke? = null,
     elevation: Dp = 1.dp,
     content: @Composable (fgColor: AuroraColor) -> Unit
@@ -32,6 +32,6 @@ fun SICard(
         border = border,
         elevation = elevation,
     ) {
-        content(bgColor.getForegroundColor())
+        content(bgColor.getForegroundColor(bgColor.color()))
     }
 }

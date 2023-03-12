@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,13 +29,13 @@ import pk.sufiishq.aurora.theme.getForegroundColor
 fun SIDataRow(
     modifier: Modifier = Modifier,
     bgColor: AuroraColor = AuroraColor.Background,
-    fgColor: AuroraColor = bgColor.getForegroundColor(),
+    fgColor: AuroraColor = bgColor.getForegroundColor(bgColor.color()),
     @DrawableRes leadingIcon: Int? = null,
-    leadingIconColor: AuroraColor = fgColor,
+    leadingIconColor: AuroraColor? = null,
     leadingIconScope: @Composable BoxScope.() -> Unit = {},
     onLeadingIconClick: (() -> Unit)? = null,
     @DrawableRes trailingIcon: Int? = null,
-    trailingIconColor: AuroraColor = fgColor,
+    trailingIconColor: AuroraColor? = null,
     trailingIconScope: @Composable BoxScope.() -> Unit = {},
     onTrailingIconClick: (() -> Unit)? = null,
     onClick: () -> Unit = {},
@@ -84,13 +85,13 @@ fun SIDataRow(
 fun SIDataRow(
     modifier: Modifier = Modifier,
     bgColor: AuroraColor = AuroraColor.Background,
-    fgColor: AuroraColor = bgColor.getForegroundColor(),
+    fgColor: AuroraColor = bgColor.getForegroundColor(bgColor.color()),
     @DrawableRes leadingIcon: Int? = null,
-    leadingIconColor: AuroraColor = fgColor,
+    leadingIconColor: AuroraColor? = null,
     leadingIconScope: @Composable BoxScope.() -> Unit = {},
     onLeadingIconClick: (() -> Unit)? = null,
     @DrawableRes trailingIcon: Int? = null,
-    trailingIconColor: AuroraColor = fgColor,
+    trailingIconColor: AuroraColor? = null,
     trailingIconScope: @Composable BoxScope.() -> Unit = {},
     onTrailingIconClick: (() -> Unit)? = null,
     onClick: () -> Unit = {},
@@ -116,11 +117,12 @@ fun SIDataRow(
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
             },
-            padding = 8
+            padding = 12
         ) {
 
             if (leadingIcon != null) {
                 SIIcon(
+                    modifier = Modifier.size(24.dp),
                     resId = leadingIcon,
                     tint = leadingIconColor,
                     onClick = onLeadingIconClick

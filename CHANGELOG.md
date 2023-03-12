@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - 2023-xx-xx
+
+### Added
+- Added Gallery section that will contains Niaz, Urs and Feature Videos.
+- Added Events section that will contains muslim festival and other occasions
+
+### Changed
+- Tweaking some different parts of UI.
+- Make AppManager to Singleton.
+- Refactor repository, dao and other parts.
+- Improve Audio Player Service.
+- Change one color icons to lineal color.
+- Change simple list to parallax in kalam list screen.
+
+### Fixed
+- Fixed Push Notification runtime permission for Android 13+.
+- Fixed duplicate insertion all kalams in database via AssetKalamLoaderViewModel.
+
 ## [2.0.0 SufiIshq] - 2023-02-17
 
 ### Added

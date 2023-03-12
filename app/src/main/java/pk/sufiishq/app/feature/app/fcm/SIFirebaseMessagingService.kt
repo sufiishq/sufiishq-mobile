@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.ui.screen.help.fcm
+package pk.sufiishq.app.feature.app.fcm
 
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import android.content.Context
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import pk.sufiishq.app.feature.events.worker.EventSyncWorker
 import pk.sufiishq.app.feature.occasions.worker.OccasionSyncWorker
+import pk.sufiishq.app.feature.storage.KeyValueStorage
+import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
 import timber.log.Timber
 
 class SIFirebaseMessagingService : FirebaseMessagingService() {
@@ -33,6 +35,8 @@ class SIFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
+        val keyValueStorage = getKeyValueStorage(this)
+
         // Check if message contains a notification payload.
         message.notification?.let {
             Timber.d("Message Notification Body: ${it.body}")
@@ -44,19 +48,29 @@ class SIFirebaseMessagingService : FirebaseMessagingService() {
             .takeIf { it.isNotEmpty() && it.containsKey(ACTION_KEY) }
             ?.let {
                 when (it[ACTION_KEY]) {
-                    ACTION_FETCH_OCCASIONS -> fetchOccasions()
+                    ACTION_FETCH_OCCASIONS -> fetchOccasions(keyValueStorage)
+                    ACTION_FETCH_EVENTS -> fetchEvents(keyValueStorage)
                 }
             }
     }
 
-    private fun fetchOccasions() {
-        WorkManager.getInstance(this).enqueue(
-            OneTimeWorkRequestBuilder<OccasionSyncWorker>().build(),
-        )
+    private fun fetchOccasions(keyValueStorage: KeyValueStorage) {
+        OccasionSyncWorker.setSyncStatus(false, keyValueStorage)
+        OccasionSyncWorker.init(this, keyValueStorage)
+    }
+
+    private fun fetchEvents(keyValueStorage: KeyValueStorage) {
+        EventSyncWorker.setSyncStatus(false, keyValueStorage)
+        EventSyncWorker.init(this, keyValueStorage)
+    }
+
+    private fun getKeyValueStorage(context: Context): KeyValueStorage {
+        return SecureSharedPreferencesStorage(context)
     }
 
     companion object {
         const val ACTION_KEY = "action"
         const val ACTION_FETCH_OCCASIONS = "fetch_occasions"
+        const val ACTION_FETCH_EVENTS = "fetch_events"
     }
 }

@@ -24,6 +24,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pk.sufiishq.app.db.SufiIshqDatabase
 import pk.sufiishq.app.feature.app.data.dao.MediaDao
+import pk.sufiishq.app.feature.events.data.dao.EventDao
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
@@ -55,5 +56,10 @@ class DatabaseModule {
     @Provides
     fun provideOccasionDao(db: SufiIshqDatabase): OccasionDao {
         return db.occasionDao()
+    }
+
+    @Provides
+    fun provideEvensDao(db: SufiIshqDatabase): EventDao {
+        return db.eventDao()
     }
 }

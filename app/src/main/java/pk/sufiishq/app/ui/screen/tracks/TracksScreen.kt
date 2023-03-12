@@ -17,7 +17,7 @@
 package pk.sufiishq.app.ui.screen.tracks
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,17 +25,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.controller.KalamViewModel
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.fakeKalamController
-import pk.sufiishq.aurora.layout.SIColumn
-import pk.sufiishq.aurora.layout.SILazyColumn
+import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.layout.SIParallaxLazyColumn
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 
@@ -49,30 +50,33 @@ fun TracksScreen(
     val lazyKalamItems: LazyPagingItems<Kalam> =
         kalamController.getKalamDataFlow().collectAsLazyPagingItems()
 
-    SIColumn { textColor ->
-        SearchTextField(
-            textColor,
-            lazyKalamItems,
-            trackListType,
-            kalamController,
-        )
+    val searchText = rem("")
 
-        SILazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            hasItems = lazyKalamItems.itemCount > 0,
-            noItemText = optString(TextRes.dynamic_no_kalam_found, trackListType.title),
-        ) {
-            items(lazyKalamItems) { track ->
-                track?.run {
-                    KalamItem(
-                        kalam = track,
-                        trackListType = trackListType,
-                        kalamController = kalamController,
-                    )
-                }
-            }
-        }
+    SIParallaxLazyColumn(
+        leadingIcon = getLeadingIcon(trackListType),
+        title = trackListType.title,
+        noItemText = optString(TextRes.dynamic_no_kalam_found, trackListType.title),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        data = lazyKalamItems,
+        bottomView = {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = optString(TextRes.dynamic_search_kalam, trackListType.title),
+                value = searchText.value,
+                onValueChange = {
+                    searchText.value = it
+                    kalamController.searchKalam(it, trackListType)
+                    lazyKalamItems.refresh()
+                },
+            )
+        },
+    ) { _, item ->
+
+        KalamItem(
+            kalam = item,
+            trackListType = trackListType,
+            kalamController = kalamController,
+        )
     }
 
     // kalam confirm delete dialog
@@ -94,6 +98,15 @@ fun TracksScreen(
     PlaylistDialog(
         kalamController = kalamController,
     )
+}
+
+private fun getLeadingIcon(trackListType: TrackListType): Int {
+    return when (trackListType) {
+        is TrackListType.All -> ImageRes.all_kalam_full
+        is TrackListType.Downloads -> ImageRes.download_full
+        is TrackListType.Favorites -> ImageRes.favorite_full
+        is TrackListType.Playlist -> ImageRes.playlist_full
+    }
 }
 
 @ExcludeFromJacocoGeneratedReport

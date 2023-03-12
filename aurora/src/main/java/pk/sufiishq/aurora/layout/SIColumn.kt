@@ -34,7 +34,7 @@ fun SIColumn(
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
         content = {
-            content(bgColor.getForegroundColor())
+            content(bgColor.getForegroundColor(bgColor.color()))
         }
     )
 }

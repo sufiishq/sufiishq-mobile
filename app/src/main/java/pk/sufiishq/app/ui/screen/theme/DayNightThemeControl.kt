@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
@@ -42,6 +41,7 @@ import pk.sufiishq.aurora.components.SIImage
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace
 import pk.sufiishq.aurora.components.TextSize
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIColumn
@@ -132,7 +132,7 @@ fun DayNightThemeControl(
             modifier = Modifier.size(90.dp).clip(CircleShape),
             bgColor = AuroraColor.Background,
         ) {
-            ContentBackground {
+            SIAuroraSurface {
                 SICard(
                     modifier =
                     Modifier.fillMaxSize(0.75f).clip(CircleShape).clickable { onAutoModeClick() },

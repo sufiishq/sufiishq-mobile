@@ -34,7 +34,7 @@ import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.ui.components.widgets.HijriDate
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
-import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.getString
 import pk.sufiishq.aurora.components.SIDivider
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.widgets.SIDataRow
@@ -52,7 +52,10 @@ fun MainNavigationDrawer(
     HijriDate(mainController)
 
     SIColumn(
-        modifier = Modifier.fillMaxSize().padding(12.dp, 6.dp).verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 6.dp, top = 6.dp, end = 12.dp, bottom = 6.dp)
+            .verticalScroll(rememberScrollState()),
     ) {
         navigationItems.forEach {
             SIDataRow(
@@ -71,27 +74,43 @@ fun MainNavigationDrawer(
             topSpace = 6,
             bottomSpace = 6,
         )
-        SIDataRow(
-            title = optString(TextRes.menu_item_app_lock),
-            leadingIcon = ImageRes.app_lock,
-            rowHeight = 48,
-            onClick = {
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                    navController.navigate(ScreenType.AppLock.buildRoute())
-                }
-            },
-        )
-        SIDataRow(
-            title = optString(TextRes.menu_item_admin_setting),
-            leadingIcon = ImageRes.setting,
-            rowHeight = 48,
-            onClick = {
-                scope.launch {
-                    scaffoldState.drawerState.close()
-                    navController.navigate(ScreenType.AdminSettings.buildRoute())
-                }
-            },
-        )
+        getSecondaryMenu().forEach {
+            SIDataRow(
+                title = it.title,
+                leadingIcon = it.resId,
+                rowHeight = 48,
+                onClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                        navController.navigate(it.route)
+                    }
+                },
+            )
+        }
     }
+}
+
+private fun getSecondaryMenu(): List<NavigationItem> {
+    return listOf(
+        NavigationItem(
+            getString(TextRes.menu_item_theme),
+            ImageRes.themes,
+            ScreenType.Theme.buildRoute(),
+        ),
+        NavigationItem(
+            getString(TextRes.menu_item_app_lock),
+            ImageRes.app_lock,
+            ScreenType.AppLock.buildRoute(),
+        ),
+        NavigationItem(
+            getString(TextRes.menu_item_help),
+            ImageRes.help,
+            ScreenType.Help.buildRoute(),
+        ),
+        NavigationItem(
+            getString(TextRes.menu_item_admin_setting),
+            ImageRes.setting,
+            ScreenType.AdminSettings.buildRoute(),
+        ),
+    )
 }

@@ -18,13 +18,19 @@ package pk.sufiishq.app.feature.occasions.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.feature.app.AppNotificationManager
 import pk.sufiishq.app.feature.occasions.data.repository.OccasionRepository
 import pk.sufiishq.app.feature.occasions.model.Occasion
+import pk.sufiishq.app.feature.storage.KeyValueStorage
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.notify
 import pk.sufiishq.app.utils.getString
@@ -35,6 +41,7 @@ class OccasionSyncWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
     private val appNotificationManager: AppNotificationManager,
     private val occasionRepository: OccasionRepository,
+    @SecureSharedPreferences private val keyValueStorage: KeyValueStorage,
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -66,6 +73,31 @@ class OccasionSyncWorker @AssistedInject constructor(
             )
         }
 
+        setSyncStatus(true, keyValueStorage)
+
         return Result.success()
+    }
+
+    companion object {
+
+        private const val OCCASION_SYNCED_KEY = "occasion_synced"
+
+        fun init(context: Context, keyValueStorage: KeyValueStorage) {
+            if (!keyValueStorage.get(OCCASION_SYNCED_KEY, false)) {
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+
+                WorkManager.getInstance(context).enqueue(
+                    OneTimeWorkRequestBuilder<OccasionSyncWorker>()
+                        .setConstraints(constraints)
+                        .build(),
+                )
+            }
+        }
+
+        fun setSyncStatus(status: Boolean, keyValueStorage: KeyValueStorage) {
+            keyValueStorage.put(OCCASION_SYNCED_KEY, status)
+        }
     }
 }

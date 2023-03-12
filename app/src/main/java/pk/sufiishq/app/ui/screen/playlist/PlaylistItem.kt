@@ -32,6 +32,7 @@ import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.fakePlaylist
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.models.DataMenuItem
+import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIDataRow
@@ -52,8 +53,9 @@ fun PlaylistItem(
 
     SIDataRow(
         modifier = Modifier.testTag(TEST_TAG_PLAYLIST_DATA_ROW),
-        leadingIcon = ImageRes.ic_outline_playlist_play_24,
+        leadingIcon = ImageRes.playlist,
         trailingIcon = ImageRes.ic_baseline_more_vert_24,
+        trailingIconColor = AuroraColor.OnBackground,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },
         trailingIconScope = {
             SIPopupMenu(

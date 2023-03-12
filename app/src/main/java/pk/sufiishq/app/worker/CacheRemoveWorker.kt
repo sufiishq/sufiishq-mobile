@@ -18,11 +18,15 @@ package pk.sufiishq.app.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import pk.sufiishq.app.utils.extention.deleteContent
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class CacheRemoveWorker @AssistedInject constructor(
@@ -33,5 +37,19 @@ class CacheRemoveWorker @AssistedInject constructor(
     override fun doWork(): Result {
         applicationContext.cacheDir.deleteContent()
         return Result.success()
+    }
+
+    companion object {
+        fun init(context: Context) {
+            val cacheRemoveWorkRequest =
+                PeriodicWorkRequestBuilder<CacheRemoveWorker>(24, TimeUnit.HOURS).build()
+
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(
+                    CacheRemoveWorker::class.java.simpleName,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    cacheRemoveWorkRequest,
+                )
+        }
     }
 }

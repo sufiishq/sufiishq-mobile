@@ -38,6 +38,6 @@ fun SIRow(
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = verticalAlignment,
         content = {
-            content(bgColor.getForegroundColor())
+            content(bgColor.getForegroundColor(bgColor.color()))
         })
 }

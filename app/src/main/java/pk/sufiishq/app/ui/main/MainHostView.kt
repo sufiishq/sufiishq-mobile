@@ -23,11 +23,11 @@ import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.main.player.PlayerView
 import pk.sufiishq.app.ui.main.topbar.AboutIconButton
 import pk.sufiishq.app.ui.main.topbar.AppBarOverflowMenu
 import pk.sufiishq.app.utils.ImageRes
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIScaffold
 import pk.sufiishq.aurora.widgets.SITopAppBar
 
@@ -44,7 +44,7 @@ fun MainHostView(
             if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 SITopAppBar(
                     navigationIcon = { fgColor -> AboutIconButton(fgColor) },
-                    actions = { fgColor -> AppBarOverflowMenu(navController, fgColor) },
+                    actions = { fgColor -> AppBarOverflowMenu(fgColor) },
                     centerDrawable = ImageRes.hp_logo,
                 )
             }
@@ -55,7 +55,7 @@ fun MainHostView(
             }
         },
     ) {
-        ContentBackground { NavigationHost(navController) }
+        SIAuroraSurface { NavigationHost(navController) }
     }
 
     AppLockAndMaintenance(maintenanceManager, appLockManager, audioPlayer)

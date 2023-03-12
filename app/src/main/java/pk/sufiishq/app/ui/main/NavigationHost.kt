@@ -45,7 +45,7 @@ fun NavigationHost(
                 Snackbar(
                     snackbarData = data,
                     backgroundColor = AuroraColor.SecondaryVariant.color(),
-                    contentColor = AuroraColor.SecondaryVariant.getForegroundColor().color(),
+                    contentColor = AuroraColor.SecondaryVariant.getForegroundColor(AuroraColor.SecondaryVariant.color()).color(),
                 )
             }
         },

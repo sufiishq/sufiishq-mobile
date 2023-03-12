@@ -17,14 +17,15 @@
 package pk.sufiishq.app.utils.extention
 
 import android.annotation.SuppressLint
-import timber.log.Timber
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun getTodayDate(pattern: String = "dd-MM-yyyy"): String {
     val time = Calendar.getInstance().time
     val dateFormatter = SimpleDateFormat(pattern, Locale.getDefault())
-    return dateFormatter.format(time).also { Timber.d(it) }
+    return dateFormatter.format(time)
 }
 
 @SuppressLint("SimpleDateFormat")
@@ -62,4 +63,10 @@ fun Long.formatTime(pattern: String): String {
     }.time
     val dateFormatter = SimpleDateFormat(pattern, Locale.getDefault())
     return dateFormatter.format(time)
+}
+
+fun String.format(pattern: String = "yyyy-MM-dd", format: String = "MMM dd, yyyy"): String {
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    val date = LocalDate.parse(this, formatter)
+    return date.format(DateTimeFormatter.ofPattern(format))
 }

@@ -35,10 +35,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.app.feature.player.controller.PlayerViewModel
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.fakePlayerController
 import pk.sufiishq.aurora.components.SIText
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -52,7 +52,7 @@ fun PlayerView(
     val showSliderLabel = remember { derivedStateOf { mutableStateOf(false) } }
     val kalamInfo = playerController.getKalamInfo().observeAsState()
 
-    ContentBackground(modifier = Modifier.height(90.dp)) {
+    SIAuroraSurface(modifier = Modifier.fillMaxWidth().height(90.dp)) {
         SIBox(modifier = Modifier.fillMaxSize()) {
             SIBox(modifier = Modifier.padding(top = 6.dp)) {
                 TrackInfo(kalamInfo = kalamInfo.value)

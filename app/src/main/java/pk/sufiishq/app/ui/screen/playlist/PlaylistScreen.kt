@@ -64,7 +64,7 @@ fun PlaylistScreen(
         SILazyColumn(
             modifier = Modifier.fillMaxSize(),
             hasItems = allPlaylist.isNotEmpty(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             state = listState,
             noItemText = optString(TextRes.msg_no_playlist),
         ) {

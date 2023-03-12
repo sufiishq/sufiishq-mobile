@@ -49,7 +49,7 @@ fun HijriDate(
         hijriDate.value?.apply {
             SIRow {
                 SIText(
-                    text = day,
+                    text = day.toString(),
                     textColor = textColor,
                     textSize = TextSize.Banner,
                 )

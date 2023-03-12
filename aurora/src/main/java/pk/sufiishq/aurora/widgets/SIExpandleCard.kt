@@ -40,7 +40,7 @@ fun SIExpandableCard(
                             .clickable(onClick = onHeaderClick)
                             .padding(12.dp, 12.dp)
                     ) {
-                        header(AuroraColor.SecondaryVariant.getForegroundColor())
+                        header(AuroraColor.SecondaryVariant.getForegroundColor(AuroraColor.SecondaryVariant.color()))
                     }
                 }
 
@@ -54,7 +54,7 @@ fun SIExpandableCard(
                             .background(AuroraColor.Background.color())
                             .padding(12.dp)
                     ) {
-                        body(AuroraColor.Background.getForegroundColor())
+                        body(AuroraColor.Background.getForegroundColor(AuroraColor.Background.color()))
                     }
                 }
             }

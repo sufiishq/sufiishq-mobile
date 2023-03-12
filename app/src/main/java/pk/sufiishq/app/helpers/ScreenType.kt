@@ -31,6 +31,7 @@ import pk.sufiishq.app.feature.occasions.OccasionType
 import pk.sufiishq.app.ui.screen.admin.AdminSettingsScreen
 import pk.sufiishq.app.ui.screen.applock.AppLockScreen
 import pk.sufiishq.app.ui.screen.dashboard.DashboardScreen
+import pk.sufiishq.app.ui.screen.events.EventListScreen
 import pk.sufiishq.app.ui.screen.gallery.GalleryScreen
 import pk.sufiishq.app.ui.screen.help.HelpScreen
 import pk.sufiishq.app.ui.screen.location.DarbarLocationScreen
@@ -474,6 +475,23 @@ sealed interface ScreenType {
             scaffoldState: ScaffoldState,
         ) {
             VideoPlayScreen(navController, getMedia(navBackStackEntry))
+        }
+    }
+
+    object EventList : ScreenType {
+
+        override val route: String
+            get() = "event_list_screen"
+
+        override fun buildRoute() = route
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            EventListScreen()
         }
     }
 }

@@ -61,6 +61,16 @@ enum class AuroraColor(val color: @Composable () -> Color) {
             MaterialTheme.colors.onError
         }
     ),
+    OnSecondaryDarkVariant(
+        {
+            Color(0xFF181818)
+        }
+    ),
+    OnSecondaryLightVariant(
+        {
+            Color(0xFFFDFDFD)
+        }
+    ),
     White(
         {
             Color(0xFFFFFFFF)
@@ -93,9 +103,9 @@ enum class AuroraColor(val color: @Composable () -> Color) {
     ),
 }
 
-fun AuroraColor.getForegroundColor() = when (this) {
+fun AuroraColor.getForegroundColor(bgColor: Color) = when (this) {
     AuroraColor.Primary, AuroraColor.PrimaryVariant -> AuroraColor.OnPrimary
-    AuroraColor.Secondary, AuroraColor.SecondaryVariant -> AuroraColor.OnSecondary
+    AuroraColor.Secondary, AuroraColor.SecondaryVariant -> calculateForegroundColor(bgColor)
     AuroraColor.Surface -> AuroraColor.OnSurface
     AuroraColor.Background -> AuroraColor.OnBackground
     else -> AuroraColor.OnBackground
@@ -127,4 +137,12 @@ fun AuroraColor.validateForeground() = when (this) {
     AuroraColor.OnError,
     AuroraColor.OnSurface -> this
     else -> throw IllegalArgumentException("${this.name} is not a valid foreground color")
+}
+
+private fun calculateForegroundColor(bgColor: Color) : AuroraColor {
+    val r = bgColor.red * 255
+    val g = bgColor.green * 255
+    val b = bgColor.blue * 255
+    val yiq = (r * 299 + g * 587 + b * 114) / 1000
+    return if(yiq >= 128) AuroraColor.OnSecondaryDarkVariant else AuroraColor.OnSecondaryLightVariant
 }

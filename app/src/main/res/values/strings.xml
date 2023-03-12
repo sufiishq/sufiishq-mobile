@@ -18,6 +18,7 @@
     <string name="title_urs">Urs</string>
     <string name="title_videos">Videos</string>
     <string name="title_photos">Photos</string>
+    <string name="title_events">Events</string>
 
     <string name="menu_item_add_to_playlist">Add to Playlist</string>
     <string name="menu_item_mark_as_favorite">Mark as Favorite</string>
@@ -107,6 +108,7 @@
     <string name="label_on">On</string>
     <string name="label_strict">Strict</string>
     <string name="label_alert">Alert</string>
+    <string name="label_now">Now</string>
 
     <string name="msg_update_available">New update available now</string>
     <string name="msg_no_playlist">No playlist found</string>
@@ -185,6 +187,8 @@
     <string name="dynamic_photo_list_count">%s Photos</string>
     <string name="dynamic_video_list_count">%s Videos</string>
     <string name="dynamic_search_occasion">Search %s</string>
+    <string name="dynamic_search_kalam">Search in %s</string>
+    <string name="dynamic_event_days_remaining">%s Days Remaining</string>
 
     <string name="loc_karachi">Karachi</string>
     <string name="loc_pakpattan">PakPattan</string>

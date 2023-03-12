@@ -16,6 +16,7 @@ dependencies {
     implementation 'androidx.paging:paging-compose:1.0.0-alpha17'
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-alpha03'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
     implementation "com.jakewharton.timber:timber:5.0.1"
     implementation "commons-io:commons-io:2.11.0"
     implementation "androidx.work:work-runtime-ktx:2.7.1"
@@ -61,8 +62,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     implementation 'com.google.firebase:firebase-appcheck-debug:16.1.2'
 
-
-
+    // Date and time library to replace JDK date handling
+    implementation 'joda-time:joda-time:2.12.2'
 
     // This dependency is downloaded from the Google’s Maven repository.
     // So, make sure you also include that repository in your project's build.gradle file.

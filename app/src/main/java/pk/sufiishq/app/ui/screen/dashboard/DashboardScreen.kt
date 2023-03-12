@@ -158,7 +158,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = all.value,
                                 count = dashboardController.countAll().observeAsState().optValue(0),
-                                icon = ImageRes.round_check_circle_24,
+                                icon = ImageRes.all_kalam,
                                 paddingModifier = Modifier.padding(0.dp, 0.dp, 6.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -174,7 +174,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = favorites.value,
                                 count = dashboardController.countFavorites().observeAsState().optValue(0),
-                                icon = ImageRes.round_favorite_24,
+                                icon = ImageRes.favorite,
                                 paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
                                 navigate = {
                                     navController.navigate(
@@ -194,7 +194,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = downloads.value,
                                 count = dashboardController.countDownloads().observeAsState().optValue(0),
-                                icon = ImageRes.round_cloud_download_24,
+                                icon = ImageRes.download,
                                 paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
                                 navigate = {
                                     navController.navigate(
@@ -210,7 +210,7 @@ fun DashboardScreen(
                             DashboardButton(
                                 title = playlist.value,
                                 count = dashboardController.countPlaylist().observeAsState().optValue(0),
-                                icon = ImageRes.round_format_list_bulleted_24,
+                                icon = ImageRes.playlist,
                                 paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
                                 navigate = { navController.navigate(ScreenType.Playlist.buildRoute()) },
                             )

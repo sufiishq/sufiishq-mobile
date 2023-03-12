@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "cca06e8c7c1bead9ca8e0b1eac772728",
+    "identityHash": "bcdb03529392fa70458f060a091f81a4",
     "entities": [
       {
         "tableName": "kalam",
@@ -106,7 +106,7 @@
       },
       {
         "tableName": "occasion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `cover` TEXT NOT NULL, `startTimestamp` INTEGER NOT NULL, `endTimestamp` INTEGER NOT NULL, `hijriDate` TEXT NOT NULL, `type` TEXT NOT NULL, `address` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `cover` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `startTimestamp` INTEGER NOT NULL, `endTimestamp` INTEGER NOT NULL, `hijriDate` TEXT NOT NULL, `type` TEXT NOT NULL, `address` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -121,6 +121,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "cover",
+            "columnName": "cover",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
@@ -131,12 +137,6 @@
             "columnName": "description",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "cover",
-            "columnName": "cover",
-            "affinity": "TEXT",
-            "notNull": true
           },
           {
             "fieldPath": "startTimestamp",
@@ -239,12 +239,74 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `date` TEXT NOT NULL, `hijriDate` TEXT NOT NULL, `hijriMonthAndDay` TEXT NOT NULL, `remainingDays` INTEGER NOT NULL, `enableAlert` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hijriDate",
+            "columnName": "hijriDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hijriMonthAndDay",
+            "columnName": "hijriMonthAndDay",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remainingDays",
+            "columnName": "remainingDays",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enableAlert",
+            "columnName": "enableAlert",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cca06e8c7c1bead9ca8e0b1eac772728')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bcdb03529392fa70458f060a091f81a4')"
     ]
   }
 }

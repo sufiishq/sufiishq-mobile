@@ -15,7 +15,7 @@ import pk.sufiishq.aurora.theme.getForegroundColor
 fun SISurface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: AuroraColor = AuroraColor.Surface,
+    bgColor: AuroraColor = AuroraColor.Surface,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
     content: @Composable (fgColor: AuroraColor) -> Unit
@@ -23,11 +23,11 @@ fun SISurface(
     Surface(
         modifier = modifier,
         shape = shape,
-        color = color.color(),
-        contentColor = color.getForegroundColor().color(),
+        color = bgColor.color(),
+        contentColor = bgColor.getForegroundColor(bgColor.color()).color(),
         border = border,
         elevation = elevation
     ) {
-        content(color.getForegroundColor())
+        content(bgColor.getForegroundColor(bgColor.color()))
     }
 }

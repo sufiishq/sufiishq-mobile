@@ -71,29 +71,29 @@ fun <T> rem(value: T): MutableState<T> {
 fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): List<DataMenuItem> {
     return filter {
         when (it.resId) {
-            ImageRes.ic_round_favorite_24 -> {
+            ImageRes.favorite -> {
                 kalam.isFavorite == 0
             }
-            ImageRes.ic_round_favorite_border_24 -> {
+            ImageRes.favorite_outline -> {
                 kalam.isFavorite == 1
             }
-            ImageRes.ic_round_cloud_download_24 -> {
+            ImageRes.download -> {
                 kalam.offlineSource.isEmpty()
             }
-            ImageRes.ic_round_share_24 -> {
+            ImageRes.share -> {
                 kalam.onlineSource.isNotEmpty()
             }
-            ImageRes.ic_round_call_split_24 -> {
+            ImageRes.split -> {
                 trackType == ScreenType.Tracks.DOWNLOADS
             }
-            ImageRes.ic_outline_delete_24 -> {
+            ImageRes.delete -> {
                 if (trackType == ScreenType.Tracks.ALL) {
                     kalam.onlineSource.isEmpty()
                 } else {
                     true
                 }
             }
-            ImageRes.ic_round_playlist_add_24 -> {
+            ImageRes.add -> {
                 trackType != ScreenType.Tracks.PLAYLIST
             }
             else -> true

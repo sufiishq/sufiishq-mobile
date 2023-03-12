@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.aurora.layout
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import pk.sufiishq.app.utils.ImageRes
-import pk.sufiishq.aurora.layout.SIBox
+import pk.sufiishq.aurora.R
+import pk.sufiishq.aurora.components.SITileAndroidImage
 import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
-fun ContentBackground(
-    modifier: Modifier = Modifier,
+fun SIAuroraSurface(
+    modifier: Modifier = Modifier.fillMaxSize(),
     content: @Composable () -> Unit,
 ) {
     SIBox(
         bgColor = AuroraColor.Surface,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
     ) {
-        TileAndroidImage(
-            modifier = Modifier.fillMaxSize().alpha(0.2f),
-            drawableId = ImageRes.pattern,
-            contentDescription = "",
+        SITileAndroidImage(
+            modifier = modifier.alpha(0.2f),
+            drawableId = R.drawable.pattern
         )
 
         content()

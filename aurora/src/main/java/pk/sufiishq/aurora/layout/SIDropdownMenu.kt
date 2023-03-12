@@ -27,6 +27,6 @@ fun SIDropdownMenu(
             onHide?.invoke()
         }
     ) {
-        content(bgColor.getForegroundColor())
+        content(bgColor.getForegroundColor(bgColor.color()))
     }
 }

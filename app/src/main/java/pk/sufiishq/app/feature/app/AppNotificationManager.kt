@@ -26,6 +26,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.PRIORITY_MAX
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pk.sufiishq.app.activities.MainActivity
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
@@ -92,5 +93,6 @@ class AppNotificationManager @Inject constructor(
             .setContentTitle(title)
             .setAutoCancel(autoCancel)
             .setContentText(content)
+            .setPriority(PRIORITY_MAX)
     }
 }

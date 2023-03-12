@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.ui.components
+package pk.sufiishq.aurora.components
 
 import android.graphics.BitmapFactory
 import android.graphics.Shader
@@ -32,10 +32,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun TileAndroidImage(
-    @DrawableRes drawableId: Int,
-    contentDescription: String,
+fun SITileAndroidImage(
     modifier: Modifier = Modifier,
+    @DrawableRes drawableId: Int,
+    contentDescription: String = "",
 ) {
     val context = LocalContext.current
     val drawable =

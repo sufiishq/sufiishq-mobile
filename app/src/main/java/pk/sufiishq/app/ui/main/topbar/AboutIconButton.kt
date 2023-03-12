@@ -79,7 +79,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                 val (icon, content) = createRefs()
 
                 SISurface(
-                    color = AuroraColor.Background,
+                    bgColor = AuroraColor.Background,
                     shape = MaterialTheme.shapes.medium,
                     modifier =
                     Modifier.constrainAs(content) {

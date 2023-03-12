@@ -48,7 +48,7 @@ fun SIScaffold(
 ) {
 
     val mBgColor = bgColor.validateBackground()
-    val mFgColor = bgColor.getForegroundColor()
+    val mFgColor = bgColor.getForegroundColor(bgColor.color())
 
     var drawerContent: (@Composable ColumnScope.() -> Unit)? = null
     if (drawer != null) {
@@ -102,7 +102,7 @@ fun SIScaffold(
                         backgroundColor = AuroraColor.SecondaryVariant.color()
                     ) {
                         Icon(
-                            tint = AuroraColor.SecondaryVariant.getForegroundColor().color(),
+                            tint = AuroraColor.SecondaryVariant.getForegroundColor(bgColor.color()).color(),
                             imageVector = Icons.Filled.Add,
                             contentDescription = null
                         )

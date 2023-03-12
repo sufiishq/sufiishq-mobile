@@ -23,6 +23,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
+import pk.sufiishq.app.feature.events.data.dao.EventDao
+import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
@@ -31,7 +33,7 @@ import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 
 @Database(
-    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class],
+    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class, Event::class],
     version = 2,
     exportSchema = true,
     autoMigrations = [
@@ -44,6 +46,7 @@ abstract class SufiIshqDatabase : RoomDatabase() {
     abstract fun playlistDao(): PlaylistDao
     abstract fun occasionDao(): OccasionDao
     abstract fun mediaDao(): MediaDao
+    abstract fun eventDao(): EventDao
 
     companion object {
 

@@ -32,6 +32,7 @@ import pk.sufiishq.app.utils.fakeKalam
 import pk.sufiishq.app.utils.fakeKalamController
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.theme.AuroraDark
 import pk.sufiishq.aurora.theme.AuroraLight
 import pk.sufiishq.aurora.widgets.SIDataRow
@@ -49,8 +50,9 @@ fun KalamItem(
 
     SIDataRow(
         modifier = Modifier.testTag(TEST_TAG_KALAM_DATA_ROW),
-        leadingIcon = ImageRes.ic_start_logo,
+        leadingIcon = ImageRes.kalam,
         trailingIcon = ImageRes.ic_baseline_more_vert_24,
+        trailingIconColor = AuroraColor.OnBackground,
         onTrailingIconClick = { isExpanded.value = !isExpanded.value },
         trailingIconScope = {
             KalamItemPopupMenu(

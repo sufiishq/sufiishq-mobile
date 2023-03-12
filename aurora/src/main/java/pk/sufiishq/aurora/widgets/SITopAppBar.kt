@@ -51,7 +51,7 @@ fun SITopAppBar(
 ) {
 
     val mBgColor = bgColor.validateBackground()
-    val mFgColor = bgColor.getForegroundColor()
+    val mFgColor = bgColor.getForegroundColor(bgColor.color())
 
     SIBox {
         TopAppBar(

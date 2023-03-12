@@ -32,11 +32,11 @@ import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
 import pk.sufiishq.app.feature.player.PlayerState
 import pk.sufiishq.app.feature.player.controller.PlayerController
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIWidthSpace
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -57,7 +57,7 @@ fun PlayPauseButton(
                 modifier = Modifier.size(80.dp).clip(CircleShape),
                 elevation = 0.dp,
             ) {
-                ContentBackground {
+                SIAuroraSurface {
                     SICard(
                         modifier =
                         Modifier.fillMaxSize(0.75f).clip(CircleShape).clickable {

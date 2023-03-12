@@ -47,7 +47,6 @@ import pk.sufiishq.app.feature.admin.model.Maintenance
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.applock.model.AppLockStatus
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
-import pk.sufiishq.app.ui.components.ContentBackground
 import pk.sufiishq.app.ui.components.OutlinedTextField
 import pk.sufiishq.app.ui.screen.applock.AppLockKeyboardWithPinView
 import pk.sufiishq.app.utils.ImageRes
@@ -65,6 +64,7 @@ import pk.sufiishq.aurora.components.SIMarqueeText
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace
 import pk.sufiishq.aurora.components.TextSize
+import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIConstraintLayout
@@ -341,7 +341,7 @@ private fun StrictMaintenanceView(
         val maintenanceAnimation =
             rememberLottieComposition(LottieCompositionSpec.Asset("animations/lottie_maintenance.json"))
 
-        ContentBackground {
+        SIAuroraSurface {
             SIBox(
                 modifier = Modifier.fillMaxSize(),
                 padding = 12,

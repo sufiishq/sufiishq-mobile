@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -43,7 +45,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import kotlinx.coroutines.launch
+import pk.sufiishq.aurora.R
 import pk.sufiishq.aurora.components.SIImage
+import pk.sufiishq.aurora.components.SITileAndroidImage
 import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.utils.isScrollingUp
 import pk.sufiishq.aurora.utils.rem
@@ -58,6 +62,8 @@ fun <T : Any> SIParallaxLazyColumn(
     data: List<T>,
     bottomView: @Composable (BoxScope.() -> Unit)? = null,
     noItemText: String? = null,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(12.dp),
+    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     compose: @Composable LazyItemScope.(index: Int, item: T) -> Unit
 ) {
 
@@ -79,6 +85,8 @@ fun <T : Any> SIParallaxLazyColumn(
         data = listData.collectAsLazyPagingItems(),
         bottomView = bottomView,
         noItemText = noItemText,
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
         compose = compose
     )
 }
@@ -91,6 +99,8 @@ fun <T : Any> SIParallaxLazyColumn(
     data: LazyPagingItems<T>,
     bottomView: @Composable (BoxScope.() -> Unit)? = null,
     noItemText: String? = null,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(12.dp),
+    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     compose: @Composable LazyItemScope.(index: Int, item: T) -> Unit
 ) {
 
@@ -270,24 +280,16 @@ fun <T : Any> SIParallaxLazyColumn(
             LocalOverscrollConfiguration provides null
         ) {
 
-            ConstraintLayout(
+            SIBox(
                 modifier = Modifier
                     .padding(top = appBarHeight + paddingMedium)
                     .fillMaxSize()
             ) {
-                val (listViewRef, bottomViewRef) = createRefs()
 
                 SILazyColumn(
-                    modifier = Modifier
-                        .constrainAs(listViewRef) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(bottomViewRef.top)
-                            height = Dimension.fillToConstraints
-                        },
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = verticalArrangement,
+                    horizontalAlignment = horizontalAlignment,
                     contentPadding = PaddingValues(0.dp),
                     state = lazyListState,
                     hasItems = data.itemCount > 0,
@@ -299,7 +301,9 @@ fun <T : Any> SIParallaxLazyColumn(
                     }
 
                     itemsIndexed(data) { index, item ->
-                        compose(this, index, item!!)
+                        item?.let {
+                            compose(this, index, item)
+                        }
                     }
                 }
 
@@ -307,17 +311,15 @@ fun <T : Any> SIParallaxLazyColumn(
                     SIBox(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .constrainAs(bottomViewRef) {
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
-                            }
-                            .animateContentSize()
+                            .wrapContentHeight()
+                            .align(Alignment.BottomCenter)
+                            .animateContentSize(),
+                        bgColor = AuroraColor.Primary
                     ) {
                         if (lazyListState.isScrollingUp()) {
                             SIBox(
                                 modifier = Modifier
-                                    .padding(top = 6.dp)
+                                    .padding(12.dp, 8.dp)
                                     .fillMaxWidth()
                             ) {
                                 bottomView.invoke(this)

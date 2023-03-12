@@ -19,9 +19,6 @@ package pk.sufiishq.app
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
@@ -29,9 +26,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
 import pk.sufiishq.app.feature.storage.KeyValueStorage
-import pk.sufiishq.app.worker.CacheRemoveWorker
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -53,25 +48,12 @@ class SufiIshqApp : Application(), Configuration.Provider {
             .setCrashlyticsCollectionEnabled(BuildConfig.ENABLE_CRASHLYTICS)
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
-
-        initWorkers()
     }
 
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder()
             .setWorkerFactory(hiltWorkerFactory)
             .build()
-    }
-
-    private fun initWorkers() {
-        val cacheRemoveWorkRequest =
-            PeriodicWorkRequestBuilder<CacheRemoveWorker>(24, TimeUnit.HOURS).build()
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                CacheRemoveWorker::class.java.simpleName,
-                ExistingPeriodicWorkPolicy.KEEP,
-                cacheRemoveWorkRequest,
-            )
     }
 
     private fun logDebugAppCheckToken() {
