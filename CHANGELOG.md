@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added Gallery section that will contains Niaz, Urs and Feature Videos.
 - Added Events section that will contains muslim festival and other occasions
+- Added More themes
 
 ### Changed
 - Tweaking some different parts of UI.
