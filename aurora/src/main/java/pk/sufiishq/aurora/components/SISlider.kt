@@ -26,7 +26,7 @@ fun SISlider(
     Slider(
         modifier = modifier.zIndex(100f),
         colors = colors,
-        value = value,
+        value = 0.0f.coerceAtLeast(value),
         valueRange = valueRange,
         enabled = enabled,
         onValueChange = onValueChange,

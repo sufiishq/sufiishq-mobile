@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed Push Notification runtime permission for Android 13+.
 - Fixed duplicate insertion all kalams in database via AssetKalamLoaderViewModel.
+- Fixed crash when get kalam duration -1 
 
 ## [2.0.0 SufiIshq] - 2023-02-17
 

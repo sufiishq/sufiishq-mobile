@@ -99,7 +99,7 @@ constructor(
             MediaState.Pause(
                 activeKalam,
                 mediaPlayer.currentPosition,
-                mediaPlayer.duration,
+                0.coerceAtLeast(mediaPlayer.duration),
                 trackListType,
             ),
         )
@@ -111,7 +111,7 @@ constructor(
             MediaState.Resume(
                 activeKalam,
                 mediaPlayer.currentPosition,
-                mediaPlayer.duration,
+                0.coerceAtLeast(mediaPlayer.duration),
                 trackListType,
             ),
         )
@@ -185,7 +185,7 @@ constructor(
     }
 
     override fun onProgressChanged(progress: Int) {
-        changeState(MediaState.Playing(activeKalam, progress, mediaPlayer.duration, trackListType))
+        changeState(MediaState.Playing(activeKalam, progress, 0.coerceAtLeast(mediaPlayer.duration), trackListType))
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
