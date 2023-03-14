@@ -152,6 +152,7 @@
     <string name="msg_occasions_updated">Niaz And Urs has been updated!</string>
     <string name="msg_require_notif_permissions">SufiIshq app required notification permission to show notification</string>
     <string name="msg_no_occasions">No %s Available</string>
+    <string name="msg_no_events_available">No events available</string>
 
     <string name="detail_setup_app_lock">Setup your SufiIshq application lock configuration by setting up the PIN and Fingerprint options with easy steps.</string>
     <string name="detail_change_pin">Update your pin any time and also make sure to use a strong pin and avoid using a simple pin so that anyone can\'t guess.</string>

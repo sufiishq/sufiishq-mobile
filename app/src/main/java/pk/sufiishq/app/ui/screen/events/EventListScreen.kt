@@ -52,7 +52,7 @@ fun EventListScreen(
     SIParallaxLazyColumn(
         leadingIcon = ImageRes.event_full,
         title = optString(TextRes.title_events),
-        noItemText = optString(TextRes.msg_no_videos),
+        noItemText = optString(TextRes.msg_no_events_available),
         data = eventController.loadAllEvents()
             .collectAsLazyPagingItems(),
     ) { _, item ->
