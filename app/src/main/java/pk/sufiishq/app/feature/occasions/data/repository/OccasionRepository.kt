@@ -28,6 +28,8 @@ import pk.sufiishq.app.feature.occasions.model.Occasion
 import pk.sufiishq.app.feature.occasions.model.OccasionResponse
 import pk.sufiishq.app.feature.occasions.model.OccasionWithMedia
 import pk.sufiishq.app.utils.asObjectList
+import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -71,17 +73,21 @@ class OccasionRepository @Inject constructor(
         timestamp: Long,
         pageSize: Int = 1,
     ) {
-        occasionService
-            .fetchOccasions(offset, pageSize, requestType, timestamp)
-            .execute()
-            .takeIf { it.isSuccessful && it.body() != null }
-            ?.let { it.body()!!.string() }
-            ?.let(::transform)
-            ?.let { insertAllData(it) }
-            ?.takeIf { it.hasNext }
-            ?.apply {
-                fetchOccasions(this.offset + 1, requestType, timestamp)
-            }
+        try {
+            occasionService
+                .fetchOccasions(offset, pageSize, requestType, timestamp)
+                .execute()
+                .takeIf { it.isSuccessful && it.body() != null }
+                ?.let { it.body()!!.string() }
+                ?.let(::transform)
+                ?.let { insertAllData(it) }
+                ?.takeIf { it.hasNext }
+                ?.apply {
+                    fetchOccasions(this.offset + 1, requestType, timestamp)
+                }
+        } catch (ex: UnknownHostException) {
+            Timber.e(ex)
+        }
     }
 
     private suspend fun insertAllData(occasionResponse: OccasionResponse): OccasionResponse {

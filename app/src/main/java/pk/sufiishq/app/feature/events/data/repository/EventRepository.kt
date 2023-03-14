@@ -23,6 +23,8 @@ import pk.sufiishq.app.feature.events.data.dao.EventDao
 import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.events.transformation.EventTransformer
 import pk.sufiishq.app.utils.asObjectList
+import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(
@@ -60,15 +62,19 @@ class EventRepository @Inject constructor(
     }
 
     suspend fun fetchAllEvents() {
-        eventService
-            .fetchAllEvents()
-            .execute()
-            .takeIf { it.isSuccessful && it.body() != null }
-            ?.let { it.body()!!.string() }
-            ?.let(::transform)
-            ?.apply {
-                eventDao.addAll(eventTransformer.transform(this))
-            }
+        try {
+            eventService
+                .fetchAllEvents()
+                .execute()
+                .takeIf { it.isSuccessful && it.body() != null }
+                ?.let { it.body()!!.string() }
+                ?.let(::transform)
+                ?.apply {
+                    eventDao.addAll(eventTransformer.transform(this))
+                }
+        } catch (ex: UnknownHostException) {
+            Timber.e(ex)
+        }
     }
 
     private fun transform(response: String): List<Event> {

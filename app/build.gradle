@@ -22,8 +22,8 @@ android {
         applicationId "pk.sufiishq.app"
         minSdk 24
         targetSdk 33
-        versionCode 24
-        versionName "2.5"
+        versionCode 25
+        versionName "2.5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -41,6 +41,20 @@ android {
         }
     }
 
+    signingConfigs {
+
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+
+            // Optional, specify signing versions used
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         debug {
             testCoverageEnabled true
@@ -49,6 +63,7 @@ android {
         }
         release {
 
+            signingConfig signingConfigs.release
             buildConfigField "Boolean", "ENABLE_CRASHLYTICS", "${getBoolProperty("release.crashlytics.enable", true)}"
 
             ndk {

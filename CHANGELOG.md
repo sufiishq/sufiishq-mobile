@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 2023-xx-xx
+## [2.5.0 SufiIshq] - 2023-03-15
 
 ### Added
 - Added Gallery section that will contains Niaz, Urs and Feature Videos.
@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed Push Notification runtime permission for Android 13+.
 - Fixed duplicate insertion all kalams in database via AssetKalamLoaderViewModel.
 - Fixed crash when get kalam duration -1 
+- Fixed crash java.lang.ClassNotFoundException: Didn't find class "android.media.AudioFocusRequest$Builder".
+- Fixed crash ForegroundServiceStartNotAllowedException: Service.startForeground() not allowed due to mAllowStartForeground false.
+- Fixed crash when try to fetch media when no internet connection.
 
 ## [2.0.0 SufiIshq] - 2023-02-17
 

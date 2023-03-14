@@ -48,7 +48,6 @@ sealed class MediaState(val kalam: Kalam, val trackListType: TrackListType) {
     ) : MediaState(kalam, trackListType)
 
     class Complete(kalam: Kalam, trackListType: TrackListType) : MediaState(kalam, trackListType)
-    class Stop(kalam: Kalam, trackListType: TrackListType) : MediaState(kalam, trackListType)
     class Error(
         kalam: Kalam,
         val what: Int,

@@ -29,10 +29,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.feature.kalam.splitter.PreviewAudioPlayer
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.controller.SufiishqMediaPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -63,10 +65,16 @@ class PlayerModule {
     fun provideAudioFocusRequest(
         audioAttributes: AudioAttributes,
     ): AudioFocusRequest.Builder? {
+        BuildConfig.VERSION_CODE
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                .setAudioAttributes(audioAttributes)
-                .setWillPauseWhenDucked(true)
+            try {
+                AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(audioAttributes)
+                    .setWillPauseWhenDucked(true)
+            } catch (t: Throwable) {
+                Timber.e(t)
+                null
+            }
         } else {
             null
         }

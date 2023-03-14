@@ -23,6 +23,8 @@ import pk.sufiishq.app.feature.app.api.MediaService
 import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
 import pk.sufiishq.app.utils.asObjectList
+import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class MediaRepository @Inject constructor(
@@ -43,13 +45,17 @@ class MediaRepository @Inject constructor(
     }
 
     suspend fun fetchMedia(referenceId: String) {
-        mediaService
-            .fetch(referenceId)
-            .execute()
-            .takeIf { it.isSuccessful && it.body() != null }
-            ?.let { it.body()!!.string() }
-            ?.let(::transform)
-            ?.let { mediaDao.addAll(it) }
+        try {
+            mediaService
+                .fetch(referenceId)
+                .execute()
+                .takeIf { it.isSuccessful && it.body() != null }
+                ?.let { it.body()!!.string() }
+                ?.let(::transform)
+                ?.let { mediaDao.addAll(it) }
+        } catch (ex: UnknownHostException) {
+            Timber.e(ex)
+        }
     }
 
     private fun transform(response: String): List<Media> {

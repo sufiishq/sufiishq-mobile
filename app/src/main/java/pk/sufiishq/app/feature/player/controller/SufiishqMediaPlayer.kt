@@ -89,7 +89,13 @@ constructor(
     }
 
     private fun play() {
-        mediaPlayer.prepareAsync()
+        try {
+            mediaPlayer.prepareAsync()
+        } catch (ex: IllegalStateException) {
+            initPlayer()
+            mediaPlayer.setDataSource(appContext, activeKalam)
+            mediaPlayer.prepareAsync()
+        }
         changeState(MediaState.Loading(activeKalam, trackListType))
     }
 
@@ -160,7 +166,7 @@ constructor(
         try {
             mediaPlayer.stop()
             mediaPlayer.reset()
-            changeState(MediaState.Stop(activeKalam, trackListType))
+            changeState(MediaState.Idle(activeKalam, trackListType))
             when {
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ->
                     audioManager.abandonAudioFocusRequest(

@@ -85,7 +85,6 @@ constructor(
                 is MediaState.Pause -> mediaState.mapToPauseState()
                 is MediaState.Resume -> mediaState.mapToResumeState()
                 is MediaState.Idle,
-                is MediaState.Stop,
                 is MediaState.Complete,
                 is MediaState.Error,
                 -> mediaState.mapToIdleState()
