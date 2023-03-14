@@ -184,7 +184,6 @@ fun fakeMainController() =
         override fun showUpdateButton(value: Boolean) = Unit
         override fun unregisterListener(activity: ComponentActivity) = Unit
         override fun getHijriDate(): LiveData<HijriDate?> = MutableLiveData(null)
-
     }
 
 // ---------------------------------------------------------------------------------- //

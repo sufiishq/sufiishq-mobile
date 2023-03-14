@@ -88,7 +88,7 @@ class EventRepository @Inject constructor(
                 hijriMonthAndDay = getString("hijriMonthAndDay"),
                 hijriDate = getString("hijriDate"),
                 remainingDays = 0,
-                enableAlert = true
+                enableAlert = true,
             )
         }
     }

@@ -105,7 +105,7 @@ fun DashboardScreen(
                     calligraphyRef,
                     highlightAvailableButtonRef,
                     buttonBoxRef,
-                    debugLabelRef
+                    debugLabelRef,
                 ) = createRefs()
 
                 UpcomingEventTicker(
@@ -115,11 +115,11 @@ fun DashboardScreen(
                             start.linkTo(parent.start)
                             top.linkTo(
                                 parent.top,
-                                if (upcomingEvents?.isNotEmpty() == true) 12.dp else 0.dp
+                                if (upcomingEvents?.isNotEmpty() == true) 12.dp else 0.dp,
                             )
                             end.linkTo(parent.end)
                         },
-                    upcomingEvents = upcomingEvents
+                    upcomingEvents = upcomingEvents,
                 )
 
                 MainAnimatedLogo(

@@ -26,18 +26,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
+import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.app.AppManager
+import pk.sufiishq.app.feature.events.data.repository.EventRepository
+import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.hijridate.model.HijriDate
 import pk.sufiishq.app.feature.hijridate.repository.HijriDateRepository
 import pk.sufiishq.app.feature.update.InAppUpdateManager
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject
-import kotlinx.coroutines.launch
-import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.feature.events.data.repository.EventRepository
-import pk.sufiishq.app.feature.events.model.Event
 import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
@@ -49,7 +49,7 @@ constructor(
     private val hijriDateRepository: HijriDateRepository,
     private val inAppUpdateManager: InAppUpdateManager,
     private val appManager: AppManager,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
 ) : ViewModel(), MainController {
 
     private val showUpdateDialog = MutableLiveData(false)

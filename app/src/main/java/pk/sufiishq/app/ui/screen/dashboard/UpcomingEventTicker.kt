@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.dashboard
 
 import androidx.compose.animation.AnimatedContent
@@ -28,15 +44,12 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun UpcomingEventTicker(
     modifier: Modifier,
-    upcomingEvents: List<Event>?
+    upcomingEvents: List<Event>?,
 ) {
-
     SIBox(
-        modifier = modifier
+        modifier = modifier,
     ) {
-
         if (upcomingEvents?.isNotEmpty() == true) {
-
             val target = produceState(initialValue = upcomingEvents.first()) {
                 upcomingEvents.run {
                     if (size >= 2) {
@@ -61,22 +74,25 @@ fun UpcomingEventTicker(
                         animationSpec = tween(1000),
                         initialOffsetY = {
                             with(density) { -40.dp.roundToPx() }
-                        }
+                        },
                     ) with slideOutVertically(
                         animationSpec = tween(1000),
                         targetOffsetY = {
                             with(density) { 40.dp.roundToPx() }
-                        })
-                }
+                        },
+                    )
+                },
             ) { event ->
-                SIBox(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp, 0.dp)) {
+                SIBox(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp, 0.dp),
+                ) {
                     SIRow(
                         modifier = Modifier
                             .padding(12.dp, 8.dp),
                         bgColor = AuroraColor.SecondaryVariant,
-                        radius = 20
+                        radius = 20,
                     ) {
                         SIText(
                             text = "${event.title} - ${
@@ -85,13 +101,13 @@ fun UpcomingEventTicker(
                                 } else {
                                     optString(
                                         TextRes.dynamic_event_days_remaining,
-                                        event.remainingDays
+                                        event.remainingDays,
                                     )
                                 }
                             }",
                             textColor = it,
                             textSize = TextSize.Small,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
