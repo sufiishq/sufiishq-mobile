@@ -112,7 +112,7 @@ class AudioPlayerService : LifecycleService(), PlayerStateListener {
     }
 
     companion object {
-        const val NOTIFY_ID = 1
+        const val NOTIFY_ID = 1989
         const val CHANNEL_ID = "SufiIshq"
     }
 }
