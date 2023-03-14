@@ -60,12 +60,12 @@ fun EventListScreen(
         SIBox(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(255.dp),
+                .height(265.dp),
         ) {
             SICard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
+                    .height(230.dp)
                     .align(Alignment.TopCenter),
             ) {
                 SIBox(
@@ -96,11 +96,11 @@ fun EventListScreen(
                             modifier = Modifier.padding(20.dp, 0.dp),
                             text = item.title,
                             textColor = textColor,
-                            textSize = TextSize.Large,
+                            textSize = TextSize.ExtraLarge,
                             fontWeight = FontWeight.Light,
                             textAlign = TextAlign.Center,
                         )
-                        SIHeightSpace(value = 6)
+                        SIHeightSpace(value = 8)
                         SIText(
                             text = item.hijriDate,
                             textColor = it,

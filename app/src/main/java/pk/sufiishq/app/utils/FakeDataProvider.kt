@@ -30,6 +30,7 @@ import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.model.NavigationItem
+import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.help.HelpDataType
 import pk.sufiishq.app.feature.help.controller.HelpController
 import pk.sufiishq.app.feature.help.model.HelpContent
@@ -178,10 +179,12 @@ fun fakeMainController() =
         override fun handleUpdate() = Unit
         override fun openFacebookGroup(context: Context, groupUrl: String) = Unit
         override fun shareApp(activity: ComponentActivity) = Unit
+        override fun getUpcomingEvents(): LiveData<List<Event>> = MutableLiveData(listOf())
         override fun checkUpdate(activity: ComponentActivity) = Unit
         override fun showUpdateButton(value: Boolean) = Unit
         override fun unregisterListener(activity: ComponentActivity) = Unit
         override fun getHijriDate(): LiveData<HijriDate?> = MutableLiveData(null)
+
     }
 
 // ---------------------------------------------------------------------------------- //

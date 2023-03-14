@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -44,6 +45,7 @@ class EventUpdateWorker @AssistedInject constructor(
         eventRepository.invalidateAllEvents()
 
         eventRepository.getUpcomingEvents()
+            .filter { it.enableAlert }
             .forEach { event ->
                 context.notify(
                     event.id.toInt(),

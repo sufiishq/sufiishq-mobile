@@ -144,5 +144,5 @@ private fun calculateForegroundColor(bgColor: Color) : AuroraColor {
     val g = bgColor.green * 255
     val b = bgColor.blue * 255
     val yiq = (r * 299 + g * 587 + b * 114) / 1000
-    return if(yiq >= 128) AuroraColor.OnSecondaryDarkVariant else AuroraColor.OnSecondaryLightVariant
+    return if(yiq >= 180) AuroraColor.OnSecondaryDarkVariant else AuroraColor.OnSecondaryLightVariant
 }

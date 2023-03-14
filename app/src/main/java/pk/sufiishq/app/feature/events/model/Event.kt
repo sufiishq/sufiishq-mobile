@@ -27,6 +27,6 @@ data class Event(
     val date: String,
     val hijriDate: String,
     val hijriMonthAndDay: String,
-    var remainingDays: Int,
-    val enableAlert: Boolean = false,
+    val remainingDays: Int,
+    val enableAlert: Boolean,
 )

@@ -90,7 +90,7 @@ sealed class ColorPalette(val name: String, val color: Pair<Color, Color>) {
     object Juniper : ColorPalette("Juniper", Pair(Color(0xFF3A5312), Color(0xFF25350B)))
     object Sage : ColorPalette("Sage", Pair(Color(0xFF728C69), Color(0xFF51644A)))
     object Fern : ColorPalette("Fern", Pair(Color(0xFF5CBC63), Color(0xFF47924C)))
-    object Seafoam : ColorPalette("Sea foam", Pair(Color(0xFF3DEC97), Color(0xFF31C47C)))
+    object SeaFoam : ColorPalette("Sea foam", Pair(Color(0xFF3DEC97), Color(0xFF31C47C)))
     object Brown : ColorPalette("Brown", Pair(Color(0xFF231609), Color(0xFF0F0903)))
     object Coffee : ColorPalette("Coffee", Pair(Color(0xFF4B371C), Color(0xFF2E2110)))
     object Peanut : ColorPalette("Peanut", Pair(Color(0xFF785C34), Color(0xFF554124)))

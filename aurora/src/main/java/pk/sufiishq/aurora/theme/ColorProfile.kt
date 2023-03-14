@@ -126,7 +126,7 @@ internal object AuroraColorPalettes {
             ColorPalette.Juniper,
             ColorPalette.Sage,
             ColorPalette.Fern,
-            ColorPalette.Seafoam,
+            ColorPalette.SeaFoam,
             ColorPalette.Brown,
             ColorPalette.Coffee,
             ColorPalette.Peanut,

@@ -17,6 +17,7 @@
 package pk.sufiishq.app.ui.screen.dashboard
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -65,6 +66,7 @@ fun DashboardScreen(
     val downloads = rem(stringResource(TextRes.title_downloads))
     val playlist = rem(stringResource(TextRes.title_playlist))
     val scaffoldState = rememberScaffoldState()
+    val upcomingEvents = mainController.getUpcomingEvents().observeAsState().value
 
     SIScaffold(
         drawer = {
@@ -97,15 +99,36 @@ fun DashboardScreen(
             SIConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                val (logo, calligraphy, highlightAvailableButton, buttonBox, debugLabel) = createRefs()
+                val (
+                    upcomingEventsRef,
+                    logoRef,
+                    calligraphyRef,
+                    highlightAvailableButtonRef,
+                    buttonBoxRef,
+                    debugLabelRef
+                ) = createRefs()
+
+                UpcomingEventTicker(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(upcomingEventsRef) {
+                            start.linkTo(parent.start)
+                            top.linkTo(
+                                parent.top,
+                                if (upcomingEvents?.isNotEmpty() == true) 12.dp else 0.dp
+                            )
+                            end.linkTo(parent.end)
+                        },
+                    upcomingEvents = upcomingEvents
+                )
 
                 MainAnimatedLogo(
                     modifier =
-                    Modifier.constrainAs(logo) {
+                    Modifier.constrainAs(logoRef) {
                         start.linkTo(parent.start)
-                        top.linkTo(parent.top, 12.dp)
+                        top.linkTo(upcomingEventsRef.bottom, 12.dp)
                         end.linkTo(parent.end)
-                        bottom.linkTo(calligraphy.top)
+                        bottom.linkTo(calligraphyRef.top)
                         width = Dimension.fillToConstraints
                         height = Dimension.fillToConstraints
                     },
@@ -113,19 +136,19 @@ fun DashboardScreen(
 
                 SIImage(
                     modifier =
-                    Modifier.constrainAs(calligraphy) {
+                    Modifier.constrainAs(calligraphyRef) {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        bottom.linkTo(buttonBox.top)
+                        bottom.linkTo(buttonBoxRef.top)
                     },
                     resId = ImageRes.caligraphi,
                 )
 
                 HighlightAvailableButton(
                     modifier =
-                    Modifier.constrainAs(highlightAvailableButton) {
+                    Modifier.constrainAs(highlightAvailableButtonRef) {
                         start.linkTo(parent.start, 12.dp)
-                        bottom.linkTo(buttonBox.top)
+                        bottom.linkTo(buttonBoxRef.top)
                     },
                     highlightDialogControl = showHighlightDialog,
                     dashboardController = dashboardController,
@@ -135,17 +158,18 @@ fun DashboardScreen(
                     SIBadge(
                         text = optString(TextRes.label_debug),
                         modifier =
-                        Modifier.constrainAs(debugLabel) {
+                        Modifier.constrainAs(debugLabelRef) {
                             end.linkTo(parent.end, 12.dp)
-                            bottom.linkTo(buttonBox.top)
+                            bottom.linkTo(buttonBoxRef.top)
                         },
                     )
                 }
 
                 SIBox(
                     modifier =
-                    Modifier.padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
-                        .constrainAs(buttonBox) {
+                    Modifier
+                        .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
+                        .constrainAs(buttonBoxRef) {
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                             bottom.linkTo(parent.bottom)
@@ -173,7 +197,8 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = favorites.value,
-                                count = dashboardController.countFavorites().observeAsState().optValue(0),
+                                count = dashboardController.countFavorites().observeAsState()
+                                    .optValue(0),
                                 icon = ImageRes.favorite,
                                 paddingModifier = Modifier.padding(0.dp, 6.dp, 6.dp, 0.dp),
                                 navigate = {
@@ -193,7 +218,8 @@ fun DashboardScreen(
                         ) {
                             DashboardButton(
                                 title = downloads.value,
-                                count = dashboardController.countDownloads().observeAsState().optValue(0),
+                                count = dashboardController.countDownloads().observeAsState()
+                                    .optValue(0),
                                 icon = ImageRes.download,
                                 paddingModifier = Modifier.padding(6.dp, 0.dp, 0.dp, 6.dp),
                                 navigate = {
@@ -209,7 +235,8 @@ fun DashboardScreen(
 
                             DashboardButton(
                                 title = playlist.value,
-                                count = dashboardController.countPlaylist().observeAsState().optValue(0),
+                                count = dashboardController.countPlaylist().observeAsState()
+                                    .optValue(0),
                                 icon = ImageRes.playlist,
                                 paddingModifier = Modifier.padding(6.dp, 6.dp, 0.dp, 0.dp),
                                 navigate = { navController.navigate(ScreenType.Playlist.buildRoute()) },

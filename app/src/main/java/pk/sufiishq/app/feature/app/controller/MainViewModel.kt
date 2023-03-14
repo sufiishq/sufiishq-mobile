@@ -24,6 +24,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
 import pk.sufiishq.app.feature.app.AppManager
@@ -33,15 +34,22 @@ import pk.sufiishq.app.feature.update.InAppUpdateManager
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject
+import kotlinx.coroutines.launch
+import pk.sufiishq.app.di.qualifier.IoDispatcher
+import pk.sufiishq.app.feature.events.data.repository.EventRepository
+import pk.sufiishq.app.feature.events.model.Event
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class MainViewModel
 @Inject
 constructor(
+    @IoDispatcher private val dispatcher: CoroutineContext,
     @AppBarPopupMenuItems private val popupMenu: PopupMenu,
     private val hijriDateRepository: HijriDateRepository,
     private val inAppUpdateManager: InAppUpdateManager,
     private val appManager: AppManager,
+    private val eventRepository: EventRepository
 ) : ViewModel(), MainController {
 
     private val showUpdateDialog = MutableLiveData(false)
@@ -60,6 +68,14 @@ constructor(
 
     override fun shareApp(activity: ComponentActivity) {
         appManager.shareApp(activity)
+    }
+
+    override fun getUpcomingEvents(): LiveData<List<Event>> {
+        val upcomingEventLiveData = MutableLiveData<List<Event>>()
+        viewModelScope.launch(dispatcher) {
+            upcomingEventLiveData.postValue(eventRepository.getUpcomingEvents())
+        }
+        return upcomingEventLiveData
     }
 
     // -------------------------------------------------------------------- //
