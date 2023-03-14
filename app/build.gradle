@@ -22,8 +22,8 @@ android {
         applicationId "pk.sufiishq.app"
         minSdk 24
         targetSdk 33
-        versionCode 23
-        versionName "2.0"
+        versionCode 24
+        versionName "2.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
