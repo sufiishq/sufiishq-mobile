@@ -37,7 +37,7 @@ class PlayerNotification @Inject constructor(
             }",
             onGoing = true,
             autoCancel = false,
-        )
+        ).setSilent(true)
 
         service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
     }
