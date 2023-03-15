@@ -18,14 +18,16 @@ package pk.sufiishq.app.ui.screen.dashboard
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
@@ -35,13 +37,13 @@ import pk.sufiishq.aurora.layout.SIDialog
 @PackagePrivate
 @Composable
 fun UpdateAvailableDialog(
-    isUpdateAvailable: MutableState<Boolean>,
     mainController: MainController,
 ) {
-    if (isUpdateAvailable.value) {
-        SIDialog(
-            onDismissRequest = { isUpdateAvailable.value = false },
-        ) { textColor ->
+    val updateAvailable = mainController.showUpdateDialog().observeAsState().optValue(false)
+    if (updateAvailable) {
+        val context = LocalContext.current
+
+        SIDialog { textColor ->
             SIText(
                 modifier = Modifier.fillMaxWidth(),
                 text = optString(TextRes.app_name),
@@ -60,7 +62,7 @@ fun UpdateAvailableDialog(
                 modifier = Modifier.fillMaxWidth(),
                 text = optString(TextRes.label_update_now),
                 textSize = TextSize.Regular,
-                onClick = { mainController.handleUpdate() },
+                onClick = { mainController.handleUpdate(context) },
             )
         }
     }

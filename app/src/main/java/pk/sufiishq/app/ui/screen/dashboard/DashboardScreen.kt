@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
+import pk.sufiishq.app.activities.BaseActivity
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
@@ -89,10 +92,6 @@ fun DashboardScreen(
 
         SIBox {
             UpdateAvailableDialog(
-                isUpdateAvailable =
-                rem(
-                    mainController.showUpdateButton().observeAsState().optValue(false),
-                ),
                 mainController = mainController,
             )
 
@@ -249,6 +248,12 @@ fun DashboardScreen(
                 }
             }
         }
+    }
+
+    // check any incoming update from play-store
+    val activity = LocalContext.current as BaseActivity
+    LaunchedEffect(key1 = Unit) {
+        mainController.checkUpdate(activity)
     }
 }
 

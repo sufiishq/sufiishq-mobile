@@ -24,7 +24,6 @@ import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
 import pk.sufiishq.app.utils.asObjectList
 import timber.log.Timber
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 class MediaRepository @Inject constructor(
@@ -53,7 +52,7 @@ class MediaRepository @Inject constructor(
                 ?.let { it.body()!!.string() }
                 ?.let(::transform)
                 ?.let { mediaDao.addAll(it) }
-        } catch (ex: UnknownHostException) {
+        } catch (ex: Exception) {
             Timber.e(ex)
         }
     }

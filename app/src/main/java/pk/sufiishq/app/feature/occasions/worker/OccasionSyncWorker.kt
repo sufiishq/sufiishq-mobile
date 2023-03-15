@@ -26,7 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.feature.app.AppNotificationManager
 import pk.sufiishq.app.feature.occasions.data.repository.OccasionRepository
 import pk.sufiishq.app.feature.occasions.model.Occasion
@@ -41,7 +41,7 @@ class OccasionSyncWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
     private val appNotificationManager: AppNotificationManager,
     private val occasionRepository: OccasionRepository,
-    @SecureSharedPreferences private val keyValueStorage: KeyValueStorage,
+    @SharedPreferences private val keyValueStorage: KeyValueStorage,
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {

@@ -27,7 +27,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import org.json.JSONObject
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.fake.TestSharedPreferences
 import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
@@ -53,7 +53,7 @@ class TestAppModule {
 
     @Provides
     @Singleton
-    @SecureSharedPreferences
+    @SharedPreferences
     fun providesKeyValueStorage(@ApplicationContext appContext: Context): KeyValueStorage {
         return TestSharedPreferences(appContext)
     }

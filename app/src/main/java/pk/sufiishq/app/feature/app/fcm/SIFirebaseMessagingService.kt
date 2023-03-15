@@ -22,7 +22,7 @@ import com.google.firebase.messaging.RemoteMessage
 import pk.sufiishq.app.feature.events.worker.EventSyncWorker
 import pk.sufiishq.app.feature.occasions.worker.OccasionSyncWorker
 import pk.sufiishq.app.feature.storage.KeyValueStorage
-import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
+import pk.sufiishq.app.feature.storage.SharedPreferencesStorage
 import timber.log.Timber
 
 class SIFirebaseMessagingService : FirebaseMessagingService() {
@@ -65,7 +65,7 @@ class SIFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun getKeyValueStorage(context: Context): KeyValueStorage {
-        return SecureSharedPreferencesStorage(context)
+        return SharedPreferencesStorage(context)
     }
 
     companion object {

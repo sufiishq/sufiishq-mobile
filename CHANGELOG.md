@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0 SufiIshq] - 2023-03-15
+
+### Changed
+- Update InAppUpdateManager to check the update and route to the PlayStore instead of updating the app within app.
+- Change EncryptedSharedPreferences to simple SharePreferences.
+
+### Fixed
+- Fixed IllegalArgumentException: Cannot set 'scaleX' to Float.NaN in Android 9 Api-level 28
+- Fixed crash on fetch Media from MediaRepository by catching the generic exception.
+ 
 ## [2.5.0 SufiIshq] - 2023-03-15
 
 ### Added

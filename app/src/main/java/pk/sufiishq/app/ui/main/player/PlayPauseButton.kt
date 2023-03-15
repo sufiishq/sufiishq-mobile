@@ -37,6 +37,7 @@ import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.components.SIWidthSpace
 import pk.sufiishq.aurora.layout.SIAuroraSurface
+import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -53,9 +54,8 @@ fun PlayPauseButton(
             modifier = Modifier.align(Alignment.CenterStart),
         ) {
             SIWidthSpace(value = 2)
-            SICard(
+            SIBox(
                 modifier = Modifier.size(80.dp).clip(CircleShape),
-                elevation = 0.dp,
             ) {
                 SIAuroraSurface {
                     SICard(

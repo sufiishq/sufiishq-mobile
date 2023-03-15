@@ -128,9 +128,8 @@ fun DayNightThemeControl(
             }
         }
 
-        SICard(
+        SIBox(
             modifier = Modifier.size(90.dp).clip(CircleShape),
-            bgColor = AuroraColor.Background,
         ) {
             SIAuroraSurface {
                 SICard(

@@ -49,11 +49,10 @@ fun ToggleEventNotificationButton(
                 .align(Alignment.BottomEnd)
                 .padding(end = 24.dp),
         ) {
-            SICard(
+            SIBox(
                 modifier = Modifier
                     .size(70.dp)
                     .clip(CircleShape),
-                elevation = 0.dp,
             ) {
                 SIAuroraSurface {
                     SICard(

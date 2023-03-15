@@ -105,9 +105,9 @@ fun <T : Any> SIParallaxLazyColumn(
 ) {
 
     val localDensity = LocalDensity.current
-    val containerSize = rem(DpSize.Zero)
-    val imageSize = rem(DpSize.Zero)
-    val titleSize = rem(DpSize.Zero)
+    val containerSize = rem(DpSize(1.dp, 1.dp))
+    val imageSize = rem(DpSize(1.dp, 1.dp))
+    val titleSize = rem(DpSize(1.dp, 1.dp))
     val headerHeight = rem(0.dp)
     headerHeight.value =
         imageSize.value.height + paddingMedium * 5 + titleSize.value.height + paddingMedium

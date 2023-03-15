@@ -39,10 +39,9 @@ interface MainController {
     // -------------------------------------------------------------------- //
 
     fun checkUpdate(activity: ComponentActivity)
-    fun showUpdateButton(): LiveData<Boolean>
-    fun showUpdateButton(value: Boolean)
-    fun handleUpdate()
-    fun unregisterListener(activity: ComponentActivity)
+    fun showUpdateDialog(): LiveData<Boolean>
+    fun showUpdateDialog(value: Boolean)
+    fun handleUpdate(context: Context)
 
     // -------------------------------------------------------------------- //
     // signature hijri date widget

@@ -26,7 +26,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.feature.events.data.repository.EventRepository
 import pk.sufiishq.app.feature.storage.KeyValueStorage
 
@@ -35,7 +35,7 @@ class EventSyncWorker @AssistedInject constructor(
     @Assisted val context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val eventRepository: EventRepository,
-    @SecureSharedPreferences private val keyValueStorage: KeyValueStorage,
+    @SharedPreferences private val keyValueStorage: KeyValueStorage,
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {

@@ -28,9 +28,9 @@ import org.junit.Before
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
 
-class SecureSharedPreferencesStorageTest : SufiIshqTest() {
+class SharedPreferencesStorageTest : SufiIshqTest() {
 
-    private lateinit var storage: SecureSharedPreferencesStorage
+    private lateinit var storage: SharedPreferencesStorage
 
     @Before
     fun setUp() {
@@ -49,7 +49,7 @@ class SecureSharedPreferencesStorageTest : SufiIshqTest() {
             )
         } returns appContext.getSharedPreferences("sufiishq", Context.MODE_PRIVATE)
 
-        storage = SecureSharedPreferencesStorage(appContext)
+        storage = SharedPreferencesStorage(appContext)
     }
 
     @Test

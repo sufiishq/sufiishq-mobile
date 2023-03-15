@@ -40,7 +40,7 @@ import pk.sufiishq.app.di.qualifier.AppBarPopupMenuItems
 import pk.sufiishq.app.feature.app.AppManager
 import pk.sufiishq.app.feature.hijridate.model.HijriDate
 import pk.sufiishq.app.feature.hijridate.repository.HijriDateRepository
-import pk.sufiishq.app.feature.update.InAppUpdateManager
+import pk.sufiishq.app.feature.update.AppUpdateCheckManager
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.app.helpers.popupmenu.PopupMenuItem
 import pk.sufiishq.app.utils.getOrAwaitValue
@@ -58,7 +58,7 @@ class MainControllerTest : SufiIshqTest() {
     lateinit var popupMenu: PopupMenu
 
     private val hijriDateRepository = mockk<HijriDateRepository>()
-    private val inAppUpdateManager = mockk<InAppUpdateManager>()
+    private val appUpdateCheckManager = mockk<AppUpdateCheckManager>()
     private val appManager = mockk<AppManager>()
     private lateinit var mainViewModel: MainViewModel
 
@@ -66,7 +66,7 @@ class MainControllerTest : SufiIshqTest() {
     fun setUp() {
         hiltRule.inject()
         mainViewModel =
-            MainViewModel(popupMenu, hijriDateRepository, inAppUpdateManager, appManager)
+            MainViewModel(popupMenu, hijriDateRepository, appUpdateCheckManager, appManager)
     }
 
     @Test
@@ -118,33 +118,33 @@ class MainControllerTest : SufiIshqTest() {
     @Test
     fun testCheckUpdate_shouldDelegate_toInAppUpdateManager() {
         val activity = mockk<ComponentActivity>()
-        every { inAppUpdateManager.checkInAppUpdate(any(), any()) } returns Unit
+        every { appUpdateCheckManager.checkInAppUpdate(any(), any()) } returns Unit
 
         mainViewModel.checkUpdate(activity)
-        verify { inAppUpdateManager.checkInAppUpdate(activity, mainViewModel) }
+        verify { appUpdateCheckManager.checkInAppUpdate(activity, mainViewModel) }
     }
 
     @Test
     fun testShowUpdateButton_shouldReturn_trueLiveData() {
-        mainViewModel.showUpdateButton(true)
-        assertTrue(mainViewModel.showUpdateButton().getOrAwaitValue()!!)
+        mainViewModel.showUpdateDialog(true)
+        assertTrue(mainViewModel.showUpdateDialog().getOrAwaitValue()!!)
     }
 
     @Test
     fun testHandleUpdate_shouldDelegate_toInAppUpdateManager() {
-        every { inAppUpdateManager.startUpdateFlow() } returns Unit
+        every { appUpdateCheckManager.routeToPlayStore() } returns Unit
 
         mainViewModel.handleUpdate()
-        verify { inAppUpdateManager.startUpdateFlow() }
+        verify { appUpdateCheckManager.routeToPlayStore() }
     }
 
     @Test
     fun testUnregisterListener_shouldDelegate_toInAppUpdateManager() {
         val activity = mockk<ComponentActivity>()
-        every { inAppUpdateManager.unregisterListener(any()) } returns Unit
+        every { appUpdateCheckManager.unregisterListener(any()) } returns Unit
 
         mainViewModel.unregisterListener(activity)
-        verify { inAppUpdateManager.unregisterListener(activity) }
+        verify { appUpdateCheckManager.unregisterListener(activity) }
     }
 
     @Test

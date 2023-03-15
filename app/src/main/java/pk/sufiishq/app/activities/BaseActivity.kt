@@ -27,7 +27,6 @@ import pk.sufiishq.app.feature.app.AppManager
 import pk.sufiishq.app.feature.app.PermissionManager
 import pk.sufiishq.app.feature.app.SyncManager
 import pk.sufiishq.app.feature.app.controller.AssetKalamLoaderViewModel
-import pk.sufiishq.app.feature.app.controller.MainViewModel
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
@@ -37,22 +36,28 @@ import javax.inject.Inject
 @AndroidEntryPoint
 open class BaseActivity : FragmentActivity() {
 
-    @Inject @AndroidMediaPlayer
+    @Inject
+    @AndroidMediaPlayer
     lateinit var player: AudioPlayer
 
-    @Inject lateinit var appManager: AppManager
+    @Inject
+    lateinit var appManager: AppManager
 
-    @Inject lateinit var authManager: AuthManager
+    @Inject
+    lateinit var authManager: AuthManager
 
-    @Inject lateinit var appLockManager: AppLockManager
+    @Inject
+    lateinit var appLockManager: AppLockManager
 
-    @Inject lateinit var maintenanceManager: MaintenanceManager
+    @Inject
+    lateinit var maintenanceManager: MaintenanceManager
 
-    @Inject lateinit var permissionManager: PermissionManager
+    @Inject
+    lateinit var permissionManager: PermissionManager
 
-    @Inject lateinit var syncManager: SyncManager
+    @Inject
+    lateinit var syncManager: SyncManager
 
-    private val mainController: MainViewModel by viewModels()
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
@@ -63,9 +68,6 @@ open class BaseActivity : FragmentActivity() {
 
         startService(playerIntent)
 
-        // check any incoming update from play-store
-        mainController.checkUpdate(this@BaseActivity)
-
         authManager.registerActivityResultListener(this)
 
         permissionManager.validateNotificationPermission(this)
@@ -75,8 +77,6 @@ open class BaseActivity : FragmentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        runCatching { mainController.unregisterListener(this) }
 
         if (!player.isPlaying()) {
             player.release()

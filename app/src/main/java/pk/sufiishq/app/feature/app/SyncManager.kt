@@ -21,7 +21,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.di.qualifier.IoDispatcher
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.feature.events.worker.EventSyncWorker
 import pk.sufiishq.app.feature.events.worker.EventUpdateWorker
 import pk.sufiishq.app.feature.occasions.worker.OccasionSyncWorker
@@ -35,7 +35,7 @@ import kotlin.coroutines.CoroutineContext
 class SyncManager @Inject constructor(
     @ApplicationContext private val context: Context,
     @IoDispatcher private val dispatcher: CoroutineContext,
-    @SecureSharedPreferences private val keyValueStorage: KeyValueStorage,
+    @SharedPreferences private val keyValueStorage: KeyValueStorage,
 ) {
 
     fun sync() {

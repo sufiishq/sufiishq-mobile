@@ -34,7 +34,7 @@ import pk.sufiishq.app.feature.events.data.repository.EventRepository
 import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.hijridate.model.HijriDate
 import pk.sufiishq.app.feature.hijridate.repository.HijriDateRepository
-import pk.sufiishq.app.feature.update.InAppUpdateManager
+import pk.sufiishq.app.feature.update.AppUpdateCheckManager
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
 import pk.sufiishq.aurora.models.DataMenuItem
 import javax.inject.Inject
@@ -47,7 +47,7 @@ constructor(
     @IoDispatcher private val dispatcher: CoroutineContext,
     @AppBarPopupMenuItems private val popupMenu: PopupMenu,
     private val hijriDateRepository: HijriDateRepository,
-    private val inAppUpdateManager: InAppUpdateManager,
+    private val appUpdateCheckManager: AppUpdateCheckManager,
     private val appManager: AppManager,
     private val eventRepository: EventRepository,
 ) : ViewModel(), MainController {
@@ -83,23 +83,19 @@ constructor(
     // -------------------------------------------------------------------- //
 
     override fun checkUpdate(activity: ComponentActivity) {
-        inAppUpdateManager.checkInAppUpdate(activity, this)
+        appUpdateCheckManager.checkInAppUpdate(activity, this)
     }
 
-    override fun showUpdateButton(value: Boolean) {
+    override fun showUpdateDialog(value: Boolean) {
         showUpdateDialog.postValue(value)
     }
 
-    override fun showUpdateButton(): LiveData<Boolean> {
+    override fun showUpdateDialog(): LiveData<Boolean> {
         return showUpdateDialog
     }
 
-    override fun handleUpdate() {
-        inAppUpdateManager.startUpdateFlow()
-    }
-
-    override fun unregisterListener(activity: ComponentActivity) {
-        inAppUpdateManager.unregisterListener(activity)
+    override fun handleUpdate(context: Context) {
+        appUpdateCheckManager.routeToPlayStore(context)
     }
 
     // -------------------------------------------------------------------- //

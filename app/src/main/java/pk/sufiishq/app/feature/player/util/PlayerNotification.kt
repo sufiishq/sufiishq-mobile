@@ -24,7 +24,6 @@ import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
-import pk.sufiishq.app.utils.extention.toast
 import pk.sufiishq.app.utils.formatDateAs
 import timber.log.Timber
 import javax.inject.Inject
@@ -55,7 +54,6 @@ class PlayerNotification @Inject constructor(
             Timber.e(ex)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ex is ForegroundServiceStartNotAllowedException) {
                 audioPlayer.release()
-                service.toast("Exception not allowed")
             } else {
                 throw ex
             }

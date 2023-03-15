@@ -175,14 +175,13 @@ fun fakeMainController() =
     object : MainController {
 
         override fun popupMenuItems(): List<DataMenuItem> = listOf()
-        override fun showUpdateButton(): LiveData<Boolean> = MutableLiveData(false)
-        override fun handleUpdate() = Unit
+        override fun showUpdateDialog(): LiveData<Boolean> = MutableLiveData(false)
+        override fun handleUpdate(context: Context) = Unit
         override fun openFacebookGroup(context: Context, groupUrl: String) = Unit
         override fun shareApp(activity: ComponentActivity) = Unit
         override fun getUpcomingEvents(): LiveData<List<Event>> = MutableLiveData(listOf())
         override fun checkUpdate(activity: ComponentActivity) = Unit
-        override fun showUpdateButton(value: Boolean) = Unit
-        override fun unregisterListener(activity: ComponentActivity) = Unit
+        override fun showUpdateDialog(value: Boolean) = Unit
         override fun getHijriDate(): LiveData<HijriDate?> = MutableLiveData(null)
     }
 

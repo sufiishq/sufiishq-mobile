@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.aurora.components.SIIcon
 import pk.sufiishq.aurora.layout.SIAuroraSurface
+import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.theme.AuroraColor
 
@@ -42,15 +43,21 @@ fun MainNavigationButton(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    SICard(
-        modifier = Modifier.size(80.dp).clip(CircleShape),
+    SIBox(
+        modifier = Modifier
+            .size(80.dp)
+            .clip(CircleShape),
+        bgColor = AuroraColor.Surface,
     ) {
         SIAuroraSurface {
             SICard(
                 modifier =
-                Modifier.fillMaxSize(0.73f).clip(CircleShape).clickable {
-                    coroutineScope.launch { scaffoldState.drawerState.open() }
-                },
+                Modifier
+                    .fillMaxSize(0.73f)
+                    .clip(CircleShape)
+                    .clickable {
+                        coroutineScope.launch { scaffoldState.drawerState.open() }
+                    },
                 bgColor = AuroraColor.SecondaryVariant,
             ) { contentColor ->
                 SIIcon(

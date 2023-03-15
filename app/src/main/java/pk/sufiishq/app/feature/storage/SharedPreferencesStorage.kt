@@ -18,23 +18,18 @@ package pk.sufiishq.app.feature.storage
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import javax.inject.Inject
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
-class SecureSharedPreferencesStorage @Inject constructor(context: Context) : KeyValueStorage {
+class SharedPreferencesStorage @Inject constructor(context: Context) : KeyValueStorage {
 
     private var sharedPreferences: SharedPreferences
 
     init {
         sharedPreferences =
-            EncryptedSharedPreferences.create(
+            context.getSharedPreferences(
                 "sufiishq_shared_prefs",
-                MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-                context.applicationContext,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+                Context.MODE_PRIVATE,
             )
     }
 

@@ -27,13 +27,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.json.JSONObject
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.feature.help.di.qualifier.HelpJson
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.helper.TrackListTypeDeserializer
 import pk.sufiishq.app.feature.storage.KeyValueStorage
-import pk.sufiishq.app.feature.storage.SecureSharedPreferencesStorage
+import pk.sufiishq.app.feature.storage.SharedPreferencesStorage
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
@@ -51,9 +51,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    @SecureSharedPreferences
+    @SharedPreferences
     fun providesKeyValueStorage(@ApplicationContext appContext: Context): KeyValueStorage {
-        return SecureSharedPreferencesStorage(appContext)
+        return SharedPreferencesStorage(appContext)
     }
 
     @Provides

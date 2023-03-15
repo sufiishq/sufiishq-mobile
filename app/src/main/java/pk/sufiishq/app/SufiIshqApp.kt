@@ -24,7 +24,7 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
-import pk.sufiishq.app.di.qualifier.SecureSharedPreferences
+import pk.sufiishq.app.di.qualifier.SharedPreferences
 import pk.sufiishq.app.feature.storage.KeyValueStorage
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class SufiIshqApp : Application(), Configuration.Provider {
     @Inject lateinit var hiltWorkerFactory: HiltWorkerFactory
 
     @Inject
-    @SecureSharedPreferences
+    @SharedPreferences
     lateinit var keyValueStorage: KeyValueStorage
 
     override fun onCreate() {
