@@ -35,6 +35,7 @@ import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.format
 import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.extention.parseRemainingDays
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize
@@ -111,7 +112,7 @@ fun EventListScreen(
 
                     SIText(
                         modifier = Modifier.align(Alignment.BottomStart),
-                        text = optString(TextRes.dynamic_event_days_remaining, item.remainingDays),
+                        text = item.parseRemainingDays(),
                         textColor = it,
                         textSize = TextSize.ExtraSmall,
                     )

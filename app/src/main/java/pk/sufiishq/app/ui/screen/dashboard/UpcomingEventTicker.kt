@@ -16,27 +16,39 @@
 
 package pk.sufiishq.app.ui.screen.dashboard
 
+import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import pk.sufiishq.app.feature.events.model.Event
+import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.ui.screen.events.EventListScreen
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
+import pk.sufiishq.app.utils.extention.parseRemainingDays
+import pk.sufiishq.app.utils.rem
+import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.TextSize
 import pk.sufiishq.aurora.layout.SIBox
+import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
 
@@ -45,6 +57,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun UpcomingEventTicker(
     modifier: Modifier,
     upcomingEvents: List<Event>?,
+    navController: NavController
 ) {
     SIBox(
         modifier = modifier,
@@ -55,7 +68,7 @@ fun UpcomingEventTicker(
                     if (size >= 2) {
                         var index = 1
                         while (true) {
-                            delay(3000)
+                            delay(5000)
                             value = get(index)
                             if (++index == size) {
                                 index = 0
@@ -66,19 +79,24 @@ fun UpcomingEventTicker(
             }
 
             val density = LocalDensity.current
+            val animatedHeight = rem(0)
             AnimatedContent(
 
                 targetState = target.value,
                 transitionSpec = {
                     slideInVertically(
-                        animationSpec = tween(1000),
+                        animationSpec = tween(1000, easing = {
+                            OvershootInterpolator().getInterpolation(it)
+                        }),
                         initialOffsetY = {
-                            with(density) { -40.dp.roundToPx() }
+                            -animatedHeight.value
                         },
                     ) with slideOutVertically(
-                        animationSpec = tween(1000),
+                        animationSpec = tween(1000, easing = {
+                            OvershootInterpolator().getInterpolation(it)
+                        }),
                         targetOffsetY = {
-                            with(density) { 40.dp.roundToPx() }
+                            animatedHeight.value
                         },
                     )
                 },
@@ -86,29 +104,39 @@ fun UpcomingEventTicker(
                 SIBox(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp, 0.dp),
+                        .padding(12.dp, 0.dp)
+                        .clickable {
+                            navController.navigate(ScreenType.EventList.buildRoute())
+                        }
+                        .onGloballyPositioned { layoutCoordinate ->
+                            animatedHeight.value =
+                                layoutCoordinate.size.height + with(density) { 20.dp.roundToPx() }
+                        },
                 ) {
                     SIRow(
                         modifier = Modifier
                             .padding(12.dp, 8.dp),
                         bgColor = AuroraColor.SecondaryVariant,
-                        radius = 20,
-                    ) {
-                        SIText(
-                            text = "${event.title} - ${
-                                if (event.remainingDays == 0) {
-                                    optString(TextRes.label_now)
-                                } else {
-                                    optString(
-                                        TextRes.dynamic_event_days_remaining,
-                                        event.remainingDays,
-                                    )
-                                }
-                            }",
-                            textColor = it,
-                            textSize = TextSize.Small,
-                            textAlign = TextAlign.Center,
-                        )
+                        radius = 4,
+                    ) { onColor ->
+                        SIColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            SIText(
+                                text = event.title,
+                                textColor = onColor,
+                                textSize = TextSize.Small,
+                                textAlign = TextAlign.Center,
+                            )
+                            SIHeightSpace(value = 4)
+                            SIText(
+                                text = event.parseRemainingDays(),
+                                textColor = onColor,
+                                textSize = TextSize.Small,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }

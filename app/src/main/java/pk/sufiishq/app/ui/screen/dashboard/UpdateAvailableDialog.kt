@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import io.github.esentsov.PackagePrivate
+import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
@@ -43,7 +44,9 @@ fun UpdateAvailableDialog(
     if (updateAvailable) {
         val context = LocalContext.current
 
-        SIDialog { textColor ->
+        SIDialog (onDismissRequest = {
+            mainController.showUpdateDialog(!BuildConfig.DEBUG)
+        }) { textColor ->
             SIText(
                 modifier = Modifier.fillMaxWidth(),
                 text = optString(TextRes.app_name),

@@ -59,7 +59,7 @@ fun DayNightThemeControl(
 ) {
     SIBox(
         modifier =
-        Modifier.height(220.dp).graphicsLayer {
+        Modifier.height(170.dp).graphicsLayer {
             translationY = firstItemTranslationY.value * 0.5f
             alpha = 1f - scaleAndVisibility.value
         },
@@ -69,7 +69,7 @@ fun DayNightThemeControl(
                 bgColor = AuroraColor.Light,
                 modifier = Modifier.weight(1f).fillMaxHeight().clickable { onLightModeCLick() },
             ) {
-                SIBox(modifier = Modifier.padding(30.dp, 50.dp)) {
+                SIBox(modifier = Modifier.padding(30.dp, 40.dp)) {
                     SIColumn(
                         modifier = Modifier.fillMaxHeight().align(Alignment.Center),
                         verticalArrangement = Arrangement.SpaceBetween,
@@ -77,7 +77,7 @@ fun DayNightThemeControl(
                     ) {
                         SIImage(
                             modifier =
-                            Modifier.width(60.dp).graphicsLayer {
+                            Modifier.width(50.dp).graphicsLayer {
                                 translationY = firstItemTranslationY.value * 0.12f
                                 scaleX = 1f - scaleAndVisibility.value * 0.5f
                                 scaleY = 1f - scaleAndVisibility.value * 0.5f
@@ -100,7 +100,7 @@ fun DayNightThemeControl(
                 bgColor = AuroraColor.Dark,
                 modifier = Modifier.weight(1f).fillMaxHeight().clickable { onDarkModeClick() },
             ) {
-                SIBox(modifier = Modifier.padding(30.dp, 50.dp)) {
+                SIBox(modifier = Modifier.padding(30.dp, 40.dp)) {
                     SIColumn(
                         modifier = Modifier.fillMaxHeight().align(Alignment.Center),
                         verticalArrangement = Arrangement.SpaceBetween,
@@ -108,7 +108,7 @@ fun DayNightThemeControl(
                     ) {
                         SIImage(
                             modifier =
-                            Modifier.width(60.dp).graphicsLayer {
+                            Modifier.width(50.dp).graphicsLayer {
                                 translationY = firstItemTranslationY.value * 0.12f
                                 scaleX = 1f - scaleAndVisibility.value * 0.5f
                                 scaleY = 1f - scaleAndVisibility.value * 0.5f

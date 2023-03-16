@@ -33,6 +33,8 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.debugInspectorInfo
+import pk.sufiishq.app.feature.events.model.Event
+import pk.sufiishq.app.utils.TextRes
 
 /** Returns whether the lazy list is currently scrolling up. */
 @Composable
@@ -84,3 +86,21 @@ fun Modifier.shake(enabled: Boolean) =
             properties["enabled"] = enabled
         },
     )
+
+@Composable
+fun Event.parseRemainingDays(): String {
+    return when (remainingDays) {
+        0 -> {
+            optString(TextRes.label_now)
+        }
+        1 -> {
+            optString(TextRes.msg_one_day_remaining)
+        }
+        else -> {
+            optString(
+                TextRes.dynamic_event_days_remaining,
+                remainingDays,
+            )
+        }
+    }
+}

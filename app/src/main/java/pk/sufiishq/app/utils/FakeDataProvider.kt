@@ -45,6 +45,9 @@ import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.app.feature.playlist.controller.PlaylistController
 import pk.sufiishq.app.feature.playlist.model.Playlist
+import pk.sufiishq.app.feature.theme.controller.ThemeController
+import pk.sufiishq.app.feature.theme.model.AutoChangeColorDuration
+import pk.sufiishq.aurora.models.ColorPalette
 import pk.sufiishq.aurora.models.DataMenuItem
 
 // ---------------------------------------------------------------------------------- //
@@ -218,4 +221,30 @@ fun fakeHelpController() =
                     ),
                 ),
             )
+    }
+
+// ---------------------------------------------------------------------------------- //
+// THEME DATA PROVIDER
+// ---------------------------------------------------------------------------------- //
+
+@ExcludeFromJacocoGeneratedReport
+fun fakeThemeController() =
+    object : ThemeController {
+
+        override suspend fun isAutoChangeColorEnable(): Boolean = false
+        override fun setAutoChangeColor(
+            isEnable: Boolean,
+            activeDuration: AutoChangeColorDuration
+        ) = Unit
+
+        override suspend fun getActiveAutoColorChangeDuration() =
+            AutoChangeColorDuration.every1Hour()
+
+        override suspend fun getAutoColorChangeDurationList(): List<AutoChangeColorDuration> =
+            listOf()
+
+        override fun updateAutoColorChangeDuration(autoChangeColorDuration: AutoChangeColorDuration) =
+            Unit
+
+        override suspend fun getAvailableColorPalettes(): List<ColorPalette> = listOf()
     }

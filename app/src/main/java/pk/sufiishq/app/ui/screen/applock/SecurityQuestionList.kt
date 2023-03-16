@@ -70,6 +70,7 @@ fun SecurityQuestionList(
         SIDataRow(
             title = selection.value.label,
             trailingIcon = ImageRes.baseline_arrow_drop_down_24,
+            trailingIconColor = it,
             onClick = { isExpanded.value = true },
         )
 
@@ -109,7 +110,9 @@ fun SecurityQuestionList(
             isExpanded = isExpanded,
             modifier = Modifier.fillMaxWidth(),
             data = data.value,
-            onClick = { selection.value = it as SecurityQuestion },
+            onClick = { menuItem ->
+                selection.value = menuItem as SecurityQuestion
+            },
         )
     }
 }
