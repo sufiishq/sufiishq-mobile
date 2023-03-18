@@ -61,7 +61,7 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 
 @Composable
 fun ThemeScreen(
-    themeController: ThemeController = hiltViewModel<ThemeViewModel>()
+    themeController: ThemeController = hiltViewModel<ThemeViewModel>(),
 ) {
     val context = LocalContext.current
     val colorPalettes = rem(listOf<ColorPalette>())
@@ -78,7 +78,7 @@ fun ThemeScreen(
         colorPalettes.value = themeController.getAvailableColorPalettes()
         autoColorChanged.targetState = themeController.isAutoChangeColorEnable()
         listOfAutoChangeColorDuration.value = themeController.getAutoColorChangeDurationList()
-        activeDuration.value = themeController.getActiveAutoColorChangeDuration()
+        activeDuration.value = themeController.getActiveAutoColorChangeDuration() ?: AutoChangeColorDuration.every1Hour()
     }
 
     val lazyListState = rememberLazyGridState()
@@ -110,7 +110,6 @@ fun ThemeScreen(
         Modifier
             .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
-
         SIColumn(modifier = Modifier.fillMaxWidth()) { onColor ->
             SIRow(
                 modifier = Modifier
@@ -119,28 +118,27 @@ fun ThemeScreen(
                 radius = 4,
                 bgColor = AuroraColor.Background,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 SIText(
                     text = "Auto Color Change",
                     textColor = onColor,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 Switch(
                     checked = autoColorChanged.targetState,
                     onCheckedChange = { isChecked ->
                         autoColorChanged.targetState = isChecked
                         themeController.setAutoChangeColor(isChecked, activeDuration.value)
-                    }
+                    },
                 )
             }
 
             AnimatedVisibility(autoColorChanged.targetState) {
-
                 SIColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateContentSize()
+                        .animateContentSize(),
                 ) {
                     SIHeightSpace(value = 12)
 
@@ -169,7 +167,7 @@ fun ThemeScreen(
         SILazyVerticalGrid(
             columns = GridCells.Fixed(4),
             state = lazyListState,
-            contentPadding = PaddingValues(top = 12.dp)
+            contentPadding = PaddingValues(top = 12.dp),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 DayNightThemeControl(

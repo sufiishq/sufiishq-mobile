@@ -31,6 +31,7 @@ import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
+import pk.sufiishq.app.feature.theme.controller.ThemeViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,6 +60,7 @@ open class BaseActivity : FragmentActivity() {
     lateinit var syncManager: SyncManager
 
     private val assetKalamLoaderViewModel: AssetKalamLoaderViewModel by viewModels()
+    private val themeViewModel: ThemeViewModel by viewModels()
     private val playerIntent by lazy { Intent(this, AudioPlayerService::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +74,7 @@ open class BaseActivity : FragmentActivity() {
 
         permissionManager.validateNotificationPermission(this)
 
-        syncManager.sync()
+        syncManager.sync(themeViewModel)
     }
 
     override fun onDestroy() {

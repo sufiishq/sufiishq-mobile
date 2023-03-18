@@ -234,7 +234,7 @@ fun fakeThemeController() =
         override suspend fun isAutoChangeColorEnable(): Boolean = false
         override fun setAutoChangeColor(
             isEnable: Boolean,
-            activeDuration: AutoChangeColorDuration
+            activeDuration: AutoChangeColorDuration,
         ) = Unit
 
         override suspend fun getActiveAutoColorChangeDuration() =

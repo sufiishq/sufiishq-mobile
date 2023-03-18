@@ -19,7 +19,6 @@ package pk.sufiishq.app.ui.screen.dashboard
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -39,9 +38,6 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.ui.screen.events.EventListScreen
-import pk.sufiishq.app.utils.TextRes
-import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.extention.parseRemainingDays
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -57,7 +53,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 fun UpcomingEventTicker(
     modifier: Modifier,
     upcomingEvents: List<Event>?,
-    navController: NavController
+    navController: NavController,
 ) {
     SIBox(
         modifier = modifier,
@@ -121,7 +117,7 @@ fun UpcomingEventTicker(
                     ) { onColor ->
                         SIColumn(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             SIText(
                                 text = event.title,
@@ -134,7 +130,7 @@ fun UpcomingEventTicker(
                                 text = event.parseRemainingDays(),
                                 textColor = onColor,
                                 textSize = TextSize.Small,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }

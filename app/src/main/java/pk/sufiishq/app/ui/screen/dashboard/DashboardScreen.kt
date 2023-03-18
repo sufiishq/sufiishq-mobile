@@ -119,7 +119,7 @@ fun DashboardScreen(
                             end.linkTo(parent.end)
                         },
                     upcomingEvents = upcomingEvents,
-                    navController = navController
+                    navController = navController,
                 )
 
                 MainAnimatedLogo(

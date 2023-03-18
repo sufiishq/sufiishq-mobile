@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update upcoming notification ticket UI on dashboard screen.
+- Update upcoming notification ticker UI on dashboard screen.
 
 ### Fixed
 

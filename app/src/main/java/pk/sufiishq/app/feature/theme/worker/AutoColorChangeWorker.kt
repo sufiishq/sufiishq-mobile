@@ -42,15 +42,14 @@ class AutoColorChangeWorker @AssistedInject constructor(
     companion object {
 
         fun init(context: Context, autoChangeColorDuration: AutoChangeColorDuration) {
-
             val autoColorChangeWorkRequest =
                 PeriodicWorkRequestBuilder<AutoColorChangeWorker>(
                     autoChangeColorDuration.repeatInterval,
-                    autoChangeColorDuration.repeatIntervalTimeUnit
+                    autoChangeColorDuration.repeatIntervalTimeUnit,
                 )
                     .setInitialDelay(
                         autoChangeColorDuration.repeatInterval,
-                        autoChangeColorDuration.repeatIntervalTimeUnit
+                        autoChangeColorDuration.repeatIntervalTimeUnit,
                     )
                     .build()
 

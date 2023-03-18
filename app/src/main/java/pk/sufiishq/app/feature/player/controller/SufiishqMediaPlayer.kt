@@ -68,11 +68,15 @@ constructor(
 
         when {
             (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ->
-                audioManager.requestAudioFocus(
-                    audioFocusRequestBuilder!!.setOnAudioFocusChangeListener(this).build().also {
-                        audioFocusRequest = it
-                    },
-                )
+                audioFocusRequestBuilder?.run {
+                    audioManager.requestAudioFocus(
+                        audioFocusRequestBuilder.setOnAudioFocusChangeListener(this@SufiishqMediaPlayer)
+                            .build().also {
+                                audioFocusRequest = it
+                            },
+                    )
+                }
+
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) -> {
                 audioManager.requestAudioFocus(
                     this,
@@ -169,9 +173,9 @@ constructor(
             changeState(MediaState.Idle(activeKalam, trackListType))
             when {
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ->
-                    audioManager.abandonAudioFocusRequest(
-                        audioFocusRequest!!,
-                    )
+                    audioFocusRequest?.let {
+                        audioManager.abandonAudioFocusRequest(it)
+                    }
                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) -> audioManager.abandonAudioFocus(
                     this,
                 )
@@ -191,7 +195,14 @@ constructor(
     }
 
     override fun onProgressChanged(progress: Int) {
-        changeState(MediaState.Playing(activeKalam, progress, 0.coerceAtLeast(mediaPlayer.duration), trackListType))
+        changeState(
+            MediaState.Playing(
+                activeKalam,
+                progress,
+                0.coerceAtLeast(mediaPlayer.duration),
+                trackListType,
+            ),
+        )
     }
 
     override fun onCompletion(mp: MediaPlayer?) {

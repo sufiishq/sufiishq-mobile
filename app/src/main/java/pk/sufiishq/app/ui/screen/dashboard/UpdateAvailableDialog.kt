@@ -44,7 +44,7 @@ fun UpdateAvailableDialog(
     if (updateAvailable) {
         val context = LocalContext.current
 
-        SIDialog (onDismissRequest = {
+        SIDialog(onDismissRequest = {
             mainController.showUpdateDialog(!BuildConfig.DEBUG)
         }) { textColor ->
             SIText(
