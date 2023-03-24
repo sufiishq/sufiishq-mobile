@@ -30,7 +30,9 @@ import pk.sufiishq.app.utils.getString
 import pk.sufiishq.app.utils.instantAutoLockDuration
 import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppLockManager
 @Inject
 constructor(
@@ -43,11 +45,8 @@ constructor(
         MutableLiveData(instantAutoLockDuration(getString(TextRes.label_instant)))
     private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
-    init {
-        setUpState()
-    }
 
-    private fun setUpState() {
+    fun setUpState() {
         if (userHasAlreadyLockSetUp()) {
             checkAppLockStatus()
             postAutoLockDuration(fetchAutoLockDuration())

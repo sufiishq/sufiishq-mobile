@@ -68,13 +68,17 @@ open class BaseActivity : FragmentActivity() {
 
         assetKalamLoaderViewModel.loadAllKalam()
 
-        startService(playerIntent)
-
         authManager.registerActivityResultListener(this)
 
         permissionManager.validateNotificationPermission(this)
 
         syncManager.sync(themeViewModel)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startService(playerIntent)
+        appLockManager.setUpState()
     }
 
     override fun onDestroy() {

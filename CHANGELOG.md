@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed icon color which not showing in securing question drop-down in App lock setup.
+- Fixed kalam not playing after some time when app become foreground from background.
+- Fixed app is not checking lock state when app become foreground from background.
 
 ## [2.6.0 SufiIshq] - 2023-03-15
 
