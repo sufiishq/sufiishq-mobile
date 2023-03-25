@@ -27,6 +27,7 @@ import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.events.data.dao.EventDao
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
+import pk.sufiishq.app.feature.personalize.data.dao.PersonalizeDao
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 
 @Module
@@ -61,5 +62,10 @@ class DatabaseModule {
     @Provides
     fun provideEvensDao(db: SufiIshqDatabase): EventDao {
         return db.eventDao()
+    }
+
+    @Provides
+    fun providePersonalizeDao(db: SufiIshqDatabase): PersonalizeDao {
+        return db.personalizeDao()
     }
 }

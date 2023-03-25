@@ -22,7 +22,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
 import org.junit.Test
 import pk.sufiishq.app.SufiIshqTest
-import pk.sufiishq.app.ui.screen.dashboard.MainAnimatedLogo
+import pk.sufiishq.app.ui.screen.dashboard.PersonalizedLogo
 
 class SIAnimatedLogoTest : SufiIshqTest() {
 
@@ -31,7 +31,7 @@ class SIAnimatedLogoTest : SufiIshqTest() {
 
     @Test
     fun `test logo image should be exists and displayed`() {
-        composeTestRule.setContent { MainAnimatedLogo() }
+        composeTestRule.setContent { PersonalizedLogo() }
 
         composeTestRule.onNode(hasTestTag("logo")).assertExists().assertIsDisplayed()
     }

@@ -45,7 +45,6 @@ constructor(
         MutableLiveData(instantAutoLockDuration(getString(TextRes.label_instant)))
     private val appLockStatus = MutableLiveData<AppLockStatus?>(null)
 
-
     fun setUpState() {
         if (userHasAlreadyLockSetUp()) {
             checkAppLockStatus()

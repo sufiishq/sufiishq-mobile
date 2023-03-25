@@ -37,6 +37,7 @@ import pk.sufiishq.app.ui.screen.help.HelpScreen
 import pk.sufiishq.app.ui.screen.location.DarbarLocationScreen
 import pk.sufiishq.app.ui.screen.occasion.OccasionScreen
 import pk.sufiishq.app.ui.screen.occasionlist.OccasionListScreen
+import pk.sufiishq.app.ui.screen.personalize.PersonalizeScreen
 import pk.sufiishq.app.ui.screen.photo.PhotoScreen
 import pk.sufiishq.app.ui.screen.photolist.PhotoListScreen
 import pk.sufiishq.app.ui.screen.playlist.PlaylistScreen
@@ -492,6 +493,23 @@ sealed interface ScreenType {
             scaffoldState: ScaffoldState,
         ) {
             EventListScreen()
+        }
+    }
+
+    object Personalize : ScreenType {
+
+        override val route: String
+            get() = "screen_personalize"
+
+        override fun buildRoute() = route
+
+        @Composable
+        override fun Compose(
+            navController: NavController,
+            navBackStackEntry: NavBackStackEntry,
+            scaffoldState: ScaffoldState,
+        ) {
+            PersonalizeScreen()
         }
     }
 }

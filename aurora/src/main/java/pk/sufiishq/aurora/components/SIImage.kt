@@ -7,8 +7,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import java.io.File
 import pk.sufiishq.aurora.theme.AuroraColor
 
 @Composable
@@ -46,3 +48,20 @@ fun SIImage(
         contentDescription = null
     )
 }
+
+@Composable
+fun SIImage(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center,
+    contentScale: ContentScale = ContentScale.Fit,
+) {
+    Image(
+        modifier = modifier,
+        contentScale = contentScale,
+        painter = painter,
+        alignment = alignment,
+        contentDescription = null
+    )
+}
+

@@ -29,15 +29,17 @@ import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
 import pk.sufiishq.app.feature.occasions.model.Occasion
+import pk.sufiishq.app.feature.personalize.data.dao.PersonalizeDao
+import pk.sufiishq.app.feature.personalize.model.Personalize
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 
 @Database(
-    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class, Event::class],
-    version = 2,
+    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class, Event::class, Personalize::class],
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
     ],
 )
 abstract class SufiIshqDatabase : RoomDatabase() {
@@ -47,6 +49,7 @@ abstract class SufiIshqDatabase : RoomDatabase() {
     abstract fun occasionDao(): OccasionDao
     abstract fun mediaDao(): MediaDao
     abstract fun eventDao(): EventDao
+    abstract fun personalizeDao(): PersonalizeDao
 
     companion object {
 

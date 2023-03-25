@@ -81,7 +81,7 @@ class MainControllerTest : SufiIshqTest() {
                     PopupMenuItem.Share(getString(StringRes.menu_item_share)),
                     PopupMenuItem.Facebook(getString(StringRes.menu_item_facebook)),
                     PopupMenuItem.Help(getString(StringRes.menu_item_help)),
-                    PopupMenuItem.Theme(getString(StringRes.menu_item_theme)),
+                    PopupMenuItem.Theme(getString(StringRes.menu_item_themes)),
                 ).sortedBy {
                     it.label
                 },

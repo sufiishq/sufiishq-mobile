@@ -18,6 +18,7 @@ package pk.sufiishq.app.ui.main.player
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ fun TrackInfo(
         Modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 12.dp, end = 12.dp, bottom = 12.dp),
+        shape = RoundedCornerShape(20.dp),
         elevation = 0.dp,
         bgColor = AuroraColor.Background,
     ) { textColor ->

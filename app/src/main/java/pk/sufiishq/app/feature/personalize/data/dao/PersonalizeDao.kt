@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.feature.personalize.data.dao
 
-const val SUFI_ISHQ_HOST = "https://www.sufiishq.pk/"
-const val KALAM_DIR = "kalam"
-const val MEDIA_PATH = "media"
-const val CACHE_SPLIT_FILENAME = "split.mp3"
-const val KALAM_TITLE_LENGTH = 50
-const val PLAYLIST_TITLE_LENGTH = 30
-const val LAST_PLAY_KALAM = "last_play_kalam"
-const val FEATURE_VIDEO_REFERENCE_ID = "0"
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import pk.sufiishq.app.feature.personalize.model.Personalize
+
+@Dao
+interface PersonalizeDao {
+
+    @Query("SELECT * FROM personalize LIMIT 1")
+    fun get(): LiveData<Personalize?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(personalize: Personalize)
+
+    @Query("DELETE FROM personalize")
+    suspend fun clear()
+}

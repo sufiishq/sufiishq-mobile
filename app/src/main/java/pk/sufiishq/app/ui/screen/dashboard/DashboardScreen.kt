@@ -40,7 +40,10 @@ import pk.sufiishq.app.feature.app.controller.DashboardController
 import pk.sufiishq.app.feature.app.controller.DashboardViewModel
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.controller.MainViewModel
+import pk.sufiishq.app.feature.personalize.controller.PersonalizeController
+import pk.sufiishq.app.feature.personalize.controller.PersonalizeViewModel
 import pk.sufiishq.app.helpers.ScreenType
+import pk.sufiishq.app.ui.components.PersonalizedLogo
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
@@ -63,6 +66,7 @@ fun DashboardScreen(
     navController: NavController,
     mainController: MainController = hiltViewModel<MainViewModel>(),
     dashboardController: DashboardController = hiltViewModel<DashboardViewModel>(),
+    personalizeController: PersonalizeController = hiltViewModel<PersonalizeViewModel>(),
 ) {
     val all = rem(stringResource(TextRes.title_all_kalam))
     val favorites = rem(stringResource(TextRes.title_favorites))
@@ -122,7 +126,7 @@ fun DashboardScreen(
                     navController = navController,
                 )
 
-                MainAnimatedLogo(
+                PersonalizedLogo(
                     modifier =
                     Modifier.constrainAs(logoRef) {
                         start.linkTo(parent.start)
@@ -132,6 +136,7 @@ fun DashboardScreen(
                         width = Dimension.fillToConstraints
                         height = Dimension.fillToConstraints
                     },
+                    personalizeController = personalizeController,
                 )
 
                 SIImage(

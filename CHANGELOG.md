@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added auto theme color changer with the given duration.
+- Added personalized main logo option screen.
 
 ### Changed
 
 - Update upcoming notification ticker UI on dashboard screen.
+- Update player corner radius.
 
 ### Fixed
 

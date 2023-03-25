@@ -93,9 +93,14 @@ fun MainNavigationDrawer(
 private fun getSecondaryMenu(): List<NavigationItem> {
     return listOf(
         NavigationItem(
-            getString(TextRes.menu_item_theme),
+            getString(TextRes.menu_item_themes),
             ImageRes.themes,
             ScreenType.Theme.buildRoute(),
+        ),
+        NavigationItem(
+            getString(TextRes.menu_item_personalize),
+            ImageRes.personalize,
+            ScreenType.Personalize.buildRoute(),
         ),
         NavigationItem(
             getString(TextRes.menu_item_app_lock),

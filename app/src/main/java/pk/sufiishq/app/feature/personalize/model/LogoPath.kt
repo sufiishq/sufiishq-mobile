@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package pk.sufiishq.app.utils
+package pk.sufiishq.app.feature.personalize.model
 
-const val SUFI_ISHQ_HOST = "https://www.sufiishq.pk/"
-const val KALAM_DIR = "kalam"
-const val MEDIA_PATH = "media"
-const val CACHE_SPLIT_FILENAME = "split.mp3"
-const val KALAM_TITLE_LENGTH = 50
-const val PLAYLIST_TITLE_LENGTH = 30
-const val LAST_PLAY_KALAM = "last_play_kalam"
-const val FEATURE_VIDEO_REFERENCE_ID = "0"
+data class LogoPath(
+    val offlinePath: String,
+    val onlinePath: String,
+)

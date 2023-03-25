@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.app.feature.player.controller.PlayerViewModel
 import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.fakePlayerController
+import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIBox
@@ -49,7 +49,8 @@ import pk.sufiishq.aurora.theme.AuroraLight
 fun PlayerView(
     playerController: PlayerController = hiltViewModel<PlayerViewModel>(),
 ) {
-    val showSliderLabel = remember { derivedStateOf { mutableStateOf(false) } }
+    val sliderThumbPressed = rem(false)
+    val showSliderLabel = remember { derivedStateOf { sliderThumbPressed.value } }
     val kalamInfo = playerController.getKalamInfo().observeAsState()
 
     SIAuroraSurface(modifier = Modifier.fillMaxWidth().height(90.dp)) {
@@ -71,13 +72,13 @@ fun PlayerView(
                     .fillMaxWidth()
                     .height(0.dp),
                 kalamInfo = kalamInfo.value,
-                onValueChange = { showSliderLabel.value.value = true },
-                onValueChangeFinished = { showSliderLabel.value.value = false },
+                onValueChange = { sliderThumbPressed.value = true },
+                onValueChangeFinished = { sliderThumbPressed.value = false },
             )
         }
     }
 
-    if (showSliderLabel.value.value) {
+    if (showSliderLabel.value) {
         val localDensity = LocalDensity.current
 
         SIBox(

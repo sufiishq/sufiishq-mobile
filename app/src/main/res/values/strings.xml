@@ -26,7 +26,8 @@
     <string name="menu_item_download">Download</string>
     <string name="menu_item_delete">Delete</string>
     <string name="menu_item_split_kalam">Split Kalam</string>
-    <string name="menu_item_theme">Theme</string>
+    <string name="menu_item_themes">Themes</string>
+    <string name="menu_item_personalize">Personalize</string>
     <string name="menu_item_rename">Rename</string>
     <string name="menu_item_share">Share</string>
     <string name="menu_item_qibla_direction">Qibla Direction</string>
@@ -109,6 +110,8 @@
     <string name="label_strict">Strict</string>
     <string name="label_alert">Alert</string>
     <string name="label_now">Now</string>
+    <string name="label_front_photo">Front Photo</string>
+    <string name="label_back_photo">Back Photo</string>
 
     <string name="msg_update_available">New update available now</string>
     <string name="msg_no_playlist">No playlist found</string>
