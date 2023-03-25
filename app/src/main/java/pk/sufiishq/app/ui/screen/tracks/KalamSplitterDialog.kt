@@ -32,8 +32,8 @@ import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.ui.components.OutlinedTextField
+import pk.sufiishq.app.utils.Constants.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.ImageRes
-import pk.sufiishq.app.utils.KALAM_TITLE_LENGTH
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.formatTime
 import pk.sufiishq.app.utils.extention.optString

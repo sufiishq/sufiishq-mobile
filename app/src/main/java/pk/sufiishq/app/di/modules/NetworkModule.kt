@@ -29,9 +29,8 @@ import pk.sufiishq.app.feature.help.api.HelpContentService
 import pk.sufiishq.app.feature.hijridate.api.HijriDateService
 import pk.sufiishq.app.feature.kalam.downloader.DownloadFileService
 import pk.sufiishq.app.feature.occasions.api.OccasionService
-import pk.sufiishq.app.utils.SUFI_ISHQ_HOST
+import pk.sufiishq.app.utils.Constants.SUFI_ISHQ_HOST
 import retrofit2.Retrofit
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module

@@ -27,8 +27,8 @@ import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
-import pk.sufiishq.app.utils.CACHE_SPLIT_FILENAME
-import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.Constants.CACHE_SPLIT_FILENAME
+import pk.sufiishq.app.utils.Constants.KALAM_DIR
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.formatTime

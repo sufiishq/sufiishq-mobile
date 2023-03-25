@@ -21,7 +21,7 @@ import androidx.paging.PagingState
 import pk.sufiishq.app.feature.gallery.model.Section
 import pk.sufiishq.app.feature.occasions.OccasionType
 import pk.sufiishq.app.helpers.ScreenType
-import pk.sufiishq.app.utils.FEATURE_VIDEO_REFERENCE_ID
+import pk.sufiishq.app.utils.Constants.FEATURE_VIDEO_REFERENCE_ID
 import pk.sufiishq.app.utils.ImageRes
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.getString

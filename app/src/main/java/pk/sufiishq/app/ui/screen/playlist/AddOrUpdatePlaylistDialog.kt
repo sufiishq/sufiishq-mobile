@@ -24,7 +24,7 @@ import io.github.esentsov.PackagePrivate
 import pk.sufiishq.app.feature.playlist.controller.PlaylistController
 import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.ui.components.OutlinedTextField
-import pk.sufiishq.app.utils.PLAYLIST_TITLE_LENGTH
+import pk.sufiishq.app.utils.Constants.PLAYLIST_TITLE_LENGTH
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.quickToast

@@ -23,7 +23,7 @@ import pk.sufiishq.app.feature.kalam.extension.canPlay
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.kalam.model.KalamInfo
-import pk.sufiishq.app.utils.LAST_PLAY_KALAM
+import pk.sufiishq.app.utils.Constants.LAST_PLAY_KALAM
 import pk.sufiishq.app.utils.extention.putInStorage
 import javax.inject.Inject
 

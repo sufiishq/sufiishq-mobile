@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 SufiIshq
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pk.sufiishq.app.ui.screen.personalize
 
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -34,9 +50,9 @@ import pk.sufiishq.app.feature.personalize.controller.PersonalizeViewModel
 import pk.sufiishq.app.feature.personalize.model.LogoPath
 import pk.sufiishq.app.feature.personalize.model.Personalize
 import pk.sufiishq.app.ui.components.PersonalizedLogo
+import pk.sufiishq.app.utils.Constants.MEDIA_PATH
+import pk.sufiishq.app.utils.Constants.SUFI_ISHQ_HOST
 import pk.sufiishq.app.utils.ImageRes
-import pk.sufiishq.app.utils.MEDIA_PATH
-import pk.sufiishq.app.utils.SUFI_ISHQ_HOST
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.offlineFileExists
@@ -59,9 +75,8 @@ private const val BACK_FACE = "photo_back"
 
 @Composable
 fun PersonalizeScreen(
-    personalizeController: PersonalizeController = hiltViewModel<PersonalizeViewModel>()
+    personalizeController: PersonalizeController = hiltViewModel<PersonalizeViewModel>(),
 ) {
-
     val context = LocalContext.current
     val personalize = personalizeController.get().observeAsState()
     val customPhotoPath = remember {
@@ -84,7 +99,7 @@ fun PersonalizeScreen(
                         "image/png" -> ".png"
                         else -> ".jpg"
                     }
-                    val fileName = "${selectionFileName.value}${ext}"
+                    val fileName = "${selectionFileName.value}$ext"
                     val output = context.filesDir.appendPath(PersonalizeViewModel.PERSONALIZE_DIR)
                         .appendPath(fileName)
 
@@ -93,34 +108,33 @@ fun PersonalizeScreen(
                     }
 
                     personalize.value?.apply {
-
                         val frontFace = takeOrElse(
                             selectionFileName.value == FRONT_FACE,
-                            "${PersonalizeViewModel.PERSONALIZE_DIR}/${fileName}",
-                            frontPath
+                            "${PersonalizeViewModel.PERSONALIZE_DIR}/$fileName",
+                            frontPath,
                         )
                         val backFace = takeOrElse(
                             selectionFileName.value == BACK_FACE,
-                            "${PersonalizeViewModel.PERSONALIZE_DIR}/${fileName}",
-                            backPath
+                            "${PersonalizeViewModel.PERSONALIZE_DIR}/$fileName",
+                            backPath,
                         )
 
                         personalizeController.update(
                             copy(
                                 frontPath = frontFace,
-                                backPath = backFace
-                            )
+                                backPath = backFace,
+                            ),
                         )
                     }
                 }
             }
-        }
+        },
     )
 
     SIConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
+            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp),
     ) {
         val (headerRef, bodyRef) = createRefs()
 
@@ -132,19 +146,19 @@ fun PersonalizeScreen(
                     end.linkTo(parent.end)
                 }
                 .padding(top = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             PersonalizedLogo(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                personalizeController = personalizeController
+                personalizeController = personalizeController,
             )
             SIHeightSpace(value = 12)
             AnimatedVisibility(customPhotoPath.targetState) {
                 SIRow(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     SIButton(
                         modifier = Modifier.weight(1f),
@@ -152,7 +166,7 @@ fun PersonalizeScreen(
                         onClick = {
                             selectionFileName.value = FRONT_FACE
                             galleryLauncher.launch("image/*")
-                        }
+                        },
                     )
                     SIWidthSpace(value = 8)
                     SIButton(
@@ -161,7 +175,7 @@ fun PersonalizeScreen(
                         onClick = {
                             selectionFileName.value = BACK_FACE
                             galleryLauncher.launch("image/*")
-                        }
+                        },
                     )
                 }
             }
@@ -178,7 +192,7 @@ fun PersonalizeScreen(
                     height = Dimension.fillToConstraints
                 },
             bgColor = AuroraColor.Background,
-            radius = 4
+            radius = 4,
         ) {
             SILazyVerticalGrid(
                 modifier = Modifier
@@ -187,7 +201,6 @@ fun PersonalizeScreen(
                 columns = GridCells.Fixed(3),
                 contentPadding = PaddingValues(top = 12.dp),
             ) {
-
                 item {
                     DefaultLogoViewItem(personalizeController)
                 }
@@ -195,7 +208,7 @@ fun PersonalizeScreen(
                 items(availableLogos.value) {
                     PersonalLogoViewItem(
                         logoPath = it,
-                        personalizeController = personalizeController
+                        personalizeController = personalizeController,
                     )
                 }
             }
@@ -206,7 +219,7 @@ fun PersonalizeScreen(
         availableLogos.value = (1..14).toList().map {
             LogoPath(
                 offlinePath = "${PersonalizeViewModel.PERSONALIZE_DIR}/photo_$it.jpg",
-                onlinePath = "${SUFI_ISHQ_HOST}${MEDIA_PATH}/${PersonalizeViewModel.PERSONALIZE_DIR}/photo_$it.jpg"
+                onlinePath = SUFI_ISHQ_HOST + MEDIA_PATH + "/${PersonalizeViewModel.PERSONALIZE_DIR}/photo_$it.jpg",
             )
         }
     }
@@ -214,19 +227,18 @@ fun PersonalizeScreen(
 
 @Composable
 fun DefaultLogoViewItem(
-    personalizeController: PersonalizeController
+    personalizeController: PersonalizeController,
 ) {
-
     SIBox(
         modifier = Modifier.fillMaxSize(),
-        padding = 8
+        padding = 8,
     ) {
         SIBox(
             modifier = Modifier
                 .size(90.dp)
                 .clip(CircleShape),
             padding = 3,
-            bgColor = AuroraColor.SecondaryVariant
+            bgColor = AuroraColor.SecondaryVariant,
         ) {
             SIBox(
                 modifier = Modifier
@@ -235,7 +247,7 @@ fun DefaultLogoViewItem(
                     .clickable {
                         personalizeController.reset()
                     },
-                bgColor = AuroraColor.Background
+                bgColor = AuroraColor.Background,
             ) {
                 SIImage(modifier = Modifier.fillMaxSize(0.9f), resId = ImageRes.logo)
             }
@@ -246,7 +258,7 @@ fun DefaultLogoViewItem(
 @Composable
 fun PersonalLogoViewItem(
     logoPath: LogoPath,
-    personalizeController: PersonalizeController
+    personalizeController: PersonalizeController,
 ) {
     val context = LocalContext.current
     val resolvedLogoPath = rem<LogoPath?>(null)
@@ -257,14 +269,14 @@ fun PersonalLogoViewItem(
 
     SIBox(
         modifier = Modifier.fillMaxSize(),
-        padding = 8
+        padding = 8,
     ) {
         SIBox(
             modifier = Modifier
                 .size(90.dp)
                 .clip(CircleShape),
             padding = 3,
-            bgColor = AuroraColor.SecondaryVariant
+            bgColor = AuroraColor.SecondaryVariant,
         ) {
             SIBox(
                 modifier = Modifier
@@ -273,17 +285,17 @@ fun PersonalLogoViewItem(
                     .clickable {
                         if (logoPath.offlineFileExists(context)) {
                             personalizeController.update(
-                                Personalize(1, logoPath.offlinePath, logoPath.offlinePath)
+                                Personalize(1, logoPath.offlinePath, logoPath.offlinePath),
                             )
                         }
                     },
-                bgColor = AuroraColor.Background
+                bgColor = AuroraColor.Background,
             ) {
                 resolvedLogoPath.value?.apply {
                     SIImage(
                         modifier = Modifier.fillMaxSize(),
                         painter = rememberAsyncImagePainter(context.filesDir.appendPath(logoPath.offlinePath)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 } ?: run {
                     SICircularProgressIndicator(
@@ -300,4 +312,3 @@ fun PersonalLogoViewItem(
 fun <T> takeOrElse(condition: Boolean, take: T, default: T): T {
     return if (condition) take else default
 }
-

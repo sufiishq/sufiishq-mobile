@@ -30,7 +30,7 @@ import pk.sufiishq.app.feature.app.MediaType
 import pk.sufiishq.app.feature.app.data.repository.MediaRepository
 import pk.sufiishq.app.feature.gallery.data.GalleryPagingSource
 import pk.sufiishq.app.feature.gallery.model.Section
-import pk.sufiishq.app.utils.FEATURE_VIDEO_REFERENCE_ID
+import pk.sufiishq.app.utils.Constants.FEATURE_VIDEO_REFERENCE_ID
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

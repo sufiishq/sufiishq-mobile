@@ -29,7 +29,7 @@ import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.extension.isOfflineFileExists
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.utils.KALAM_DIR
+import pk.sufiishq.app.utils.Constants.KALAM_DIR
 import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.appendPath
 import pk.sufiishq.app.utils.extention.moveTo
