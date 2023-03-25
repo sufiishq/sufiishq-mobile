@@ -235,7 +235,7 @@ fun DefaultLogoViewItem(
     ) {
         SIBox(
             modifier = Modifier
-                .size(90.dp)
+                .size(80.dp)
                 .clip(CircleShape),
             padding = 3,
             bgColor = AuroraColor.SecondaryVariant,
@@ -273,7 +273,7 @@ fun PersonalLogoViewItem(
     ) {
         SIBox(
             modifier = Modifier
-                .size(90.dp)
+                .size(80.dp)
                 .clip(CircleShape),
             padding = 3,
             bgColor = AuroraColor.SecondaryVariant,
