@@ -16,6 +16,8 @@
 
 package pk.sufiishq.app.utils
 
+import android.app.ForegroundServiceStartNotAllowedException
+import android.os.Build
 import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import pk.sufiishq.app.SufiIshqApp
 import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.applock.model.AutoLockDuration
 import pk.sufiishq.app.feature.kalam.model.Kalam
+import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.helpers.ScreenType
 import pk.sufiishq.app.utils.extention.toastShort
 import pk.sufiishq.aurora.models.DataMenuItem
@@ -184,4 +187,17 @@ fun JSONArray.asObjectList(): List<JSONObject> {
 
     (0..length().minus(1)).onEach { list.add(getJSONObject(it)) }
     return list
+}
+
+fun safeTryServiceCall(audioPlayer: AudioPlayer, start: () -> Unit) {
+    try {
+        start()
+    } catch (ex: Exception) {
+        Timber.e(ex)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ex is ForegroundServiceStartNotAllowedException) {
+            audioPlayer.release()
+        } else {
+            throw ex
+        }
+    }
 }

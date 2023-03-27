@@ -32,6 +32,7 @@ import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
 import pk.sufiishq.app.feature.theme.controller.ThemeViewModel
+import pk.sufiishq.app.utils.safeTryServiceCall
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -77,7 +78,9 @@ open class BaseActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        startService(playerIntent)
+        safeTryServiceCall(player) {
+            startService(playerIntent)
+        }
         appLockManager.setUpState()
     }
 

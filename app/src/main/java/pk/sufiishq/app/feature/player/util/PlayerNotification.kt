@@ -16,16 +16,14 @@
 
 package pk.sufiishq.app.feature.player.util
 
-import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Service
-import android.os.Build
 import pk.sufiishq.app.feature.app.AppNotificationManager
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
 import pk.sufiishq.app.utils.formatDateAs
-import timber.log.Timber
+import pk.sufiishq.app.utils.safeTryServiceCall
 import javax.inject.Inject
 
 class PlayerNotification @Inject constructor(
@@ -48,15 +46,8 @@ class PlayerNotification @Inject constructor(
             autoCancel = false,
         ).setSilent(true)
 
-        try {
+        safeTryServiceCall(audioPlayer) {
             service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
-        } catch (ex: Exception) {
-            Timber.e(ex)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ex is ForegroundServiceStartNotAllowedException) {
-                audioPlayer.release()
-            } else {
-                throw ex
-            }
         }
     }
 }
