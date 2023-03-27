@@ -194,7 +194,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
                                 addStringAnnotation(
                                     tag = "SLACK_WORKSPACE",
                                     annotation =
-                                    "https://join.slack.com/t/sufiishq/shared_invite/zt-1eu7kr4ap-1q7BSwHLOlco62l3ZUgJ7g",
+                                    "https://sufiishq.slack.com",
                                     start = mStartIndex,
                                     end = mEndIndex,
                                 )
