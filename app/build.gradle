@@ -16,14 +16,14 @@ apply from: './gradle/jacoco.gradle'
 apply from: './gradle/sonarqube.gradle'
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "pk.sufiishq.app"
-        minSdk 24
-        targetSdk 33
-        versionCode 27
-        versionName "2.7.0"
+        minSdk 25
+        targetSdk 34
+        versionCode 28
+        versionName "2.8.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
