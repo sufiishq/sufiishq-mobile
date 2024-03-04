@@ -13,10 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-
+- Update Sufiishq slack url in about dialog.
 
 ### Fixed
 
+- Fixed IllegalStateException: Not allowed to start service Intent in onResume method
 
 
 ## [2.7.0 SufiIshq] - 2023-03-25
