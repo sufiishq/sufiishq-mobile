@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -40,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,6 +65,7 @@ import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SICircularProgressIndicator
 import pk.sufiishq.aurora.components.SIHeightSpace
 import pk.sufiishq.aurora.components.SIImage
+import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIColumn
@@ -148,6 +152,7 @@ fun PersonalizeScreen(
                 .padding(top = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            AutoDownloadSwitch(it, personalizeController)
             PersonalizedLogo(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -222,6 +227,43 @@ fun PersonalizeScreen(
                 onlinePath = SUFI_ISHQ_HOST + MEDIA_PATH + "/${PersonalizeViewModel.PERSONALIZE_DIR}/photo_$it.jpg",
             )
         }
+    }
+}
+
+@Composable
+private fun AutoDownloadSwitch(onColor: AuroraColor, personalizeController: PersonalizeController) {
+
+    val autoDownloadChecked = remember {
+        MutableTransitionState(false).apply {
+            targetState = false
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        autoDownloadChecked.targetState = personalizeController.isAutoDownloadKalam()
+    }
+
+    SIRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp, 6.dp),
+        radius = 4,
+        bgColor = AuroraColor.Background,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        SIText(
+            text = "Auto Download Kalam",
+            textColor = onColor,
+            fontWeight = FontWeight.Bold,
+        )
+        Switch(
+            checked = autoDownloadChecked.targetState,
+            onCheckedChange = { isChecked ->
+                autoDownloadChecked.targetState = isChecked
+                personalizeController.setAutoDownloadKalam(isChecked)
+            },
+        )
     }
 }
 

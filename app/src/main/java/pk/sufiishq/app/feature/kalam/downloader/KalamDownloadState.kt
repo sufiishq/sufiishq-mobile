@@ -18,11 +18,11 @@ package pk.sufiishq.app.feature.kalam.downloader
 
 import pk.sufiishq.app.feature.kalam.model.Kalam
 
-sealed interface KalamDownloadState {
+sealed class KalamDownloadState(val silent: Boolean) {
 
-    object Idle : KalamDownloadState
-    class Started(val kalam: Kalam) : KalamDownloadState
-    class InProgress(val fileInfo: FileInfo, val kalam: Kalam) : KalamDownloadState
-    class Error(val error: String, val kalam: Kalam) : KalamDownloadState
-    class Completed(val kalam: Kalam) : KalamDownloadState
+    class Idle(silent: Boolean) : KalamDownloadState(silent)
+    class Started(val kalam: Kalam, silent: Boolean) : KalamDownloadState(silent)
+    class InProgress(val fileInfo: FileInfo, val kalam: Kalam, silent: Boolean) : KalamDownloadState(silent)
+    class Error(val error: String, val kalam: Kalam, silent: Boolean) : KalamDownloadState(silent)
+    class Completed(val kalam: Kalam, silent: Boolean) : KalamDownloadState(silent)
 }

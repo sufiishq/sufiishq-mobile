@@ -43,9 +43,10 @@ class SyncManager @Inject constructor(
     fun sync(themeController: ThemeController) {
         CoroutineScope(dispatcher).launch {
             CacheRemoveWorker.init(context)
-            EventUpdateWorker.init(context)
-            EventSyncWorker.init(context, keyValueStorage)
-            OccasionSyncWorker.init(context, keyValueStorage)
+            // FIXME temporary disable event and occasion sync
+            //EventUpdateWorker.init(context)
+            //EventSyncWorker.init(context, keyValueStorage)
+            //OccasionSyncWorker.init(context, keyValueStorage)
             initAutoColorChangeWorker(themeController)
         }
     }

@@ -83,8 +83,9 @@ class AppModule {
                 ImageRes.tasbih,
                 ScreenType.Photo.buildRoute(ImageRes.photo_tasbeeh.toString()),
             ),
-            NavigationItem(getString(TextRes.menu_item_events), ImageRes.events, ScreenType.EventList.buildRoute()),
-            NavigationItem(getString(TextRes.menu_item_gallery), ImageRes.gallery, ScreenType.Gallery.buildRoute()),
+            // FIXME disabled events and gallery menu temporary
+            //NavigationItem(getString(TextRes.menu_item_events), ImageRes.events, ScreenType.EventList.buildRoute()),
+            //NavigationItem(getString(TextRes.menu_item_gallery), ImageRes.gallery, ScreenType.Gallery.buildRoute()),
             // NavigationItem(getString(TextRes.menu_item_niaz), ImageRes.niaz, ""),
             // NavigationItem(getString(TextRes.menu_item_remedies), ImageRes.remedy, ""),
             // NavigationItem(getString(TextRes.menu_item_rubai), ImageRes.rubai, ""),

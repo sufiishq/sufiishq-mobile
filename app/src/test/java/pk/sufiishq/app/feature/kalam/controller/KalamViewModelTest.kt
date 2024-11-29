@@ -348,7 +348,7 @@ class KalamViewModelTest : SufiIshqTest() {
     @Test
     fun testGetKalamDownloadState_shouldReturn_idleState() {
         every { kalamDownloadManager.getKalamDownloadState() } returns MutableLiveData(
-            KalamDownloadState.Idle,
+            KalamDownloadState.Idle(false),
         )
 
         assertTrue(
@@ -360,7 +360,7 @@ class KalamViewModelTest : SufiIshqTest() {
     fun testStartDownload_shouldDelegate_toKalamDownloadManager() {
         every { kalamDownloadManager.startDownload(any()) } returns Unit
 
-        kalamViewModel.startDownload(sampleKalam)
+        kalamViewModel.startDownload(sampleKalam, false)
         verify { kalamDownloadManager.startDownload(sampleKalam) }
     }
 

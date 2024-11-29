@@ -20,7 +20,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import pk.sufiishq.app.di.qualifier.IoDispatcher
+import timber.log.Timber
 import java.io.File
+import java.lang.RuntimeException
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -38,6 +40,7 @@ constructor(
 
                 response.byteStream().use { inputStream ->
                     val length = response.contentLength().toDouble()
+                    if (length < 1) throw RuntimeException("Invalid file length")
 
                     outFile.outputStream().use { outputStream ->
                         val buffer = ByteArray(DEFAULT_BUFFER_SIZE)

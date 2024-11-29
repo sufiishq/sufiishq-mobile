@@ -54,29 +54,33 @@ fun KalamDownloadDialog(
     val kalamDownloadState = kalamController.getKalamDownloadState().observeAsState()
 
     kalamDownloadState.value?.apply {
-        when (this) {
-            is KalamDownloadState.Started ->
-                KalamDownloadStartedDialog(
-                    this,
-                    kalamController,
-                )
-            is KalamDownloadState.InProgress ->
-                KalamDownloadInProgressDialog(
-                    this,
-                    kalamController,
-                )
-            is KalamDownloadState.Error ->
-                KalamDownloadErrorDialog(
-                    this,
-                    kalamController,
-                )
-            is KalamDownloadState.Completed ->
-                KalamDownloadCompletedDialog(
-                    this,
-                    kalamController,
-                )
-            else -> Timber.d("$this state is used for only hide dialog")
+
+        if (!this.silent) {
+            when (this) {
+                is KalamDownloadState.Started ->
+                    KalamDownloadStartedDialog(
+                        this,
+                        kalamController,
+                    )
+                is KalamDownloadState.InProgress ->
+                    KalamDownloadInProgressDialog(
+                        this,
+                        kalamController,
+                    )
+                is KalamDownloadState.Error ->
+                    KalamDownloadErrorDialog(
+                        this,
+                        kalamController,
+                    )
+                is KalamDownloadState.Completed ->
+                    KalamDownloadCompletedDialog(
+                        this,
+                        kalamController,
+                    )
+                else -> Timber.d("$this state is used for only hide dialog")
+            }
         }
+
     }
 }
 

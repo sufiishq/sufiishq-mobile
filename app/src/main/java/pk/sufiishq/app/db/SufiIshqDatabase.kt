@@ -21,6 +21,8 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.AutoMigrationSpec
+import androidx.sqlite.db.SupportSQLiteDatabase
 import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
 import pk.sufiishq.app.feature.events.data.dao.EventDao
@@ -36,10 +38,14 @@ import pk.sufiishq.app.feature.playlist.model.Playlist
 
 @Database(
     entities = [Kalam::class, Playlist::class, Occasion::class, Media::class, Event::class, Personalize::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 2, to = 3),
+        AutoMigration(
+            from = 3,
+            to = 4,
+            spec = SufiIshqDatabase.AutoMigration::class
+        ),
     ],
 )
 abstract class SufiIshqDatabase : RoomDatabase() {
@@ -65,6 +71,13 @@ abstract class SufiIshqDatabase : RoomDatabase() {
             }
 
             return INSTANCE!!
+        }
+    }
+
+    class AutoMigration : AutoMigrationSpec {
+        override fun onPostMigrate(db: SupportSQLiteDatabase) {
+            super.onPostMigrate(db)
+            db.execSQL("UPDATE kalam SET online_src = REPLACE(online_src, 'https://sufiishq.pk/', 'https://filedn.com/lNVSC44OvOKYw0PH6GJfvPQ/')")
         }
     }
 }

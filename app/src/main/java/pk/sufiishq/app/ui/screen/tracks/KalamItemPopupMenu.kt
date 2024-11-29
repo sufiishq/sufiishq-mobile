@@ -68,7 +68,7 @@ private fun handleClick(
         is PopupMenuItem.AddToPlaylist -> kalamController.showPlaylistDialog(kalam)
         is PopupMenuItem.MarkAsFavorite -> kalamController.markAsFavorite(kalam)
         is PopupMenuItem.MarkAsNotFavorite -> kalamController.removeFavorite(kalam)
-        is PopupMenuItem.Download -> kalamController.startDownload(kalam)
+        is PopupMenuItem.Download -> kalamController.startDownload(kalam, false)
         is PopupMenuItem.Split -> kalamController.showKalamSplitDialog(kalam)
         is PopupMenuItem.Share -> kalamController.shareKalam(kalam, context as ComponentActivity)
         is PopupMenuItem.Delete ->

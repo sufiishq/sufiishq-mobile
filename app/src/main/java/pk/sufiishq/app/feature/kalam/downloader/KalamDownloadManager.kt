@@ -50,15 +50,15 @@ constructor(
     private val kalamRepository: KalamRepository,
 ) {
 
-    private val kalamDownloadState = MutableLiveData<KalamDownloadState>(KalamDownloadState.Idle)
+    private val kalamDownloadState = MutableLiveData<KalamDownloadState>(KalamDownloadState.Idle(false))
     private var job: Job? = null
 
     fun getKalamDownloadState(): LiveData<KalamDownloadState> {
         return kalamDownloadState
     }
 
-    fun startDownload(kalam: Kalam) {
-        setKalamDownloadState(KalamDownloadState.Started(kalam))
+    fun startDownload(kalam: Kalam, silent: Boolean) {
+        setKalamDownloadState(KalamDownloadState.Started(kalam, silent))
 
         job =
             CoroutineScope(dispatcher).launch {
@@ -67,24 +67,24 @@ constructor(
                     .cancellable()
                     .collect {
                         when (it) {
-                            is FileInfo.Downloading -> downloading(it, kalam)
-                            is FileInfo.Finished -> downloadFinished(kalam)
-                            is FileInfo.Failed -> downloadFailed(it, kalam)
+                            is FileInfo.Downloading -> downloading(it, kalam, silent)
+                            is FileInfo.Finished -> downloadFinished(kalam, silent)
+                            is FileInfo.Failed -> downloadFailed(it, kalam, silent)
                         }
                     }
             }
     }
 
     fun dismissDownload() {
-        setKalamDownloadState(KalamDownloadState.Idle)
         job?.cancel()
+        setKalamDownloadState(KalamDownloadState.Idle(false))
     }
 
-    private fun downloading(fileInfo: FileInfo.Downloading, kalam: Kalam) {
-        setKalamDownloadState(KalamDownloadState.InProgress(fileInfo, kalam))
+    private fun downloading(fileInfo: FileInfo.Downloading, kalam: Kalam, silent: Boolean) {
+        setKalamDownloadState(KalamDownloadState.InProgress(fileInfo, kalam, silent))
     }
 
-    private suspend fun downloadFinished(kalam: Kalam) {
+    private suspend fun downloadFinished(kalam: Kalam, silent: Boolean) {
         val fileName = getFileName(kalam)
         val source = getTempFile(fileName)
         val destination = getDestFile(fileName)
@@ -99,10 +99,10 @@ constructor(
             kalam.offlineSource = ""
         }
 
-        setKalamDownloadState(KalamDownloadState.Completed(kalam))
+        setKalamDownloadState(KalamDownloadState.Completed(kalam, silent))
     }
 
-    private fun downloadFailed(fileInfo: FileInfo.Failed, kalam: Kalam) {
+    private fun downloadFailed(fileInfo: FileInfo.Failed, kalam: Kalam, silent: Boolean) {
         val throwable = fileInfo.throwable
         Timber.e(throwable)
 
@@ -114,7 +114,7 @@ constructor(
                     ?: getString(TextRes.label_unknown_error)
             }
 
-        setKalamDownloadState(KalamDownloadState.Error(error, kalam))
+        setKalamDownloadState(KalamDownloadState.Error(error, kalam, silent))
     }
 
     private fun setKalamDownloadState(state: KalamDownloadState) {

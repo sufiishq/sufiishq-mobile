@@ -80,7 +80,7 @@ interface KalamController {
     // -------------------------------------------------------------------- //
 
     fun getKalamDownloadState(): LiveData<KalamDownloadState>
-    fun startDownload(kalam: Kalam)
+    fun startDownload(kalam: Kalam, silent: Boolean)
     fun dismissDownload()
 
     // -------------------------------------------------------------------- //

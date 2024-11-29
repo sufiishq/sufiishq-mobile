@@ -17,7 +17,7 @@
 package pk.sufiishq.app.utils
 
 object Constants {
-    const val SUFI_ISHQ_HOST = "https://www.sufiishq.pk/"
+    const val SUFI_ISHQ_HOST = "https://filedn.com/lNVSC44OvOKYw0PH6GJfvPQ/"
     const val KALAM_DIR = "kalam"
     const val MEDIA_PATH = "media"
     const val CACHE_SPLIT_FILENAME = "split.mp3"

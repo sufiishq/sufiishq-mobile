@@ -3,5 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">www.sufiishq.pk</domain>
         <domain includeSubdomains="true">api.aladhan.com</domain>
+        <domain includeSubdomains="true">https://filedn.com</domain>
     </domain-config>
 </network-security-config>

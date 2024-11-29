@@ -32,6 +32,7 @@ import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.kalam.delete.KalamDeleteManager
 import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadManager
 import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
+import pk.sufiishq.app.feature.kalam.extension.hasOfflineSource
 import pk.sufiishq.app.feature.kalam.favorite.FavoriteManager
 import pk.sufiishq.app.feature.kalam.helper.TrackListType
 import pk.sufiishq.app.feature.kalam.model.Kalam
@@ -39,10 +40,12 @@ import pk.sufiishq.app.feature.kalam.model.KalamDeleteItem
 import pk.sufiishq.app.feature.kalam.splitter.KalamSplitManager
 import pk.sufiishq.app.feature.kalam.splitter.SplitKalamInfo
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
+import pk.sufiishq.app.feature.personalize.controller.PersonalizeViewModel
 import pk.sufiishq.app.feature.player.PlayerManager
 import pk.sufiishq.app.feature.playlist.PlaylistManager
 import pk.sufiishq.app.feature.playlist.model.Playlist
 import pk.sufiishq.app.helpers.popupmenu.PopupMenu
+import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.filterItems
 import pk.sufiishq.aurora.models.DataMenuItem
 import java.util.*
@@ -93,6 +96,13 @@ class KalamViewModel
 
     override fun changeTrack(kalam: Kalam, trackListType: TrackListType) {
         playerManager.changeTrack(kalam, trackListType)
+
+        // check if auto download enable or not
+        if (PersonalizeViewModel.AUTO_DOWNLOAD_KALAM.getFromStorage(true)) {
+
+            // download kalam silently if doesn't have offline source
+            if (!kalam.hasOfflineSource()) startDownload(kalam, true);
+        }
     }
 
     override fun shareKalam(kalam: Kalam, componentActivity: ComponentActivity) {
@@ -155,8 +165,8 @@ class KalamViewModel
         return kalamDownloadManager.getKalamDownloadState()
     }
 
-    override fun startDownload(kalam: Kalam) {
-        kalamDownloadManager.startDownload(kalam)
+    override fun startDownload(kalam: Kalam, silent: Boolean) {
+        kalamDownloadManager.startDownload(kalam, silent)
     }
 
     override fun dismissDownload() {

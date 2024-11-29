@@ -32,9 +32,14 @@ import pk.sufiishq.app.feature.kalam.downloader.FileInfo
 import pk.sufiishq.app.feature.personalize.data.repository.PersonalizeRepository
 import pk.sufiishq.app.feature.personalize.model.LogoPath
 import pk.sufiishq.app.feature.personalize.model.Personalize
+import pk.sufiishq.app.feature.theme.controller.ThemeViewModel
+import pk.sufiishq.app.feature.theme.model.AutoChangeColorDuration
+import pk.sufiishq.app.feature.theme.worker.AutoColorChangeWorker
 import pk.sufiishq.app.utils.extention.appendPath
+import pk.sufiishq.app.utils.extention.getFromStorage
 import pk.sufiishq.app.utils.extention.moveTo
 import pk.sufiishq.app.utils.extention.offlineFileExists
+import pk.sufiishq.app.utils.extention.putInStorage
 import java.io.File
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -50,6 +55,16 @@ class PersonalizeViewModel @Inject constructor(
     init {
         if (!getPersonalizeDir().exists()) {
             getPersonalizeDir().mkdir()
+        }
+    }
+
+    override suspend fun isAutoDownloadKalam(): Boolean {
+        return AUTO_DOWNLOAD_KALAM.getFromStorage(true)
+    }
+
+    override fun setAutoDownloadKalam(isEnable: Boolean) {
+        launchInScope {
+            AUTO_DOWNLOAD_KALAM.putInStorage(isEnable)
         }
     }
 
@@ -105,5 +120,6 @@ class PersonalizeViewModel @Inject constructor(
 
     companion object {
         const val PERSONALIZE_DIR = "personalize"
+        const val AUTO_DOWNLOAD_KALAM = "si_auto_download_kalam"
     }
 }

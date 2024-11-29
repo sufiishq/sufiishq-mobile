@@ -19,9 +19,12 @@ package pk.sufiishq.app.feature.personalize.controller
 import androidx.lifecycle.LiveData
 import pk.sufiishq.app.feature.personalize.model.LogoPath
 import pk.sufiishq.app.feature.personalize.model.Personalize
+import pk.sufiishq.app.feature.theme.model.AutoChangeColorDuration
 
 interface PersonalizeController {
 
+    suspend fun isAutoDownloadKalam(): Boolean
+    fun setAutoDownloadKalam(isEnable: Boolean)
     suspend fun resolveLogo(logoPath: LogoPath): LogoPath?
     fun get(): LiveData<Personalize?>
     fun reset()

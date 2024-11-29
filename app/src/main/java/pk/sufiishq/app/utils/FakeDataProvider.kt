@@ -119,9 +119,9 @@ fun fakeKalamController() =
         override fun dismissPlaylistDialog() = Unit
 
         override fun getKalamDownloadState(): LiveData<KalamDownloadState> =
-            MutableLiveData(KalamDownloadState.Idle)
+            MutableLiveData(KalamDownloadState.Idle(false))
 
-        override fun startDownload(kalam: Kalam) = Unit
+        override fun startDownload(kalam: Kalam, silent: Boolean) = Unit
         override fun dismissDownload() = Unit
 
         override fun showKalamSplitDialog(kalam: Kalam) = Unit

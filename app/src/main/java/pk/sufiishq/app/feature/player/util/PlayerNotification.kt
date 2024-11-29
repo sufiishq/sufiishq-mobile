@@ -17,11 +17,14 @@
 package pk.sufiishq.app.feature.player.util
 
 import android.app.Service
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+import android.os.Build
 import pk.sufiishq.app.feature.app.AppNotificationManager
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.feature.player.di.qualifier.AndroidMediaPlayer
 import pk.sufiishq.app.feature.player.service.AudioPlayerService
+import pk.sufiishq.app.utils.Constants
 import pk.sufiishq.app.utils.formatDateAs
 import pk.sufiishq.app.utils.safeTryServiceCall
 import javax.inject.Inject
@@ -47,7 +50,11 @@ class PlayerNotification @Inject constructor(
         ).setSilent(true)
 
         safeTryServiceCall(audioPlayer) {
-            service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build())
+            } else {
+                service.startForeground(AudioPlayerService.NOTIFY_ID, builder.build(), FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+            }
         }
     }
 }
