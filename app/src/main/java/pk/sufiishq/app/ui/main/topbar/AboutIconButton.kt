@@ -19,7 +19,7 @@ package pk.sufiishq.app.ui.main.topbar
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -106,7 +106,7 @@ private fun AboutDialog(showDialog: MutableState<Boolean>) {
 
                         SIHeightSpace(value = 12)
 
-                        val linkColor = AuroraColor.SecondaryVariant.color()
+                        val linkColor = AuroraColor.SecondaryContainer.color()
                         val annotatedString = buildAnnotatedString {
                             withStyle(style = SpanStyle(color = textColor.color())) {
                                 // creating a string to display in the Text

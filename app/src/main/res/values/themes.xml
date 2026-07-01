@@ -5,10 +5,10 @@
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/light_primary</item>
-        <item name="colorPrimaryVariant">@color/light_primary_variant</item>
+        <item name="colorPrimaryContainer">@color/light_primary_variant</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_secondary</item>
-        <item name="colorSecondaryVariant">@color/light_secondary_variant</item>
+        <item name="colorSecondaryContainer">@color/light_secondary_variant</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/light_background</item>

@@ -25,7 +25,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
@@ -58,7 +58,7 @@ fun PlaylistScreen(
 
     SIScaffold(
         onFloatingButtonAction =
-        fabEnable.takeIf { it }?.let { { showAddUpdatePlaylistDialog.value = playlist.value } },
+            fabEnable.takeIf { it }?.let { { showAddUpdatePlaylistDialog.value = playlist.value } },
         isVisibleFAB = fabEnable && listState.isScrollingUp(),
     ) {
         SILazyColumn(

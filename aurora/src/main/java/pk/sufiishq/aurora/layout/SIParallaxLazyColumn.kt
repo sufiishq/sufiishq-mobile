@@ -3,7 +3,7 @@ package pk.sufiishq.aurora.layout
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -35,19 +34,14 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import kotlinx.coroutines.launch
-import pk.sufiishq.aurora.R
 import pk.sufiishq.aurora.components.SIImage
-import pk.sufiishq.aurora.components.SITileAndroidImage
 import pk.sufiishq.aurora.theme.AuroraColor
 import pk.sufiishq.aurora.utils.isScrollingUp
 import pk.sufiishq.aurora.utils.rem
@@ -83,7 +77,7 @@ fun <T : Any> SIParallaxLazyColumn(
         leadingIcon = leadingIcon,
         title = title,
         data = listData.collectAsLazyPagingItems(),
-        bottomView = bottomView,
+        topView = bottomView,
         noItemText = noItemText,
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
@@ -91,13 +85,14 @@ fun <T : Any> SIParallaxLazyColumn(
     )
 }
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <T : Any> SIParallaxLazyColumn(
     @DrawableRes leadingIcon: Int,
     title: String,
     data: LazyPagingItems<T>,
-    bottomView: @Composable (BoxScope.() -> Unit)? = null,
+    topView: @Composable (BoxScope.() -> Unit)? = null,
     noItemText: String? = null,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(12.dp),
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
@@ -135,194 +130,199 @@ fun <T : Any> SIParallaxLazyColumn(
         }
     }
 
-    SIBox(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
-            .onGloballyPositioned {
-                containerSize.value =
-                    with(localDensity) { DpSize(it.size.width.toDp(), it.size.height.toDp()) }
-            }
+    SIColumn(
+        modifier = Modifier.fillMaxSize()
     ) {
-
-        val collapseRange: Float = (headerHeightPx - appBarHeightPx)
-        val collapseFraction: Float = (firstItemTranslationY.value / collapseRange).coerceIn(0f, 1f)
+        topView?.let {
+            SIBox(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .animateContentSize(),
+                bgColor = AuroraColor.Primary
+            ) {
+                if (lazyListState.isScrollingUp()) {
+                    SIBox(
+                        modifier = Modifier
+                            .padding(12.dp, 8.dp)
+                            .fillMaxWidth()
+                    ) {
+                        topView.invoke(this)
+                    }
+                }
+            }
+        }
 
         SIBox(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(appBarHeight)
-                .align(Alignment.TopStart)
-                .graphicsLayer {
-                    alpha = collapseFraction
-                },
-        ) {
-            SIRow(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.TopStart),
-                bgColor = AuroraColor.Background,
-                radius = 4,
-            ) {}
-        }
-
-        SIImage(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .graphicsLayer {
-
-                    val imageXStart = lerp(
-                        (containerSize.value.width / 2) - (imageSize.value.width / 2),
-                        imageEnd(imageSize) * -4f,
-                        collapseFraction
-                    )
-
-                    val imageXEnd = lerp(
-                        imageEnd(imageSize) * -4f,
-                        imageEnd(imageSize),
-                        collapseFraction
-                    )
-
-                    val imageX = lerp(
-                        imageXStart,
-                        imageXEnd,
-                        collapseFraction
-                    )
-
-                    val imageYStart = lerp(
-                        (headerHeight.value / 2) - (imageSize.value.height / 2),
-                        (-130f).dp,
-                        collapseFraction
-                    )
-
-                    val imageYEnd = lerp(
-                        0.dp,
-                        appBarHeight / 2 - imageSize.value.height / 2,
-                        collapseFraction
-                    )
-
-                    val imageY = lerp(
-                        imageYStart,
-                        imageYEnd,
-                        collapseFraction
-                    )
-
-                    val imageScale = lerp(
-                        with(localDensity) { 1.toDp() },
-                        (25.dp / obtainUpperSize(imageSize)).toDp(),
-                        collapseFraction
-                    )
-
-                    translationX = imageX.toPx()
-                    translationY = imageY.toPx()
-                    scaleX = imageScale.toPx()
-                    scaleY = imageScale.toPx()
-                }
+                .fillMaxSize()
+                .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
                 .onGloballyPositioned {
-                    imageSize.value =
+                    containerSize.value =
                         with(localDensity) { DpSize(it.size.width.toDp(), it.size.height.toDp()) }
-                },
-            resId = leadingIcon
-        )
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .graphicsLayer {
-
-                    val titleXStart = lerp(
-                        (containerSize.value.width / 2) - (titleSize.value.width / 2),
-                        paddingMedium * 2 / 10,
-                        collapseFraction
-                    )
-
-                    val titleXEnd = lerp(
-                        paddingMedium * 2 / 10,
-                        (paddingMedium * 2).plus(25.dp) * 0.8f,
-                        collapseFraction
-                    )
-
-                    val titleX = lerp(
-                        titleXStart,
-                        titleXEnd,
-                        collapseFraction
-                    )
-
-                    val titleY = lerp(
-                        headerHeight.value - (titleSize.value.height + paddingMedium),
-                        appBarHeight / 2 - titleSize.value.height / 2,
-                        collapseFraction
-                    )
-
-                    val textScale = lerp(
-                        with(localDensity) { 1.toDp() },
-                        with(localDensity) { 0.8f.toDp() },
-                        collapseFraction
-                    )
-
-                    translationX = titleX.toPx()
-                    translationY = titleY.toPx()
-                    scaleX = textScale.toPx()
-                    scaleY = textScale.toPx()
                 }
-                .onGloballyPositioned {
-                    titleSize.value =
-                        with(localDensity) { DpSize(it.size.width.toDp(), it.size.height.toDp()) }
-                },
-            text = title,
-            color = AuroraColor.OnBackground.color(),
-            fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Normal,
-            fontSize = 22.sp,
-        )
-
-        CompositionLocalProvider(
-            LocalOverscrollConfiguration provides null
         ) {
+
+            val collapseRange: Float = (headerHeightPx - appBarHeightPx)
+            val collapseFraction: Float = (firstItemTranslationY.value / collapseRange).coerceIn(0f, 1f)
 
             SIBox(
                 modifier = Modifier
-                    .padding(top = appBarHeight + paddingMedium)
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .height(appBarHeight)
+                    .align(Alignment.TopStart)
+                    .graphicsLayer {
+                        alpha = collapseFraction
+                    },
+            ) {
+                SIRow(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.TopStart),
+                    bgColor = AuroraColor.Background,
+                    radius = 4,
+                ) {}
+            }
+
+            SIImage(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .graphicsLayer {
+
+                        val imageXStart = lerp(
+                            (containerSize.value.width / 2) - (imageSize.value.width / 2),
+                            imageEnd(imageSize) * -4f,
+                            collapseFraction
+                        )
+
+                        val imageXEnd = lerp(
+                            imageEnd(imageSize) * -4f,
+                            imageEnd(imageSize),
+                            collapseFraction
+                        )
+
+                        val imageX = lerp(
+                            imageXStart,
+                            imageXEnd,
+                            collapseFraction
+                        )
+
+                        val imageYStart = lerp(
+                            (headerHeight.value / 2) - (imageSize.value.height / 2),
+                            (-130f).dp,
+                            collapseFraction
+                        )
+
+                        val imageYEnd = lerp(
+                            0.dp,
+                            appBarHeight / 2 - imageSize.value.height / 2,
+                            collapseFraction
+                        )
+
+                        val imageY = lerp(
+                            imageYStart,
+                            imageYEnd,
+                            collapseFraction
+                        )
+
+                        val imageScale = lerp(
+                            with(localDensity) { 1.toDp() },
+                            (25.dp / obtainUpperSize(imageSize)).toDp(),
+                            collapseFraction
+                        )
+
+                        translationX = imageX.toPx()
+                        translationY = imageY.toPx()
+                        scaleX = imageScale.toPx()
+                        scaleY = imageScale.toPx()
+                    }
+                    .onGloballyPositioned {
+                        imageSize.value =
+                            with(localDensity) { DpSize(it.size.width.toDp(), it.size.height.toDp()) }
+                    },
+                resId = leadingIcon
+            )
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .graphicsLayer {
+
+                        val titleXStart = lerp(
+                            (containerSize.value.width / 2) - (titleSize.value.width / 2),
+                            paddingMedium * 2 / 10,
+                            collapseFraction
+                        )
+
+                        val titleXEnd = lerp(
+                            paddingMedium * 2 / 10,
+                            (paddingMedium * 2).plus(25.dp) * 0.8f,
+                            collapseFraction
+                        )
+
+                        val titleX = lerp(
+                            titleXStart,
+                            titleXEnd,
+                            collapseFraction
+                        )
+
+                        val titleY = lerp(
+                            headerHeight.value - (titleSize.value.height + paddingMedium),
+                            appBarHeight / 2 - titleSize.value.height / 2,
+                            collapseFraction
+                        )
+
+                        val textScale = lerp(
+                            with(localDensity) { 1.toDp() },
+                            with(localDensity) { 0.8f.toDp() },
+                            collapseFraction
+                        )
+
+                        translationX = titleX.toPx()
+                        translationY = titleY.toPx()
+                        scaleX = textScale.toPx()
+                        scaleY = textScale.toPx()
+                    }
+                    .onGloballyPositioned {
+                        titleSize.value =
+                            with(localDensity) { DpSize(it.size.width.toDp(), it.size.height.toDp()) }
+                    },
+                text = title,
+                color = AuroraColor.OnBackground.color(),
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Normal,
+                fontSize = 22.sp,
+            )
+
+            CompositionLocalProvider(
+                LocalOverscrollFactory provides null
             ) {
 
-                SILazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = verticalArrangement,
-                    horizontalAlignment = horizontalAlignment,
-                    contentPadding = PaddingValues(0.dp),
-                    state = lazyListState,
-                    hasItems = data.itemCount > 0,
-                    noItemText = noItemText
+                SIBox(
+                    modifier = Modifier
+                        .padding(top = appBarHeight + paddingMedium)
+                        .fillMaxSize()
                 ) {
 
-                    item(key = -1) {
-                        Spacer(modifier = Modifier.height(headerHeight.value - (appBarHeight)))
-                    }
-
-                    itemsIndexed(data) { index, item ->
-                        item?.let {
-                            compose(this, index, item)
-                        }
-                    }
-                }
-
-                bottomView?.let {
-                    SIBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .align(Alignment.BottomCenter)
-                            .animateContentSize(),
-                        bgColor = AuroraColor.Primary
+                    SILazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = verticalArrangement,
+                        horizontalAlignment = horizontalAlignment,
+                        contentPadding = PaddingValues(0.dp),
+                        state = lazyListState,
+                        hasItems = data.itemCount > 0,
+                        noItemText = noItemText
                     ) {
-                        if (lazyListState.isScrollingUp()) {
-                            SIBox(
-                                modifier = Modifier
-                                    .padding(12.dp, 8.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                bottomView.invoke(this)
+
+                        item(key = -1) {
+                            Spacer(modifier = Modifier.height(headerHeight.value - (appBarHeight)))
+                        }
+
+                        items(
+                            count = data.itemCount
+                        ) { index ->
+                            data[index]?.let { item ->
+                                compose(index, item)
                             }
                         }
                     }

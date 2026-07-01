@@ -5,10 +5,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
@@ -48,21 +48,28 @@ fun SIOutlinedTextField(
     errorText: String? = null
 ) {
 
-    val colors = TextFieldDefaults.outlinedTextFieldColors(
-        textColor = textColor.color(),
-        cursorColor = textColor.color(),
-        unfocusedBorderColor = textColor.color().copy(alpha = 0.3f),
-        focusedBorderColor = AuroraColor.SecondaryVariant.color().copy(alpha = 0.5f),
-        unfocusedLabelColor = textColor.color().copy(alpha = 0.3f),
-        focusedLabelColor = AuroraColor.SecondaryVariant.color().copy(alpha = 0.7f),
-        placeholderColor = textColor.color().copy(0.5f),
-        backgroundColor = AuroraColor.Background.color(),
+    val colors = TextFieldDefaults.colors(
+        focusedTextColor = textColor.color(),
+        unfocusedTextColor = textColor.color(),
 
-        )
+        cursorColor = textColor.color(),
+
+        unfocusedIndicatorColor = textColor.color().copy(alpha = 0.3f),
+        focusedIndicatorColor = AuroraColor.SecondaryContainer.color().copy(alpha = 0.5f),
+
+        unfocusedLabelColor = textColor.color().copy(alpha = 0.3f),
+        focusedLabelColor = AuroraColor.SecondaryContainer.color().copy(alpha = 0.7f),
+
+        unfocusedPlaceholderColor = textColor.color().copy(alpha = 0.5f),
+        focusedPlaceholderColor = textColor.color().copy(alpha = 0.5f),
+
+        focusedContainerColor = AuroraColor.Background.color(),
+        unfocusedContainerColor = AuroraColor.Background.color()
+    )
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = AuroraColor.SecondaryVariant.color(),
-        backgroundColor = AuroraColor.SecondaryVariant.color().copy(alpha = 0.4f)
+        handleColor = AuroraColor.SecondaryContainer.color(),
+        backgroundColor = AuroraColor.SecondaryContainer.color().copy(alpha = 0.4f)
     )
 
     SIColumn {

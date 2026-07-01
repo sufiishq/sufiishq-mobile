@@ -26,11 +26,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
 import pk.sufiishq.app.feature.app.controller.MainController
 import pk.sufiishq.app.feature.app.model.NavigationItem
-import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.help.HelpDataType
 import pk.sufiishq.app.feature.help.controller.HelpController
 import pk.sufiishq.app.feature.help.model.HelpContent
@@ -62,7 +60,6 @@ fun fakeDashboardController() =
         override fun countFavorites(): LiveData<Int> = MutableLiveData(15)
         override fun countDownloads(): LiveData<Int> = MutableLiveData(35)
         override fun countPlaylist(): LiveData<Int> = MutableLiveData(5)
-        override fun getHighlightAvailable(): LiveData<Highlight?> = MutableLiveData(null)
     }
 
 // ---------------------------------------------------------------------------------- //
@@ -182,7 +179,6 @@ fun fakeMainController() =
         override fun handleUpdate(context: Context) = Unit
         override fun openFacebookGroup(context: Context, groupUrl: String) = Unit
         override fun shareApp(activity: ComponentActivity) = Unit
-        override fun getUpcomingEvents(): LiveData<List<Event>> = MutableLiveData(listOf())
         override fun checkUpdate(activity: ComponentActivity) = Unit
         override fun showUpdateDialog(value: Boolean) = Unit
         override fun getHijriDate(): LiveData<HijriDate?> = MutableLiveData(null)

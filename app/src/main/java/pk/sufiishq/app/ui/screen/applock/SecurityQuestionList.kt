@@ -17,7 +17,7 @@
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -44,7 +44,7 @@ import pk.sufiishq.aurora.widgets.SIPopupMenu
 @Composable
 fun SecurityQuestionList(
     modifier: Modifier = Modifier,
-    scaffoldState: ScaffoldState,
+    scaffoldState: SnackbarHostState,
     doneButtonLabel: String = optString(TextRes.label_done),
     onDoneClick: (item: SecurityQuestion) -> Unit,
     headerButtonClick: () -> Unit,
@@ -93,7 +93,7 @@ fun SecurityQuestionList(
                     onClick = {
                         if (answer.value.trim().isEmpty()) {
                             coroutineScope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(
+                                scaffoldState.showSnackbar(
                                     getString(TextRes.msg_ans_not_empty),
                                 )
                             }

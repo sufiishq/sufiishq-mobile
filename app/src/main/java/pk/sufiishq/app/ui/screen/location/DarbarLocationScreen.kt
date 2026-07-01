@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -46,6 +47,7 @@ import pk.sufiishq.aurora.layout.SICard
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
+import pk.sufiishq.aurora.theme.AuroraLight
 
 @Composable
 fun DarbarLocationScreen() {
@@ -59,7 +61,7 @@ fun DarbarLocationScreen() {
 
         SICard(
             modifier =
-            Modifier.constrainAs(darbarPhoto) {
+            Modifier.fillMaxSize().constrainAs(darbarPhoto) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
@@ -68,6 +70,7 @@ fun DarbarLocationScreen() {
             },
         ) {
             SIImage(
+                modifier = Modifier.fillMaxSize(),
                 resId = ImageRes.darbar,
                 contentScale = ContentScale.Crop,
             )
@@ -130,5 +133,14 @@ private fun LocationButton(
                 )
             }
         }
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewDarbarLocationScreen() {
+    AuroraLight {
+        DarbarLocationScreen()
     }
 }

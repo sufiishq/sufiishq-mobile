@@ -22,7 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
@@ -58,7 +58,7 @@ fun TracksScreen(
         noItemText = optString(TextRes.dynamic_no_kalam_found, trackListType.title),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         data = lazyKalamItems,
-        bottomView = {
+        topView = {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 label = optString(TextRes.dynamic_search_kalam, trackListType.title),

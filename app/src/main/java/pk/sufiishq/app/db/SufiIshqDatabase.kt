@@ -25,25 +25,21 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import pk.sufiishq.app.feature.app.data.dao.MediaDao
 import pk.sufiishq.app.feature.app.model.Media
-import pk.sufiishq.app.feature.events.data.dao.EventDao
-import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.kalam.data.dao.KalamDao
 import pk.sufiishq.app.feature.kalam.model.Kalam
-import pk.sufiishq.app.feature.occasions.data.dao.OccasionDao
-import pk.sufiishq.app.feature.occasions.model.Occasion
 import pk.sufiishq.app.feature.personalize.data.dao.PersonalizeDao
 import pk.sufiishq.app.feature.personalize.model.Personalize
 import pk.sufiishq.app.feature.playlist.data.dao.PlaylistDao
 import pk.sufiishq.app.feature.playlist.model.Playlist
 
 @Database(
-    entities = [Kalam::class, Playlist::class, Occasion::class, Media::class, Event::class, Personalize::class],
-    version = 4,
+    entities = [Kalam::class, Playlist::class, Media::class, Personalize::class],
+    version = 5,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
-            from = 3,
-            to = 4,
+            from = 4,
+            to = 5,
             spec = SufiIshqDatabase.AutoMigration::class
         ),
     ],
@@ -52,9 +48,7 @@ abstract class SufiIshqDatabase : RoomDatabase() {
 
     abstract fun kalamDao(): KalamDao
     abstract fun playlistDao(): PlaylistDao
-    abstract fun occasionDao(): OccasionDao
     abstract fun mediaDao(): MediaDao
-    abstract fun eventDao(): EventDao
     abstract fun personalizeDao(): PersonalizeDao
 
     companion object {

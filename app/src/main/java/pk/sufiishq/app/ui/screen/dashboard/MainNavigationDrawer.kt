@@ -20,7 +20,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -42,7 +45,7 @@ import pk.sufiishq.aurora.widgets.SIDataRow
 @PackagePrivate
 @Composable
 fun MainNavigationDrawer(
-    scaffoldState: ScaffoldState,
+    drawerState: DrawerState,
     mainController: MainController,
     navigationItems: List<NavigationItem>,
     navController: NavController,
@@ -64,7 +67,7 @@ fun MainNavigationDrawer(
                 rowHeight = 48,
                 onClick = {
                     scope.launch {
-                        scaffoldState.drawerState.close()
+                        drawerState.close()
                         navController.navigate(it.route)
                     }
                 },
@@ -81,7 +84,7 @@ fun MainNavigationDrawer(
                 rowHeight = 48,
                 onClick = {
                     scope.launch {
-                        scaffoldState.drawerState.close()
+                        drawerState.close()
                         navController.navigate(it.route)
                     }
                 },
@@ -111,11 +114,6 @@ private fun getSecondaryMenu(): List<NavigationItem> {
             getString(TextRes.menu_item_help),
             ImageRes.help,
             ScreenType.Help.buildRoute(),
-        ),
-        NavigationItem(
-            getString(TextRes.menu_item_admin_setting),
-            ImageRes.setting,
-            ScreenType.AdminSettings.buildRoute(),
         ),
     )
 }

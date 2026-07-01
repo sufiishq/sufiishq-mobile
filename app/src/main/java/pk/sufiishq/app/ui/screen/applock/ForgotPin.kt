@@ -17,7 +17,7 @@
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -42,7 +42,7 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun ForgotPin(
     appLockController: AppLockController,
-    scaffoldState: ScaffoldState,
+    scaffoldState: SnackbarHostState,
     securityQuestion: SecurityQuestion,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -76,11 +76,11 @@ fun ForgotPin(
             onClick = {
                 coroutineScope.launch {
                     if (answer.value.trim().isEmpty()) {
-                        scaffoldState.snackbarHostState.showSnackbar(getString(TextRes.msg_ans_not_empty))
+                        scaffoldState.showSnackbar(getString(TextRes.msg_ans_not_empty))
                     } else if (answer.value.trim().lowercase() !=
                         securityQuestion.answer.trim().lowercase()
                     ) {
-                        scaffoldState.snackbarHostState.showSnackbar(getString(TextRes.msg_ans_not_matched))
+                        scaffoldState.showSnackbar(getString(TextRes.msg_ans_not_matched))
                     } else {
                         appLockController.userWantChangePin(cameFromForgotPin = true)
                     }

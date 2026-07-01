@@ -1,6 +1,6 @@
 package pk.sufiishq.aurora.theme
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -8,57 +8,57 @@ enum class AuroraColor(val color: @Composable () -> Color) {
 
     Primary(
         {
-            MaterialTheme.colors.primary
+            MaterialTheme.colorScheme.primary
         }
     ),
-    PrimaryVariant(
+    PrimaryContainer(
         {
-            MaterialTheme.colors.primaryVariant
+            MaterialTheme.colorScheme.primaryContainer
         }
     ),
     OnPrimary(
         {
-            MaterialTheme.colors.onPrimary
+            MaterialTheme.colorScheme.onPrimary
         }
     ),
     Secondary(
         {
-            MaterialTheme.colors.secondary
+            MaterialTheme.colorScheme.secondary
         }
     ),
-    SecondaryVariant(
+    SecondaryContainer(
         {
-            MaterialTheme.colors.secondaryVariant
+            MaterialTheme.colorScheme.secondaryContainer
         }
     ),
     OnSecondary(
         {
-            MaterialTheme.colors.onSecondary
+            MaterialTheme.colorScheme.onSecondary
         }
     ),
     Background(
         {
-            MaterialTheme.colors.background
+            MaterialTheme.colorScheme.background
         }
     ),
     OnBackground(
         {
-            MaterialTheme.colors.onBackground
+            MaterialTheme.colorScheme.onBackground
         }
     ),
     Surface(
         {
-            MaterialTheme.colors.surface
+            MaterialTheme.colorScheme.surface
         }
     ),
     OnSurface(
         {
-            MaterialTheme.colors.onSurface
+            MaterialTheme.colorScheme.onSurface
         }
     ),
     OnError(
         {
-            MaterialTheme.colors.onError
+            MaterialTheme.colorScheme.onError
         }
     ),
     OnSecondaryDarkVariant(
@@ -104,8 +104,8 @@ enum class AuroraColor(val color: @Composable () -> Color) {
 }
 
 fun AuroraColor.getForegroundColor(bgColor: Color) = when (this) {
-    AuroraColor.Primary, AuroraColor.PrimaryVariant -> AuroraColor.OnPrimary
-    AuroraColor.Secondary, AuroraColor.SecondaryVariant -> calculateForegroundColor(bgColor)
+    AuroraColor.Primary, AuroraColor.PrimaryContainer -> AuroraColor.OnPrimary
+    AuroraColor.Secondary, AuroraColor.SecondaryContainer -> calculateForegroundColor(bgColor)
     AuroraColor.Surface -> AuroraColor.OnSurface
     AuroraColor.Background -> AuroraColor.OnBackground
     else -> AuroraColor.OnBackground
@@ -121,9 +121,9 @@ fun AuroraColor.getBackgroundColor() = when (this) {
 
 fun AuroraColor.validateBackground() = when (this) {
     AuroraColor.Primary,
-    AuroraColor.PrimaryVariant,
+    AuroraColor.PrimaryContainer,
     AuroraColor.Secondary,
-    AuroraColor.SecondaryVariant,
+    AuroraColor.SecondaryContainer,
     AuroraColor.Background,
     AuroraColor.Surface,
     AuroraColor.Transparent -> this

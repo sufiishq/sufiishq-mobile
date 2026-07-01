@@ -1,6 +1,6 @@
 package pk.sufiishq.aurora.components
 
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import pk.sufiishq.aurora.theme.AuroraColor
@@ -13,14 +13,14 @@ fun SILinearProgressIndicator(
     progress?.apply {
         LinearProgressIndicator(
             modifier = modifier,
-            backgroundColor = AuroraColor.Disabled.color(),
+            trackColor = AuroraColor.Disabled.color(),
             color = AuroraColor.Secondary.color(),
-            progress = progress
+            progress = { progress }
         )
     } ?: run {
         LinearProgressIndicator(
             modifier = modifier,
-            backgroundColor = AuroraColor.Disabled.color(),
+            trackColor = AuroraColor.Disabled.color(),
             color = AuroraColor.Secondary.color()
         )
     }

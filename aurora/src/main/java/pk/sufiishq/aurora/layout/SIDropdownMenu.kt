@@ -2,7 +2,7 @@ package pk.sufiishq.aurora.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.material.DropdownMenu
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi

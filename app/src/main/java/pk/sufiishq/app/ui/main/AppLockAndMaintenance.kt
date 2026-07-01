@@ -16,14 +16,13 @@
 
 package pk.sufiishq.app.ui.main
 
-import android.app.Activity
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.LocalTextStyle
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -32,18 +31,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import io.github.esentsov.PackagePrivate
 import kotlinx.coroutines.launch
-import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
-import pk.sufiishq.app.feature.admin.model.Maintenance
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.applock.model.AppLockStatus
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
@@ -54,7 +46,6 @@ import pk.sufiishq.app.utils.TextRes
 import pk.sufiishq.app.utils.extention.optString
 import pk.sufiishq.app.utils.extention.toastShort
 import pk.sufiishq.app.utils.getString
-import pk.sufiishq.app.utils.optValue
 import pk.sufiishq.app.utils.rem
 import pk.sufiishq.aurora.components.SIButton
 import pk.sufiishq.aurora.components.SIHeightSpace
@@ -64,18 +55,15 @@ import pk.sufiishq.aurora.components.SIMarqueeText
 import pk.sufiishq.aurora.components.SIText
 import pk.sufiishq.aurora.components.SIWidthSpace
 import pk.sufiishq.aurora.components.TextSize
-import pk.sufiishq.aurora.layout.SIAuroraSurface
 import pk.sufiishq.aurora.layout.SIBox
 import pk.sufiishq.aurora.layout.SIColumn
 import pk.sufiishq.aurora.layout.SIConstraintLayout
-import pk.sufiishq.aurora.layout.SIDialog
 import pk.sufiishq.aurora.layout.SIRow
 import pk.sufiishq.aurora.theme.AuroraColor
 
 @PackagePrivate
 @Composable
 fun AppLockAndMaintenance(
-    maintenanceManager: MaintenanceManager,
     appLockManager: AppLockManager,
     audioPlayer: AudioPlayer,
 ) {
@@ -86,15 +74,6 @@ fun AppLockAndMaintenance(
             appLockManager = appLockManager,
             audioPlayer = audioPlayer,
         )
-    } else {
-        val maintenance =
-            maintenanceManager.getMaintenance().observeAsState().optValue(Maintenance())
-
-        // block the user if the app has under maintenance with strict mode ON
-        StrictMaintenanceView(maintenance = maintenance)
-
-        // partial block show the simple message but not block
-        PartialMaintenanceDialog(maintenance = maintenance)
     }
 }
 
@@ -166,10 +145,10 @@ private fun SecurityQuestionView(
             ) {
                 SIText(
                     text =
-                    optString(
-                        TextRes.dynamic_ask_security_question,
-                        appLockStatus.securityQuestion.question,
-                    ),
+                        optString(
+                            TextRes.dynamic_ask_security_question,
+                            appLockStatus.securityQuestion.question,
+                        ),
                     textColor = it,
                 )
             }
@@ -235,12 +214,12 @@ private fun AppLockDetailView(
             if (showPauseButton.value) {
                 SIColumn(
                     modifier =
-                    Modifier.constrainAs(playControlRef) {
-                        start.linkTo(parent.start)
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(headerRef.top)
-                    },
+                        Modifier.constrainAs(playControlRef) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(headerRef.top)
+                        },
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     val length = audioPlayer.getActiveTrack().title.length
@@ -274,45 +253,45 @@ private fun AppLockDetailView(
 
             SIImage(
                 modifier =
-                Modifier
-                    .padding(top = 20.dp)
-                    .constrainAs(headerRef) {
-                        start.linkTo(parent.start)
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(pinKeyboardRef.top)
-                    },
+                    Modifier
+                        .padding(top = 20.dp)
+                        .constrainAs(headerRef) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(pinKeyboardRef.top)
+                        },
                 resId = ImageRes.caligraphi,
             )
 
             SIRow(
                 modifier =
-                Modifier.constrainAs(forgotPinRef) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                },
+                    Modifier.constrainAs(forgotPinRef) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                    },
             ) {
                 SIText(
                     text = optString(TextRes.label_forgot_pin),
                     textColor = it,
                     textSize = TextSize.Small,
                     textStyle =
-                    LocalTextStyle.current.copy(
-                        textDecoration = TextDecoration.Underline,
-                    ),
+                        LocalTextStyle.current.copy(
+                            textDecoration = TextDecoration.Underline,
+                        ),
                     onClick = { showSecurityQuestion.value = true },
                 )
             }
 
             SIColumn(
                 modifier =
-                Modifier
-                    .padding(bottom = 24.dp)
-                    .constrainAs(pinKeyboardRef) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    },
+                    Modifier
+                        .padding(bottom = 24.dp)
+                        .constrainAs(pinKeyboardRef) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        },
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SIText(
@@ -326,63 +305,6 @@ private fun AppLockDetailView(
                     validPin = appLockStatus.savedPin,
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun StrictMaintenanceView(
-    maintenance: Maintenance,
-) {
-    // block the user if the app has under maintenance with strict mode ON
-    if (maintenance.activeStatus && maintenance.strictMode) {
-        val context = LocalContext.current
-        val coroutineScope = rememberCoroutineScope()
-        val maintenanceAnimation =
-            rememberLottieComposition(LottieCompositionSpec.Asset("animations/lottie_maintenance.json"))
-
-        SIAuroraSurface {
-            SIBox(
-                modifier = Modifier.fillMaxSize(),
-                padding = 12,
-            ) {
-                SIColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-                    LottieAnimation(
-                        maintenanceAnimation.value,
-                        iterations = LottieConstants.IterateForever,
-                    )
-                    SIText(
-                        textAlign = TextAlign.Center,
-                        text = optString(TextRes.msg_under_maintenance),
-                        textColor = it,
-                    )
-                    SIHeightSpace(value = 12)
-                    SIButton(
-                        text = optString(TextRes.label_exit),
-                        onClick = { coroutineScope.launch { (context as Activity).finish() } },
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun PartialMaintenanceDialog(
-    maintenance: Maintenance,
-) {
-    val showDialog = rem(true)
-    if (maintenance.activeStatus && !maintenance.strictMode && showDialog.value) {
-        SIDialog(
-            title = optString(TextRes.title_under_maintenance),
-            onYesText = optString(TextRes.label_ok),
-            onYesClick = { showDialog.value = false },
-            onDismissRequest = { showDialog.value = false },
-        ) {
-            SIText(
-                text = optString(TextRes.msg_under_maintenance_partial),
-                textColor = it,
-            )
         }
     }
 }

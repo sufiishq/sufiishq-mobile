@@ -32,7 +32,8 @@ import javax.inject.Inject
 @HiltAndroidApp
 class SufiIshqApp : Application(), Configuration.Provider {
 
-    @Inject lateinit var hiltWorkerFactory: HiltWorkerFactory
+    @Inject
+    lateinit var hiltWorkerFactory: HiltWorkerFactory
 
     @Inject
     @SharedPreferences
@@ -50,11 +51,10 @@ class SufiIshqApp : Application(), Configuration.Provider {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
             .setWorkerFactory(hiltWorkerFactory)
             .build()
-    }
 
     private fun logDebugAppCheckToken() {
         FirebaseApp.initializeApp(this)

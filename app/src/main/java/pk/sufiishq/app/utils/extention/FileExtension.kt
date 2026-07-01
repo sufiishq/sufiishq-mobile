@@ -16,8 +16,8 @@
 
 package pk.sufiishq.app.utils.extention
 
-import VideoHandle.EpEditor
-import VideoHandle.OnEditorListener
+import com.arthenica.ffmpegkit.FFmpegKit
+import com.arthenica.ffmpegkit.ReturnCode
 import org.apache.commons.io.IOUtils
 import pk.sufiishq.app.feature.kalam.splitter.SplitStatus
 import pk.sufiishq.app.utils.TextRes
@@ -52,23 +52,20 @@ fun File.split(
     end: String,
     onComplete: (splitStatus: SplitStatus) -> Unit,
 ) {
-    EpEditor.execCmd(
-        "-y -i $absolutePath -ss $start -codec copy -t $end ${output.absolutePath}",
-        0,
-        object : OnEditorListener {
-            override fun onSuccess() {
-                onComplete(SplitStatus.Done)
-            }
 
-            override fun onFailure() {
-                onComplete(SplitStatus.Error(getString(TextRes.msg_execution_failed)))
-            }
+    val command = "-y -i $absolutePath -ss $start -codec copy -t $end ${output.absolutePath}"
 
-            override fun onProgress(progress: Float) {
-                /* no need to use this method as we don't show a linear progress */
-            }
-        },
-    )
+    FFmpegKit.executeAsync(command) { session ->
+        val returnCode = session.returnCode
+
+        if (ReturnCode.isSuccess(returnCode)) {
+            // Equivalent to onSuccess()
+            onComplete(SplitStatus.Done)
+        } else {
+            // Equivalent to onFailure()
+            onComplete(SplitStatus.Error(getString(TextRes.msg_execution_failed)))
+        }
+    }
 }
 
 fun File.appendPath(path: String): File = File("$absolutePath/$path")

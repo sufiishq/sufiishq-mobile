@@ -1,12 +1,11 @@
 package pk.sufiishq.aurora.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pk.sufiishq.app.ui.theme.Shapes
@@ -22,7 +21,7 @@ fun AuroraLight(content: @Composable () -> Unit) {
         darkTheme = false,
         content = {
             Surface(
-                color = MaterialTheme.colors.surface
+                color = MaterialTheme.colorScheme.surface
             ) {
                 content()
             }
@@ -36,7 +35,7 @@ fun AuroraDark(content: @Composable () -> Unit) {
         darkTheme = true,
         content = {
             Surface(
-                color = MaterialTheme.colors.surface
+                color = MaterialTheme.colorScheme.surface
             ) {
                 content()
             }
@@ -72,7 +71,7 @@ private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
         LightColorPalette
     }).copy(
         secondary = activeSecondaryColorPalette.color.first,
-        secondaryVariant = activeSecondaryColorPalette.color.second
+        secondaryContainer = activeSecondaryColorPalette.color.second
     )
 
     val systemUiController = rememberSystemUiController()
@@ -89,7 +88,7 @@ private fun Aurora(darkTheme: Boolean, content: @Composable () -> Unit) {
     }
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

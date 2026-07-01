@@ -28,7 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.help.controller.HelpController
 import pk.sufiishq.app.feature.help.controller.HelpViewModel
@@ -64,8 +64,9 @@ fun HelpScreen(
 
         val scaleAndVisibility = remember {
             derivedStateOf {
-                if (lazyListState.firstVisibleItemIndex == 0) {
-                    val imageSize = lazyListState.layoutInfo.visibleItemsInfo[0].size
+                val visibleItems = lazyListState.layoutInfo.visibleItemsInfo
+                if (visibleItems.isNotEmpty() && lazyListState.firstVisibleItemIndex == 0) {
+                    val imageSize = visibleItems[0].size
                     val scrollOffset = lazyListState.firstVisibleItemScrollOffset
                     scrollOffset / imageSize.toFloat()
                 } else {

@@ -18,12 +18,12 @@ package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pk.sufiishq.app.feature.applock.AppLockState
 import pk.sufiishq.app.feature.applock.controller.AppLockController
 import pk.sufiishq.app.feature.applock.controller.AppLockViewModel
@@ -33,7 +33,7 @@ import pk.sufiishq.aurora.layout.SIColumn
 
 @Composable
 fun AppLockScreen(
-    scaffoldState: ScaffoldState,
+    scaffoldState: SnackbarHostState,
     appLockController: AppLockController = hiltViewModel<AppLockViewModel>(),
 ) {
     val activeState = appLockController.getActiveState().observeAsState()

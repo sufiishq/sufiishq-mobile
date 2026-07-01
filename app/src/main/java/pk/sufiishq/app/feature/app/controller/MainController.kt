@@ -19,7 +19,6 @@ package pk.sufiishq.app.feature.app.controller
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
-import pk.sufiishq.app.feature.events.model.Event
 import pk.sufiishq.app.feature.hijridate.model.HijriDate
 import pk.sufiishq.aurora.models.DataMenuItem
 
@@ -32,7 +31,6 @@ interface MainController {
     fun popupMenuItems(): List<DataMenuItem>
     fun openFacebookGroup(context: Context, groupUrl: String)
     fun shareApp(activity: ComponentActivity)
-    fun getUpcomingEvents(): LiveData<List<Event>>
 
     // -------------------------------------------------------------------- //
     // signature in-app update controls

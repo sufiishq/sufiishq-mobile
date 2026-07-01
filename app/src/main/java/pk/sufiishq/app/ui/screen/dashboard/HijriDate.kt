@@ -42,7 +42,7 @@ fun HijriDate(
     val hijriDate = mainController.getHijriDate().observeAsState()
 
     SIBox(
-        bgColor = AuroraColor.SecondaryVariant,
+        bgColor = AuroraColor.SecondaryContainer,
         padding = 12,
         modifier = Modifier.fillMaxWidth().height(120.dp),
     ) { textColor ->

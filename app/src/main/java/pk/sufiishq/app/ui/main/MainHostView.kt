@@ -17,10 +17,11 @@
 package pk.sufiishq.app.ui.main
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
-import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.applock.AppLockManager
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
 import pk.sufiishq.app.ui.main.player.PlayerView
@@ -33,7 +34,6 @@ import pk.sufiishq.aurora.widgets.SITopAppBar
 
 @Composable
 fun MainHostView(
-    maintenanceManager: MaintenanceManager,
     appLockManager: AppLockManager,
     audioPlayer: AudioPlayer,
 ) {
@@ -58,5 +58,5 @@ fun MainHostView(
         SIAuroraSurface { NavigationHost(navController) }
     }
 
-    AppLockAndMaintenance(maintenanceManager, appLockManager, audioPlayer)
+    AppLockAndMaintenance(appLockManager, audioPlayer)
 }

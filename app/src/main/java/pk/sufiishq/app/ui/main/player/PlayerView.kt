@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
 import pk.sufiishq.app.feature.player.controller.PlayerController
 import pk.sufiishq.app.feature.player.controller.PlayerViewModel
@@ -90,7 +90,7 @@ fun PlayerView(
                 },
         ) {
             SIRow(
-                bgColor = AuroraColor.SecondaryVariant,
+                bgColor = AuroraColor.SecondaryContainer,
                 padding = 8,
                 radius = 4,
             ) {

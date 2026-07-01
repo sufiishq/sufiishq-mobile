@@ -26,13 +26,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.github.esentsov.PackagePrivate
-import okhttp3.internal.format
 import pk.sufiishq.app.feature.kalam.controller.KalamController
 import pk.sufiishq.app.feature.kalam.downloader.FileInfo
 import pk.sufiishq.app.feature.kalam.downloader.KalamDownloadState
@@ -62,21 +62,25 @@ fun KalamDownloadDialog(
                         this,
                         kalamController,
                     )
+
                 is KalamDownloadState.InProgress ->
                     KalamDownloadInProgressDialog(
                         this,
                         kalamController,
                     )
+
                 is KalamDownloadState.Error ->
                     KalamDownloadErrorDialog(
                         this,
                         kalamController,
                     )
+
                 is KalamDownloadState.Completed ->
                     KalamDownloadCompletedDialog(
                         this,
                         kalamController,
                     )
+
                 else -> Timber.d("$this state is used for only hide dialog")
             }
         }
@@ -95,7 +99,9 @@ private fun KalamDownloadStartedDialog(
         onNoClick = { dismissDownload(kalamController) },
     ) {
         SILinearProgressIndicator(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         )
     }
 }
@@ -112,10 +118,10 @@ private fun KalamDownloadInProgressDialog(
         animateFloatAsState(
             targetValue = fileInfo.progress.toFloat() / 100f * 1f,
             animationSpec =
-            tween(
-                durationMillis = 800,
-                easing = LinearOutSlowInEasing,
-            ),
+                tween(
+                    durationMillis = 800,
+                    easing = LinearOutSlowInEasing,
+                ),
         )
 
     ShowDialog(
@@ -133,14 +139,20 @@ private fun KalamDownloadInProgressDialog(
                 textSize = TextSize.Small,
             )
             SIText(
-                text = format("%.2f", fileInfo.totalSize / 1024 / 1024) + " MB",
+                text = String.format(
+                    LocalLocale.current.platformLocale,
+                    "%.2f",
+                    fileInfo.totalSize / 1024 / 1024
+                ) + " MB",
                 textColor = textColor,
                 textSize = TextSize.Small,
             )
         }
 
         SILinearProgressIndicator(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             progress = progress.value,
         )
     }
@@ -160,11 +172,11 @@ private fun KalamDownloadCompletedDialog(
     ) { textColor ->
         SIText(
             text =
-            buildAnnotatedString {
-                append("Kalam ")
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) { append(kalam.title) }
-                append(" successfully downloaded")
-            },
+                buildAnnotatedString {
+                    append("Kalam ")
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) { append(kalam.title) }
+                    append(" successfully downloaded")
+                },
             textColor = textColor,
         )
     }

@@ -36,7 +36,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
@@ -45,9 +45,9 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.R
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
-import pk.sufiishq.app.R
 import pk.sufiishq.app.feature.app.model.Media
 import pk.sufiishq.app.feature.media.controller.VideoPlayController
 import pk.sufiishq.app.feature.media.controller.VideoPlayViewModel

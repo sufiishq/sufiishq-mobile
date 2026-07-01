@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,11 +36,11 @@ fun SIExpandableCard(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(AuroraColor.SecondaryVariant.color())
+                            .background(AuroraColor.SecondaryContainer.color())
                             .clickable(onClick = onHeaderClick)
                             .padding(12.dp, 12.dp)
                     ) {
-                        header(AuroraColor.SecondaryVariant.getForegroundColor(AuroraColor.SecondaryVariant.color()))
+                        header(AuroraColor.SecondaryContainer.getForegroundColor(AuroraColor.SecondaryContainer.color()))
                     }
                 }
 

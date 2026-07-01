@@ -21,8 +21,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import dagger.hilt.android.AndroidEntryPoint
-import pk.sufiishq.app.feature.admin.auth.AuthManager
-import pk.sufiishq.app.feature.admin.maintenance.MaintenanceManager
 import pk.sufiishq.app.feature.app.AppManager
 import pk.sufiishq.app.feature.app.PermissionManager
 import pk.sufiishq.app.feature.app.SyncManager
@@ -46,13 +44,7 @@ open class BaseActivity : FragmentActivity() {
     lateinit var appManager: AppManager
 
     @Inject
-    lateinit var authManager: AuthManager
-
-    @Inject
     lateinit var appLockManager: AppLockManager
-
-    @Inject
-    lateinit var maintenanceManager: MaintenanceManager
 
     @Inject
     lateinit var permissionManager: PermissionManager
@@ -68,8 +60,6 @@ open class BaseActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         assetKalamLoaderViewModel.loadAllKalam()
-
-        authManager.registerActivityResultListener(this)
 
         permissionManager.validateNotificationPermission(this)
 

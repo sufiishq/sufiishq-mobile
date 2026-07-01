@@ -2,7 +2,10 @@ package pk.sufiishq.aurora.widgets
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +35,7 @@ fun SITopAppBar(
                 contentAlignment = Alignment.Center
             ) {
                 SIImage(
+                    modifier = Modifier.height(32.dp),
                     resId = centerDrawable,
                     tintColor = it
                 )
@@ -42,6 +46,7 @@ fun SITopAppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SITopAppBar(
     bgColor: AuroraColor = AuroraColor.Background,
@@ -55,7 +60,9 @@ fun SITopAppBar(
 
     SIBox {
         TopAppBar(
-            backgroundColor = mBgColor.color(),
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = mBgColor.color()
+            ),
             title = {
                 centerContent(mFgColor)
             },
@@ -68,7 +75,7 @@ fun SITopAppBar(
         )
         SIDivider(
             modifier = Modifier.align(Alignment.BottomCenter),
-            color = AuroraColor.SecondaryVariant,
+            color = AuroraColor.SecondaryContainer,
             thickness = 3.dp
         )
     }

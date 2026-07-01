@@ -17,10 +17,11 @@
 package pk.sufiishq.app.ui.main
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -36,16 +37,19 @@ import pk.sufiishq.aurora.theme.getForegroundColor
 fun NavigationHost(
     navController: NavHostController,
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState: SnackbarHostState = remember {
+        SnackbarHostState()
+    }
 
     SIScaffold(
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         snackbarHost = {
             SnackbarHost(it) { data ->
                 Snackbar(
                     snackbarData = data,
-                    backgroundColor = AuroraColor.SecondaryVariant.color(),
-                    contentColor = AuroraColor.SecondaryVariant.getForegroundColor(AuroraColor.SecondaryVariant.color()).color(),
+                    containerColor = AuroraColor.SecondaryContainer.color(),
+                    contentColor = AuroraColor.SecondaryContainer.getForegroundColor(AuroraColor.SecondaryContainer.color())
+                        .color(),
                 )
             }
         },
@@ -57,7 +61,7 @@ fun NavigationHost(
             ) {
                 MainScreens.onEach { screen ->
                     composable(screen.buildRoute(), screen.arguments(), screen.deepLinks()) {
-                        screen.Compose(navController, it, scaffoldState)
+                        screen.Compose(navController, it, snackbarHostState)
                     }
                 }
             }

@@ -60,30 +60,33 @@ fun PlayPauseButton(
                 SIAuroraSurface {
                     SICard(
                         modifier =
-                        Modifier.fillMaxSize(0.75f).clip(CircleShape).clickable {
+                        Modifier.fillMaxSize(0.75f).align(Alignment.Center).clip(CircleShape).clickable {
                             playerController.doPlayOrPause()
                         },
                         elevation = 0.dp,
                         bgColor = AuroraColor.Background,
                     ) { contentColor ->
-                        if (kalamInfo.value == null || kalamInfo.value?.playerState == PlayerState.LOADING) {
-                            SICircularProgressIndicator(
-                                color = AuroraColor.SecondaryVariant,
-                                strokeWidth = 4,
-                            )
-                        } else {
-                            SIIcon(
-                                modifier = Modifier.padding(20.dp),
-                                resId =
-                                if (kalamInfo.value?.playerState == PlayerState.PAUSE ||
-                                    kalamInfo.value?.playerState == PlayerState.IDLE
-                                ) {
-                                    ImageRes.ic_play
-                                } else {
-                                    ImageRes.ic_pause
-                                },
-                                tint = contentColor,
-                            )
+                        SIBox(modifier = Modifier.fillMaxSize()) {
+                            if (kalamInfo.value == null || kalamInfo.value?.playerState == PlayerState.LOADING) {
+                                SICircularProgressIndicator(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    color = AuroraColor.SecondaryContainer,
+                                    strokeWidth = 4,
+                                )
+                            } else {
+                                SIIcon(
+                                    modifier = Modifier.align(Alignment.Center).padding(20.dp),
+                                    resId =
+                                        if (kalamInfo.value?.playerState == PlayerState.PAUSE ||
+                                            kalamInfo.value?.playerState == PlayerState.IDLE
+                                        ) {
+                                            ImageRes.ic_play
+                                        } else {
+                                            ImageRes.ic_pause
+                                        },
+                                    tint = contentColor,
+                                )
+                            }
                         }
                     }
                 }

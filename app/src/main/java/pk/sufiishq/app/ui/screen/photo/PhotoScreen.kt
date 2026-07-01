@@ -74,7 +74,7 @@ fun PhotoScreen(
         ) {
             SIRow(
                 modifier = Modifier.fillMaxWidth(0.7f),
-                bgColor = AuroraColor.SecondaryVariant,
+                bgColor = AuroraColor.SecondaryContainer,
                 padding = 6,
                 radius = 4,
                 horizontalArrangement = Arrangement.Center,

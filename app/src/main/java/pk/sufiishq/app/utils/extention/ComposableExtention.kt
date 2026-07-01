@@ -31,10 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.debugInspectorInfo
-import pk.sufiishq.app.feature.events.model.Event
-import pk.sufiishq.app.utils.TextRes
+import androidx.compose.ui.res.stringResource
 
 /** Returns whether the lazy list is currently scrolling up. */
 @Composable
@@ -59,8 +57,7 @@ fun LazyListState.isScrollingUp(): Boolean {
 
 @Composable
 fun optString(@StringRes resId: Int, vararg args: Any?): String {
-    val context = LocalContext.current
-    return context.getString(resId).format(*args)
+    return stringResource(resId).format(*args)
 }
 
 fun Modifier.shake(enabled: Boolean) =
@@ -72,35 +69,17 @@ fun Modifier.shake(enabled: Boolean) =
                         initialValue = -20f,
                         targetValue = 20f,
                         animationSpec =
-                        infiniteRepeatable(
-                            animation = tween(durationMillis = 300, easing = LinearEasing),
-                            repeatMode = RepeatMode.Reverse,
-                        ),
+                            infiniteRepeatable(
+                                animation = tween(durationMillis = 300, easing = LinearEasing),
+                                repeatMode = RepeatMode.Reverse,
+                            ),
                     )
 
             Modifier.graphicsLayer { rotationZ = if (enabled) scale.value else 1f }
         },
         inspectorInfo =
-        debugInspectorInfo {
-            name = "shake"
-            properties["enabled"] = enabled
-        },
+            debugInspectorInfo {
+                name = "shake"
+                properties["enabled"] = enabled
+            },
     )
-
-@Composable
-fun Event.parseRemainingDays(): String {
-    return when (remainingDays) {
-        0 -> {
-            optString(TextRes.label_now)
-        }
-        1 -> {
-            optString(TextRes.msg_one_day_remaining)
-        }
-        else -> {
-            optString(
-                TextRes.dynamic_event_days_remaining,
-                remainingDays,
-            )
-        }
-    }
-}

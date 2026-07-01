@@ -17,7 +17,7 @@
 package pk.sufiishq.app.ui.screen.applock
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -31,7 +31,7 @@ import pk.sufiishq.aurora.layout.SIBox
 @Composable
 fun SecurityQuestion(
     appLockController: AppLockController,
-    scaffoldState: ScaffoldState,
+    scaffoldState: SnackbarHostState,
     generatedPin: String,
 ) {
     val coroutineScope = rememberCoroutineScope()

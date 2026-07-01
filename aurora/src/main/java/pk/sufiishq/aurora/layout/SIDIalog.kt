@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -55,7 +55,7 @@ fun SIDialog(
                             .fillMaxWidth()
                             .height(55.dp),
                         padding = 12,
-                        bgColor = AuroraColor.SecondaryVariant
+                        bgColor = AuroraColor.SecondaryContainer
                     ) { textColor ->
                         SIText(
                             text = title,

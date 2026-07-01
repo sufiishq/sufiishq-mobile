@@ -61,7 +61,7 @@ fun HelpHeader(
                 ) {
                     SIImage(
                         resId = ImageRes.help_left_hand,
-                        tintColor = AuroraColor.SecondaryVariant,
+                        tintColor = AuroraColor.SecondaryContainer,
                     )
                     SIImage(resId = ImageRes.help_left_hand_front)
                 }
@@ -83,7 +83,7 @@ fun HelpHeader(
                 ) {
                     SIImage(
                         resId = ImageRes.help_right_hand,
-                        tintColor = AuroraColor.SecondaryVariant,
+                        tintColor = AuroraColor.SecondaryContainer,
                     )
                     SIImage(resId = ImageRes.help_right_hand_front)
                 }
@@ -101,7 +101,7 @@ fun HelpHeader(
                 .align(Alignment.TopCenter)
                 .padding(30.dp),
         ) {
-            SIImage(resId = ImageRes.help_main, tintColor = AuroraColor.SecondaryVariant)
+            SIImage(resId = ImageRes.help_main, tintColor = AuroraColor.SecondaryContainer)
             SIImage(resId = ImageRes.help_main_front)
         }
     }

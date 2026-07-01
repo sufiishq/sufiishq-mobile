@@ -14,8 +14,8 @@ fun SISlider(
     colors: SliderColors =
         SliderDefaults.colors(
             thumbColor = AuroraColor.Secondary.color(),
-            activeTickColor = AuroraColor.SecondaryVariant.color(),
-            activeTrackColor = AuroraColor.SecondaryVariant.color()
+            activeTickColor = AuroraColor.SecondaryContainer.color(),
+            activeTrackColor = AuroraColor.SecondaryContainer.color()
         ),
     value: Float = 0f,
     valueRange: ClosedFloatingPointRange<Float> = 0f..100f,

@@ -19,8 +19,6 @@ package pk.sufiishq.app.feature.app.controller
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pk.sufiishq.app.feature.admin.highlight.HighlightManager
-import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.model.NavigationItem
 import pk.sufiishq.app.feature.kalam.data.repository.KalamRepository
 import pk.sufiishq.app.feature.playlist.data.repository.PlaylistRepository
@@ -31,7 +29,6 @@ class DashboardViewModel
 @Inject
 constructor(
     private val kalamRepository: KalamRepository,
-    private val highlightManager: HighlightManager,
     private val playlistRepository: PlaylistRepository,
     private val mainNavigationItems: List<NavigationItem>,
 ) : ViewModel(), DashboardController {
@@ -41,12 +38,4 @@ constructor(
     override fun countFavorites(): LiveData<Int> = kalamRepository.countFavorites()
     override fun countDownloads(): LiveData<Int> = kalamRepository.countDownloads()
     override fun countPlaylist(): LiveData<Int> = playlistRepository.countAll()
-
-    // -------------------------------------------------------------------- //
-    // highlight available check functionality
-    // -------------------------------------------------------------------- //
-
-    override fun getHighlightAvailable(): LiveData<Highlight?> {
-        return highlightManager.getHighlightAvailable()
-    }
 }

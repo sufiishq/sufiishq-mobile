@@ -27,7 +27,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.Switch
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -37,7 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pk.sufiishq.app.feature.theme.controller.ThemeController
 import pk.sufiishq.app.feature.theme.controller.ThemeViewModel
 import pk.sufiishq.app.feature.theme.model.AutoChangeColorDuration
@@ -95,7 +96,8 @@ fun ThemeScreen(
 
     val scaleAndVisibility = remember {
         derivedStateOf {
-            if (lazyListState.firstVisibleItemIndex == 0) {
+            val visibleItems = lazyListState.layoutInfo.visibleItemsInfo
+            if (visibleItems.isNotEmpty() && lazyListState.firstVisibleItemIndex == 0) {
                 val imageSize = lazyListState.layoutInfo.visibleItemsInfo[0].size
                 val scrollOffset = lazyListState.firstVisibleItemScrollOffset
                 scrollOffset / imageSize.height.toFloat()
@@ -126,6 +128,9 @@ fun ThemeScreen(
                     fontWeight = FontWeight.Bold,
                 )
                 Switch(
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = AuroraColor.SecondaryContainer.color()
+                    ),
                     checked = autoColorChanged.targetState,
                     onCheckedChange = { isChecked ->
                         autoColorChanged.targetState = isChecked

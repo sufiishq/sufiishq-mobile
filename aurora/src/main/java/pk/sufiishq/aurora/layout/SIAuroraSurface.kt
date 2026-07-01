@@ -37,7 +37,6 @@ fun SIAuroraSurface(
             modifier = modifier.alpha(0.2f),
             drawableId = R.drawable.pattern
         )
-
         content()
     }
 }

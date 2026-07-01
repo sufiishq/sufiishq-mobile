@@ -1,141 +1,250 @@
 dependencies {
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
+    coreLibraryDesugaring(
+            "com.android.tools:desugar_jdk_libs:2.1.5"
+    )
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:1.3.1"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-service:2.5.1'
-    implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
-    implementation 'androidx.biometric:biometric:1.2.0-alpha05'
-    implementation 'androidx.paging:paging-compose:1.0.0-alpha17'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-alpha03'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
-    implementation "com.jakewharton.timber:timber:5.0.1"
-    implementation "commons-io:commons-io:2.11.0"
-    implementation "androidx.work:work-runtime-ktx:2.7.1"
-    implementation "com.github.yangjie10930:EpMedia:v1.0.1"
-    implementation "androidx.security:security-crypto:1.0.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
-    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
-    implementation 'io.github.esentsov:kotlin-visibility:1.1.0'
-    implementation 'com.airbnb.android:lottie-compose:5.2.0'
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("com.google.android.material:material:1.7.0")
 
-    // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation("androidx.compose.ui:ui:1.11.3")
+    implementation("androidx.compose.material3:material3:1.4.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.11.3")
 
-    // Room Database
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-paging:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.lifecycle:lifecycle-service:2.5.1")
 
-    // dagger-hilt
-    implementation "com.google.dagger:hilt-android:2.42"
-    kapt "com.google.dagger:hilt-compiler:2.42"
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha17")
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.0-alpha03")
 
-    // hilt navigation compose
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("commons-io:commons-io:2.11.0")
 
-    // dagger-hilt work manager extension
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation("com.github.yangjie10930:EpMedia:v1.0.1")
+    implementation("androidx.security:security-crypto:1.0.0")
 
-    // Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:31.0.1')
+    implementation(
+            "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+    )
 
-    // Add the dependency for the Firebase SDK for Google Analytics
-    // When using the BoM, don't specify versions in Firebase dependencies
-    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-messaging-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-database-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
-    implementation 'com.google.firebase:firebase-appcheck-debug:16.1.2'
+    implementation("com.wdullaer:materialdatetimepicker:4.2.3")
+    implementation("io.github.esentsov:kotlin-visibility:1.1.0")
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
 
-    // Date and time library to replace JDK date handling
-    implementation 'joda-time:joda-time:2.12.2'
+    // Navigation Compose
+    implementation(
+            "androidx.navigation:navigation-compose:2.5.3"
+    )
 
-    // This dependency is downloaded from the Google’s Maven repository.
-    // So, make sure you also include that repository in your project's build.gradle file.
-    implementation 'com.google.android.play:app-update:2.1.0'
+    // Room
+    implementation("androidx.room:room-ktx:2.8.4")
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-paging:2.8.4")
+    //kapt("androidx.room:room-compiler:2.8.4")
 
-    // For Kotlin users also add the Kotlin extensions library for Play In-App Update:
-    implementation 'com.google.android.play:app-update-ktx:2.1.0'
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    // Hilt
+    //implementation("com.google.dagger:hilt-android:2.56.2")
+    //kapt("com.google.dagger:hilt-compiler:2.56.2")
+    //ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    ksp(libs.hilt.compiler)
 
-    // System UI Controller for Jetpack Compos
-    //implementation "com.google.accompanist:accompanist-systemuicontroller:0.26.1-alpha"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+    /*implementation(
+            "androidx.hilt:hilt-navigation-compose:1.0.0"
+    )
 
-    // android splash screen api
-    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation(
+            "androidx.hilt:hilt-work:1.0.0"
+    )*/
 
-    // required to avoid crash on Android 12 API 31
-    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    /*kapt(
+            "androidx.hilt:hilt-compiler:1.0.0"
+    )*/
 
-    // asLiveData extension
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    // Firebase BOM
+    implementation(
+            platform("com.google.firebase:firebase-bom:31.0.1")
+    )
 
-    // kotlin reflection
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
-    // Jetpack Compose extension library:
-    implementation 'io.coil-kt:coil-compose:2.2.2'
+    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
 
-    // A type-safe HTTP client for Android and Java
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation(
+            "com.google.android.gms:play-services-auth:20.4.1"
+    )
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation(
+            "com.google.firebase:firebase-appcheck-debug:16.1.2"
+    )
 
-    // Gson is a Java library that can be used to convert Java Objects into their JSON representation.
-    implementation 'com.google.code.gson:gson:2.10.1'
+    // Date/time
+    implementation("joda-time:joda-time:2.12.2")
 
-    // exoplayer for video streaming
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.3'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.3'
+    // Play in-app update
+    implementation(
+            "com.google.android.play:app-update:2.1.0"
+    )
 
-    // add sufi-ishq aurora ui sdk
-    implementation project(":aurora")
+    implementation(
+            "com.google.android.play:app-update-ktx:2.1.0"
+    )
 
-    // ========================================= //
-    // TESTING DEPENDENCIES
-    // ========================================= //
+    // Accompanist
+    implementation(
+            "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+    )
 
-    testImplementation 'androidx.test:core:1.4.0'
+    // Splash screen
+    implementation(
+            "androidx.core:core-splashscreen:1.0.0"
+    )
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'io.mockk:mockk:1.12.3'
-    testImplementation 'org.robolectric:robolectric:4.9.2'
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
-    testImplementation "androidx.work:work-testing:2.8.0"
-    testImplementation "androidx.compose.ui:ui-test-junit4:1.4.0-alpha03"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.4.0-alpha03"
+    implementation(
+            "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    )
 
-    testImplementation 'com.google.dagger:hilt-android-testing:2.42'
-    kaptTest 'com.google.dagger:hilt-android-compiler:2.42'
+    // Kotlin reflection
+    implementation(
+            "org.jetbrains.kotlin:kotlin-reflect:1.7.20"
+    )
 
-    androidTestImplementation "androidx.test:runner:1.5.2"
-    androidTestImplementation 'androidx.test:core:1.5.0'
-    androidTestImplementation "androidx.test:core-ktx:1.5.0"
-    androidTestImplementation "io.mockk:mockk-android:1.12.3"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.5"
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test:1.4.0-alpha03"
+    // Coil
+    implementation(
+            "io.coil-kt:coil-compose:2.2.2"
+    )
 
-    // To use android test orchestrator
-    androidTestUtil "androidx.test:orchestrator:1.4.2"
+    // Retrofit
+    implementation(
+            "com.squareup.retrofit2:retrofit:2.9.0"
+    )
 
+    implementation(
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
+    )
+
+    implementation(
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    )
+
+    implementation(
+            "com.google.code.gson:gson:2.10.1"
+    )
+
+    // Exoplayer
+    implementation(
+            "com.google.android.exoplayer:exoplayer-core:2.18.3"
+    )
+
+    implementation(
+            "com.google.android.exoplayer:exoplayer-ui:2.18.3"
+    )
+
+    // Aurora module
+    implementation(project(":aurora"))
+
+
+    // -----------------------------
+    // Testing
+    // -----------------------------
+
+    testImplementation(
+            "androidx.test:core:1.4.0"
+    )
+
+    testImplementation(
+            "junit:junit:4.13.2"
+    )
+
+    testImplementation(
+            "io.mockk:mockk:1.12.3"
+    )
+
+    testImplementation(
+            "org.robolectric:robolectric:4.9.2"
+    )
+
+    testImplementation(
+            "androidx.arch.core:core-testing:2.1.0"
+    )
+
+    testImplementation(
+            "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    )
+
+    testImplementation(
+            "androidx.work:work-testing:2.8.0"
+    )
+
+    testImplementation(
+            "androidx.compose.ui:ui-test-junit4:1.4.0-alpha03"
+    )
+
+    debugImplementation(
+            "androidx.compose.ui:ui-tooling:1.11.3"
+    )
+
+    debugImplementation(
+            "androidx.compose.ui:ui-test-manifest:1.4.0-alpha03"
+    )
+
+    testImplementation(
+            "com.google.dagger:hilt-android-testing:2.42"
+    )
+
+    /*kaptTest(
+            "com.google.dagger:hilt-android-compiler:2.42"
+    )
+*/
+
+    // Android tests
+
+    androidTestImplementation(
+            "androidx.test:runner:1.5.2"
+    )
+
+    androidTestImplementation(
+            "androidx.test:core:1.5.0"
+    )
+
+    androidTestImplementation(
+            "androidx.test:core-ktx:1.5.0"
+    )
+
+    androidTestImplementation(
+            "io.mockk:mockk-android:1.12.3"
+    )
+
+    androidTestImplementation(
+            "androidx.test.ext:junit:1.1.5"
+    )
+
+    androidTestImplementation(
+            "androidx.test.ext:junit-ktx:1.1.5"
+    )
+
+    androidTestImplementation(
+            "androidx.test.espresso:espresso-core:3.5.1"
+    )
+
+    androidTestImplementation(
+            "androidx.compose.ui:ui-test:1.4.0-alpha03"
+    )
+
+    androidTestUtil(
+            "androidx.test:orchestrator:1.4.2"
+    )
 }

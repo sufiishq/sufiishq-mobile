@@ -16,26 +16,27 @@
 
 package pk.sufiishq.app.ui.screen.dashboard
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pk.sufiishq.app.BuildConfig
 import pk.sufiishq.app.activities.BaseActivity
 import pk.sufiishq.app.annotations.ExcludeFromJacocoGeneratedReport
-import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.controller.DashboardController
 import pk.sufiishq.app.feature.app.controller.DashboardViewModel
 import pk.sufiishq.app.feature.app.controller.MainController
@@ -72,27 +73,27 @@ fun DashboardScreen(
     val favorites = rem(stringResource(TextRes.title_favorites))
     val downloads = rem(stringResource(TextRes.title_downloads))
     val playlist = rem(stringResource(TextRes.title_playlist))
-    val scaffoldState = rememberScaffoldState()
-    val upcomingEvents = mainController.getUpcomingEvents().observeAsState().value
+    val snackbarHostState: SnackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+    val drawerState = rememberDrawerState(
+        initialValue = DrawerValue.Closed
+    )
 
     SIScaffold(
         drawer = {
             MainNavigationDrawer(
-                scaffoldState = scaffoldState,
                 mainController = mainController,
                 navigationItems = dashboardController.getMainNavigationItems(),
                 navController = navController,
+                drawerState = drawerState,
             )
         },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        scaffoldState = scaffoldState,
+        drawerState = drawerState,
+        drawerGesturesEnabled = drawerState.isOpen,
+        snackbarHostState = snackbarHostState,
     ) {
-        // highlight available dialog
-        val showHighlightDialog = rem<Highlight?>(null)
-
-        HighlightAvailableDialog(
-            showDialog = showHighlightDialog,
-        )
 
         SIBox {
             UpdateAvailableDialog(
@@ -106,79 +107,53 @@ fun DashboardScreen(
                     upcomingEventsRef,
                     logoRef,
                     calligraphyRef,
-                    highlightAvailableButtonRef,
                     buttonBoxRef,
                     debugLabelRef,
                 ) = createRefs()
 
-                UpcomingEventTicker(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .constrainAs(upcomingEventsRef) {
-                            start.linkTo(parent.start)
-                            top.linkTo(
-                                parent.top,
-                                if (upcomingEvents?.isNotEmpty() == true) 12.dp else 0.dp,
-                            )
-                            end.linkTo(parent.end)
-                        },
-                    upcomingEvents = upcomingEvents,
-                    navController = navController,
-                )
-
                 PersonalizedLogo(
                     modifier =
-                    Modifier.constrainAs(logoRef) {
-                        start.linkTo(parent.start)
-                        top.linkTo(upcomingEventsRef.bottom, 12.dp)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(calligraphyRef.top)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.fillToConstraints
-                    },
+                        Modifier.constrainAs(logoRef) {
+                            start.linkTo(parent.start)
+                            top.linkTo(upcomingEventsRef.bottom, 12.dp)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(calligraphyRef.top)
+                            width = Dimension.fillToConstraints
+                            height = Dimension.fillToConstraints
+                        },
                     personalizeController = personalizeController,
                 )
 
                 SIImage(
                     modifier =
-                    Modifier.constrainAs(calligraphyRef) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(buttonBoxRef.top)
-                    },
+                        Modifier.constrainAs(calligraphyRef) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(buttonBoxRef.top)
+                        },
                     resId = ImageRes.caligraphi,
-                )
-
-                HighlightAvailableButton(
-                    modifier =
-                    Modifier.constrainAs(highlightAvailableButtonRef) {
-                        start.linkTo(parent.start, 12.dp)
-                        bottom.linkTo(buttonBoxRef.top)
-                    },
-                    highlightDialogControl = showHighlightDialog,
-                    dashboardController = dashboardController,
                 )
 
                 if (BuildConfig.DEBUG) {
                     SIBadge(
                         text = optString(TextRes.label_debug),
                         modifier =
-                        Modifier.constrainAs(debugLabelRef) {
-                            end.linkTo(parent.end, 12.dp)
-                            bottom.linkTo(buttonBoxRef.top)
-                        },
+                            Modifier.constrainAs(debugLabelRef) {
+                                end.linkTo(parent.end, 12.dp)
+                                bottom.linkTo(buttonBoxRef.top)
+                            },
                     )
                 }
 
                 SIBox(
                     modifier =
-                    Modifier
-                        .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
-                        .constrainAs(buttonBoxRef) {
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        },
+                        Modifier
+                            .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 18.dp)
+                            .constrainAs(buttonBoxRef) {
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            },
                 ) {
                     SIRow {
                         SIColumn(
@@ -250,14 +225,14 @@ fun DashboardScreen(
                     }
 
                     // navigation menu button
-                    MainNavigationButton(scaffoldState = scaffoldState)
+                    MainNavigationButton(drawerState = drawerState)
                 }
             }
         }
     }
 
     // check any incoming update from play-store
-    val activity = LocalContext.current as BaseActivity
+    val activity = LocalActivity.current as BaseActivity
     LaunchedEffect(key1 = Unit) {
         mainController.checkUpdate(activity)
     }

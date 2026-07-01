@@ -17,7 +17,6 @@
 package pk.sufiishq.app.feature.app.controller
 
 import androidx.lifecycle.LiveData
-import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.app.model.NavigationItem
 
 interface DashboardController {
@@ -28,5 +27,4 @@ interface DashboardController {
     fun countDownloads(): LiveData<Int>
     fun countPlaylist(): LiveData<Int>
 
-    fun getHighlightAvailable(): LiveData<Highlight?>
 }

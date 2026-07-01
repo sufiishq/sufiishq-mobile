@@ -24,11 +24,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import pk.sufiishq.app.feature.app.api.MediaService
-import pk.sufiishq.app.feature.events.api.EventService
 import pk.sufiishq.app.feature.help.api.HelpContentService
 import pk.sufiishq.app.feature.hijridate.api.HijriDateService
 import pk.sufiishq.app.feature.kalam.downloader.DownloadFileService
-import pk.sufiishq.app.feature.occasions.api.OccasionService
 import pk.sufiishq.app.utils.Constants.SUFI_ISHQ_HOST
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -82,13 +80,4 @@ class NetworkModule {
         return retrofit.create(MediaService::class.java)
     }
 
-    @Provides
-    fun provideOccasionService(retrofit: Retrofit): OccasionService {
-        return retrofit.create(OccasionService::class.java)
-    }
-
-    @Provides
-    fun provideEventService(retrofit: Retrofit): EventService {
-        return retrofit.create(EventService::class.java)
-    }
 }

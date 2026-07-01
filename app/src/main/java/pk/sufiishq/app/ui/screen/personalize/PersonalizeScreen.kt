@@ -31,7 +31,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Switch
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -40,12 +41,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.feature.personalize.controller.PersonalizeController
@@ -258,6 +260,9 @@ private fun AutoDownloadSwitch(onColor: AuroraColor, personalizeController: Pers
             fontWeight = FontWeight.Bold,
         )
         Switch(
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = AuroraColor.SecondaryContainer.color()
+            ),
             checked = autoDownloadChecked.targetState,
             onCheckedChange = { isChecked ->
                 autoDownloadChecked.targetState = isChecked
@@ -280,7 +285,7 @@ fun DefaultLogoViewItem(
                 .size(80.dp)
                 .clip(CircleShape),
             padding = 3,
-            bgColor = AuroraColor.SecondaryVariant,
+            bgColor = AuroraColor.SecondaryContainer,
         ) {
             SIBox(
                 modifier = Modifier
@@ -318,7 +323,7 @@ fun PersonalLogoViewItem(
                 .size(80.dp)
                 .clip(CircleShape),
             padding = 3,
-            bgColor = AuroraColor.SecondaryVariant,
+            bgColor = AuroraColor.SecondaryContainer,
         ) {
             SIBox(
                 modifier = Modifier
@@ -342,7 +347,7 @@ fun PersonalLogoViewItem(
                 } ?: run {
                     SICircularProgressIndicator(
                         modifier = Modifier.fillMaxSize(0.5f),
-                        color = AuroraColor.SecondaryVariant,
+                        color = AuroraColor.SecondaryContainer,
                         strokeWidth = 2,
                     )
                 }

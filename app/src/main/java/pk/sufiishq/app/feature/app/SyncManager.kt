@@ -22,9 +22,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import pk.sufiishq.app.di.qualifier.IoDispatcher
 import pk.sufiishq.app.di.qualifier.SharedPreferences
-import pk.sufiishq.app.feature.events.worker.EventSyncWorker
-import pk.sufiishq.app.feature.events.worker.EventUpdateWorker
-import pk.sufiishq.app.feature.occasions.worker.OccasionSyncWorker
 import pk.sufiishq.app.feature.storage.KeyValueStorage
 import pk.sufiishq.app.feature.theme.controller.ThemeController
 import pk.sufiishq.app.feature.theme.model.AutoChangeColorDuration

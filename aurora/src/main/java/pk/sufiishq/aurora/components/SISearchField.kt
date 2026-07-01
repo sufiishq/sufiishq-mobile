@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
@@ -24,14 +24,20 @@ fun SITextField(
 ) {
     val focusManager = LocalFocusManager.current
 
-    val colors = TextFieldDefaults.outlinedTextFieldColors(
-        textColor = textColor.color(),
+    val colors = TextFieldDefaults.colors(
+        focusedTextColor = textColor.color(),
+        unfocusedTextColor = textColor.color(),
+
         cursorColor = textColor.color(),
-        unfocusedBorderColor = textColor.color().copy(alpha = 0.3f),
-        focusedBorderColor = textColor.color().copy(alpha = 0.5f),
-        unfocusedLabelColor = textColor.color().copy(alpha = 0.3f),
+
+        focusedIndicatorColor = textColor.color().copy(alpha = 0.5f),
+        unfocusedIndicatorColor = textColor.color().copy(alpha = 0.3f),
+
         focusedLabelColor = textColor.color().copy(alpha = 0.7f),
-        placeholderColor = textColor.color().copy(0.5f)
+        unfocusedLabelColor = textColor.color().copy(alpha = 0.3f),
+
+        focusedPlaceholderColor = textColor.color().copy(alpha = 0.5f),
+        unfocusedPlaceholderColor = textColor.color().copy(alpha = 0.5f)
     )
 
     TextField(

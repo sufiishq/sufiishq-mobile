@@ -31,7 +31,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import pk.sufiishq.app.R
 import pk.sufiishq.app.SufiIshqApp
-import pk.sufiishq.app.feature.admin.model.Highlight
 import pk.sufiishq.app.feature.applock.model.AutoLockDuration
 import pk.sufiishq.app.feature.kalam.model.Kalam
 import pk.sufiishq.app.feature.player.controller.AudioPlayer
@@ -77,18 +76,23 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
             ImageRes.favorite -> {
                 kalam.isFavorite == 0
             }
+
             ImageRes.favorite_outline -> {
                 kalam.isFavorite == 1
             }
+
             ImageRes.download -> {
                 kalam.offlineSource.isEmpty()
             }
+
             ImageRes.share -> {
                 kalam.onlineSource.isNotEmpty()
             }
+
             ImageRes.split -> {
                 trackType == ScreenType.Tracks.DOWNLOADS
             }
+
             ImageRes.delete -> {
                 if (trackType == ScreenType.Tracks.ALL) {
                     kalam.onlineSource.isEmpty()
@@ -96,9 +100,11 @@ fun List<DataMenuItem>.filterItems(kalam: Kalam, trackType: String? = null): Lis
                     true
                 }
             }
+
             ImageRes.add -> {
                 trackType != ScreenType.Tracks.PLAYLIST
             }
+
             else -> true
         }
     }
@@ -122,23 +128,6 @@ fun quickToast(@StringRes resId: Int, vararg args: Any?) {
 
 fun getString(@StringRes resId: Int, vararg args: Any?): String {
     return getApp().getString(resId).format(*args)
-}
-
-fun Highlight?.contactsAsListPair(): List<Pair<String, String>>? {
-    return this?.contacts
-        ?.map { it.value.toList().map { data -> data.second } }
-        ?.flatten()
-        ?.let {
-            val size = it.size
-            val cut = (size + 1) / 2
-            val first = it.subList(0, cut)
-            val second = it.subList(cut, size)
-            first.zip(second)
-        }
-}
-
-fun String.addCharAtIndex(char: Char, index: Int): String {
-    return tryWithDefault(this) { StringBuilder(this).apply { insert(index, char) }.toString() }
 }
 
 @Throws(InterruptedException::class)

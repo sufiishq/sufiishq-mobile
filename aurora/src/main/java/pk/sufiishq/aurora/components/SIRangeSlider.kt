@@ -1,22 +1,20 @@
 package pk.sufiishq.aurora.components
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.RangeSlider
-import androidx.compose.material.SliderColors
-import androidx.compose.material.SliderDefaults
+import androidx.compose.material3.RangeSlider
+import androidx.compose.material3.SliderColors
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import pk.sufiishq.aurora.theme.AuroraColor
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SIRangeSlider(
     modifier: Modifier = Modifier,
     colors: SliderColors =
         SliderDefaults.colors(
             thumbColor = AuroraColor.Secondary.color(),
-            activeTickColor = AuroraColor.SecondaryVariant.color(),
-            activeTrackColor = AuroraColor.SecondaryVariant.color()
+            activeTickColor = AuroraColor.SecondaryContainer.color(),
+            activeTrackColor = AuroraColor.SecondaryContainer.color()
         ),
     value: ClosedFloatingPointRange<Float>,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,

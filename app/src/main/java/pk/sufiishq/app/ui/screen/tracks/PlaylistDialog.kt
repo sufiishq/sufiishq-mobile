@@ -47,7 +47,9 @@ fun PlaylistDialog(
             onDismissRequest = { kalamController.dismissPlaylistDialog() },
         ) {
             SILazyColumn(
-                modifier = Modifier.fillMaxWidth().heightIn(0.dp, 300.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(0.dp, 300.dp),
                 contentPadding = PaddingValues(0.dp),
                 content = {
                     itemsIndexed(playlistItems) { index, item ->

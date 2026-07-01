@@ -21,9 +21,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import io.github.esentsov.PackagePrivate
-import kotlinx.coroutines.launch
 import pk.sufiishq.app.feature.applock.controller.AppLockController
 import pk.sufiishq.app.ui.components.dialogs.ConfirmDialogParam
 import pk.sufiishq.app.ui.components.dialogs.ConfirmationDialog
@@ -52,22 +51,27 @@ import pk.sufiishq.aurora.theme.AuroraColor
 @Composable
 fun AppLockSetting(
     appLockController: AppLockController,
-    scaffoldState: ScaffoldState,
+    scaffoldState: SnackbarHostState,
     snackbarMessage: String?,
     biometricEnable: Boolean,
 ) {
     val fragmentActivity = LocalContext.current as FragmentActivity
     val autoLockDuration = appLockController.getAutoLockDuration()
 
-    snackbarMessage?.let {
-        val scope = rememberCoroutineScope()
-        scope.launch { scaffoldState.snackbarHostState.showSnackbar(snackbarMessage) }
+    LaunchedEffect(Unit) {
+        snackbarMessage?.let {
+
+            scaffoldState.showSnackbar(snackbarMessage)
+        }
     }
+
 
     Header()
 
     SIColumn(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
     ) {
         val param = rem<ConfirmDialogParam?>(null)
         ConfirmationDialog(state = param)
@@ -124,7 +128,7 @@ fun AppLockSetting(
 private fun Header() {
     SIRow(
         modifier = Modifier.fillMaxWidth(),
-        bgColor = AuroraColor.SecondaryVariant,
+        bgColor = AuroraColor.SecondaryContainer,
         padding = 12,
         radius = 4,
         verticalAlignment = Alignment.CenterVertically,
