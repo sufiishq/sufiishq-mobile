@@ -34,12 +34,12 @@ import pk.sufiishq.app.feature.playlist.model.Playlist
 
 @Database(
     entities = [Kalam::class, Playlist::class, Media::class, Personalize::class],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(
-            from = 4,
-            to = 5,
+            from = 5,
+            to = 6,
             spec = SufiIshqDatabase.AutoMigration::class
         ),
     ],
@@ -71,7 +71,7 @@ abstract class SufiIshqDatabase : RoomDatabase() {
     class AutoMigration : AutoMigrationSpec {
         override fun onPostMigrate(db: SupportSQLiteDatabase) {
             super.onPostMigrate(db)
-            db.execSQL("UPDATE kalam SET online_src = REPLACE(online_src, 'https://sufiishq.pk/', 'https://filedn.com/lNVSC44OvOKYw0PH6GJfvPQ/')")
+            db.execSQL("UPDATE kalam SET online_src = REPLACE(online_src, 'https://filedn.com/lNVSC44OvOKYw0PH6GJfvPQ/media/', 'https://static.mumdyverse.com/sufiishq/')")
         }
     }
 }

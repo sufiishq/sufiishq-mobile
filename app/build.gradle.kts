@@ -37,8 +37,8 @@ extensions.configure<ApplicationExtension> {
         minSdk = 25
         targetSdk = 36
 
-        versionCode = 29
-        versionName = "3.0.0"
+        versionCode = 30
+        versionName = "3.1.0"
         ndkVersion = "28.0.13004108"
 
         testInstrumentationRunner =
