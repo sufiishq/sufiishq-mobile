@@ -30,7 +30,7 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 private const val HELP_URL =
-    "https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/master/app/src/main/assets/help/help.json"
+    "https://raw.githubusercontent.com/sufiishq/sufiishq-mobile/refs/heads/master/app/src/main/assets/help/help.json"
 
 class OnlineHelpContentResolver
 @Inject
