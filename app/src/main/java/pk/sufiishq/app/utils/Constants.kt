@@ -17,12 +17,11 @@
 package pk.sufiishq.app.utils
 
 object Constants {
-    const val SUFI_ISHQ_HOST = "https://filedn.com/lNVSC44OvOKYw0PH6GJfvPQ/"
+    const val SUFI_ISHQ_HOST = "https://static.mumdyverse.com/sufiishq/"
     const val KALAM_DIR = "kalam"
-    const val MEDIA_PATH = "media"
+    const val MEDIA_PATH = "images"
     const val CACHE_SPLIT_FILENAME = "split.mp3"
     const val KALAM_TITLE_LENGTH = 50
     const val PLAYLIST_TITLE_LENGTH = 30
     const val LAST_PLAY_KALAM = "last_play_kalam"
-    const val FEATURE_VIDEO_REFERENCE_ID = "0"
 }

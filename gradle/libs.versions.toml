@@ -16,11 +16,9 @@ coreSplashscreen = "1.2.0"
 coreTesting = "2.2.0"
 coreVersion = "1.5.0"
 desugar_jdk_libs = "2.1.5"
-epmedia = "v1.0.1"
 exoplayerCore = "2.19.1"
 firebaseAppcheckDebug = "19.2.0"
 firebaseBom = "34.15.0"
-firebaseUiAuth = "9.1.1"
 gson = "2.14.0"
 hiltAndroidTesting = "2.60"
 jodaTime = "2.14.2"
@@ -48,11 +46,9 @@ materialdatetimepicker = "4.2.3"
 materialIconsExtended = "1.7.8"
 materialVersion = "1.11.3"
 mockk = "1.14.11"
-mockkAndroid = "1.14.11"
 navigationCompose = "2.9.8"
 pagingCompose = "3.5.0"
 pagingComposeVersion = "3.3.6"
-playServicesAuth = "21.6.0"
 retrofit = "3.0.0"
 robolectric = "4.16.1"
 room = "2.8.4"
@@ -64,7 +60,7 @@ uiTestJunit4 = "1.11.3"
 uiTestManifestVersion = "1.11.3"
 uiTooling = "1.11.3"
 workRuntimeKtx = "2.11.2"
-ffmpegKit = "6.1.2"
+ffmpegKit = "6.1.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -78,7 +74,6 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx"
 androidx-core-ktx-v1150 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
-androidx-core-v150 = { module = "androidx.test:core", version.ref = "coreVersion" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycleRuntimeKtx" }
@@ -92,7 +87,6 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-androidx-runner = { module = "androidx.test:runner", version.ref = "core" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
@@ -105,10 +99,8 @@ app-update = { module = "com.google.android.play:app-update", version.ref = "app
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
 coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreVersion" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
-#epmedia = { module = "com.github.yangjie10930:EpMedia", version.ref = "epmedia" }
-ffmpeg-kit = { module = "io.github.minorlai:ffmpeg-kit-16kb", version.ref = "ffmpegKit" }
+ffmpeg-kit = { module = "com.moizhassan.ffmpeg:ffmpeg-kit-16kb", version.ref = "ffmpegKit" }
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayerCore" }
 exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayerCore" }
 firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug", version.ref = "firebaseAppcheckDebug" }

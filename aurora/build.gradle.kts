@@ -15,13 +15,8 @@ extensions.configure<LibraryExtension> {
 
     defaultConfig {
         minSdk = 25
-
-        testInstrumentationRunner =
-                "androidx.test.runner.AndroidJUnitRunner"
-
-        consumerProguardFiles(
-                "consumer-rules.pro"
-        )
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -29,10 +24,10 @@ extensions.configure<LibraryExtension> {
             isMinifyEnabled = true
 
             proguardFiles(
-                    getDefaultProguardFile(
-                            "proguard-android-optimize.txt"
-                    ),
-                    "proguard-rules.pro"
+                getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+                ),
+                "proguard-rules.pro"
             )
         }
     }
@@ -55,46 +50,16 @@ extensions.configure<LibraryExtension> {
 }
 
 dependencies {
-
     implementation(libs.androidx.appcompat.v161)
-
     implementation(libs.androidx.material)
-
-    implementation(
-            libs.androidx.ui
-    )
-
+    implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
-
     implementation(libs.androidx.material.icons.extended)
-
-    implementation(
-            libs.androidx.ui.tooling.preview
-    )
-
-    implementation(
-            libs.androidx.paging.compose.v336
-    )
-
-    implementation(
-            libs.androidx.core.ktx.v1150
-    )
-
-    implementation(
-            libs.androidx.constraintlayout.compose
-    )
-
-    implementation(
-            libs.kotlin.reflect.v220
-    )
-
-    implementation(
-            libs.accompanist.systemuicontroller
-    )
-
-
-    testImplementation(
-            libs.junit
-    )
-
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.paging.compose.v336)
+    implementation(libs.androidx.core.ktx.v1150)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.kotlin.reflect.v220)
+    implementation(libs.accompanist.systemuicontroller)
+    testImplementation(libs.junit)
 }

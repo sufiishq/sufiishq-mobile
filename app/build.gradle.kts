@@ -26,8 +26,6 @@ val keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 
-//apply(from = "./gradle/properties.gradle")
-
 extensions.configure<ApplicationExtension> {
     namespace = "pk.sufiishq.app"
     compileSdk = 37
@@ -37,7 +35,7 @@ extensions.configure<ApplicationExtension> {
         minSdk = 25
         targetSdk = 36
 
-        versionCode = 30
+        versionCode = 32
         versionName = "3.1.0"
         ndkVersion = "28.0.13004108"
 
@@ -48,12 +46,6 @@ extensions.configure<ApplicationExtension> {
             useSupportLibrary = true
         }
 
-        /*ndk {
-            abiFilters += setOf(
-                "arm64-v8a",
-                "armeabi-v7a"
-            )
-        }*/
     }
 
     signingConfigs {
@@ -91,8 +83,8 @@ extensions.configure<ApplicationExtension> {
                 debugSymbolLevel = "FULL"
             }
 
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -124,9 +116,7 @@ room {
 
 dependencies {
 
-    coreLibraryDesugaring(
-        libs.desugar.jdk.libs
-    )
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -155,25 +145,20 @@ dependencies {
     implementation(libs.ffmpeg.kit)
     implementation(libs.androidx.security.crypto)
 
-    implementation(
-        libs.kotlinx.coroutines.play.services
-    )
+    implementation(libs.kotlinx.coroutines.play.services)
 
     implementation(libs.materialdatetimepicker)
     implementation(libs.kotlin.visibility)
     implementation(libs.lottie.compose)
 
     // Navigation Compose
-    implementation(
-        libs.androidx.navigation.compose
-    )
+    implementation(libs.androidx.navigation.compose)
 
     // Room
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
-    //kapt("androidx.room:room-compiler:2.8.4")
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -182,159 +167,65 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     ksp(libs.androidx.hilt.compiler)
 
-    //implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
-    // Hilt
-    //implementation("com.google.dagger:hilt-android:2.56.2")
-    //kapt("com.google.dagger:hilt-compiler:2.56.2")
-    //ksp("com.google.dagger:hilt-android-compiler:2.56.2")
-    //ksp(libs.hilt.compiler)
-
-    /*implementation(
-            "androidx.hilt:hilt-navigation-compose:1.0.0"
-    )
-
-    implementation(
-            "androidx.hilt:hilt-work:1.0.0"
-    )*/
-
-    /*kapt(
-            "androidx.hilt:hilt-compiler:1.0.0"
-    )*/
 
     // Firebase BOM
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.analytics)
-    //implementation(libs.firebase.messaging)
     implementation(libs.firebase.crashlytics)
-    //implementation(libs.firebase.database)
-    //implementation(libs.firebase.auth)
-
-    //implementation(libs.firebase.ui.auth)
-
-    /*implementation(
-        libs.play.services.auth
-    )*/
-
-    implementation(
-        libs.firebase.appcheck.debug
-    )
+    implementation(libs.firebase.appcheck.debug)
 
     // Date/time
     implementation(libs.joda.time)
 
     // Play in-app update
-    implementation(
-        libs.app.update
-    )
+    implementation(libs.app.update)
 
-    implementation(
-        libs.app.update.ktx
-    )
+    implementation(libs.app.update.ktx)
 
     // Accompanist
-    implementation(
-        libs.accompanist.systemuicontroller
-    )
+    implementation(libs.accompanist.systemuicontroller)
 
     // Splash screen
-    implementation(
-        libs.androidx.core.splashscreen
-    )
+    implementation(libs.androidx.core.splashscreen)
 
-    implementation(
-        libs.androidx.lifecycle.livedata.ktx
-    )
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     // Kotlin reflection
-    implementation(
-        libs.kotlin.reflect
-    )
+    implementation(libs.kotlin.reflect)
 
     // Coil
-    implementation(
-        libs.coil.kt.coil.compose
-    )
+    implementation(libs.coil.kt.coil.compose)
 
     // Retrofit
-    implementation(
-        libs.retrofit
-    )
-
-    implementation(
-        libs.kotlinx.coroutines.core
-    )
-
-    implementation(
-        libs.kotlinx.coroutines.android
-    )
-
-    implementation(
-        libs.gson
-    )
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.gson)
 
     // Exoplayer
-    implementation(
-        libs.exoplayer.core
-    )
+    implementation(libs.exoplayer.core)
 
-    implementation(
-        libs.exoplayer.ui
-    )
+    implementation(libs.exoplayer.ui)
 
     // Aurora module
     implementation(project(":aurora"))
-
 
     // -----------------------------
     // Testing
     // -----------------------------
 
-    testImplementation(
-        libs.androidx.core
-    )
-
-    testImplementation(
-        libs.junit
-    )
-
-    testImplementation(
-        libs.mockk
-    )
-
-    testImplementation(
-        libs.robolectric
-    )
-
-    testImplementation(
-        libs.androidx.core.testing
-    )
-
-    testImplementation(
-        libs.kotlinx.coroutines.test
-    )
-
-    testImplementation(
-        libs.androidx.work.testing
-    )
-
-    testImplementation(
-        libs.androidx.ui.test.junit4
-    )
-
-    debugImplementation(
-        libs.androidx.ui.tooling
-    )
-
-    debugImplementation(
-        libs.ui.test.manifest
-    )
-
-    testImplementation(
-        libs.hilt.android.testing
-    )
-
-
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.work.testing)
+    testImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+    testImplementation(libs.hilt.android.testing)
 }
